@@ -33,10 +33,10 @@
         <!-- Custom styles for this template -->
         <link href="assets/css/sticky-footer-navbar.css" rel="stylesheet"/>
     </head>
-    <body>
+    <body class="d-flex flex-column min-vh-100">
          <footer class="footer mt-auto py-3 bg-light">
             <div class="container">
-                <span class="text-muted">Place sticky footer content here.</span>
+                <label>AEChiCot</label>
             </div>
         </footer>
 
