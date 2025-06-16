@@ -1,2 +1,8 @@
 /AE2CGroceryStore/target/
 AE2CGroceryStore/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+AE2CGroceryStore/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+AE2CGroceryStore/target/maven-archiver/pom.properties
+AE2CGroceryStore/target/classes/dbconnect/DBContext.class
+AE2CGroceryStore/target/AE2CGroceryStore-1.0-SNAPSHOT/WEB-INF/classes/dbconnect/DBContext.class
+AE2CGroceryStore/target/AE2CGroceryStore-1.0-SNAPSHOT/assets/js/bootstrap.bundle.min.js
+AE2CGroceryStore/target/AE2CGroceryStore-1.0-SNAPSHOT/assets/css/bootstrap.min.css
