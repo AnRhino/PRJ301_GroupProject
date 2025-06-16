@@ -59,7 +59,7 @@ public class AdminServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
         System.out.println("ok");
-        request.getRequestDispatcher("/WEB-INF/admin/list.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/admin1/list.jsp").forward(request, response);
     }
 
     /**
