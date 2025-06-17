@@ -23,18 +23,15 @@ public class ProductDAO extends dbconnect.DBContext {
     public List<Product> getAll() {
         List<Product> list = new ArrayList<>();
         try {
-            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, CategoryID\n"
-                    + "from Products";
+            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
+                    + "from Products p \n"
+                    + "join  Categories c on p.CategoryID = c.CategoryID";
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                int productId = rs.getInt("ProductID");
-                String productCode = rs.getString(2);
-                String productName = rs.getString(3);
-                int quantity = rs.getInt("Quantity");
-                int price = rs.getInt("Price");
-                Category category = new Category(1, "rest");
-                Product pro = new Product(productId, productCode, productName, quantity, price, category);
+               
+                Category Category = new Category(rs.getInt(6),rs.getString(7));
+                Product pro = new Product(rs.getInt("ProductID"),rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
                 list.add(pro);
             }
 

@@ -11,7 +11,7 @@
 <main class="flex-shrink-0">
     <div class="container">
         <h1 class="mt-5">Product</h1>
-        <a class=" btn btn-success float-end " href="artist?view=create">create</a>
+        <a class=" btn btn-success float-end " href="product?view=create">create</a>
         <!-- Button trigger modal -->
         <% List<Product> product = (List) request.getAttribute("list"); %>
         <% if(product.isEmpty()) { %>
@@ -44,7 +44,7 @@
                     <td><%= pr.getProductName()%></td>
                     <td><%= pr.getQuantity() %></td>
                     <td><%= pr.getPrice() %></td>
-                    <td><%= pr.getCategoryID() %></td>
+                    <td><%= pr.getCategoryID().getCategoryID() %></td>
                     
                     <td>
                         <a href="#" class="btn btn-primary btn-sm">edit</a>
