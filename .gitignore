@@ -1,8 +1,37 @@
 /AE2CGroceryStore/target/
-AE2CGroceryStore/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
-AE2CGroceryStore/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
-AE2CGroceryStore/target/maven-archiver/pom.properties
-AE2CGroceryStore/target/classes/dbconnect/DBContext.class
-AE2CGroceryStore/target/AE2CGroceryStore-1.0-SNAPSHOT/WEB-INF/classes/dbconnect/DBContext.class
-AE2CGroceryStore/target/AE2CGroceryStore-1.0-SNAPSHOT/assets/js/bootstrap.bundle.min.js
-AE2CGroceryStore/target/AE2CGroceryStore-1.0-SNAPSHOT/assets/css/bootstrap.min.css
+
+### NetBeans ###
+**/nbproject/private/
+**/nbproject/Makefile-*.mk
+**/nbproject/Package-*.bash
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+### Java ###
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*
