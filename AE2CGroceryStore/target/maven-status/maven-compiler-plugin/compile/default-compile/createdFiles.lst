@@ -1,0 +1,6 @@
+DAO\ProductDAO.class
+dbconnect\DBContext.class
+controller\ProductServlet.class
+model\Product.class
+controller\AdminServlet.class
+model\Category.class
