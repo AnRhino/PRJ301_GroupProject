@@ -18,7 +18,7 @@ import model.Product;
 
 /**
  *
- * @author PC
+ * @author Phan Duc Tho - CE191246
  */
 @WebServlet(name="ProductServlet", urlPatterns={"/product"})
 public class ProductServlet extends HttpServlet {

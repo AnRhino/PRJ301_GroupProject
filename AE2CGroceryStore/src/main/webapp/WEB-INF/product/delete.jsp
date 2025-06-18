@@ -1,7 +1,7 @@
 <%-- 
     Document   : delete
     Created on : Jun 16, 2025, 4:04:43 PM
-    Author     : PC
+    Author     : Phan Duc Tho - CE191246
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

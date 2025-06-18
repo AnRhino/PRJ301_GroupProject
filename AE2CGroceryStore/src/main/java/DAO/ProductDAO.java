@@ -16,7 +16,7 @@ import model.Product;
 
 /**
  *
- * @author PC
+ * @author Phan Duc Tho - CE191246
  */
 public class ProductDAO extends dbconnect.DBContext {
 
