@@ -30,8 +30,8 @@ public class CategoryDAO extends dbconnect.DBContext {
         List<Category> list = new ArrayList<>();
         
         try {
-            String query = "select c.CategoryID, c.CategoryName\n"
-                    + "from Category p \n";
+            String query = "select CategoryID, CategoryName\n"
+                    + "from Categories";
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

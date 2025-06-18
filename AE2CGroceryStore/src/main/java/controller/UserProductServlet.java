@@ -18,14 +18,13 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Vu Minh Khang - CE191371
  */
-@WebServlet(name = "UserProductServlet", urlPatterns = {"/userProductServlet"})
+@WebServlet(name = "UserProductServlet", urlPatterns = {"/userProduct"})
 public class UserProductServlet extends HttpServlet {
 
-    private final ProductDAO productDao = new ProductDAO();
-    private final CategoryDAO categoryDao = new CategoryDAO();
-    private String view;
-    private String value;
-
+//    private final ProductDAO productDao = new ProductDAO();
+//    private final CategoryDAO categoryDao = new CategoryDAO();
+//    private String view;
+//    private String value;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -65,6 +64,11 @@ public class UserProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
+
+        ProductDAO productDao = new ProductDAO();
+        CategoryDAO categoryDao = new CategoryDAO();
+        String view;
+        String value;
 
         view = request.getParameter("view");
 
