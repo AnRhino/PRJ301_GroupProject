@@ -8,14 +8,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-    <body class="d-flex flex-column min-vh-100">
-         <footer class="footer mt-auto py-3 bg-light">
-            <div class="container">
-                <label>AEChiCot</label>
-            </div>
-        </footer>
+<body class="d-flex flex-column min-vh-100">
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <label>AEChiCode</label>
+        </div>
+    </footer>
 
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
 
 
-    </body>
+</body>

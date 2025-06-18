@@ -8,16 +8,11 @@
 <%@page import="model.Product"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@include file="../include/header.jsp" %>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <script src="../../assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
-    </head>
+    <%@include file="../include/head.jsp" %>
     <body>
+        <%@include file="../include/header.jsp" %>
         <%
             // Lấy danh sách danh mục và sản phầm từ db.
             List<Product> productList = (List) request.getAttribute("productList");
@@ -64,6 +59,6 @@
             <%
                 }
             %>
+            <jsp:include page="../include/footer.jsp" />
     </body>
 </html>
-<jsp:include page="../include/footer.jsp" />
