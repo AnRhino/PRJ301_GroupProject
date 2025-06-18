@@ -1,7 +1,7 @@
 <%-- 
     Document   : list
     Created on : Jun 16, 2025, 4:04:20 PM
-    Author     : PC
+    Author     : Phan Duc Tho - CE191246
 --%>
 
 <%@page import="java.util.List"%>
