@@ -26,10 +26,24 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="userProduct">Home</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link active   " aria-current="page"">Category</a>
-                        </li>
+                        <div id="all">
+                            <li class="nav-item">
+                                <a class="nav-link active   " aria-current="page"">Category</a>
+                                <div class="text-dark" id="all-box">
+                                    <ul>
+                                        <li>
+                                        <a  aria-current="page" href="userProduct">Rau</a>
+                                        </li>
+                                        <li>
+                                            <a  aria-current="page" href="userProduct">Thit</a>
+                                        </li>
+                                        <li>
+                                            <a aria-current="page" href="userProduct">Ca</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </div>
                     </ul>
                 </div>
                 <div>
@@ -39,14 +53,19 @@
                 <div class="flex align-content-end ">
                     <form class="d-flex">   
                         <% if (username != null) {
-                        // Mr.Phuc need fixed this
+                                // Mr.Phuc need fixed this
                         %>
                         <span>Hi, ${username.username}</span>
                         <a href="logout.jsp" class="btn btn-outline-danger m-2">Logout</a>
                         <% } else { %>
                         <a href="login.jsp" class="btn btn-outline-success m-2">Login</a>
                         <% }%>
-                        <button class="btn btn-outline-light m-2" type="submit"><i class="bi bi-cart2"> Cart</i></button>
+                        <div id="all">
+                            <button class="btn btn-outline-light m-2" type="submit"><i class="bi bi-cart2"> Cart</i></button>
+                            <div id="all-box">
+                                <span>Hello There</span>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
