@@ -1,5 +1,0 @@
-DAO\ProductDAO.class
-controller\ProductServlet.class
-model\Product.class
-model\Category.class
-dbconnect\DBContext.class
