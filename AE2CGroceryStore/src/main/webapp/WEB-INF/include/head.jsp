@@ -25,6 +25,10 @@
                     font-size: 3.5rem;
                 }
             }
+            
+            .navbar-collapse{
+                transition: all .5s;
+            }
         </style>
 
 
