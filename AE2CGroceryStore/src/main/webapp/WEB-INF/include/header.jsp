@@ -3,14 +3,15 @@
     Created on : Jun 16, 2025, 1:13:17 PM
     Author     : Le Thien Tri - CE191249
 --%>
+<%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
 <header>
 
     <%
-        // Mr.Phuc need fixed this
-        String username = (String) session.getAttribute("username");
+        User loggedUser = (User) session.getAttribute("loggedUser");
+        boolean loggedIn = loggedUser != null;
     %>
 
     <!-- Fixed navbar -->
@@ -55,10 +56,8 @@
                 </div>
                 <div class="flex align-content-end ms-auto">
                     <form class="d-flex">   
-                        <% if (username != null) {
-                                // Mr.Phuc need fixed this
-                        %>
-                        <span>Hi, ${username.username}</span>
+                        <% if (loggedIn) { %>
+                        <span>Hi, ${loggedUser.username}</span>
                         <a href="logout.jsp" class="btn btn-outline-danger m-2">Logout</a>
                         <% } else { %>
                         <a href="login.jsp" class="btn btn-outline-success m-2">Login</a>
