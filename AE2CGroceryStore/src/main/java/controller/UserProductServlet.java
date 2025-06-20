@@ -65,16 +65,16 @@ public class UserProductServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-        ProductDAO productDao = new ProductDAO();
         CategoryDAO categoryDao = new CategoryDAO();
+        ProductDAO productDao = new ProductDAO();
         String view;
         String value;
 
         view = request.getParameter("view");
 
         if (view == null || view.isBlank()) {
-            request.setAttribute("productList", productDao.getAll());
             request.setAttribute("categoryList", categoryDao.getAll());
+            request.setAttribute("productList", productDao.getAll());
             request.getRequestDispatcher("/WEB-INF/products/show.jsp").forward(request, response);
 
         } else {
@@ -82,6 +82,7 @@ public class UserProductServlet extends HttpServlet {
             switch (view) {
 
                 case "show":
+                    request.setAttribute("categoryList", categoryDao.getAll());
                     request.setAttribute("productList", productDao.getAll());
                     request.getRequestDispatcher("/WEB-INF/products/show.jsp").forward(request, response);
                     break;
