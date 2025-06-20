@@ -31,26 +31,29 @@
                                 <a class="nav-link active   " aria-current="page"">Category</a>
                                 <div class="text-dark" id="all-box">
                                     <ul>
-                                        <li>
-                                        <a  aria-current="page" href="userProduct">Rau</a>
+                                        <li class="nav-item list-unstyled">
+                                            <a class="nav-link text-decoration-none text-dark" aria-current="page" href="userProduct">Rau</a>
                                         </li>
-                                        <li>
-                                            <a  aria-current="page" href="userProduct">Thit</a>
+                                        <li class="nav-item list-unstyled">
+                                            <a class="nav-link text-decoration-none text-dark" aria-current="page" href="userProduct">Thit</a>
                                         </li>
-                                        <li>
-                                            <a aria-current="page" href="userProduct">Ca</a>
+                                        <li class="nav-item list-unstyled">
+                                            <a class="nav-link text-decoration-none text-dark" aria-current="page" href="userProduct">Ca</a>
                                         </li>
+                                        <div>
+
+                                        </div>
                                     </ul>
                                 </div>
                             </li>
                         </div>
                     </ul>
                 </div>
-                <div>
-                    <input class="search border-2" style="border-radius: 5px;" type="search" placeholder="Search" aria-label="Search">
+                <div class="ms-auto">
+                    <input class="search border-2" style="border-radius: 5px; width: 500px" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success m-2"  type="submit">Search</button>
                 </div>
-                <div class="flex align-content-end ">
+                <div class="flex align-content-end ms-auto">
                     <form class="d-flex">   
                         <% if (username != null) {
                                 // Mr.Phuc need fixed this
