@@ -60,11 +60,15 @@ public class ProductServlet extends HttpServlet {
     throws ServletException, IOException {
         ProductDAO dao = new ProductDAO();
         String view = request.getParameter("view");
-        
+         if (view == null || view.isBlank() || view.equals("list")) {
         List<Product> list = dao.getAll();
         request.setAttribute("list", list);
         
         request.getRequestDispatcher("/WEB-INF/product/list.jsp").forward(request, response);
+          } else if (view.equals("create")) {
+                request.getRequestDispatcher("/WEB-INF/product/create.jsp").forward(request, response);
+
+            }
     } 
 
     /** 
