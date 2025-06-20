@@ -15,14 +15,14 @@
         <%@include file="../include/header.jsp" %>
         <%
             // Lấy danh sách danh mục và sản phầm từ db.
-            List<Product> productList = (List) request.getAttribute("productList");
             List<Category> categoryList = (List) request.getAttribute("categoryList");
+            List<Product> productList = (List) request.getAttribute("productList");
 
             System.out.println(categoryList.size());
 
             // Kiểm tra null và coi có rỗng không.
             // Nếu có thì hiện thông báo.
-            if (productList == null || categoryList == null || productList.isEmpty() || categoryList.isEmpty()) {
+            if (categoryList == null || productList == null || productList.isEmpty() || categoryList.isEmpty()) {
         %>
 
         <div class="container-fluid">
@@ -50,14 +50,21 @@
                     %>   
 
                     <div class="col-3 d-flex justify-content-center my-3 border border-primary">
-                        <div class="row">
-                            <div class="col-12 d-flex justify-content-center">
-                                <img src="assets/images/placeHolder.jpg" alt="placeholder">
-                            </div>
-                            <div class="col-12 d-flex justify-content-center">
-                                <%= categoryList.get(i * 4 + j).getCategoryName()%>
-                            </div>
-                        </div>
+                        <form action="/userProduct" method="get">
+                            <input type="hidden" name="view" value="category">
+                            <input type="hidden" name="id" value="<%= categoryList.get(i * 4 + j).getCategoryID()%>">
+                            <input type="hidden" name="name" value="<%= categoryList.get(i * 4 + j).getCategoryName()%>">
+                            <button class="btn btn-link p-0 border-0 bg-transparent">
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-center">
+                                        <img src="assets/images/placeHolder.jpg" alt="placeholder">
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-center">
+                                        <%= categoryList.get(i * 4 + j).getCategoryName()%>
+                                    </div>
+                                </div>
+                            </button>
+                        </form>
                     </div>
 
                     <% }
