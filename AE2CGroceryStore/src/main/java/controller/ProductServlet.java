@@ -73,6 +73,11 @@ public class ProductServlet extends HttpServlet {
               request.setAttribute("cate", cate);
                request.getRequestDispatcher("/WEB-INF/product/create.jsp").forward(request, response);
 
+            
+          } else if (view.equals("delete")) {
+              
+               request.getRequestDispatcher("/WEB-INF/product/delete.jsp").forward(request, response);
+
             }
     } 
 
