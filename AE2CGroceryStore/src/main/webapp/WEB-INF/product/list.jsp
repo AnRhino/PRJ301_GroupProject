@@ -24,12 +24,12 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>ProductID</th>
+                          
                             <th>ProductCore</th>
                             <th>ProductName</th>
                             <th>Quantity</th>
                             <th>Price</th>
-                            <th>CategoryID</th>
+                            <th>CategoryName</th>
                             <th>Action</th>
 
                         </tr>
@@ -43,12 +43,12 @@
 
                         %>
                         <tr>
-                            <td><%= pr.getProductID()%></td>
+                          
                             <td><%= pr.getProductCode()%></td>
                             <td><%= pr.getProductName()%></td>
                             <td><%= pr.getQuantity()%></td>
                             <td><%= pr.getPrice()%></td>
-                            <td><%= pr.getCategoryID().getCategoryID()%></td>
+                            <td><%= pr.getCategoryID().getCategoryName()  %></td>
 
                             <td>
                                 <a href="#" class="btn btn-primary btn-sm">edit</a>

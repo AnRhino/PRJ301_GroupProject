@@ -5,6 +5,7 @@
 
 package controller;
 
+import DAO.CategoryDAO;
 import DAO.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.Category;
 import model.Product;
 
 /**
@@ -66,7 +68,10 @@ public class ProductServlet extends HttpServlet {
         
         request.getRequestDispatcher("/WEB-INF/product/list.jsp").forward(request, response);
           } else if (view.equals("create")) {
-                request.getRequestDispatcher("/WEB-INF/product/create.jsp").forward(request, response);
+              CategoryDAO cateDAO = new CategoryDAO();
+              List<Category> cate = cateDAO.getAll();
+              request.setAttribute("cate", cate);
+               request.getRequestDispatcher("/WEB-INF/product/create.jsp").forward(request, response);
 
             }
     } 
@@ -81,7 +86,17 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       
+         String action = request.getParameter("action");
+         ProductDAO productDAO = new ProductDAO();
+          if (action.equals("create")) {
+              String proCore = request.getParameter("productCore");
+              String proName = request.getParameter("productName");
+              int quan = Integer.parseInt(request.getParameter("quantity"));
+              int price = Integer.parseInt(request.getParameter("price"));
+              String cateName = request.getParameter("categogy");
+           productDAO.create(proCore, proName, quan, price, cateName);
+        }
+        doGet(request, response);
     }
 
     /** 
