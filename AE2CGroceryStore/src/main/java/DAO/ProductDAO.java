@@ -29,9 +29,9 @@ public class ProductDAO extends dbconnect.DBContext {
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-               
-                Category Category = new Category(rs.getInt(6),rs.getString(7));
-                Product pro = new Product(rs.getInt("ProductID"),rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
+
+                Category Category = new Category(rs.getInt(6), rs.getString(7));
+                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
                 list.add(pro);
             }
 
@@ -42,4 +42,34 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
+    /**
+     * Lấy sản phẩm theo loại doanh mục người dùng chọn.
+     *
+     * @param typeCategory là loại danh mục người dùng muốn hiện ra.
+     * 
+     * @return danh sách sản phẩm theo loại doanh mục người dùng chọn.
+     */
+    public List<Product> getTypeCategory(int typeCategory) {
+        List<Product> list = new ArrayList<>();
+        String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
+                + "FROM Products p\n"
+                + "JOIN  Categories c on p.CategoryID = c.CategoryID\n"
+                + "WHERE c.CategoryID = ?";
+        Object[] params = {typeCategory};
+
+        try {
+            ResultSet rs = execSelectQuery(query, params);
+            
+            while (rs.next()) {
+                Product pro = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), new Category(rs.getInt(6), rs.getString(7)));
+                list.add(pro);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+        return list;
+    }
 }

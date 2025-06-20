@@ -18,29 +18,29 @@ import model.Category;
  * @author Vu Minh Khang - CE191371
  */
 public class CategoryDAO extends dbconnect.DBContext {
-    
+
     /**
      * Get all the category from the database.
-     * 
+     *
      * @return list of all category.
      */
     public List<Category> getAll() {
-        
+
         List<Category> list = new ArrayList<>();
-        
+        String query = "select CategoryID, CategoryName\n"
+                + "from Categories";
+
         try {
-            String query = "select CategoryID, CategoryName\n"
-                    + "from Categories";
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new Category(rs.getInt(1),rs.getString(2)));
+                list.add(new Category(rs.getInt(1), rs.getString(2)));
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
 
         }
-        
+
         return list;
     }
 }
