@@ -142,12 +142,14 @@
 
                             <div class="bg-secondary border-dark rounded-3 py-3">
                                 <% for (Review rv : reviewList) {%>
-                                <div class="d-flex flex-column px-5 gap-2 border-dark p-2 text-light">
-                                    <div>
-                                        <p class="d-inline fw-bold text-white"><%= rv.getUser().getUsername()%></p>
+                                <div class="row px-5 gap-3 border-dark p-2 text-light">
+                                    <div class="col-12">
+                                        <p class="d-inline fw-bold text-dark bg-primary px-2 py-1 rounded-2"><%= rv.getUser().getUsername()%></p>
                                     </div>
-                                    <p><%= rv.getComment()%></p>
-                                    <div>
+                                    <div class="col-12 text-dark bg-white  px-2 py-1 rounded-2">    
+                                        <p class="d-inline fw-bold text-wrap"><%= rv.getComment()%></p>
+                                    </div>
+                                    <div class="col-12">
                                         <p class="d-inline fw-bold text-warning">Rate:</p>
                                         <%= rv.getRating()%>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
