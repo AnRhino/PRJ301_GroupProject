@@ -46,9 +46,9 @@ public class CategoryDAO extends dbconnect.DBContext {
 
     /**
      * Lấy danh mục dựa trên id được cho.
-     * 
+     *
      * @param categoryID là id được truyền vào.
-     * 
+     *
      * @return 1 object category với id khớp với id truyền vào.
      */
     public Category getOneByID(int categoryID) {
@@ -58,10 +58,10 @@ public class CategoryDAO extends dbconnect.DBContext {
                 + "FROM [dbo].[Categories] c\n"
                 + "WHERE c.CategoryID = ?";
         Object[] params = {categoryID};
-        
+
         try {
             ResultSet rs = execSelectQuery(query, params);
-            
+
             while (rs.next()) {
                 cate = new Category(rs.getInt(1), rs.getString(2));
             }
@@ -70,6 +70,30 @@ public class CategoryDAO extends dbconnect.DBContext {
 
         }
 
+        return cate;
+    }
+
+    public Category getCategoryByProductID(int productID) {
+
+        Category cate = null;
+        String query = "SELECT c.CategoryID, c.CategoryName, p.ProductID, p.ProductCode, p.ProductName, p.Quantity, p.Price\n"
+                + "FROM [dbo].[Categories] c\n"
+                + "JOIN [dbo].[Products] p\n"
+                + "ON p.CategoryID = c.CategoryID\n"
+                + "WHERE p.CategoryID = 1";
+        Object[] params = {productID};
+        
+        try {
+            ResultSet rs = execSelectQuery(query, params);
+
+            while (rs.next()) {
+                cate = new Category(rs.getInt(1), rs.getString(2));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        
         return cate;
     }
 }
