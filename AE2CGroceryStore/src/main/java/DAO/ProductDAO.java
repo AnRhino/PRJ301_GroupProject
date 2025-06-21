@@ -129,17 +129,17 @@ public class ProductDAO extends dbconnect.DBContext {
     /**
      * Lấy sản phẩm theo loại doanh mục người dùng chọn.
      *
-     * @param typeCategory là loại danh mục người dùng muốn hiện ra.
+     * @param categoryID là loại danh mục người dùng muốn hiện sản phẩm ra.
      *
      * @return danh sách sản phẩm theo loại doanh mục người dùng chọn.
      */
-    public List<Product> getTypeCategory(int typeCategory) {
+    public List<Product> getProductsByCategory(int categoryID) {
         List<Product> list = new ArrayList<>();
         String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
                 + "FROM Products p\n"
                 + "JOIN  Categories c on p.CategoryID = c.CategoryID\n"
                 + "WHERE c.CategoryID = ?";
-        Object[] params = {typeCategory};
+        Object[] params = {categoryID};
 
         try {
             ResultSet rs = execSelectQuery(query, params);
