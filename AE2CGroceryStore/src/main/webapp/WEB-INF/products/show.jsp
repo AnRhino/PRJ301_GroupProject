@@ -48,7 +48,7 @@
                     %>   
 
                     <div class="col-3 d-flex justify-content-center my-3 border border-primary">
-                        <form action="/userProduct" method="get">
+                        <form action="<%= request.getContextPath()%>/userProduct" method="get">
                             <input type="hidden" name="view" value="category">
                             <input type="hidden" name="id" value="<%= cate.getCategoryID()%>">
                             <input type="hidden" name="name" value="<%= cate.getCategoryName()%>">
