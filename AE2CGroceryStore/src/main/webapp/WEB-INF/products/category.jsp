@@ -76,19 +76,21 @@
                                 <div class="col-3 d-flex justify-content-center my-3 border border-secondary">
                                     <form action="<%= request.getContextPath()%>/userProduct" method="get">
                                         <input type="hidden" name="view" value="product">
-                                        <input type="hidden" name="id" value="<%= prod.getCategoryID()%>">
-                                        <div class="row">
-                                            <div class="col-12 d-flex justify-content-center">
-                                                <img src="assets/images/placeHolder.jpg" alt="placeholder">
+                                        <input type="hidden" name="id" value="<%= prod.getProductID()%>">
+                                        <button class="btn-secondary border-secondary">
+                                            <div class="row">
+                                                <div class="col-12 d-flex justify-content-center">
+                                                    <img src="assets/images/placeHolder.jpg" alt="placeholder">
+                                                </div>
+                                                <div class="col-12 d-flex justify-content-center">
+                                                    <%= prod.getProductName()%>
+                                                </div>
+                                                <div class="col-12 d-flex justify-content-center">
+                                                    Price: 
+                                                    <%= prod.getPrice()%>$
+                                                </div>
                                             </div>
-                                            <div class="col-12 d-flex justify-content-center">
-                                                <%= prod.getProductName()%>
-                                            </div>
-                                            <div class="col-12 d-flex justify-content-center">
-                                                Price: 
-                                                <%= prod.getPrice()%>$
-                                            </div>
-                                        </div>
+                                        </button>
                                     </form>
                                 </div>
 

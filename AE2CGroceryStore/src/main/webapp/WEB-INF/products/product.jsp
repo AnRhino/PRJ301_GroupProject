@@ -68,8 +68,8 @@
                         <div class="ms-5 me-5">
                             <h1 class="fw-bold"><%= product.getProductName()%></h1>
                             <form class="gap-3 d-flex" action="<%= request.getContextPath()%>/userProduct" method="post">
-                                <div class="row border border-secondary">   
-                                    <div class="col-6 d-flex justify-content-center">
+                                <div class="row border border-secondary bg-secondary border-dark">   
+                                    <div class="col-6 d-flex justify-content-start p-0">
                                         <img src="assets/images/placeHolder.jpg" alt="placeholder">
                                     </div>
                                     <div class="col-6 py-3">
@@ -106,16 +106,16 @@
                                                 <div class="d-inline">
                                                     <input type="hidden" name="id" value="<%= product.getProductID()%>">
                                                     <div class="fw-bold">Add to cart:</div>
-                                                    <input type="number" class="text-end" name="quantity" placeholder="0">
+                                                    <input type="number" class="text-end border-dark" name="quantity" placeholder="0">
                                                 </div>
                                             </div>
                                             <div class="col-12 d-flex gap-3">
-                                                <button class="btn px-5 py-3 bg-success border-secondary d-flex justify-content-end" name="status" value="buy">
+                                                <button class="btn px-5 py-3 bg-success border-dark d-flex justify-content-end" name="status" value="buy">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
                                                     <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
                                                     </svg>
                                                 </button>
-                                                <button class="btn px-5 py-3 bg-danger border-secondary d-flex justify-content-end" name="status" value="cancel">
+                                                <button class="btn px-5 py-3 bg-danger border-dark d-flex justify-content-end" name="status" value="cancel">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
                                                     <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
                                                     </svg>
@@ -125,6 +125,9 @@
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                        <div>
+                            
                         </div>
                     </div>
                 </div>
