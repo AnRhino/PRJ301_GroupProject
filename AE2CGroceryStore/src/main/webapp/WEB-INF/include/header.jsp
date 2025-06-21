@@ -58,7 +58,7 @@
                     <form class="d-flex">   
                         <% if (loggedIn) { %>
                         <span>Hi, ${loggedUser.username}</span>
-                        <a href="logout.jsp" class="btn btn-outline-danger m-2">Logout</a>
+                        <a href="logout" class="btn btn-outline-danger m-2">Logout</a>
                         <% } else { %>
                         <a href="login" class="btn btn-outline-success m-2">Login</a>
                         <% }%>

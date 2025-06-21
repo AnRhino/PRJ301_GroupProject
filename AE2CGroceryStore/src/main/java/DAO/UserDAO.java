@@ -22,14 +22,14 @@ public class UserDAO extends dbconnect.DBContext {
         try {
             String hashPwd = hashMd5(password);
 
-            String query = "select UserID, Username, Password\n"
+            String query = "select Username, Password, RoleID\n"
                     + "from users\n"
                     + "where Username = ?\n"
                     + "and password = ?";
             Object[] params = {username, hashPwd};
             ResultSet rs = execSelectQuery(query, params);
             if (rs.next()) {
-                return new User(rs.getInt(1), rs.getString(2), null);
+                return new User(rs.getString("Username"), null, rs.getInt("RoleID"));
             } else {
                 return null;
             }
@@ -39,20 +39,28 @@ public class UserDAO extends dbconnect.DBContext {
         return null;
     }
 
-    public User register(String username, String password, String fullName, String email, String roleId) { // Not Done
+    public User register(String username, String password, String fullName, String email) { // Not Done
         try {
             String hashPwd = hashMd5(password);
 
-            String query = "select Username, Email,\n"
-                    + "from users\n"
+            String query = "select UserID, Username, Password, RoleID, Email\n"
+                    + "from Users\n"
                     + "where Username = ?\n"
-                    + "and password = ?";
-            Object[] params = {username, hashPwd};
+                    + "or Email = ?";
+            Object[] params = {username, email};
             ResultSet rs = execSelectQuery(query, params);
             if (rs.next()) {
-                // check if username and email already exist
+                // Username or Email already exists
+                return null;
             } else {
                 // create
+                // SQL add new user with ID, username, pwd, email, fullname, RoleID
+                String createQuery = "insert into Users (Username, Password, FullName, Email, RoleID) \n" +
+                                    "values (?, ?, ?, ?, ?)";
+                Object[] createParams = {username, hashPwd, fullName, email, 0};
+                execSelectQuery(createQuery, createParams);
+                // return new user
+                return new User(username, null, 0);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);

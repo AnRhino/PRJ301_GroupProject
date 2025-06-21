@@ -4,7 +4,6 @@
  */
 package controller;
 
-import DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +12,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.User;
 
 /**
  *
  * @author Dinh Cong Phuc - CE190770
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +37,10 @@ public class LoginServlet extends HttpServlet {
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet LoginServlet</title>");  
+//            out.println("<title>Servlet LogoutServlet</title>");
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet LoginServlet at " + request.getContextPath () + "</h1>");
+//            out.println("<h1>Servlet LogoutServlet at " + request.getContextPath() + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
         }
@@ -61,7 +59,11 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-        request.getRequestDispatcher("WEB-INF/credentials/login.jsp").forward(request, response);
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        response.sendRedirect(request.getContextPath() + "/userProduct");
     }
 
     /**
@@ -76,22 +78,6 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        UserDAO dao = new UserDAO();
-        User loggedUser = dao.login(username, password);
-
-        
-        if (loggedUser == null) { // If login fail
-            response.sendRedirect(request.getContextPath() + "/login");
-        } else { // If login success
-            // Create new session
-            HttpSession session = request.getSession();
-            session.setAttribute("loggedUser", loggedUser);
-            
-            response.sendRedirect(request.getContextPath() + "/index.jsp");
-        }
     }
 
     /**
@@ -101,7 +87,7 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Login";
+        return "Logout";
     }// </editor-fold>
 
 }

@@ -15,8 +15,8 @@
 
         <div class="container-sm">
             <main class="form-signin">
-                <form method="post" action="<c:url value="/login"/>"></form>
-                      <h1 class="h3 mb-3 fw-normal">Sign In</h1>
+                <form method="post" action="<c:url value="/login"/>">
+                    <h1 class="h3 mb-3 fw-normal">Sign In</h1>
 
                     <div class="form-floating">
                         <input type="text" class="form-control" name="username" id="floatingInput" placeholder="Username">
@@ -29,6 +29,7 @@
 
                     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign In</button>
                 </form>
+                    <a href="register">Register</a>
             </main>
         </div>
 
