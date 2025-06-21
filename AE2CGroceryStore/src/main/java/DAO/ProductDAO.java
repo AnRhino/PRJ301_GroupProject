@@ -88,7 +88,7 @@ public class ProductDAO extends dbconnect.DBContext {
      *
      * @return danh sách sản phẩm theo loại doanh mục người dùng chọn.
      */
-    public List<Product> getTypeCategory(int categoryID) {
+    public List<Product> getTypeCategory(String categoryID) {
         List<Product> list = new ArrayList<>();
         String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
                 + "FROM Products p\n"
@@ -100,7 +100,7 @@ public class ProductDAO extends dbconnect.DBContext {
             ResultSet rs = execSelectQuery(query, params);
 
             while (rs.next()) {
-                Product pro = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), new Category(rs.getInt(6), rs.getString(7)));
+                Product pro = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getDouble("Price"), new Category(rs.getInt(6), rs.getString(7)));
                 list.add(pro);
             }
 
@@ -112,7 +112,7 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
     
-    public Product getOneById(int productID) {
+    public Product getOneById(String productID) {
         Product prod = null;
         String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
                 + "FROM Products p\n"
@@ -124,7 +124,7 @@ public class ProductDAO extends dbconnect.DBContext {
             ResultSet rs = execSelectQuery(query, params);
 
             while (rs.next()) {
-                Product pro = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), new Category(rs.getInt(6), rs.getString(7)));
+                prod = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getDouble("Price"), new Category(rs.getInt(6), rs.getString(7)));
             }
 
         } catch (SQLException ex) {
