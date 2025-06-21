@@ -51,7 +51,7 @@
                             <td><%= pr.getCategoryID().getCategoryName()  %></td>
 
                             <td>
-                                <a href="#" class="btn btn-primary btn-sm">edit</a>
+                                <a href=" <%= request.getContextPath()%>/product?view=edit&id=<%=pr.getProductID()  %>" class="btn btn-primary btn-sm">edit</a>
                                 <a href=" <%= request.getContextPath()%>/product?view=delete&id=<%=pr.getProductID()  %>" class="btn btn-danger btn-sm">delete</a>
 
                             </td>

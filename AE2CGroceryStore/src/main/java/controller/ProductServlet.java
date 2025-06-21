@@ -81,6 +81,13 @@ public class ProductServlet extends HttpServlet {
             request.setAttribute("pro", product);
             request.getRequestDispatcher("/WEB-INF/product/delete.jsp").forward(request, response);
 
+        
+        } else if (view.equals("edit")) {
+            CategoryDAO cateDAO = new CategoryDAO();
+            List<Category> cate = cateDAO.getAll();
+            request.setAttribute("cate", cate);
+            request.getRequestDispatcher("/WEB-INF/product/edit.jsp").forward(request, response);
+
         }
     }
 
@@ -98,6 +105,7 @@ public class ProductServlet extends HttpServlet {
         String action = request.getParameter("action");
         ProductDAO productDAO = new ProductDAO();
         if (action.equals("create")) {
+            
             String proCore = request.getParameter("productCore");
             String proName = request.getParameter("productName");
             int quan = Integer.parseInt(request.getParameter("quantity"));
@@ -108,6 +116,14 @@ public class ProductServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
            productDAO.delete(id);
 
+        } else if (action.equals("edit")) {
+            
+            String proCore = request.getParameter("productCore");
+            String proName = request.getParameter("productName");
+            int quan = Integer.parseInt(request.getParameter("quantity"));
+          double price = Double.parseDouble(request.getParameter("price"));
+            String cateName = request.getParameter("categogy");
+            productDAO.create(proCore, proName, quan, price, cateName);
         }
         doGet(request, response);
     }

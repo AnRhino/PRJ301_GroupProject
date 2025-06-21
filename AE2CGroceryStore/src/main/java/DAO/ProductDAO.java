@@ -75,13 +75,27 @@ public class ProductDAO extends dbconnect.DBContext {
         return 0;
     }
 
+    public int edit(String productCore, String productName, int quantity, double price, String categoryName) {
+        String query = "update  Products\n"
+                + "set ProductCode = ?, ProductName = ? ,Quantity=?,Price=?\n"
+                + "from Products pr \n"
+                + "where CategoryID = ?\n"
+                + "\n"
+                + "update Categories\n"
+                + "set CategoryName = ?\n"
+                + "where CategoryID = ?";
+        
+        
+        
+    }
+
     public Product getById(int productId) {
 
         try {
             String query = "select ProductID,ProductCode,ProductName,Quantity,Price,cat.CategoryID,cat.CategoryName\n"
                     + "from Products pr\n"
                     + "join Categories cat on pr.CategoryID = cat.CategoryID\n"
-                    + "where ProductID = 1";
+                    + "where ProductID = ?";
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ps.setInt(1, productId);
             ResultSet rs = ps.executeQuery();
