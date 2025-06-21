@@ -27,8 +27,8 @@ public class CategoryDAO extends dbconnect.DBContext {
     public List<Category> getAll() {
 
         List<Category> list = new ArrayList<>();
-        String query = "select CategoryID, CategoryName\n"
-                + "from Categories";
+        String query = "SELECT CategoryID, CategoryName\n"
+                + "FROM Categories";
 
         try {
             PreparedStatement ps = this.getConnection().prepareStatement(query);
@@ -42,5 +42,27 @@ public class CategoryDAO extends dbconnect.DBContext {
         }
 
         return list;
+    }
+
+    public Category getOneByID(int categoryID) {
+
+        Category cate = null;
+        String query = "SELECT c.CategoryID, c.CategoryName\n"
+                + "FROM [dbo].[Categories] c\n"
+                + "WHERE c.CategoryID = ?";
+        Object[] params = {categoryID};
+        
+        try {
+            ResultSet rs = execSelectQuery(query, params);
+            
+            while (rs.next()) {
+                cate = new Category(rs.getInt(1), rs.getString(2));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+        return cate;
     }
 }
