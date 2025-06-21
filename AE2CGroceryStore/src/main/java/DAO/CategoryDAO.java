@@ -73,6 +73,13 @@ public class CategoryDAO extends dbconnect.DBContext {
         return cate;
     }
 
+    /**
+     * Lấy danh mục dựa trên id của sản phẩm.
+     * 
+     * @param productID là id của sản phẩm muốn tìm danh mục.
+     * 
+     * @return danh mục khớp với id truyền vào.
+     */
     public Category getCategoryByProductID(int productID) {
 
         Category cate = null;
@@ -80,7 +87,7 @@ public class CategoryDAO extends dbconnect.DBContext {
                 + "FROM [dbo].[Categories] c\n"
                 + "JOIN [dbo].[Products] p\n"
                 + "ON p.CategoryID = c.CategoryID\n"
-                + "WHERE p.CategoryID = 1";
+                + "WHERE p.CategoryID = ?";
         Object[] params = {productID};
         
         try {
