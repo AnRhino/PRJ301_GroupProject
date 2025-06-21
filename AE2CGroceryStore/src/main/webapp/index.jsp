@@ -77,7 +77,7 @@
                         <div class="col-3 d-flex justify-content-center my-3 border border-primary">
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-center">
-                                    <img src="assets/images/placeHolder.jpg" alt="placeholder">
+                                    <img src="assets/images/categories/${cate.categoryID}.png" alt="placeholder" width="225" height="225">
                                 </div>
                                 <div class="col-12 d-flex justify-content-center">
                                     <a class="text-decoration-none text-dark" href="login">
