@@ -14,33 +14,27 @@
     <body>
 
         <%@include file="/WEB-INF/include/header.jsp" %>
-  <main class="flex-shrink-0">
-    <div class="container">
-        <h1 class="mt-5">Delete product</h1>
-      
-        <form class="form" method="post" action="artist"product">
-            <p>
-               
-                <input  type="hidden" id="id" name="id" readonly
-                        value="<%= request.getParameter("id")%>">
+        <main class="flex-shrink-0">
+            <div class="container">
+                <h1 class="mt-5">Delete product</h1>
+                 Are you sure about that ?
+                <form class="form" method="post" action="product">
+                    <p>
 
-            </p>
-            <p>
-                <label for="name">Artist name</label>
-               
-                <input  type="text" id="name" name="name" readonly
-                        value="">
+                        <input  type="hidden" id="id" name="id" readonly
+                                value="<%= request.getParameter("id")%>">
 
-            </p>
-            <p>
-                <button class="btn btn-success" type="submit"  name="action" value="delete">delete</button>
-                <button type="clear" class="btn btn-secondary">Clear</button>
+                    </p>
 
-            </p>
+                    <p>
+                        <button class="btn btn-success" type="submit"  name="action" value="delete">delete</button>
+                        <button type="clear" class="btn btn-secondary">Clear</button>
+
+                    </p>
 
 
 
-        </form>
+                </form>
 
 
         </main>
