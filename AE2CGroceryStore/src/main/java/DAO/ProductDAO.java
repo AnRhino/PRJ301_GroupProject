@@ -156,6 +156,13 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
+    /**
+     * Phương thức lấy giá trị trung bình đánh giá sản phẩm của khác hàng.
+     * 
+     * @param productID là sản phẩm muốn lấy đánh giá.
+     * 
+     * @return giá trị trung bình đánh giá của sản phẩm.
+     */
     public Double getRateSocre(int productID) {
         Double rateScore = null;
         String query = "SELECT\n"
