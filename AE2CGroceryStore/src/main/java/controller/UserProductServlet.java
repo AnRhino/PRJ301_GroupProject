@@ -6,6 +6,7 @@ package controller;
 
 import DAO.ProductDAO;
 import DAO.CategoryDAO;
+import DAO.ReviewDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -68,6 +69,7 @@ public class UserProductServlet extends HttpServlet {
 
         CategoryDAO categoryDao = new CategoryDAO();
         ProductDAO productDao = new ProductDAO();
+        ReviewDAO reviewDao = new ReviewDAO();
         String view = request.getParameter("view");
 
         if (view == null || view.isBlank()) {
@@ -90,6 +92,7 @@ public class UserProductServlet extends HttpServlet {
                     request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
                     request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
                     request.setAttribute("rateScore", productDao.getRateScore((Integer.parseInt(request.getParameter("id")))));
+                    request.setAttribute("reviewList", reviewDao.getByProductID(Integer.parseInt(request.getParameter("id"))));
                     request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
                     break;
 
