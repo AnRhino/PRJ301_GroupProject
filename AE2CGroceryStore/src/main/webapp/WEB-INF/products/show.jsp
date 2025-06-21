@@ -44,31 +44,28 @@
                 <h1 class="fw-bold">Category</h1>
                 <div class="row">
                     <%
-                        for (int i = 0; i < categoryList.size() / 4; i++) {
-
-                            for (int j = 0; j < 4; j++) {
+                        for (Category cate : categoryList) {
                     %>   
 
                     <div class="col-3 d-flex justify-content-center my-3 border border-primary">
                         <form action="/userProduct" method="get">
                             <input type="hidden" name="view" value="category">
-                            <input type="hidden" name="id" value="<%= categoryList.get(i * 4 + j).getCategoryID()%>">
-                            <input type="hidden" name="name" value="<%= categoryList.get(i * 4 + j).getCategoryName()%>">
+                            <input type="hidden" name="id" value="<%= cate.getCategoryID()%>">
+                            <input type="hidden" name="name" value="<%= cate.getCategoryName()%>">
                             <button class="btn btn-link p-0 border-0 bg-transparent">
                                 <div class="row">
                                     <div class="col-12 d-flex justify-content-center">
                                         <img src="assets/images/placeHolder.jpg" alt="placeholder">
                                     </div>
                                     <div class="col-12 d-flex justify-content-center">
-                                        <%= categoryList.get(i * 4 + j).getCategoryName()%>
+                                        <%= cate.getCategoryName()%>
                                     </div>
                                 </div>
                             </button>
                         </form>
                     </div>
 
-                    <% }
-                        }%>
+                    <% } %>
                 </div>
             </div>
 
@@ -76,28 +73,25 @@
                 <h1 class="fw-bold">Product</h1>
                 <div class="row">
                     <%
-                        for (int i = 0; i < productList.size() / 6; i++) {
-
-                            for (int j = 0; j < 6; j++) {
+                        for (Product prod : productList) {
                     %>   
 
-                    <div class="col-3 d-flex justify-content-center my-3 border border-secondary">
+                    <div class="col-2 d-flex justify-content-center my-3 border border-secondary">
                         <div class="row">
                             <div class="col-12 d-flex justify-content-center">
                                 <img src="assets/images/placeHolder.jpg" alt="placeholder">
                             </div>
                             <div class="col-12 d-flex justify-content-center">
-                                <%= productList.get(i * 6 + j).getProductName()%>
+                                <%= prod.getProductName()%>
                             </div>
                             <div class="col-12 d-flex justify-content-center">
                                 Price: 
-                                <%= productList.get(i * 6 + j).getPrice()%>
+                                <%= prod.getPrice()%>$
                             </div>
                         </div>
                     </div>
 
-                    <% }
-                        }%>
+                    <% } %>
                 </div>
             </div>
         </div>

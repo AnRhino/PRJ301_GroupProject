@@ -19,13 +19,45 @@
             -moz-user-select: none;
             user-select: none;
         }
+        
+        #img{
+            width: 112px;
+            height: 112px;
+        }
+        
+        
 
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
             }
+            
+            #img{
+                width: 225px;
+                height: 225px;
+            }
+            
+            #Search-bar{
+                border-radius: 5px;
+                width: 500px;
+            }
         }
-
+        
+         @media (max-width: 995px) {
+            .bd-placeholder-img-lg {
+                font-size: 2.5rem;
+            }
+            
+            #img{
+                width: 112px;
+                height: 112px;
+            }
+            
+            #Search-bar{
+                width: 250px;
+            }
+        }
+        
         .navbar-collapse{
             transition: all .5s;
         }
@@ -53,6 +85,7 @@
         #all:hover #all-box {
             display: block;
         }
+        
     </style>
 
 
