@@ -163,7 +163,7 @@ public class ProductDAO extends dbconnect.DBContext {
      * 
      * @return giá trị trung bình đánh giá của sản phẩm.
      */
-    public Double getRateSocre(int productID) {
+    public Double getRateScore(int productID) {
         Double rateScore = null;
         String query = "SELECT\n"
                 + "\n"
