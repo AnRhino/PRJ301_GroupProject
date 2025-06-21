@@ -67,10 +67,7 @@ public class UserProductServlet extends HttpServlet {
 
         CategoryDAO categoryDao = new CategoryDAO();
         ProductDAO productDao = new ProductDAO();
-        String view;
-        String value;
-
-        view = request.getParameter("view");
+        String view = request.getParameter("view");;
 
         if (view == null || view.isBlank()) {
             request.setAttribute("categoryList", categoryDao.getAll());
