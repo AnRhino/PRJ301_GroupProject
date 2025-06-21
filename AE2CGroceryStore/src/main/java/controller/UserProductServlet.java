@@ -83,7 +83,6 @@ public class UserProductServlet extends HttpServlet {
 //                    request.setAttribute("productList", productDao.getAll());
 //                    request.getRequestDispatcher("/WEB-INF/products/show.jsp").forward(request, response);
 //                    break;
-                    
                 case "category":
                     request.setAttribute("categoryList", categoryDao.getAll());
                     request.setAttribute("productList", productDao.getTypeCategory(Integer.parseInt(request.getParameter("id"))));
@@ -92,7 +91,10 @@ public class UserProductServlet extends HttpServlet {
                     break;
 
                 case "product":
-
+                    request.setAttribute("categoryList", categoryDao.getAll());
+                    request.setAttribute("productList", productDao.getTypeCategory(Integer.parseInt(request.getParameter("id"))));
+                    request.setAttribute("categoryType", Integer.parseInt(request.getParameter("name")));
+                    request.getRequestDispatcher("/WEB-INF/products/category.jsp").forward(request, response);
                     break;
 
                 default:
