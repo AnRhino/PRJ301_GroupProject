@@ -32,7 +32,7 @@ public class ProductDAO extends dbconnect.DBContext {
             while (rs.next()) {
 
                 Category Category = new Category(rs.getInt(6), rs.getString(7));
-                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
+                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getDouble("Price"), Category);
                 list.add(pro);
             }
 
