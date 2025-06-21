@@ -84,17 +84,17 @@ public class ProductDAO extends dbconnect.DBContext {
     /**
      * Lấy sản phẩm theo loại doanh mục người dùng chọn.
      *
-     * @param typeCategory là loại danh mục người dùng muốn hiện ra.
+     * @param categoryID là loại danh mục người dùng muốn hiện ra.
      *
      * @return danh sách sản phẩm theo loại doanh mục người dùng chọn.
      */
-    public List<Product> getTypeCategory(int typeCategory) {
+    public List<Product> getTypeCategory(int categoryID) {
         List<Product> list = new ArrayList<>();
         String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
                 + "FROM Products p\n"
                 + "JOIN  Categories c on p.CategoryID = c.CategoryID\n"
                 + "WHERE c.CategoryID = ?";
-        Object[] params = {typeCategory};
+        Object[] params = {categoryID};
 
         try {
             ResultSet rs = execSelectQuery(query, params);
@@ -110,5 +110,28 @@ public class ProductDAO extends dbconnect.DBContext {
         }
 
         return list;
+    }
+    
+    public Product getOneById(int productID) {
+        Product prod = null;
+        String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
+                + "FROM Products p\n"
+                + "JOIN  Categories c on p.CategoryID = c.CategoryID\n"
+                + "WHERE p.ProductID = ?";
+        Object[] params = {productID};
+        
+        try {
+            ResultSet rs = execSelectQuery(query, params);
+
+            while (rs.next()) {
+                Product pro = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), new Category(rs.getInt(6), rs.getString(7)));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+        return prod;
     }
 }
