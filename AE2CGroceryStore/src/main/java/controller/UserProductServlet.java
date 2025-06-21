@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Category;
 
 /**
  *
@@ -80,13 +81,14 @@ public class UserProductServlet extends HttpServlet {
 
                 case "category":
                     request.setAttribute("categoryList", categoryDao.getAll());
-                    request.setAttribute("productList", productDao.getTypeCategory(Integer.parseInt(request.getParameter("id"))));
+                    request.setAttribute("productList", productDao.getProductsByCategory(Integer.parseInt(request.getParameter("id"))));
                     request.setAttribute("categoryType", categoryDao.getOneByID(Integer.parseInt(request.getParameter("id"))));
                     request.getRequestDispatcher("/WEB-INF/products/category.jsp").forward(request, response);
                     break;
 
                 case "product":
-                    request.setAttribute("productList", productDao.getById(Integer.parseInt(request.getParameter("id"))));
+                    request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
+                    request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
                     request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
                     break;
 
