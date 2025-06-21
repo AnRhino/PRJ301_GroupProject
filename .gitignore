@@ -1,5 +1,5 @@
-/AE2CGroceryStore/target/*
 /AE2CGroceryStore/target
+/Database/database_store.sql
 
 ### NetBeans ###
 **/nbproject/private/
