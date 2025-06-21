@@ -9,6 +9,7 @@
 <%@page import="DAO.CategoryDAO"%>
 <%@page import="model.Category"%>
 <%@page import="java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -51,60 +52,47 @@
             <div class="ms-5 me-5">
                 <h1 class="fw-bold">Category</h1>
                 <div class="row">
-                    <%
-                        for (int i = 0; i < categoryList.size() / 4; i++) {
-
-                            for (int j = 0; j < 4; j++) {
-                    %>   
-
-                    <div class="col-3 d-flex justify-content-center my-3 border border-primary">
-                        <div class="row">
-                            <div class="col-12 d-flex justify-content-center">
-                                <img src="assets/images/placeHolder.jpg" alt="placeholder">
-                            </div>
-                            <div class="col-12 d-flex justify-content-center">
-                                <a class="text-decoration-none text-dark" href="login"> <%= categoryList.get(i * 4 + j).getCategoryName()%> </a>
+                    <c:forEach var="cate" items="${categoryList}">
+                        <div class="col-3 d-flex justify-content-center my-3 border border-primary">
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <img src="assets/images/placeHolder.jpg" alt="placeholder">
+                                </div>
+                                <div class="col-12 d-flex justify-content-center">
+                                    <a class="text-decoration-none text-dark" href="login">
+                                        ${cate.categoryName}
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <% }
-                        }%>
+                    </c:forEach>
                 </div>
             </div>
-
+            <%
+                }
+            %>
             <div class="ms-5 me-5">
                 <h1 class="fw-bold">Product</h1>
                 <div class="row">
-                    <%
-                        for (int i = 0; i < productList.size() / 6; i++) {
-
-                            for (int j = 0; j < 6; j++) {
-                    %>   
-
-                    <div class="col-3 d-flex justify-content-center my-3 border border-secondary">
-                        <div class="row">
-                            <div class="col-12 d-flex justify-content-center">
-                                <img src="assets/images/placeHolder.jpg" alt="placeholder">
-                            </div>
-                            <div class="col-12 d-flex justify-content-center">
-                                <a class="text-decoration-none text-dark" href="login"> <%= productList.get(i * 6 + j).getProductName()%> </a>
-                            </div>
-                            <div class="col-12 d-flex justify-content-center">
-                                Price: 
-                                <%= productList.get(i * 6 + j).getPrice()%>
+                    <c:forEach var="pro" items="${productList}">
+                        <div class="col-3 d-flex justify-content-center my-3 border border-secondary">
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <img src="assets/images/placeHolder.jpg" alt="placeholder">
+                                </div>
+                                <div class="col-12 d-flex justify-content-center">
+                                    <a class="text-decoration-none text-dark" href="login"> ${pro.productName} </a>
+                                </div>
+                                <div class="col-12 d-flex justify-content-center">
+                                    Price: ${pro.price}
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <% }
-                        }%>
+                    </c:forEach>
                 </div>
             </div>
+
         </div>
-        <%
-            }
-        %>
         <%@include file="/WEB-INF/include/footer.jsp" %>
     </body>
 </html>
