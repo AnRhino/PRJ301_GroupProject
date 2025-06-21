@@ -38,7 +38,6 @@ public class CategoryDAO extends dbconnect.DBContext {
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-
         }
 
         return list;
@@ -67,7 +66,6 @@ public class CategoryDAO extends dbconnect.DBContext {
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-
         }
 
         return cate;
@@ -83,11 +81,11 @@ public class CategoryDAO extends dbconnect.DBContext {
     public Category getCategoryByProductID(int productID) {
 
         Category cate = null;
-        String query = "SELECT c.CategoryID, c.CategoryName, p.ProductID, p.ProductCode, p.ProductName, p.Quantity, p.Price\n"
+        String query = "SELECT c.CategoryID, c.CategoryName\n"
                 + "FROM [dbo].[Categories] c\n"
                 + "JOIN [dbo].[Products] p\n"
                 + "ON p.CategoryID = c.CategoryID\n"
-                + "WHERE p.CategoryID = ?";
+                + "WHERE p.ProductID = ?";
         Object[] params = {productID};
         
         try {
@@ -98,7 +96,6 @@ public class CategoryDAO extends dbconnect.DBContext {
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-
         }
         
         return cate;
