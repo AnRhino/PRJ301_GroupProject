@@ -24,29 +24,21 @@
             request.setAttribute("categoryList", categoryDao.getAll());
             request.setAttribute("productList", productDao.getAll());
 
-            List<Product> productList = (List) request.getAttribute("productList");
-            List<Category> categoryList = (List) request.getAttribute("categoryList");
-
-            System.out.println(categoryList.size());
-
+//            System.out.println(categoryList.size());       
             // Kiểm tra null và coi có rỗng không.
             // Nếu có thì hiện thông báo.
-            if (productList == null || categoryList == null || productList.isEmpty() || categoryList.isEmpty()) {
-        %>
 
-        <div class="container-fluid">
-            <div>
-                <h1 class="fw-bold">Category</h1>
-                <div class="row">
-                    <div>There are no category and product to display.</div>
+        %>
+        <c:if test="${empty productList || empty categoryList}">
+            <div class="container-fluid">
+                <div>
+                    <h1 class="fw-bold">Category</h1>
+                    <div class="row">
+                        <div>There are no category and product to display.</div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <%
-            // Nếu có sản phẩm thì hiện ra.
-        } else {
-        %>
+        </c:if>
 
         <div class="container-fluid">
             <div class="ms-5 me-5">
@@ -68,9 +60,7 @@
                     </c:forEach>
                 </div>
             </div>
-            <%
-                }
-            %>
+
             <div class="ms-5 me-5">
                 <h1 class="fw-bold">Product</h1>
                 <div class="row">
