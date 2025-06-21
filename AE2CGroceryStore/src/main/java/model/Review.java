@@ -11,8 +11,8 @@ package model;
 public class Review {
     
     private int reviewID;
-    private int userID;
-    private int productID;
+    private User user;
+    private Product product;
     private int rating;
     private String comment;
     private Date date;
@@ -20,10 +20,10 @@ public class Review {
     public Review() {
     }
 
-    public Review(int reviewID, int userID, int productID, int rating, String comment, Date date) {
+    public Review(int reviewID, User user, Product product, int rating, String comment, Date date) {
         this.reviewID = reviewID;
-        this.userID = userID;
-        this.productID = productID;
+        this.user = user;
+        this.product = product;
         this.rating = rating;
         this.comment = comment;
         this.date = date;
@@ -37,20 +37,20 @@ public class Review {
         this.reviewID = reviewID;
     }
 
-    public int getUserID() {
-        return userID;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getProductID() {
-        return productID;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public int getRating() {
@@ -76,6 +76,6 @@ public class Review {
     public void setDate(Date date) {
         this.date = date;
     }
-    
+
     
 }
