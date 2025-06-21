@@ -101,7 +101,7 @@ public class ProductServlet extends HttpServlet {
             String proCore = request.getParameter("productCore");
             String proName = request.getParameter("productName");
             int quan = Integer.parseInt(request.getParameter("quantity"));
-            int price = Integer.parseInt(request.getParameter("price"));
+          double price = Double.parseDouble(request.getParameter("price"));
             String cateName = request.getParameter("categogy");
             productDAO.create(proCore, proName, quan, price, cateName);
         } else if (action.equals("delete")) {

@@ -43,11 +43,11 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
-    public int create(String productCore, String productName, int quantity, int price, String categoryName) {
-        int nextCategoryId = -1;
+    public int create(String productCore, String productName, int quantity, double price, String categoryName) {
+        int nextCategoryId = 1;
 
         try {
-            // Bước 1: Insert vào Categories và lấy CategoryID tự động
+
             String insertCate = "INSERT INTO Categories (CategoryName) VALUES (?)";
             PreparedStatement ps1 = this.getConnection().prepareStatement(insertCate, Statement.RETURN_GENERATED_KEYS);
             ps1.setString(1, categoryName);
@@ -58,18 +58,12 @@ public class ProductDAO extends dbconnect.DBContext {
                 nextCategoryId = rs.getInt(1);
             }
 
-            // Kiểm tra xem có lấy được CategoryID không
-            if (nextCategoryId == -1) {
-                throw new SQLException("Không lấy được CategoryID.");
-            }
-
-            // Bước 2: Insert vào Products với CategoryID vừa tạo
             String insertPro = "INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps2 = this.getConnection().prepareStatement(insertPro);
             ps2.setString(1, productCore);
             ps2.setString(2, productName);
             ps2.setInt(3, quantity);
-            ps2.setInt(4, price);
+            ps2.setDouble(4, price);
             ps2.setInt(5, nextCategoryId);
 
             return ps2.executeUpdate();
@@ -104,18 +98,18 @@ public class ProductDAO extends dbconnect.DBContext {
             return null;
         }
     }
-    
-    public int delete(int productId){
-        String query = "delete from Products where ProductID = ? " ;
-        try{
+
+    public int delete(int productId) {
+        String query = "delete from Products where ProductID = ? ";
+        try {
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ps.setObject(1, productId);
             return ps.executeUpdate();
-        }catch (SQLException ex) {
-        Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    return 0;
-        
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+
     }
 
     /**
