@@ -57,7 +57,9 @@
                 <div class="flex align-content-end ms-auto">
                     <form class="d-flex">   
                         <% if (loggedIn) { %>
-                        <span>Hi, ${loggedUser.username}</span>
+                        <div class="flex align-content-center justify-content-center me-2" >
+                        <span class="text-light">Hi, ${loggedUser.username}</span>
+                        </div>
                         <a href="logout" class="btn btn-outline-danger m-2">Logout</a>
                         <% } else { %>
                         <a href="login" class="btn btn-outline-success m-2">Login</a>
