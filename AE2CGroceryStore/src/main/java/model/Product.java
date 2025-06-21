@@ -29,6 +29,10 @@ public class Product {
         this.categoryID = categoryID;
     }
 
+    public Product(int productID) {
+        this.productID = productID;
+    }
+    
     public int getProductID() {
         return productID;
     }
