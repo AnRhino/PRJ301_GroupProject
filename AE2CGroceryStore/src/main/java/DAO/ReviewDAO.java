@@ -19,6 +19,11 @@ import model.Review;
  */
 public class ReviewDAO extends dbconnect.DBContext {
 
+    /**
+     * Lấy tất cả review trong database.
+     * 
+     * @return danh sách tất cả review tồn tại.
+     */
     public List<Review> getAll() {
         List<Review> list = new ArrayList<>();
         String query = "SELECT rv.ReviewID, us.UserID, prod.ProductID, rv.Rating , rv.Comment, YEAR(rv.ReviewDate) AS YearComment, MONTH(rv.ReviewDate) AS MonthComment, DAY(rv.ReviewDate) AS DayComment\n"
@@ -42,6 +47,13 @@ public class ReviewDAO extends dbconnect.DBContext {
         return list;
     }
     
+    /**
+     * Phương thức lấy tất cả review về 1 loại sản phẩm nào đó.
+     * 
+     * @param productID là id của sản phẩm muốn lấy review.
+     * 
+     * @return danh sách các review về sản phẩm đó.
+     */
     public List<Review> getByProductID(int productID) {
         List<Review> list = new ArrayList<>();
         String query = "SELECT rv.ReviewID, us.UserID, prod.ProductID, rv.Rating , rv.Comment, YEAR(rv.ReviewDate) AS YearComment, MONTH(rv.ReviewDate) AS MonthComment, DAY(rv.ReviewDate) AS DayComment\n"
