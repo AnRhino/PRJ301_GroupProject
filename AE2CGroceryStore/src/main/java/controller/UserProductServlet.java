@@ -78,11 +78,6 @@ public class UserProductServlet extends HttpServlet {
 
             switch (view) {
 
-//                case "show":
-//                    request.setAttribute("categoryList", categoryDao.getAll());
-//                    request.setAttribute("productList", productDao.getAll());
-//                    request.getRequestDispatcher("/WEB-INF/products/show.jsp").forward(request, response);
-//                    break;
                 case "category":
                     request.setAttribute("categoryList", categoryDao.getAll());
                     request.setAttribute("productList", productDao.getTypeCategory(Integer.parseInt(request.getParameter("id"))));
