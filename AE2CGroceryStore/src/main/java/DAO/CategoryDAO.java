@@ -44,6 +44,13 @@ public class CategoryDAO extends dbconnect.DBContext {
         return list;
     }
 
+    /**
+     * Lấy danh mục dựa trên id được cho.
+     * 
+     * @param categoryID là id được truyền vào.
+     * 
+     * @return 1 object category với id khớp với id truyền vào.
+     */
     public Category getOneByID(int categoryID) {
 
         Category cate = null;
