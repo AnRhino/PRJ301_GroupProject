@@ -67,7 +67,7 @@ public class UserProductServlet extends HttpServlet {
 
         CategoryDAO categoryDao = new CategoryDAO();
         ProductDAO productDao = new ProductDAO();
-        String view = request.getParameter("view");;
+        String view = request.getParameter("view");
 
         if (view == null || view.isBlank()) {
             request.setAttribute("categoryList", categoryDao.getAll());
@@ -81,7 +81,7 @@ public class UserProductServlet extends HttpServlet {
                 case "category":
                     request.setAttribute("categoryList", categoryDao.getAll());
                     request.setAttribute("productList", productDao.getTypeCategory(Integer.parseInt(request.getParameter("id"))));
-                    request.setAttribute("categoryType", request.getParameter("name"));
+                    request.setAttribute("categoryType", categoryDao.getOneByID(Integer.parseInt(request.getParameter("id"))));
                     request.getRequestDispatcher("/WEB-INF/products/category.jsp").forward(request, response);
                     break;
 
