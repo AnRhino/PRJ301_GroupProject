@@ -32,6 +32,11 @@ public class User {
         this.email = email;
         this.roleId = roleId;
     }
+    
+    public User(int id, String userName) {
+        this.id = id;
+        this.username = userName;
+    }
 
     public int getId() {
         return id;
