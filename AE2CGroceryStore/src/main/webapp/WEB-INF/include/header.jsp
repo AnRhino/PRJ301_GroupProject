@@ -60,7 +60,7 @@
                         <span>Hi, ${loggedUser.username}</span>
                         <a href="logout.jsp" class="btn btn-outline-danger m-2">Logout</a>
                         <% } else { %>
-                        <a href="login.jsp" class="btn btn-outline-success m-2">Login</a>
+                        <a href="login" class="btn btn-outline-success m-2">Login</a>
                         <% }%>
                         <div id="all">
                             <button class="btn btn-outline-light m-2" type="submit"><i class="bi bi-cart2"> Cart</i></button>
