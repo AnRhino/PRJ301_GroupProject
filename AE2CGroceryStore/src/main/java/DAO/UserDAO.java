@@ -39,7 +39,7 @@ public class UserDAO extends dbconnect.DBContext {
         return null;
     }
 
-    public User register(String username, String password, String fullName, String email) { // Not Done
+    public User register(String username, String password, String fullName, String email) {
         try {
             String hashPwd = hashMd5(password);
 
@@ -58,7 +58,7 @@ public class UserDAO extends dbconnect.DBContext {
                 String createQuery = "insert into Users (Username, Password, FullName, Email, RoleID) \n" +
                                     "values (?, ?, ?, ?, ?)";
                 Object[] createParams = {username, hashPwd, fullName, email, 0};
-                execSelectQuery(createQuery, createParams);
+                execQuery(createQuery, createParams);
                 // return new user
                 return new User(username, null, 0);
             }

@@ -84,7 +84,6 @@ public class RegisterServlet extends HttpServlet {
         UserDAO dao = new UserDAO();
         // Reg new user
         User registerUser = dao.register(username, password, fullName, email);
-
         
         if (registerUser == null) { // If user null because of information already exist, invalid character,...
             response.sendRedirect(request.getContextPath() + "/register"); // redirect to register again
