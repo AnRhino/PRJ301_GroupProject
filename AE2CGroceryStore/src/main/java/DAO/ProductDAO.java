@@ -84,9 +84,8 @@ public class ProductDAO extends dbconnect.DBContext {
                 + "update Categories\n"
                 + "set CategoryName = ?\n"
                 + "where CategoryID = ?";
-        
-        
 
+        return 0;
     }
 
     public Product getById(int productId) {
@@ -155,5 +154,38 @@ public class ProductDAO extends dbconnect.DBContext {
         }
 
         return list;
+    }
+
+    public Double getRateSocre(int productID) {
+        Double rateScore = null;
+        String query = "SELECT\n"
+                + "\n"
+                + "(SELECT SUM(rv.Rating)\n"
+                + "FROM [dbo].[Reviews] rv\n"
+                + "JOIN [dbo].[Products] prod\n"
+                + "ON prod.ProductID = rv.ProductID\n"
+                + "WHERE prod.ProductID = ?)\n"
+                + "/\n"
+                + "(SELECT COUNT(ReviewID)\n"
+                + "FROM [dbo].[Reviews] rv\n"
+                + "JOIN [dbo].[Products] prod\n"
+                + "ON prod.ProductID = rv.ProductID\n"
+                + "WHERE prod.ProductID = ?)\n"
+                + "\n"
+                + "AS RESULT";
+        Object[] params = {productID, productID};
+        
+        try {
+            ResultSet rs = execSelectQuery(query, params);
+            
+            while (rs.next()) {
+                rateScore = rs.getDouble(1);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return rateScore;
     }
 }
