@@ -72,9 +72,9 @@
                                     <div class="col-6 d-flex justify-content-center">
                                         <img src="assets/images/placeHolder.jpg" alt="placeholder">
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-6 py-3">
                                         <h3>Information:</h3>
-                                        <div class="row my-5 gy-3">
+                                        <div class="row my-5 mx-3 gy-3">
                                             <div class="col-12">
                                                 <div class="fw-bold d-inline">Status:</div>
                                                 <% if (product.getQuantity() != 0) { %>
