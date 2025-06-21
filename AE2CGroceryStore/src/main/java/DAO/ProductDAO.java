@@ -44,43 +44,42 @@ public class ProductDAO extends dbconnect.DBContext {
     }
 
     public int create(String productCore, String productName, int quantity, int price, String categoryName) {
-    int nextCategoryId = -1;
+        int nextCategoryId = -1;
 
-    try {
-        // Bước 1: Insert vào Categories và lấy CategoryID tự động
-        String insertCate = "INSERT INTO Categories (CategoryName) VALUES (?)";
-        PreparedStatement ps1 = this.getConnection().prepareStatement(insertCate, Statement.RETURN_GENERATED_KEYS);
-        ps1.setString(1, categoryName);
-        ps1.executeUpdate();
+        try {
+            // Bước 1: Insert vào Categories và lấy CategoryID tự động
+            String insertCate = "INSERT INTO Categories (CategoryName) VALUES (?)";
+            PreparedStatement ps1 = this.getConnection().prepareStatement(insertCate, Statement.RETURN_GENERATED_KEYS);
+            ps1.setString(1, categoryName);
+            ps1.executeUpdate();
 
-        ResultSet rs = ps1.getGeneratedKeys();
-        if (rs.next()) {
-            nextCategoryId = rs.getInt(1);
+            ResultSet rs = ps1.getGeneratedKeys();
+            if (rs.next()) {
+                nextCategoryId = rs.getInt(1);
+            }
+
+            // Kiểm tra xem có lấy được CategoryID không
+            if (nextCategoryId == -1) {
+                throw new SQLException("Không lấy được CategoryID.");
+            }
+
+            // Bước 2: Insert vào Products với CategoryID vừa tạo
+            String insertPro = "INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement ps2 = this.getConnection().prepareStatement(insertPro);
+            ps2.setString(1, productCore);
+            ps2.setString(2, productName);
+            ps2.setInt(3, quantity);
+            ps2.setInt(4, price);
+            ps2.setInt(5, nextCategoryId);
+
+            return ps2.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        // Kiểm tra xem có lấy được CategoryID không
-        if (nextCategoryId == -1) {
-            throw new SQLException("Không lấy được CategoryID.");
-        }
-
-        // Bước 2: Insert vào Products với CategoryID vừa tạo
-        String insertPro = "INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement ps2 = this.getConnection().prepareStatement(insertPro);
-        ps2.setString(1, productCore);
-        ps2.setString(2, productName);
-        ps2.setInt(3, quantity);
-        ps2.setInt(4, price);
-        ps2.setInt(5, nextCategoryId);
-
-        return ps2.executeUpdate();
-
-    } catch (SQLException ex) {
-        Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        return 0;
     }
-
-    return 0;
-}
-
 
     /**
      * Lấy sản phẩm theo loại doanh mục người dùng chọn.
