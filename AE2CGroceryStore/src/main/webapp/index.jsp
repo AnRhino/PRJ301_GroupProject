@@ -82,7 +82,7 @@
                                 <button class="btn p-0 border-0 bg-transparent">
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-center">
-                                            <img src="assets/images/categories/${cate.categoryID}.png" alt="placeholder" width="225" height="225">
+                                            <img src="assets/images/categories/${cate.categoryName}.png" alt="placeholder" width="225" height="225">
                                         </div>
                                         <div class="col-12 d-flex justify-content-center">
                                             ${cate.categoryName}
