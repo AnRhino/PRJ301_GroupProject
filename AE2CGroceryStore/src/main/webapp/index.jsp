@@ -52,6 +52,8 @@
 
             request.setAttribute("categoryList", categoryDao.getAll());
             request.setAttribute("productList", productDao.getAll());
+            
+            
 
 //            System.out.println(categoryList.size());       
             // Kiểm tra null và coi có rỗng không.
@@ -74,7 +76,6 @@
                 <h1 class="fw-bold">Category</h1>
                 <div class="row">
                     <c:forEach var="cate" items="${categoryList}">
-
                         <div class="col-3 d-flex justify-content-center border border-primary">
                             <form action="<%= request.getContextPath()%>/userProduct" method="get">
                                 <input type="hidden" name="view" value="category">
@@ -82,7 +83,7 @@
                                 <button class="btn p-0 border-0 bg-transparent">
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-center">
-                                            <img src="assets/images/categories/${cate.categoryName}.png" alt="placeholder" width="225" height="225">
+                                            <img src="assets/images/category/${cate.categoryID}.png" alt="placeholder" width="225" height="225">
                                         </div>
                                         <div class="col-12 d-flex justify-content-center">
                                             ${cate.categoryName}
