@@ -6,7 +6,6 @@
 <%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
 <header>
 
     <%
@@ -21,33 +20,42 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="collapse navbar-collapse" id="navbarCollapse" style="max-height: 10px;">
                 <div>
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="userProduct">Home</a>
                         </li>
-                        <div id="all">
-                            <li class="nav-item">
-                                <a class="nav-link active   " aria-current="page"">Category</a>
-                                <div class="text-dark" id="all-box">
-                                    <ul>
-                                        <li class="nav-item list-unstyled">
-                                            <a class="nav-link text-decoration-none text-dark" aria-current="page" href="userProduct">Rau</a>
-                                        </li>
-                                        <li class="nav-item list-unstyled">
-                                            <a class="nav-link text-decoration-none text-dark" aria-current="page" href="userProduct">Thit</a>
-                                        </li>
-                                        <li class="nav-item list-unstyled">
-                                            <a class="nav-link text-decoration-none text-dark" aria-current="page" href="userProduct">Ca</a>
-                                        </li>
-                                        <div>
-
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Category
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="width: 550px;">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/userProduct?view=category&id=1">Beverages</a></li>
+                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/userProduct?view=category&id=2">Snacks</a></li>
+                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/userProduct?view=category&id=3">Fruits</a></li>
                                         </div>
-                                    </ul>
+                                        <div class="col-3">
+                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/userProduct?view=category&id=4">Vegetables</a></li>
+                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/userProduct?view=category&id=5">Diary</a></li>
+                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/userProduct?view=category&id=6">Bakery</a></li>
+                                        </div>
+                                        <div class="col-3">
+                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/userProduct?view=category&id=7">Meats</a></li>
+                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/userProduct?view=category&id=8">Seafood</a></li>
+                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/userProduct?view=category&id=9">Canned Goods</a></li>
+                                        </div>
+                                        <div class="col-3">
+                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/userProduct?view=category&id=10">Frozen Foods</a></li>
+                                        </div>
+                                    </div>
                                 </div>
-                            </li>
-                        </div>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
                 <div class="ms-auto">
@@ -57,19 +65,33 @@
                 <div class="flex align-content-end ms-auto">
                     <form class="d-flex">   
                         <% if (loggedIn) { %>
-                        <div class="flex align-content-center justify-content-center me-2" >
-                        <span class="text-light">Hi, ${loggedUser.username}</span>
-                        </div>
-                        <a href="logout" class="btn btn-outline-danger m-2">Logout</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle  text-center text-light fs-3" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; bottom: 10px;">
+                                <i class="bi bi-person-circle"></i>                              
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a href="#" class="text-dark text-decoration-none m-4">Hi, ${loggedUser.username}</a>
+                                <a href="#" class="text-dark text-decoration-none m-4">Account details</a>
+                                <a href="#" class="text-dark text-decoration-none m-4">Settings</a>
+                                <a href="logout" class="text-danger text-decoration-none m-4">Logout</a>
+                            </ul>
+                        </li>
+
                         <% } else { %>
                         <a href="login" class="btn btn-outline-success m-2">Login</a>
                         <% }%>
-                        <div id="all">
-                            <button class="btn btn-outline-light m-2" type="submit"><i class="bi bi-cart2"> Cart</i></button>
-                            <div id="all-box">
-                                <span>Hello There</span>
-                            </div>
-                        </div>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle  text-center text-light" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; bottom: 17px;">  
+                                <button class="btn btn-outline-light m-2" type="submit"><i class="bi bi-cart2"> Cart</i></button>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            </ul>
+                        </li>
+
                     </form>
                 </div>
             </div>
