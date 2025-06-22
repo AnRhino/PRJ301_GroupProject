@@ -10,142 +10,142 @@ VALUES
 -- Beverages (CategoryID = 1)
 INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
 VALUES 
-('BEV001', 'Coca-Cola', 100, 10.00, 1),
-('BEV002', 'Pepsi', 120, 9.50, 1),
-('BEV003', 'Sprite', 90, 10.00, 1),
-('BEV004', 'Fanta', 85, 9.75, 1),
-('BEV005', '7Up', 80, 10.20, 1),
-('BEV006', 'Red Bull', 70, 15.00, 1),
-('BEV007', 'Monster', 60, 16.00, 1),
-('BEV008', 'Iced Tea', 100, 8.50, 1),
-('BEV009', 'Lemonade', 95, 7.00, 1),
-('BEV010', 'Water Bottle', 200, 5.00, 1);
+('BEV001', 'Coca-Cola', 100, 10000, 1),
+('BEV002', 'Pepsi', 120, 9500, 1),
+('BEV003', 'Sprite', 90, 10000, 1),
+('BEV004', 'Fanta', 85, 9750, 1),
+('BEV005', '7Up', 80, 10200, 1),
+('BEV006', 'Red Bull', 70, 15000, 1),
+('BEV007', 'Monster', 60, 16000, 1),
+('BEV008', 'Iced Tea', 100, 8500, 1),
+('BEV009', 'Lemonade', 95, 7000, 1),
+('BEV010', 'Water Bottle', 200, 5000, 1);
 
 -- Snacks (CategoryID = 2)
 INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
 VALUES 
-('SNK001', 'Lays Chips', 150, 12.00, 2),
-('SNK002', 'Doritos', 140, 13.00, 2),
-('SNK003', 'Pringles', 130, 14.00, 2),
-('SNK004', 'KitKat', 110, 6.00, 2),
-('SNK005', 'Snickers', 100, 6.50, 2),
-('SNK006', 'M&Ms', 120, 7.00, 2),
-('SNK007', 'Twix', 90, 6.00, 2),
-('SNK008', 'Oreo', 80, 8.00, 2),
-('SNK009', 'Cheez-It', 70, 9.00, 2),
-('SNK010', 'Trail Mix', 60, 10.00, 2);
+('SNK001', 'Lays Chips', 150, 12000, 2),
+('SNK002', 'Doritos', 140, 13000, 2),
+('SNK003', 'Pringles', 130, 14000, 2),
+('SNK004', 'KitKat', 110, 6000, 2),
+('SNK005', 'Snickers', 100, 6500, 2),
+('SNK006', 'M&Ms', 120, 7000, 2),
+('SNK007', 'Twix', 90, 6000, 2),
+('SNK008', 'Oreo', 80, 8000, 2),
+('SNK009', 'Cheez-It', 70, 9000, 2),
+('SNK010', 'Trail Mix', 60, 10000, 2);
 
 -- Fruits (CategoryID = 3)
 INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
 VALUES 
-('FRT001', 'Apple', 100, 5.00, 3),
-('FRT002', 'Banana', 120, 4.00, 3),
-('FRT003', 'Orange', 110, 4.50, 3),
-('FRT004', 'Mango', 90, 6.00, 3),
-('FRT005', 'Pineapple', 80, 7.00, 3),
-('FRT006', 'Grapes', 95, 5.50, 3),
-('FRT007', 'Strawberry', 85, 8.00, 3),
-('FRT008', 'Blueberry', 70, 9.00, 3),
-('FRT009', 'Watermelon', 60, 10.00, 3),
-('FRT010', 'Papaya', 50, 6.50, 3);
+('FRT001', 'Apple', 100, 5000, 3),
+('FRT002', 'Banana', 120, 4000, 3),
+('FRT003', 'Orange', 110, 4500, 3),
+('FRT004', 'Mango', 90, 6000, 3),
+('FRT005', 'Pineapple', 80, 7000, 3),
+('FRT006', 'Grapes', 95, 5500, 3),
+('FRT007', 'Strawberry', 85, 8000, 3),
+('FRT008', 'Blueberry', 70, 9000, 3),
+('FRT009', 'Watermelon', 60, 10000, 3),
+('FRT010', 'Papaya', 50, 6500, 3);
 
 -- Vegetables (CategoryID = 4)
 INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
 VALUES 
-('VEG001', 'Carrot', 100, 3.00, 4),
-('VEG002', 'Broccoli', 90, 4.00, 4),
-('VEG003', 'Spinach', 85, 3.50, 4),
-('VEG004', 'Cabbage', 80, 2.50, 4),
-('VEG005', 'Potato', 200, 2.00, 4),
-('VEG006', 'Tomato', 190, 2.20, 4),
-('VEG007', 'Onion', 180, 1.80, 4),
-('VEG008', 'Garlic', 150, 2.50, 4),
-('VEG009', 'Cucumber', 160, 2.80, 4),
-('VEG010', 'Lettuce', 170, 3.20, 4);
+('VEG001', 'Carrot', 100, 3000, 4),
+('VEG002', 'Broccoli', 90, 4000, 4),
+('VEG003', 'Spinach', 85, 3500, 4),
+('VEG004', 'Cabbage', 80, 2500, 4),
+('VEG005', 'Potato', 200, 2000, 4),
+('VEG006', 'Tomato', 190, 2200, 4),
+('VEG007', 'Onion', 180, 1800, 4),
+('VEG008', 'Garlic', 150, 2500, 4),
+('VEG009', 'Cucumber', 160, 2800, 4),
+('VEG010', 'Lettuce', 170, 3200, 4);
 
 -- Dairy (CategoryID = 5)
 INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
 VALUES 
-('DRY001', 'Milk', 100, 6.00, 5),
-('DRY002', 'Yogurt', 90, 5.50, 5),
-('DRY003', 'Cheddar Cheese', 80, 7.00, 5),
-('DRY004', 'Butter', 70, 6.50, 5),
-('DRY005', 'Cream', 60, 5.00, 5),
-('DRY006', 'Cottage Cheese', 50, 6.00, 5),
-('DRY007', 'Sour Cream', 45, 4.50, 5),
-('DRY008', 'Ghee', 40, 8.00, 5),
-('DRY009', 'Milk Powder', 55, 9.00, 5),
-('DRY010', 'Condensed Milk', 60, 7.50, 5);
+('DRY001', 'Milk', 100, 6000, 5),
+('DRY002', 'Yogurt', 90, 5500, 5),
+('DRY003', 'Cheddar Cheese', 80, 7000, 5),
+('DRY004', 'Butter', 70, 6500, 5),
+('DRY005', 'Cream', 60, 5000, 5),
+('DRY006', 'Cottage Cheese', 50, 6000, 5),
+('DRY007', 'Sour Cream', 45, 4500, 5),
+('DRY008', 'Ghee', 40, 8000, 5),
+('DRY009', 'Milk Powder', 55, 9000, 5),
+('DRY010', 'Condensed Milk', 60, 7500, 5);
 
 -- Bakery (CategoryID = 6)
 INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
 VALUES 
-('BKY001', 'White Bread', 100, 4.00, 6),
-('BKY002', 'Whole Grain Bread', 90, 4.50, 6),
-('BKY003', 'Croissant', 80, 5.00, 6),
-('BKY004', 'Baguette', 70, 4.80, 6),
-('BKY005', 'Donut', 60, 3.50, 6),
-('BKY006', 'Cake', 50, 8.00, 6),
-('BKY007', 'Muffin', 40, 3.80, 6),
-('BKY008', 'Bagel', 45, 4.20, 6),
-('BKY009', 'Biscuit', 55, 4.00, 6),
-('BKY010', 'Pastry', 60, 5.50, 6);
+('BKY001', 'White Bread', 100, 4000, 6),
+('BKY002', 'Whole Grain Bread', 90, 4500, 6),
+('BKY003', 'Croissant', 80, 5000, 6),
+('BKY004', 'Baguette', 70, 4800, 6),
+('BKY005', 'Donut', 60, 3500, 6),
+('BKY006', 'Cake', 50, 8000, 6),
+('BKY007', 'Muffin', 40, 3800, 6),
+('BKY008', 'Bagel', 45, 4200, 6),
+('BKY009', 'Biscuit', 55, 4000, 6),
+('BKY010', 'Pastry', 60, 5500, 6);
 
 -- Meats (CategoryID = 7)
 INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
 VALUES 
-('MEAT001', 'Chicken Breast', 100, 10.00, 7),
-('MEAT002', 'Beef Steak', 90, 15.00, 7),
-('MEAT003', 'Pork Chop', 85, 12.00, 7),
-('MEAT004', 'Bacon', 80, 9.00, 7),
-('MEAT005', 'Sausage', 70, 8.00, 7),
-('MEAT006', 'Ground Beef', 60, 10.50, 7),
-('MEAT007', 'Turkey', 50, 13.00, 7),
-('MEAT008', 'Ham', 45, 11.00, 7),
-('MEAT009', 'Ribs', 55, 14.00, 7),
-('MEAT010', 'Lamb', 60, 16.00, 7);
+('MEAT001', 'Chicken Breast', 100, 10000, 7),
+('MEAT002', 'Beef Steak', 90, 15000, 7),
+('MEAT003', 'Pork Chop', 85, 12000, 7),
+('MEAT004', 'Bacon', 80, 9000, 7),
+('MEAT005', 'Sausage', 70, 8000, 7),
+('MEAT006', 'Ground Beef', 60, 10500, 7),
+('MEAT007', 'Turkey', 50, 13000, 7),
+('MEAT008', 'Ham', 45, 11000, 7),
+('MEAT009', 'Ribs', 55, 14000, 7),
+('MEAT010', 'Lamb', 60, 16000, 7);
 
 -- Seafood (CategoryID = 8)
 INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
 VALUES 
-('SF001', 'Salmon', 100, 14.00, 8),
-('SF002', 'Shrimp', 90, 13.00, 8),
-('SF003', 'Tuna', 85, 12.50, 8),
-('SF004', 'Crab', 80, 15.00, 8),
-('SF005', 'Lobster', 70, 20.00, 8),
-('SF006', 'Squid', 60, 10.00, 8),
-('SF007', 'Clam', 50, 9.00, 8),
-('SF008', 'Oyster', 45, 11.00, 8),
-('SF009', 'Mackerel', 55, 8.50, 8),
-('SF010', 'Anchovy', 60, 7.00, 8);
+('SF001', 'Salmon', 100, 14000, 8),
+('SF002', 'Shrimp', 90, 13000, 8),
+('SF003', 'Tuna', 85, 12500, 8),
+('SF004', 'Crab', 80, 15000, 8),
+('SF005', 'Lobster', 70, 20000, 8),
+('SF006', 'Squid', 60, 10000, 8),
+('SF007', 'Clam', 50, 9000, 8),
+('SF008', 'Oyster', 45, 11000, 8),
+('SF009', 'Mackerel', 55, 8500, 8),
+('SF010', 'Anchovy', 60, 7000, 8);
 
 -- Canned Goods (CategoryID = 9)
 INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
 VALUES 
-('CAN001', 'Canned Beans', 100, 4.00, 9),
-('CAN002', 'Canned Corn', 90, 3.50, 9),
-('CAN003', 'Canned Tuna', 85, 5.00, 9),
-('CAN004', 'Canned Tomatoes', 80, 3.80, 9),
-('CAN005', 'Canned Soup', 70, 4.50, 9),
-('CAN006', 'Canned Peas', 60, 3.20, 9),
-('CAN007', 'Canned Pineapple', 50, 4.80, 9),
-('CAN008', 'Canned Chicken', 45, 6.00, 9),
-('CAN009', 'Canned Fruit Cocktail', 55, 5.50, 9),
-('CAN010', 'Canned Mushroom', 60, 4.20, 9);
+('CAN001', 'Canned Beans', 100, 4000, 9),
+('CAN002', 'Canned Corn', 90, 3500, 9),
+('CAN003', 'Canned Tuna', 85, 5000, 9),
+('CAN004', 'Canned Tomatoes', 80, 3800, 9),
+('CAN005', 'Canned Soup', 70, 4500, 9),
+('CAN006', 'Canned Peas', 60, 3200, 9),
+('CAN007', 'Canned Pineapple', 50, 4800, 9),
+('CAN008', 'Canned Chicken', 45, 6000, 9),
+('CAN009', 'Canned Fruit Cocktail', 55, 5500, 9),
+('CAN010', 'Canned Mushroom', 60, 4200, 9);
 
 -- Frozen Foods (CategoryID = 10)
 INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
 VALUES 
-('FRZ001', 'Frozen Pizza', 100, 10.00, 10),
-('FRZ002', 'Frozen Vegetables', 90, 5.00, 10),
-('FRZ003', 'Frozen Fries', 85, 4.00, 10),
-('FRZ004', 'Frozen Chicken Nuggets', 80, 8.00, 10),
-('FRZ005', 'Frozen Fish Fillet', 70, 9.00, 10),
-('FRZ006', 'Frozen Burger Patty', 60, 7.50, 10),
-('FRZ007', 'Frozen Dumplings', 50, 6.50, 10),
-('FRZ008', 'Frozen Spring Rolls', 45, 6.00, 10),
-('FRZ009', 'Frozen Pasta', 55, 5.50, 10),
-('FRZ010', 'Frozen Fruit Mix', 60, 7.00, 10);
+('FRZ001', 'Frozen Pizza', 100, 10000, 10),
+('FRZ002', 'Frozen Vegetables', 90, 5000, 10),
+('FRZ003', 'Frozen Fries', 85, 4000, 10),
+('FRZ004', 'Frozen Chicken Nuggets', 80, 8000, 10),
+('FRZ005', 'Frozen Fish Fillet', 70, 9000, 10),
+('FRZ006', 'Frozen Burger Patty', 60, 7500, 10),
+('FRZ007', 'Frozen Dumplings', 50, 6500, 10),
+('FRZ008', 'Frozen Spring Rolls', 45, 6000, 10),
+('FRZ009', 'Frozen Pasta', 55, 5500, 10),
+('FRZ010', 'Frozen Fruit Mix', 60, 7000, 10);
 
 -- Giả sử RoleID = 0 là Customer, 1 là Admin
 INSERT INTO Users (Username, Password, FullName, Email, RoleID)

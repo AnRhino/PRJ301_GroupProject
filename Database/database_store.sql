@@ -35,7 +35,7 @@ CREATE TABLE Products (
     ProductCode NVARCHAR(20),
     ProductName NVARCHAR(100),
     Quantity INT,
-    Price DECIMAL(10,2),
+    Price INT,
     CategoryID INT FOREIGN KEY REFERENCES Categories(CategoryID)
 );
 
@@ -79,7 +79,7 @@ CREATE TABLE OrderDetails (
     OrderID INT FOREIGN KEY REFERENCES Orders(OrderID),
     ProductID INT FOREIGN KEY REFERENCES Products(ProductID),
     Quantity INT,
-    UnitPrice DECIMAL(10,2)
+    UnitPrice INT
 );
 
 -- Reviews table
