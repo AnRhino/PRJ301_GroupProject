@@ -20,7 +20,7 @@ import model.Category;
  *
  * @author Vu Minh Khang - CE191371
  */
-@WebServlet(name = "UserProductServlet", urlPatterns = {"/userProduct"})
+@WebServlet(name = "UserProductServlet", urlPatterns = {"/user-product"})
 public class UserProductServlet extends HttpServlet {
 
 //    private final ProductDAO productDao = new ProductDAO();

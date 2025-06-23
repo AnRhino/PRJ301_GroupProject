@@ -51,7 +51,7 @@
                         %>   
 
                         <div class="col-12 d-flex justify-content-center my-3 border bg-dark py-2">
-                            <form action="<%= request.getContextPath()%>/userProduct" method="get">
+                            <form action="<%= request.getContextPath()%>/user-product" method="get">
                                 <input type="hidden" name="view" value="product">
                                 <input type="hidden" name="id" value="<%= prod.getProductID()%>">
                                 <button class="btn p-0 border-0 text-white">
@@ -69,7 +69,7 @@
                     <div class="col-9">
                         <div class="ms-5 me-5">
                             <h1 class="fw-bold"><%= product.getProductName()%></h1>
-                            <form class="gap-3 d-flex" action="<%= request.getContextPath()%>/userProduct" method="post">
+                            <form class="gap-3 d-flex" action="<%= request.getContextPath()%>/user-product" method="post">
                                 <div class="row border border-secondary bg-secondary border-dark">   
                                     <div class="col-6 d-flex justify-content-start p-0">
                                         <img src="assets/images/placeHolder.jpg" alt="placeholder">
@@ -95,7 +95,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="fw-bold d-inline">Price:</div>
-                                                <%= product.getPrice()%>$
+                                                <%= product.getPrice()%> VND
                                             </div>
                                             <div class="col-12">
                                                 <div class="fw-bold d-inline">Rating:</div>

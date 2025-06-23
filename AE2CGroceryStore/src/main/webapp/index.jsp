@@ -85,7 +85,7 @@
                 <div class="row">
                     <c:forEach var="cate" items="${categoryList}">
                         <div class="col-3 d-flex justify-content-center border border-primary">
-                            <form action="<%= request.getContextPath()%>/userProduct" method="get">
+                            <form action="<%= request.getContextPath()%>/user-product" method="get">
                                 <input type="hidden" name="view" value="category">
                                 <input type="hidden" name="id" value="${cate.categoryID}">
                                 <button class="btn p-0 border-0 bg-transparent">
@@ -109,7 +109,7 @@
                 <div class="row">
                     <c:forEach var="pro" items="${productList}">
                         <div class="col-2 d-flex justify-content-center border border-secondary">
-                            <form action="<%= request.getContextPath()%>/userProduct" method="get">
+                            <form action="<%= request.getContextPath()%>/user-product" method="get">
                                 <input type="hidden" name="view" value="product">
                                 <input type="hidden" name="id" value="${pro.productID}">
                                 <button class="btn p-0 border-0 bg-transparent">
