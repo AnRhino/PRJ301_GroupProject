@@ -5,6 +5,7 @@
 --%>
 <%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <header>
 
@@ -56,6 +57,15 @@
                                 </div>
                             </ul>
                         </li>
+
+                        <c:if test="${loggedUser.roleId == 1}">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="product">Manager</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${loggedUser.roleId == 0}">
+
+                        </c:if>
                     </ul>
                 </div>
                 <div class="ms-auto">
