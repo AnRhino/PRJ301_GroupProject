@@ -15,7 +15,7 @@
         <main class="flex-shrink-0">
             <div class="container">
                 <h1 class="mt-5">Product</h1>
-                <a class=" btn btn-success float-end " href="product?view=create">create</a>
+                <a class=" btn btn-success float-end " href="product?view=create">Create</a>
                 <!-- Button trigger modal -->
                 <% List<Product> product = (List) request.getAttribute("list"); %>
                 <% if (product.isEmpty()) { %>
