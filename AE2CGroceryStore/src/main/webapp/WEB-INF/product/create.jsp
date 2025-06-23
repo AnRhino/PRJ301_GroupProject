@@ -21,7 +21,7 @@
             <input type="hidden" name="action" value="create" />
 
             <p>
-                <label for="name">Product core</label>
+                <label for="name">Product code</label>
                 <input  class="form-control" type="text" id="productCore" name="productCore" required>
 
             </p>

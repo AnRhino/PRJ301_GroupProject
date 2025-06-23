@@ -25,7 +25,7 @@
                     <thead>
                         <tr>
                           
-                            <th>ProductCore</th>
+                            <th>ProductCode</th>
                             <th>ProductName</th>
                             <th>Quantity</th>
                             <th>Price</th>

@@ -109,26 +109,26 @@ public class ProductServlet extends HttpServlet {
         ProductDAO productDAO = new ProductDAO();
         if (action.equals("create")) {
 
-            String proCore = request.getParameter("productCore");
+            String proCode = request.getParameter("productCore");
             String proName = request.getParameter("productName");
             int quan = Integer.parseInt(request.getParameter("quantity"));
             double price = Double.parseDouble(request.getParameter("price"));
             int cateid = Integer.parseInt(request.getParameter("categogy").trim());
             System.out.println("|" + cateid + "|");
-            productDAO.create(proCore, proName, quan, price, cateid);
+            productDAO.create(proCode, proName, quan, price, cateid);
         } else if (action.equals("delete")) {
             int id = Integer.parseInt(request.getParameter("id"));
             productDAO.delete(id);
 
         } else if (action.equals("edit")) {
            int id = Integer.parseInt(request.getParameter("id"));
-            String proCore = request.getParameter("productCore");
+            String proCode = request.getParameter("productCore");
             String proName = request.getParameter("productName");
             int quan = Integer.parseInt(request.getParameter("quantity"));
             double price = Double.parseDouble(request.getParameter("price"));
             int cateid = Integer.parseInt(request.getParameter("categogy").trim());
 
-            productDAO.edit(id, proCore, proName, quan, price, cateid);
+            productDAO.edit(id, proCode, proName, quan, price, cateid);
 
         }
         doGet(request, response);

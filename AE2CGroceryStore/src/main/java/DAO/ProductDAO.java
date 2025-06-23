@@ -63,14 +63,14 @@ public class ProductDAO extends dbconnect.DBContext {
         return 0;
     }
 
-    public int edit(int prouductId ,String productCore, String productName, int quantity, double price, int cateID ) {
+    public int edit(int prouductId ,String productCode, String productName, int quantity, double price, int cateID ) {
         try {
             String query = "update  Products\n"
                     + "set ProductCode = ?, ProductName = ?,Quantity = ?,Price= ?, CategoryID = ?\n"
                     + "where ProductID = ?";
 
             PreparedStatement ps = this.getConnection().prepareStatement(query);
-            ps.setObject(1, productCore);
+            ps.setObject(1, productCode);
             ps.setObject(2, productName);
             ps.setObject(3, quantity);
             ps.setObject(4, price);
