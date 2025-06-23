@@ -63,7 +63,7 @@ public class ProductDAO extends dbconnect.DBContext {
         return 0;
     }
 
-    public int edit(String productCore, String productName, int quantity, double price, int cateID, int prouductId) {
+    public int edit(int prouductId ,String productCore, String productName, int quantity, double price, int cateID ) {
         try {
             String query = "update  Products\n"
                     + "set ProductCode = ?, ProductName = ?,Quantity = ?,Price= ?, CategoryID = ?\n"
@@ -75,7 +75,7 @@ public class ProductDAO extends dbconnect.DBContext {
             ps.setObject(3, quantity);
             ps.setObject(4, price);
             ps.setObject(5, cateID);
-            ps.setObject(6, 8);
+            ps.setObject(6, prouductId);
             ps.executeUpdate();
 
             return 0;
@@ -86,29 +86,30 @@ public class ProductDAO extends dbconnect.DBContext {
     }
 
     public Product getById(int ProductID) {
+    try {
+        String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName " +
+                       "FROM Products p " +
+                       "JOIN Categories c ON p.CategoryID = c.CategoryID " +
+                       "WHERE ProductID = ?";
+        
+        PreparedStatement ps = this.getConnection().prepareStatement(query);
+        ps.setInt(1, ProductID);
+        ResultSet rs = ps.executeQuery();
 
-        try {
-            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
-                    + "from Products p \n"
-                    + "join  Categories c on p.CategoryID = c.CategoryID"
-                 
-                    + "where  ProductID = ?";
-            PreparedStatement ps = this.getConnection().prepareStatement(query);
-            ps.setInt(1, ProductID);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                Category cat = new Category(rs.getInt(6), rs.getString(7));
-                return new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDouble(5), cat);
-            } else {
-                return null;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        if (rs.next()) {
+            Category cat = new Category(rs.getInt(6), rs.getString(7));
+            return new Product(rs.getInt(1), rs.getString(2), rs.getString(3),
+                               rs.getInt(4), rs.getDouble(5), cat);
+        } else {
             return null;
         }
+
+    } catch (SQLException ex) {
+        Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        return null;
     }
+}
+
 
     public int delete(int productId) {
         String query = "delete from Products where ProductID = ? ";

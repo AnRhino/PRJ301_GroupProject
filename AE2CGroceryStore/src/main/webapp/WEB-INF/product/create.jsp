@@ -55,7 +55,7 @@
             </p>
             <p>
                 <button class="btn btn-success" type="submit"  name="action" value="create">Add</button>
-                <button type="clear" class="btn btn-secondary">Clear</button>
+                <button type="reset" class="btn btn-secondary">Clear</button>
 
             </p>
 

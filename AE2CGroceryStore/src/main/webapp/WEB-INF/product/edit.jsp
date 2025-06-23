@@ -14,63 +14,62 @@
     <body>
 
         <%@include file="/WEB-INF/include/header.jsp" %>
-     <main class="flex-shrink-0">
-    <div class="container">
-        <h1 class="mt-5">Create product</h1>
-        
-         <p>
-                <label for="id">ID</label>
-                <input  type="text" id="id" name="id" readonly
-                        value="<%= request.getParameter("id")%>">
+        <main class="flex-shrink-0">
+            <div class="container">
+                <h1 class="mt-5">Edit product</h1>
 
-            </p>
-        <form class="form" method="post" action="<%= request.getContextPath()%>/product">
-            <input type="hidden" name="action" value="edit" />
+                <form class="form" method="post" action="<%= request.getContextPath()%>/product">
 
-            <p>
-                <label for="name">Product core</label>
-                <input  class="form-control" type="text" id="productCore" name="productCore" required>
+                    <input type="hidden" name="action" value="edit" />
+                    <p>
 
-            </p>
-            <p>
-                <label for="name">Product Name</label>
-                <input  class="form-control" type="text" id="productName" name="productName" required>
+                        <input  type="hidden" id="id" name="id" 
+                                value="<%= request.getParameter("id")%>">
 
-            </p>
-          
-            <p>
-                <label for="name">Quantity</label>
-                <input  class="form-control" type="text" id="quantity" name="quantity" required>
+                    </p>
+                    <p>
+                        <label for="name">Product core</label>
+                        <input  class="form-control" type="text" id="productCore" name="productCore" required>
 
-            </p>
-            <p>
-                <label for="name">Price</label>
-                <input  class="form-control" type="text" id="price" name="price" required>
+                    </p>
+                    <p>
+                        <label for="name">Product Name</label>
+                        <input  class="form-control" type="text" id="productName" name="productName" required>
 
-            </p>
-            <% List<Category> categogy = (List) request.getAttribute("cate"); %>
-            <p>
-                <label for="artist">Category</label>
-                <select class="form-select" name="categogy" id="categogy">
-                    <% for (Category cate: categogy) { %>
-                    
-                        
-                   <option value="<%=cate.getCategoryID() %> "><%=cate.getCategoryName() %></option>
-               <% } %>
-                </select>
+                    </p>
 
-            </p>
-            <p>
-                <button class="btn btn-success" type="submit"  name="action" value="edit">Add</button>
-                <button type="clear" class="btn btn-secondary">Clear</button>
+                    <p>
+                        <label for="name">Quantity</label>
+                        <input  class="form-control" type="text" id="quantity" name="quantity" required>
 
-            </p>
+                    </p>
+                    <p>
+                        <label for="name">Price</label>
+                        <input  class="form-control" type="text" id="price" name="price" required>
+
+                    </p>
+                    <% List<Category> categogy = (List) request.getAttribute("cate"); %>
+                    <p>
+                        <label for="artist">Category</label>
+                        <select class="form-select" name="categogy" id="categogy">
+                            <% for (Category cate : categogy) {%>
 
 
+                            <option value="<%=cate.getCategoryID()%> "><%=cate.getCategoryName()%></option>
+                            <% }%>
+                        </select>
 
-        </form>
+                    </p>
+                    <p>
+                        <button class="btn btn-success" type="submit"  name="action" value="edit">Add</button>
+                        <button type="reset" class="btn btn-secondary">Clear</button>
+                    </p>
 
 
+
+                </form>
+
+            </div>
         </main>
         <%@include file="/WEB-INF/include/footer.jsp" %>
     </body>

@@ -48,7 +48,7 @@
                             <td><%= pr.getProductName()%></td>
                             <td><%= pr.getQuantity()%></td>
                             <td><%= pr.getPrice()%></td>
-                            <td><%= pr.getCategoryID().getCategoryName()  %></td>
+                            <td><%= pr.getCategory().getCategoryName()  %></td>
 
                             <td>
                                 <a href=" <%= request.getContextPath()%>/product?view=edit&id=<%=pr.getProductID()  %>" class="btn btn-primary btn-sm">edit</a>

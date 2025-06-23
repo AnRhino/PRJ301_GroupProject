@@ -84,7 +84,8 @@ public class ProductServlet extends HttpServlet {
         } else if (view.equals("edit")) {
             int id = Integer.parseInt(request.getParameter("id"));
             Product pr = dao.getById(id);
-            request.setAttribute("product", pr);
+            System.out.println(pr);
+            request.setAttribute("pro", pr);
             CategoryDAO cateDAO = new CategoryDAO();
             List<Category> cate = cateDAO.getAll();
             request.setAttribute("cate", cate);
@@ -120,13 +121,14 @@ public class ProductServlet extends HttpServlet {
             productDAO.delete(id);
 
         } else if (action.equals("edit")) {
+           int id = Integer.parseInt(request.getParameter("id"));
             String proCore = request.getParameter("productCore");
             String proName = request.getParameter("productName");
             int quan = Integer.parseInt(request.getParameter("quantity"));
             double price = Double.parseDouble(request.getParameter("price"));
             int cateid = Integer.parseInt(request.getParameter("categogy").trim());
 
-            productDAO.edit(proCore, proName, quan, price, cateid, cateid);
+            productDAO.edit(id, proCore, proName, quan, price, cateid);
 
         }
         doGet(request, response);
