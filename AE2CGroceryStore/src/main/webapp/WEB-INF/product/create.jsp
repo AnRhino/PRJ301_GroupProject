@@ -48,7 +48,7 @@
                     <% for (Category cate: categogy) { %>
                     
                         
-                   <option value="<%=cate.getCategoryID() %> "><%=cate.getCategoryName() %></option>
+                   <option value="<%=cate.getCategoryID()%> "><%=cate.getCategoryName()%></option>
                <% } %>
                 </select>
 

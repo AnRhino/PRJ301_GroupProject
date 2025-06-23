@@ -43,30 +43,18 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
-    public int create(String productCore, String productName, int quantity, double price, String categoryName) {
-        int nextCategoryId = 1;
-
+    public int create(String productCore, String productName, int quantity, double price, int categoryId) {
+        int check = 0;
         try {
-
-            String insertCate = "INSERT INTO Categories (CategoryName) VALUES (?)";
-            PreparedStatement ps1 = this.getConnection().prepareStatement(insertCate, Statement.RETURN_GENERATED_KEYS);
-            ps1.setString(1, categoryName);
-            ps1.executeUpdate();
-
-            ResultSet rs = ps1.getGeneratedKeys();
-            if (rs.next()) {
-                nextCategoryId = rs.getInt(1);
-            }
-
-            String insertPro = "INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement ps2 = this.getConnection().prepareStatement(insertPro);
-            ps2.setString(1, productCore);
-            ps2.setString(2, productName);
-            ps2.setInt(3, quantity);
-            ps2.setDouble(4, price);
-            ps2.setInt(5, nextCategoryId);
-
-            return ps2.executeUpdate();
+            String sql = "insert into Products (ProductCode,ProductName,Quantity,Price,CategoryID)\n"
+                    + "values(?,?,?,?,?)";
+            PreparedStatement ps = this.getConnection().prepareStatement(sql);
+            ps.setObject(1, productCore);
+            ps.setObject(2, productName);
+            ps.setObject(3, quantity);
+            ps.setObject(4, price);
+            ps.setObject(5, categoryId);
+            ps.executeQuery();
 
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,28 +63,38 @@ public class ProductDAO extends dbconnect.DBContext {
         return 0;
     }
 
-    public int edit(String productCore, String productName, int quantity, double price, String categoryName) {
-        String query = "update  Products\n"
-                + "set ProductCode = ?, ProductName = ? ,Quantity=?,Price=?\n"
-                + "from Products pr \n"
-                + "where CategoryID = ?\n"
-                + "\n"
-                + "update Categories\n"
-                + "set CategoryName = ?\n"
-                + "where CategoryID = ?";
+    public int edit(String productCore, String productName, int quantity, double price, int cateID, int prouductId) {
+        try {
+            String query = "update  Products\n"
+                    + "set ProductCode = ?, ProductName = ?,Quantity = ?,Price= ?, CategoryID = ?\n"
+                    + "where ProductID = ?";
 
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setObject(1, productCore);
+            ps.setObject(2, productName);
+            ps.setObject(3, quantity);
+            ps.setObject(4, price);
+            ps.setObject(5, cateID);
+            ps.setObject(6, 8);
+            ps.executeUpdate();
+
+            return 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return 0;
     }
 
-    public Product getById(int categogyId) {
+    public Product getById(int ProductID) {
 
         try {
-            String query = "select ProductID,ProductCode,ProductName,Quantity,Price,cat.CategoryID,cat.CategoryName\n"
-                    + "from Products pr\n"
-                    + "join Categories cat on pr.CategoryID = cat.CategoryID\n"
-                    + "where CategoryID = ?";
+            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
+                    + "from Products p \n"
+                    + "join  Categories c on p.CategoryID = c.CategoryID"
+                 
+                    + "where  ProductID = ?";
             PreparedStatement ps = this.getConnection().prepareStatement(query);
-            ps.setInt(1, categogyId);
+            ps.setInt(1, ProductID);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -158,9 +156,9 @@ public class ProductDAO extends dbconnect.DBContext {
 
     /**
      * Phương thức lấy giá trị trung bình đánh giá sản phẩm của khác hàng.
-     * 
+     *
      * @param productID là sản phẩm muốn lấy đánh giá.
-     * 
+     *
      * @return giá trị trung bình đánh giá của sản phẩm.
      */
     public Double getRateScore(int productID) {
@@ -181,14 +179,14 @@ public class ProductDAO extends dbconnect.DBContext {
                 + "\n"
                 + "AS RESULT";
         Object[] params = {productID, productID};
-        
+
         try {
             ResultSet rs = execSelectQuery(query, params);
-            
+
             while (rs.next()) {
                 rateScore = rs.getDouble(1);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

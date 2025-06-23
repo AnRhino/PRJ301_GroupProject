@@ -81,8 +81,10 @@ public class ProductServlet extends HttpServlet {
             request.setAttribute("pro", product);
             request.getRequestDispatcher("/WEB-INF/product/delete.jsp").forward(request, response);
 
-        
         } else if (view.equals("edit")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Product pr = dao.getById(id);
+            request.setAttribute("product", pr);
             CategoryDAO cateDAO = new CategoryDAO();
             List<Category> cate = cateDAO.getAll();
             request.setAttribute("cate", cate);
@@ -105,25 +107,27 @@ public class ProductServlet extends HttpServlet {
         String action = request.getParameter("action");
         ProductDAO productDAO = new ProductDAO();
         if (action.equals("create")) {
-            
+
             String proCore = request.getParameter("productCore");
             String proName = request.getParameter("productName");
             int quan = Integer.parseInt(request.getParameter("quantity"));
-          double price = Double.parseDouble(request.getParameter("price"));
-            String cateName = request.getParameter("categogy");
-            productDAO.create(proCore, proName, quan, price, cateName);
+            double price = Double.parseDouble(request.getParameter("price"));
+            int cateid = Integer.parseInt(request.getParameter("categogy").trim());
+            System.out.println("|" + cateid + "|");
+            productDAO.create(proCore, proName, quan, price, cateid);
         } else if (action.equals("delete")) {
             int id = Integer.parseInt(request.getParameter("id"));
-           productDAO.delete(id);
+            productDAO.delete(id);
 
         } else if (action.equals("edit")) {
-            
             String proCore = request.getParameter("productCore");
             String proName = request.getParameter("productName");
             int quan = Integer.parseInt(request.getParameter("quantity"));
-          double price = Double.parseDouble(request.getParameter("price"));
-            String cateName = request.getParameter("categogy");
-            productDAO.create(proCore, proName, quan, price, cateName);
+            double price = Double.parseDouble(request.getParameter("price"));
+            int cateid = Integer.parseInt(request.getParameter("categogy").trim());
+
+            productDAO.edit(proCore, proName, quan, price, cateid, cateid);
+
         }
         doGet(request, response);
     }
