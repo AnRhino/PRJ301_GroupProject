@@ -88,15 +88,15 @@ public class ProductDAO extends dbconnect.DBContext {
         return 0;
     }
 
-    public Product getById(int productId) {
+    public Product getById(int categogyId) {
 
         try {
             String query = "select ProductID,ProductCode,ProductName,Quantity,Price,cat.CategoryID,cat.CategoryName\n"
                     + "from Products pr\n"
                     + "join Categories cat on pr.CategoryID = cat.CategoryID\n"
-                    + "where ProductID = ?";
+                    + "where CategoryID = ?";
             PreparedStatement ps = this.getConnection().prepareStatement(query);
-            ps.setInt(1, productId);
+            ps.setInt(1, categogyId);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
