@@ -32,7 +32,7 @@ public class ProductDAO extends dbconnect.DBContext {
             while (rs.next()) {
 
                 Category Category = new Category(rs.getInt(6), rs.getString(7));
-                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getDouble("Price"), Category);
+                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
                 list.add(pro);
             }
 
@@ -99,7 +99,7 @@ public class ProductDAO extends dbconnect.DBContext {
         if (rs.next()) {
             Category cat = new Category(rs.getInt(6), rs.getString(7));
             return new Product(rs.getInt(1), rs.getString(2), rs.getString(3),
-                               rs.getInt(4), rs.getDouble(5), cat);
+                               rs.getInt(4), rs.getInt(5), cat);
         } else {
             return null;
         }
@@ -143,7 +143,7 @@ public class ProductDAO extends dbconnect.DBContext {
             ResultSet rs = execSelectQuery(query, params);
 
             while (rs.next()) {
-                Product pro = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getDouble("Price"), new Category(rs.getInt(6), rs.getString(7)));
+                Product pro = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), new Category(rs.getInt(6), rs.getString(7)));
                 list.add(pro);
             }
 
