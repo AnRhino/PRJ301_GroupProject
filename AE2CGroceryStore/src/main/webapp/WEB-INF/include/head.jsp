@@ -41,6 +41,10 @@
                 border-radius: 5px;
                 width: 500px;
             }
+            
+            #navbarCollapse{
+                max-height: 20px;
+            }
         }
         
          @media (max-width: 995px) {
@@ -62,30 +66,9 @@
             transition: all .5s;
         }
         body {
-            padding-top: 70px;
+            padding-top: 60px;
         }
-        #all {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        
-        #all-box {
-            display: none;
-            position: absolute;
-            top: 100%;
-            background-color: white;
-            border: 1px solid black;
-            width: 300px;
-            padding: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);  
-        }
-
-        #all:hover #all-box {
-            display: block;
-        }
-        
+       
     </style>
 
 

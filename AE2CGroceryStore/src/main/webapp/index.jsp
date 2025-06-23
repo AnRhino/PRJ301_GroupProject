@@ -22,16 +22,24 @@
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="assets/images/placeHolder.jpg" class="d-block w-100" alt="1" id="img">
+                    <img src="assets/images/members/CreditAnNHP.png" class="d-block w-100" alt="1" id="img">
                 </div>
                 <div class="carousel-item">
-                    <img src="assets/images/gojo.png" class="d-block w-100" alt="2" id="img">
+                    <img src="assets/images/members/CreditKhangVM.png" class="d-block w-100" alt="2" id="img">
                 </div>
                 <div class="carousel-item">
-                    <img src="assets/images/whoknow.png" class="d-block w-100" alt="3" id="img">
+                    <img src="assets/images/members/CreditPhucDC.png" class="d-block w-100" alt="3" id="img">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/images/members/CreditThoPD.png" class="d-block w-100" alt="4" id="img">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/images/members/CreditTriLT.png" class="d-block w-100" alt="5" id="img">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -83,7 +91,7 @@
                                 <button class="btn p-0 border-0 bg-transparent">
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-center">
-                                            <img src="assets/images/category/${cate.categoryID}.png" alt="placeholder" width="225" height="225">
+                                            <img src="assets/images/category/${cate.categoryID}.png" alt="placeholder" width="180" height="180">
                                         </div>
                                         <div class="col-12 d-flex justify-content-center">
                                             ${cate.categoryName}

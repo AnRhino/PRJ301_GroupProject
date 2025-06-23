@@ -20,7 +20,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse" style="max-height: 10px;">
+            <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div>
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
@@ -66,8 +66,8 @@
                     <form class="d-flex">   
                         <% if (loggedIn) { %>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle  text-center text-light fs-3" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; bottom: 10px;">
+                            <a class="nav-link dropdown-toggle  text-center text-light fs-4" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; bottom: 6px;">
                                 <i class="bi bi-person-circle"></i>                              
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -79,13 +79,13 @@
                         </li>
 
                         <% } else { %>
-                        <a href="login" class="btn btn-outline-success m-2">Login</a>
+                        <a href="login" class="btn btn-outline-success m-2" style="width: 73px; height: 38px; position: relative; top: 20px;">Login</a>
                         <% }%>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle  text-center text-light" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; bottom: 17px;">  
-                                <button class="btn btn-outline-light m-2" type="submit"><i class="bi bi-cart2"> Cart</i></button>
+                               data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; bottom: 12px;">  
+                                <button class="btn btn-outline-light m-2" type="submit" style="height: 36px;"><i class="bi bi-cart2"> Cart</i></button>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
