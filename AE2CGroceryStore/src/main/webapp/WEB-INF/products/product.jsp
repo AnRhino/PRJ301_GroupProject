@@ -108,7 +108,7 @@
                                                 <div class="d-inline">
                                                     <input type="hidden" name="id" value="<%= product.getProductID()%>">
                                                     <div class="fw-bold">Add to cart:</div>
-                                                    <input type="number" class="text-end border-dark" name="quantity" placeholder="0">
+                                                    <input type="number" class="text-end border-dark" name="quantity" placeholder="0" min="0" max="<%= product.getQuantity()%>">
                                                 </div>
                                             </div>
                                             <div class="col-12 d-flex gap-3">
