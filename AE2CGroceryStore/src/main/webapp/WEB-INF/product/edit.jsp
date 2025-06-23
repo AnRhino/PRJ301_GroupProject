@@ -17,8 +17,15 @@
      <main class="flex-shrink-0">
     <div class="container">
         <h1 class="mt-5">Create product</h1>
+        
+         <p>
+                <label for="id">ID</label>
+                <input  type="text" id="id" name="id" readonly
+                        value="<%= request.getParameter("id")%>">
+
+            </p>
         <form class="form" method="post" action="<%= request.getContextPath()%>/product">
-            <input type="hidden" name="action" value="create" />
+            <input type="hidden" name="action" value="edit" />
 
             <p>
                 <label for="name">Product core</label>
@@ -48,13 +55,13 @@
                     <% for (Category cate: categogy) { %>
                     
                         
-                   <option value="<%=cate.getCategoryName() %> "><%=cate.getCategoryName() %></option>
+                   <option value="<%=cate.getCategoryID() %> "><%=cate.getCategoryName() %></option>
                <% } %>
                 </select>
 
             </p>
             <p>
-                <button class="btn btn-success" type="submit"  name="action" value="create">Add</button>
+                <button class="btn btn-success" type="submit"  name="action" value="edit">Add</button>
                 <button type="clear" class="btn btn-secondary">Clear</button>
 
             </p>
