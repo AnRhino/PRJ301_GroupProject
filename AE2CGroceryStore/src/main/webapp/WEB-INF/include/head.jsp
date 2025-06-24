@@ -152,7 +152,7 @@
             #img{
                 width: 130px;
             }
-            
+         }
              @media (max-width: 614px){
             #productInfo{
                 display: flex;
@@ -178,6 +178,7 @@
         .navbar-collapse{
             transition: all .5s;
         }
+        
         body {
             padding-top: 60px;
             background-color: #DDDDDD;
