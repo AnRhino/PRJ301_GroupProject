@@ -19,56 +19,107 @@
             -moz-user-select: none;
             user-select: none;
         }
-        
-        #img{
-            width: 112px;
-            height: 112px;
-        }
-        
-        
+
 
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
             }
-            
-            #img{
-                width: 225px;
-                height: 225px;
+
+            #carousel-img{
+                height: 300px;
             }
-            
+
             #Search-bar{
                 border-radius: 5px;
-                width: 500px;
+                width: 400px;
             }
-            
+
+            #img{
+                width: 300px;
+            }
+
             #navbarCollapse{
                 max-height: 20px;
             }
+
+            #productInfo{
+                display: flex;
+                border: 1px solid black;
+                flex-wrap: inherit;
+                justify-content: center;
+                align-content: center;
+                width: 300px;
+                background-color: honeydew;
+            }
         }
-        
-         @media (max-width: 995px) {
+
+
+
+        @media (max-width: 1434px){
+            #productInfo{
+                width: 240px;
+            }
+
+            #img{
+                width: 240px;
+            }
+
+        }
+
+        @media (max-width: 1126px){
+
+            #cate-img{
+                width: 180px;
+                height: 110px;
+            }
+
+            #productInfo{
+                width: 200px;
+            }
+
+            #img{
+                width: 200px;
+            }
+
+        }
+
+        @media (max-width: 995px) {
             .bd-placeholder-img-lg {
                 font-size: 2.5rem;
             }
-            
-            #img{
-                width: 112px;
-                height: 112px;
+
+            #carousel-img{
+                height: 300px;
             }
-            
+
+            #cate-img{
+                width: 125px;
+                height: 90px;
+            }
+
+            #img{
+                width: 200px;
+            }
+
             #Search-bar{
-                width: 250px;
+                width: 190px;
             }
         }
-        
+
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
         .navbar-collapse{
             transition: all .5s;
         }
         body {
             padding-top: 60px;
+            background-color: #DDDDDD;
         }
-       
+
     </style>
 
 
