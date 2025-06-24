@@ -21,6 +21,7 @@
         }
 
 
+
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
@@ -58,7 +59,13 @@
 
         @media (max-width: 1434px){
             #productInfo{
+                display: flex;
+                border: 1px solid black;
+                flex-wrap: inherit;
+                justify-content: center;
+                align-content: center;
                 width: 240px;
+                background-color: honeydew;
             }
 
             #img{
@@ -75,6 +82,12 @@
             }
 
             #productInfo{
+                display: flex;
+                border: 1px solid black;
+                flex-wrap: inherit;
+                justify-content: center;
+                align-content: center;
+                background-color: honeydew;
                 width: 200px;
             }
 
@@ -107,11 +120,61 @@
             }
         }
 
-        .card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
+        
+          @media (max-width: 886px){
+            #productInfo{
+                display: flex;
+                border: 1px solid black;
+                flex-wrap: inherit;
+                justify-content: center;
+                align-content: center;
+                width: 160px;
+                background-color: honeydew;
+            }
 
+            #img{
+                width: 160px;
+            }
+
+        }
+        
+         @media (max-width: 726px){
+            #productInfo{
+                display: flex;
+                border: 1px solid black;
+                flex-wrap: inherit;
+                justify-content: center;
+                align-content: center;
+                width: 130px;
+                background-color: honeydew;
+            }
+
+            #img{
+                width: 130px;
+            }
+            
+             @media (max-width: 614px){
+            #productInfo{
+                display: flex;
+                border: 1px solid black;
+                flex-wrap: inherit;
+                justify-content: center;
+                align-content: center;
+                width:85px;
+                background-color: honeydew;
+                 height: 110px;
+            }
+
+            #img{
+                width: 85px;             
+            }
+
+            #cate-img{
+                width: 80px;
+                height: 65px;
+            }
+        }
+  
         .navbar-collapse{
             transition: all .5s;
         }
