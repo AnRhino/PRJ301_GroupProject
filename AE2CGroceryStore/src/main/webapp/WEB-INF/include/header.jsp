@@ -69,7 +69,7 @@
                     </ul>
                 </div>
                 <div class="ms-auto">
-                    <input class="search border-2" style="border-radius: 5px; width: 500px" type="search" placeholder="Search" aria-label="Search">
+                    <input class="search border-2" id="Search-bar" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success m-2"  type="submit">Search</button>
                 </div>
                 <div class="flex align-content-end ms-auto">
