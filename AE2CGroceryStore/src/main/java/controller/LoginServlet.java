@@ -13,7 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.ErrorMessage;
 import model.User;
+import model.UserInputValidate;
 
 /**
  *
@@ -79,19 +81,44 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        UserDAO dao = new UserDAO();
-        User loggedUser = dao.login(username, password);
-
+        ErrorMessage usernameMsg = UserInputValidate.usernameValid(username);
+        ErrorMessage passwordMsg = UserInputValidate.passwordValid(password);
         
-        if (loggedUser == null) { // If login fail
-            response.sendRedirect(request.getContextPath() + "/login");
-        } else { // If login success
-            // Create new session
-            HttpSession session = request.getSession();
-            session.setAttribute("loggedUser", loggedUser);
-            
-            response.sendRedirect(request.getContextPath() + "/index.jsp");
+        if (usernameMsg != null || passwordMsg != null) { // If input is not valid
+            // Store validation error msg in request
+            request.setAttribute("usernameMsg", usernameMsg);
+            request.setAttribute("passwordMsg", passwordMsg);
+
+            // Keep the form data so user doesn't need to retype
+            request.setAttribute("username", username);
+            request.setAttribute("password", password);
+        } else { // All validity check passed, proceed to login
+            // Log user in
+            UserDAO dao = new UserDAO();
+            User loggedUser = dao.login(username, password);
+
+            // Redirect after login
+            if (loggedUser == null) { // If login fail
+                request.setAttribute("loginError", "Please check your Username/Password");
+                
+                // Keep the form data so user doesn't need to retype
+                request.setAttribute("username", username);
+                request.setAttribute("password", password);
+                
+                // Redirect to login
+                response.sendRedirect(request.getContextPath() + "/login");
+                return;
+            } else { // If login success
+                // Create new session
+                HttpSession session = request.getSession();
+                session.setAttribute("loggedUser", loggedUser);
+                
+                // Redirect to homepage
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
+                return;
+            }
         }
+        request.getRequestDispatcher("WEB-INF/credentials/login.jsp").forward(request, response);
     }
 
     /**
