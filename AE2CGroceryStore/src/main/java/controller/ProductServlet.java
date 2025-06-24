@@ -131,7 +131,8 @@ public class ProductServlet extends HttpServlet {
             productDAO.edit(id, proCode, proName, quan, price, cateid);
 
         }
-        doGet(request, response);
+      response.sendRedirect(request.getContextPath() + "/product?view=list");
+
     }
 
     /**
