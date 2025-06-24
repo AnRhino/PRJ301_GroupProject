@@ -9,11 +9,11 @@
 <!DOCTYPE html>
 
 <body class="d-flex flex-column min-vh-100">
- <footer class="footer mt-auto py-3 bg-light">
-            <div class="container">
-                <i class="bi bi-c-circle"> 2025 AE2CGroceryStore</i>
-            </div>
-        </footer>
+    <footer class="footer mt-auto py-3 bg-light w-100">
+        <div class="container">
+            <i class="bi bi-c-circle"> 2025 AE2CGroceryStore</i>
+        </div>
+    </footer>
 
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>

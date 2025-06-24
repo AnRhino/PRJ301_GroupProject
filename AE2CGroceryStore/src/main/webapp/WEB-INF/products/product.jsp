@@ -22,6 +22,7 @@
             List<Product> productList = (List) request.getAttribute("productList");
             List<Review> reviewList = (List) request.getAttribute("reviewList");
             Product product = (Product) request.getAttribute("product");
+            ErrorMessage msg = (ErrorMessage)request.getAttribute("Error");
 
             // Kiểm tra null và coi có rỗng không.
             // Nếu có thì hiện thông báo.
@@ -116,11 +117,6 @@
                                                             <input type="hidden" name="id" value="<%= product.getProductID()%>">
                                                             <div class="fw-bold d-inline">Add to cart:</div>
                                                             <input type="number" class="text-end border-dark w-100 d-inline" name="quantity" placeholder="0" min="0" max="<%= product.getQuantity()%>">
-                                                            <%if (request.getAttribute("Error") == null) {%>
-                                                            <p><%= ((ErrorMessage)request.getAttribute("Error")).getMessage()%></p>
-                                                            <% } else { %>
-                                                            <p></p>
-                                                            <% } %>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 d-flex gap-3">

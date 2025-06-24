@@ -97,28 +97,6 @@ public class UserProductServlet extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
                     break;
 
-                case "cart":
-//                    if (request.getAttribute("loggedUser") == null) {
-//                        request.getRequestDispatcher("/WEB-INF/credentials/login.jsp").forward(request, response);
-//                    } else {
-                        if (Integer.parseInt(request.getParameter("quantity")) < 0 || Integer.parseInt(request.getParameter("quantity")) > productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id")))) {
-                            request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
-                            request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
-                            request.setAttribute("rateScore", productDao.getRateScore((Integer.parseInt(request.getParameter("id")))));
-                            request.setAttribute("reviewList", reviewDao.getByProductID(Integer.parseInt(request.getParameter("id"))));
-                            request.setAttribute("Error", new ErrorMessage("Current stock quantity is insufficient."));
-                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-                        } else {
-                            request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
-                            request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
-                            request.setAttribute("rateScore", productDao.getRateScore((Integer.parseInt(request.getParameter("id")))));
-                            request.setAttribute("reviewList", reviewDao.getByProductID(Integer.parseInt(request.getParameter("id"))));
-                            request.setAttribute("Error", new ErrorMessage("Add to your cart successfully."));
-                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-                        }
-//                    }
-                    break;
-
                 default:
                     request.setAttribute("categoryList", categoryDao.getAll());
                     request.setAttribute("productList", productDao.getAll());
@@ -140,6 +118,45 @@ public class UserProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
+
+        CategoryDAO categoryDao = new CategoryDAO();
+        ProductDAO productDao = new ProductDAO();
+        ReviewDAO reviewDao = new ReviewDAO();
+        String view = request.getParameter("view");
+
+        request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
+        request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
+        request.setAttribute("rateScore", productDao.getRateScore((Integer.parseInt(request.getParameter("id")))));
+        request.setAttribute("reviewList", reviewDao.getByProductID(Integer.parseInt(request.getParameter("id"))));
+
+        if (view == null || view.isBlank()) {
+            response.sendRedirect(request.getContextPath() + "/user-product?view=product");
+
+        } else {
+
+            switch (view) {
+                case "cart":
+                    try {
+                    Integer.parseInt(request.getParameter("quantity"));
+
+                    if (Integer.parseInt(request.getParameter("quantity")) < 0 || Integer.parseInt(request.getParameter("quantity")) > productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id")))) {
+                        request.setAttribute("Error", new ErrorMessage("Current stock quantity is insufficient."));
+                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("Error", new ErrorMessage("Add to your cart successfully."));
+                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+                    }
+                } catch (NumberFormatException e) {
+                    request.setAttribute("Error", new ErrorMessage("Please enter a valid number."));
+                    response.sendRedirect(request.getContextPath() + "/user-product?view=product");
+                }
+                break;
+
+                default:
+                    response.sendRedirect(request.getContextPath() + "/user-product?view=product");
+                    break;
+            }
+        }
     }
 
     /**
