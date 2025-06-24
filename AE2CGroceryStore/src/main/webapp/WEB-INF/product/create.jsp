@@ -33,12 +33,12 @@
           
             <p>
                 <label for="name">Quantity</label>
-                <input  class="form-control" type="text" id="quantity" name="quantity" required>
+                <input  class="form-control" type="number" min="0" id="quantity" name="quantity" required>
 
             </p>
             <p>
                 <label for="name">Price</label>
-                <input  class="form-control" type="text" id="price" name="price" required>
+                <input  class="form-control" type="number" min="0" id="price" name="price" required>
 
             </p>
             <% List<Category> categogy = (List) request.getAttribute("cate"); %>
