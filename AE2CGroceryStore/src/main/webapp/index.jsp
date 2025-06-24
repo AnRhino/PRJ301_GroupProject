@@ -27,19 +27,19 @@
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="assets/images/members/CreditAnNHP.png" class="d-block w-100" alt="1" id="img">
+                    <img src="assets/images/members/CreditAnNHP.png" class="d-block w-100" alt="1" id="carousel-img">
                 </div>
                 <div class="carousel-item">
-                    <img src="assets/images/members/CreditKhangVM.png" class="d-block w-100" alt="2" id="img">
+                    <img src="assets/images/members/CreditKhangVM.png" class="d-block w-100" alt="2" id="carousel-img">
                 </div>
                 <div class="carousel-item">
-                    <img src="assets/images/members/CreditPhucDC.png" class="d-block w-100" alt="3" id="img">
+                    <img src="assets/images/members/CreditPhucDC.png" class="d-block w-100" alt="3" id="carousel-img">
                 </div>
                 <div class="carousel-item">
-                    <img src="assets/images/members/CreditThoPD.png" class="d-block w-100" alt="4" id="img">
+                    <img src="assets/images/members/CreditThoPD.png" class="d-block w-100" alt="4" id="carousel-img">
                 </div>
                 <div class="carousel-item">
-                    <img src="assets/images/members/CreditTriLT.png" class="d-block w-100" alt="5" id="img">
+                    <img src="assets/images/members/CreditTriLT.png" class="d-block w-100" alt="5" id="carousel-img">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -60,8 +60,6 @@
 
             request.setAttribute("categoryList", categoryDao.getAll());
             request.setAttribute("productList", productDao.getAll());
-            
-            
 
 //            System.out.println(categoryList.size());       
             // Kiểm tra null và coi có rỗng không.
@@ -79,21 +77,23 @@
             </div>
         </c:if>
 
+        <div class="mb-4" style="background-color: #555555;">
+            <h1 class="fw-bold ms-5 text-light">Category</h1>
+        </div>
         <div class="container-fluid">
-            <div class="ms-5 me-5">
-                <h1 class="fw-bold">Category</h1>
+            <div class="ms-5 me-5">           
                 <div class="row">
                     <c:forEach var="cate" items="${categoryList}">
-                        <div class="col-3 d-flex justify-content-center border border-primary">
+                        <div class="col-3 d-flex justify-content-center border border-secondary">
                             <form action="<%= request.getContextPath()%>/user-product" method="get">
                                 <input type="hidden" name="view" value="category">
                                 <input type="hidden" name="id" value="${cate.categoryID}">
                                 <button class="btn p-0 border-0 bg-transparent">
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-center">
-                                            <img src="assets/images/category/${cate.categoryID}.png" alt="placeholder" width="180" height="180">
+                                            <img src="assets/images/category/${cate.categoryID}.png" id="cate-img" alt="placeholder" width="250" height="180">
                                         </div>
-                                        <div class="col-12 d-flex justify-content-center">
+                                        <div class="col-12 d-flex justify-content-center fw-bold text-uppercase">
                                             ${cate.categoryName}
                                         </div>
                                     </div>
@@ -103,20 +103,24 @@
                     </c:forEach>
                 </div>
             </div>
+        </div>
 
-            <div class="ms-5 me-5">
-                <h1 class="fw-bold">Product</h1>
-                <div class="row">
-                    <c:forEach var="pro" items="${productList}">
-                        <div class="col-2 d-flex justify-content-center border border-secondary">
-                            <form action="<%= request.getContextPath()%>/user-product" method="get">
-                                <input type="hidden" name="view" value="product">
-                                <input type="hidden" name="id" value="${pro.productID}">
-                                <button class="btn p-0 border-0 bg-transparent">
-                                    <div class="row">
-                                        <div class="col-12 d-flex justify-content-center">
-                                            <img src="assets/images/placeHolder.jpg" alt="placeholder">
-                                        </div>
+        <div class="my-4" style="background-color: #555555;">
+            <h1 class="fw-bold text-light ms-5">Product</h1>
+        </div>
+        <div class="ms-5 me-5">
+            <div class="row">
+                <c:forEach var="pro" items="${productList}">
+                    <div class="col-3 d-flex justify-content-center">
+                        <form action="<%= request.getContextPath()%>/user-product" method="get">
+                            <input type="hidden" name="view" value="product">
+                            <input type="hidden" name="id" value="${pro.productID}">
+                            <button class="btn">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-12 d-flex justify-content-center">
+                                        <img src="assets/images/placeHolder.jpg" id="img" alt="placeholder">
+                                    </div>  
+                                    <div id="productInfo">
                                         <div class="col-12 d-flex justify-content-center">
                                             ${pro.productName}
                                         </div>
@@ -125,13 +129,12 @@
                                             ${pro.price}
                                         </div>
                                     </div>
-                                </button>
-                            </form>
-                        </div>
-                    </c:forEach>
-                </div>
+                                </div>
+                            </button>
+                        </form>
+                    </div>
+                </c:forEach>
             </div>
-
         </div>
         <%@include file="/WEB-INF/include/footer.jsp" %>
     </body>
