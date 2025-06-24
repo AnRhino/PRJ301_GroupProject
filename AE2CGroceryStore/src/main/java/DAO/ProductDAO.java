@@ -63,7 +63,7 @@ public class ProductDAO extends dbconnect.DBContext {
         return 0;
     }
 
-    public int edit(int prouductId ,String productCode, String productName, int quantity, double price, int cateID ) {
+    public int edit(int prouductId, String productCode, String productName, int quantity, double price, int cateID) {
         try {
             String query = "update  Products\n"
                     + "set ProductCode = ?, ProductName = ?,Quantity = ?,Price= ?, CategoryID = ?\n"
@@ -86,30 +86,29 @@ public class ProductDAO extends dbconnect.DBContext {
     }
 
     public Product getById(int ProductID) {
-    try {
-        String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName " +
-                       "FROM Products p " +
-                       "JOIN Categories c ON p.CategoryID = c.CategoryID " +
-                       "WHERE ProductID = ?";
-        
-        PreparedStatement ps = this.getConnection().prepareStatement(query);
-        ps.setInt(1, ProductID);
-        ResultSet rs = ps.executeQuery();
+        try {
+            String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName "
+                    + "FROM Products p "
+                    + "JOIN Categories c ON p.CategoryID = c.CategoryID "
+                    + "WHERE ProductID = ?";
 
-        if (rs.next()) {
-            Category cat = new Category(rs.getInt(6), rs.getString(7));
-            return new Product(rs.getInt(1), rs.getString(2), rs.getString(3),
-                               rs.getInt(4), rs.getInt(5), cat);
-        } else {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, ProductID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Category cat = new Category(rs.getInt(6), rs.getString(7));
+                return new Product(rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getInt(4), rs.getInt(5), cat);
+            } else {
+                return null;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-
-    } catch (SQLException ex) {
-        Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        return null;
     }
-}
-
 
     public int delete(int productId) {
         String query = "delete from Products where ProductID = ? ";
@@ -193,5 +192,33 @@ public class ProductDAO extends dbconnect.DBContext {
         }
 
         return rateScore;
+    }
+
+    /**
+     * Lấy số lượng trong kho của sản phẩm.
+     * 
+     * @param productID là id của sản phẩm.
+     * 
+     * @return số lượng của sản phẩm đó.
+     */
+    public int getMaxQuantity(int productID) {
+
+        String query = "SELECT p.Quantity\n"
+                + "FROM [dbo].[Products] p \n"
+                + "WHERE p.ProductID = ?";
+        Object[] params = {productID};
+
+        try {
+            ResultSet rs = execSelectQuery(query, params);
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return 0;
     }
 }

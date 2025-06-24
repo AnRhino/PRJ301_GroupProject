@@ -4,6 +4,7 @@
     Author     : Vu Minh Khang - CE191371
 --%>
 
+<%@page import="model.ErrorMessage"%>
 <%@page import="model.Review"%>
 <%@page import="model.Product"%>
 <%@page import="java.util.List"%>
@@ -43,8 +44,8 @@
 
         <div class="container-fluid">
             <div class="ms-5 me-5"> 
-                <div class="row">
-                    <div class="col-3 my-3" style="background: #91bbe5;">
+                <div class="row border border-dark rounded-3 my-3" style="background: #91bbe5;">
+                    <div class="col-3">
                         <div class="m-2 p-2 text-center border border-dark rounded-3" style="background: #0c2333;">
                             <form action="<%= request.getContextPath()%>/user-product" method="get">
                                 <button class="btn btn-transparent">
@@ -52,12 +53,12 @@
                                 </button>
                             </form>
                         </div>
-                        <div class="container-fluid my-3">
+                        <div class="container my-3">
                             <div class="row border border-dark rounded-3" style="background: #0c2333;">
                                 <%
                                     for (Product prod : productList) {
                                 %>   
-                                <div class="col-12 m-3 p-2" style="background: #3376bc;">
+                                <div class="col-10 m-3 p-2 mx-auto" style="background: #3376bc;">
                                     <form action="<%= request.getContextPath()%>/user-product" method="get">
                                         <input type="hidden" name="view" value="product">
                                         <input type="hidden" name="id" value="<%= prod.getProductID()%>">
@@ -75,9 +76,9 @@
                             <div class="my-2 p-2 text-center border border-dark rounded-3" style="background: #0c2333;">
                                 <h1 class="fw-bold text-white"><%= product.getProductName()%></h1>
                             </div>
-                            <div class="m-2 p-2">
-                                <form class="gap-3 d-flex" action="<%= request.getContextPath()%>/user-product" method="post">
-                                    <div class="container-fluid">
+                            <div class="my-2 p-2">
+                                <form action="<%= request.getContextPath()%>/user-product" method="post">
+                                    <div class="">
                                         <div class="row border border-secondary bg-white border-dark">   
                                             <div class="col-6 d-flex justify-content-start p-0">
                                                 <img src="assets/images/placeHolder.jpg" alt="placeholder">
@@ -115,10 +116,15 @@
                                                             <input type="hidden" name="id" value="<%= product.getProductID()%>">
                                                             <div class="fw-bold d-inline">Add to cart:</div>
                                                             <input type="number" class="text-end border-dark w-100 d-inline" name="quantity" placeholder="0" min="0" max="<%= product.getQuantity()%>">
+                                                            <%if (request.getAttribute("Error") == null) {%>
+                                                            <p><%= ((ErrorMessage)request.getAttribute("Error")).getMessage()%></p>
+                                                            <% } else { %>
+                                                            <p></p>
+                                                            <% } %>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 d-flex gap-3">
-                                                        <button class="btn px-5 py-3 bg-success border-dark d-flex justify-content-end" name="status" value="buy">
+                                                        <button class="btn px-5 py-3 bg-success border-dark d-flex justify-content-end" name="view" value="cart">
                                                             <i class="bi bi-basket text-white"></i>
                                                         </button>
                                                     </div>

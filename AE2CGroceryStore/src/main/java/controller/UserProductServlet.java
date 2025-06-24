@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Category;
+import model.ErrorMessage;
 
 /**
  *
@@ -94,6 +95,28 @@ public class UserProductServlet extends HttpServlet {
                     request.setAttribute("rateScore", productDao.getRateScore((Integer.parseInt(request.getParameter("id")))));
                     request.setAttribute("reviewList", reviewDao.getByProductID(Integer.parseInt(request.getParameter("id"))));
                     request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+                    break;
+
+                case "cart":
+//                    if (request.getAttribute("loggedUser") == null) {
+//                        request.getRequestDispatcher("/WEB-INF/credentials/login.jsp").forward(request, response);
+//                    } else {
+                        if (Integer.parseInt(request.getParameter("quantity")) < 0 || Integer.parseInt(request.getParameter("quantity")) > productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id")))) {
+                            request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
+                            request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
+                            request.setAttribute("rateScore", productDao.getRateScore((Integer.parseInt(request.getParameter("id")))));
+                            request.setAttribute("reviewList", reviewDao.getByProductID(Integer.parseInt(request.getParameter("id"))));
+                            request.setAttribute("Error", new ErrorMessage("Current stock quantity is insufficient."));
+                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+                        } else {
+                            request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
+                            request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
+                            request.setAttribute("rateScore", productDao.getRateScore((Integer.parseInt(request.getParameter("id")))));
+                            request.setAttribute("reviewList", reviewDao.getByProductID(Integer.parseInt(request.getParameter("id"))));
+                            request.setAttribute("Error", new ErrorMessage("Add to your cart successfully."));
+                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+                        }
+//                    }
                     break;
 
                 default:
