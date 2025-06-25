@@ -35,7 +35,7 @@ public class UserInputValidate {
 
         try {
 
-            if (input == null) {
+            if (input == null || input.isBlank()) {
                 throw new Exception();
             }
 
@@ -61,11 +61,11 @@ public class UserInputValidate {
             if (!input.matches(INTEGER_REGEX) || Integer.parseInt(input) > Integer.MAX_VALUE || Integer.parseInt(input) < Integer.MIN_VALUE) {
                 throw new NumberFormatException();
             }
-
+            
             return null;
 
         } catch (NumberFormatException e) {
-            return new ErrorMessage("Please enter a valid double number.");
+            return new ErrorMessage("Please enter a valid integer number.");
         }
     }
 
@@ -106,7 +106,7 @@ public class UserInputValidate {
 
         try {
 
-            if (start > Integer.MAX_VALUE || end < Integer.MIN_VALUE || number < start || number > start) {
+            if (start > Integer.MAX_VALUE || end < Integer.MIN_VALUE || number < start || number > end) {
                 throw new Exception();
             }
 
@@ -127,11 +127,11 @@ public class UserInputValidate {
      * @return ErrorMessage nếu người dùng nhập 1 số thực nằm ở ngoài khoảng hợp
      * lệ. Null nếu người dùng nhập 1 số thực nằm trong khoảng hợp lệ.
      */
-    public static ErrorMessage checkIntegerNumberInRange(double number, double start, double end) {
+    public static ErrorMessage checkDoubleNumberInRange(double number, double start, double end) {
 
         try {
 
-            if (start > Double.MAX_VALUE || end < Double.MIN_VALUE || number < start || number > start) {
+            if (start > Double.MAX_VALUE || end < Double.MIN_VALUE || number < start || number > end) {
                 throw new Exception();
             }
 
