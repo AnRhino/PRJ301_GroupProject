@@ -14,54 +14,68 @@
     <body>
 
         <%@include file="/WEB-INF/include/header.jsp" %>
-     <main class="flex-shrink-0">
-    <div class="container">
-        <h1 class="mt-5">Create product</h1>
-        <form class="form" method="post" action="<%= request.getContextPath()%>/product">
-            <input type="hidden" name="action" value="create" />
-
-            <p>
-                <label for="name">Product code</label>
-                <input  class="form-control" type="text" id="productCore" name="productCore" required>
-
-            </p>
-            <p>
-                <label for="name">Product Name</label>
-                <input  class="form-control" type="text" id="productName" name="productName" required>
-
-            </p>
-          
-            <p>
-                <label for="name">Quantity</label>
-                <input  class="form-control" type="number" min="0" id="quantity" name="quantity" required>
-
-            </p>
-            <p>
-                <label for="name">Price</label>
-                <input  class="form-control" type="number" min="0" id="price" name="price" required>
-
-            </p>
-            <% List<Category> categogy = (List) request.getAttribute("cate"); %>
-            <p>
-                <label for="artist">Category</label>
-                <select class="form-select" name="categogy" id="categogy">
-                    <% for (Category cate: categogy) { %>
+        <main class="flex-shrink-0">
+            <div class="container">
+                <h1 class="mt-5">Create product</h1>
+                <%
+                    String message = "";
+                    if (request.getAttribute("message") == null || request.getAttribute("message")== "") {
                     
-                        
-                   <option value="<%=cate.getCategoryID()%> "><%=cate.getCategoryName()%></option>
-               <% } %>
-                </select>
+                %>
+                <form class="form" method="post" action="<%= request.getContextPath()%>/product">
+                    <input type="hidden" name="action" value="create" />
 
-            </p>
-            <p>
-                <button class="btn btn-success" type="submit"  name="action" value="create">Add</button>
-                <button type="reset" class="btn btn-secondary">Clear</button>
+                    <p>
+                        <label for="name">Product code</label>
+                        <input  class="form-control" type="text" id="productCore" name="productCore" required>
 
-            </p>
+                    </p>
+                    <p>
+                        <label for="name">Product Name</label>
+                        <input  class="form-control" type="text" id="productName" name="productName" required>
+
+                    </p>
+
+                    <p>
+                        <label for="name">Quantity</label>
+                        <input  class="form-control" type="text" min="0" id="quantity" name="quantity" required>
+
+                    </p>
+                    <p>
+                        <label for="name">Price</label>
+                        <input  class="form-control" type="text" min="0" id="price" name="price" required>
+
+                    </p>
+                    <% List<Category> categogy = (List) request.getAttribute("cate"); %>
+                    <p>
+                        <label for="artist">Category</label>
+                        <select class="form-select" name="categogy" id="categogy">
+                            <% for (Category cate : categogy) {%>
 
 
+                            <option value="<%=cate.getCategoryID()%> "><%=cate.getCategoryName()%></option>
+                            <% } %>
+                        </select>
 
-        </form>
+                    </p>
+                    <p>
+                        <button class="btn btn-success" type="submit"  name="action" value="create">Add</button>
+                        <button type="reset" class="btn btn-secondary">Clear</button>
+
+                    </p>
+
+                    <div>
+                        <%} else {
+                            message = request.getAttribute("message").toString();
+                        %>
+                        <div><%=message%></div>  
+                        <%
+                            }
+                        %>
+                    </div>
+
+
+                </form>
 
 
         </main>
