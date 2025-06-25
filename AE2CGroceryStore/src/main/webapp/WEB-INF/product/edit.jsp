@@ -17,7 +17,11 @@
         <main class="flex-shrink-0">
             <div class="container">
                 <h1 class="mt-5">Edit product</h1>
+                <%
+                    String message = "";
+                    if (request.getAttribute("message") == null || request.getAttribute("message") == "") {
 
+                %>
                 <form class="form" method="post" action="<%= request.getContextPath()%>/product">
 
                     <input type="hidden" name="action" value="edit" />
@@ -64,7 +68,18 @@
                         <button class="btn btn-success" type="submit"  name="action" value="edit">Add</button>
                         <button type="reset" class="btn btn-secondary">Clear</button>
                     </p>
+                    <div>
+                        <%} else {
+                            message = request.getAttribute("message").toString();
+                        %>
+                        <div><%=message%></div> 
 
+                        <a class="btn btn-success" href="product?view=create" >Retry</a>
+                        <a class="btn btn-success" href="product?view=list" style="text-decoration: none">Home</a>
+                        <%
+                            }
+                        %>
+                    </div>
 
 
                 </form>

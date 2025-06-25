@@ -38,12 +38,12 @@
 
                     <p>
                         <label for="name">Quantity</label>
-                        <input  class="form-control" type="text" min="0" id="quantity" name="quantity" required>
+                        <input  class="form-control" type="number" min="0" id="quantity" name="quantity" required>
 
                     </p>
                     <p>
                         <label for="name">Price</label>
-                        <input  class="form-control" type="text" min="0" id="price" name="price" required>
+                        <input  class="form-control" type="number" min="0" id="price" name="price" required>
 
                     </p>
                     <% List<Category> categogy = (List) request.getAttribute("cate"); %>
@@ -68,7 +68,10 @@
                         <%} else {
                             message = request.getAttribute("message").toString();
                         %>
-                        <div><%=message%></div>  
+                        <div><%=message%></div> 
+                        
+                        <a class="btn btn-success" href="product?view=create" >Retry</a>
+                        <a class="btn btn-success" href="product?view=list" style="text-decoration: none">Home</a>
                         <%
                             }
                         %>

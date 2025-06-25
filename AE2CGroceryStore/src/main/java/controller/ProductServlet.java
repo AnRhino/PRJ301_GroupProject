@@ -75,9 +75,18 @@ public class ProductServlet extends HttpServlet {
             List<Category> cate = cateDAO.getAll();
             request.setAttribute("cate", cate);
             ErrorMessage message = new ErrorMessage();
-            if (request.getParameter("id") != null && request.getParameter("id") !="") {
-                message.setMessage("Must enter 1 character");
-                request.setAttribute("message", message.getMessage());
+            String check = "";
+            check = request.getParameter("id");
+            if (check != null && check != "") {
+                if (check.equalsIgnoreCase("1") || check.equalsIgnoreCase("2")) {
+
+                    message.setMessage("Must enter 1 character");
+                    request.setAttribute("message", message.getMessage());
+                } else if (check.equalsIgnoreCase("3") || check.equalsIgnoreCase("4")) {
+
+                    message.setMessage("Must enter number");
+                    request.setAttribute("message", message.getMessage());
+                }
             }
 
             request.getRequestDispatcher("/WEB-INF/product/create.jsp").forward(request, response);
@@ -96,6 +105,21 @@ public class ProductServlet extends HttpServlet {
             CategoryDAO cateDAO = new CategoryDAO();
             List<Category> cate = cateDAO.getAll();
             request.setAttribute("cate", cate);
+            ErrorMessage message = new ErrorMessage();
+            String check = "";
+            check = request.getParameter("id");
+            if (check != null && check != "") {
+                if (check.equalsIgnoreCase("1") || check.equalsIgnoreCase("2")) {
+
+                    message.setMessage("Must enter 1 character");
+                    request.setAttribute("message", message.getMessage());
+                } else if (check.equalsIgnoreCase("3") || check.equalsIgnoreCase("4")) {
+
+                    message.setMessage("Must enter number");
+                    request.setAttribute("message", message.getMessage());
+                }
+            }
+
             request.getRequestDispatcher("/WEB-INF/product/edit.jsp").forward(request, response);
 
         }
@@ -123,16 +147,16 @@ public class ProductServlet extends HttpServlet {
             String cateid = productDAO.CheckNumber(request.getParameter("categogy").trim());
             if (proCode.equals("Invalid")) {
 
-                   response.sendRedirect(request.getContextPath() + "/product?view=create&id=1");
+                response.sendRedirect(request.getContextPath() + "/product?view=create&id=1");
             } else if (proName.equals("Invalid")) {
 
-                        response.sendRedirect(request.getContextPath() + "/product?view=create&id=1");
+                response.sendRedirect(request.getContextPath() + "/product?view=create&id=2");
 
             } else if (quan.equals("Invalid")) {
-                       response.sendRedirect(request.getContextPath() + "/product?view=create&id=1");
+                response.sendRedirect(request.getContextPath() + "/product?view=create&id=3");
 
             } else if (price.equals("Invalid")) {
-                response.sendRedirect(request.getContextPath() + "/product?view=create&id=1");
+                response.sendRedirect(request.getContextPath() + "/product?view=create&id=4");
 
             } else {
                 productDAO.create(proCode, proName, Integer.parseInt(quan), Integer.parseInt(price), Integer.parseInt(cateid));
@@ -145,12 +169,29 @@ public class ProductServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/product?view=list");
         } else if (action.equals("edit")) {
             int id = Integer.parseInt(request.getParameter("id"));
-            String proCode = request.getParameter("productCore");
-            String proName = request.getParameter("productName");
-            int quan = Integer.parseInt(request.getParameter("quantity"));
-            double price = Double.parseDouble(request.getParameter("price"));
-            int cateid = Integer.parseInt(request.getParameter("categogy").trim());
-            productDAO.edit(id, proCode, proName, quan, price, cateid);
+            String proCode = productDAO.checkCharacter(request.getParameter("productCore"));
+            String proName = productDAO.checkCharacter(request.getParameter("productName"));
+            String quan = productDAO.CheckNumber(request.getParameter("quantity"));
+            String price = productDAO.CheckNumber(request.getParameter("price"));
+            String cateid = productDAO.CheckNumber(request.getParameter("categogy").trim());
+            if (proCode.equals("Invalid")) {
+
+                response.sendRedirect(request.getContextPath() + "/product?view=edit&id=1");
+            } else if (proName.equals("Invalid")) {
+
+                response.sendRedirect(request.getContextPath() + "/product?view=edit&id=2");
+
+            } else if (quan.equals("Invalid")) {
+                response.sendRedirect(request.getContextPath() + "/product?view=edit&id=3");
+
+            } else if (price.equals("Invalid")) {
+                response.sendRedirect(request.getContextPath() + "/product?view=edit&id=4");
+
+            } else {
+                productDAO.edit(id, proCode, proName, Integer.parseInt(quan), Integer.parseInt(price), Integer.parseInt(cateid));
+                response.sendRedirect(request.getContextPath() + "/product?view=list");
+            }
+
         }
 
     }
