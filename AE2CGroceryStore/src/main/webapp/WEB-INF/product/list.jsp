@@ -25,11 +25,11 @@
                     <thead>
                         <tr>
                           
-                            <th>ProductCode</th>
-                            <th>ProductName</th>
+                            <th>Product Code</th>
+                            <th>Product Name</th>
                             <th>Quantity</th>
                             <th>Price</th>
-                            <th>CategoryName</th>
+                            <th>Category Name</th>
                             <th>Action</th>
 
                         </tr>
