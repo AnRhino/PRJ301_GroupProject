@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.ErrorMessage;
 import model.User;
-import model.UserInputValidate;
+import model.UserCredsValidate;
 
 /**
  *
@@ -84,10 +84,10 @@ public class RegisterServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        ErrorMessage emailMsg = UserInputValidate.emailValid(email);
-        ErrorMessage fullNameMsg = UserInputValidate.fullNameValid(fullName);
-        ErrorMessage usernameMsg = UserInputValidate.usernameValid(username);
-        ErrorMessage passwordMsg = UserInputValidate.passwordValid(password);
+        ErrorMessage emailMsg = UserCredsValidate.emailValid(email);
+        ErrorMessage fullNameMsg = UserCredsValidate.fullNameValid(fullName);
+        ErrorMessage usernameMsg = UserCredsValidate.usernameValid(username);
+        ErrorMessage passwordMsg = UserCredsValidate.passwordValid(password);
 
         if (emailMsg != null || fullNameMsg != null || usernameMsg != null || passwordMsg != null) {
             // Store validation error messages in request

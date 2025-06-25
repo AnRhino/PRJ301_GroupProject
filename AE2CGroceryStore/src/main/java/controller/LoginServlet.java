@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.ErrorMessage;
 import model.User;
-import model.UserInputValidate;
+import model.UserCredsValidate;
 
 /**
  *
@@ -81,8 +81,8 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        ErrorMessage usernameMsg = UserInputValidate.usernameValid(username);
-        ErrorMessage passwordMsg = UserInputValidate.passwordValid(password);
+        ErrorMessage usernameMsg = UserCredsValidate.usernameValid(username);
+        ErrorMessage passwordMsg = UserCredsValidate.passwordValid(password);
         
         if (usernameMsg != null || passwordMsg != null) { // If input is not valid
             // Store validation error msg in request

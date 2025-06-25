@@ -8,7 +8,7 @@ package model;
  *
  * @author Dinh Cong Phuc - CE190770
  */
-public class UserInputValidate {
+public class UserCredsValidate {
 
     // Validating Regex
     private static final String EMAIL_REGEX = "^"
