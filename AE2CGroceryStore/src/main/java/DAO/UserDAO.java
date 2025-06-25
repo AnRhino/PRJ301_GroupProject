@@ -8,6 +8,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
@@ -22,14 +24,14 @@ public class UserDAO extends dbconnect.DBContext {
         try {
             String hashPwd = hashMd5(password);
 
-            String query = "select Username, Password, RoleID\n"
+            String query = "select FullName, Email, Username, Password, RoleID\n"
                     + "from users\n"
                     + "where Username = ?\n"
                     + "and password = ?";
             Object[] params = {username, hashPwd};
             ResultSet rs = execSelectQuery(query, params);
             if (rs.next()) {
-                return new User(rs.getString("Username"), null, rs.getInt("RoleID"));
+                return new User(rs.getString("Username"), null, rs.getString("FullName"), rs.getString("Email"), rs.getInt("RoleID"));
             } else {
                 return null;
             }
@@ -55,8 +57,8 @@ public class UserDAO extends dbconnect.DBContext {
             } else {
                 // create
                 // SQL add new user with ID, username, pwd, email, fullname, RoleID
-                String createQuery = "insert into Users (Username, Password, FullName, Email, RoleID) \n" +
-                                    "values (?, ?, ?, ?, ?)";
+                String createQuery = "insert into Users (Username, Password, FullName, Email, RoleID) \n"
+                        + "values (?, ?, ?, ?, ?)";
                 Object[] createParams = {username, hashPwd, fullName, email, 0};
                 execQuery(createQuery, createParams);
                 // return new user
