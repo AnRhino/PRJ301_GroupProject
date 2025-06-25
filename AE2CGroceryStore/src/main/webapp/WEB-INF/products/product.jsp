@@ -22,7 +22,7 @@
             List<Product> productList = (List) request.getAttribute("productList");
             List<Review> reviewList = (List) request.getAttribute("reviewList");
             Product product = (Product) request.getAttribute("product");
-            ErrorMessage msg = (ErrorMessage)request.getAttribute("Error");
+            ErrorMessage msg = (ErrorMessage) request.getAttribute("Error");
 
             // Kiểm tra null và coi có rỗng không.
             // Nếu có thì hiện thông báo.
@@ -113,10 +113,17 @@
                                                         <i class="bi bi-star-fill text-warning"></i>
                                                     </div>
                                                     <div class="col-12">
-                                                        <div class="d-flex align-items-center gap-2"">
+                                                        <div class="d-flex align-items-center gap-2">
                                                             <input type="hidden" name="id" value="<%= product.getProductID()%>">
                                                             <div class="fw-bold d-inline">Add to cart:</div>
                                                             <input type="number" class="text-end border-dark w-100 d-inline" name="quantity" placeholder="0" min="0" max="<%= product.getQuantity()%>">
+                                                        </div>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <% if (msg != null && request.getAttribute("Success") == null) {%>
+                                                            <p class="text-danger"><%= msg.getMessage()%></p>
+                                                            <%} else if (msg == null && request.getAttribute("Success") != null) {%>
+                                                            <p class="text-success"><%= request.getAttribute("Success")%></p>
+                                                            <%}%>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 d-flex gap-3">

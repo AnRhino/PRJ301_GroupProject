@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Category;
 import model.ErrorMessage;
+import model.UserInputValidate;
 
 /**
  *
@@ -24,10 +25,10 @@ import model.ErrorMessage;
 @WebServlet(name = "UserProductServlet", urlPatterns = {"/user-product"})
 public class UserProductServlet extends HttpServlet {
 
-//    private final ProductDAO productDao = new ProductDAO();
-//    private final CategoryDAO categoryDao = new CategoryDAO();
-//    private String view;
-//    private String value;
+    private final ProductDAO productDao = new ProductDAO();
+    private final CategoryDAO categoryDao = new CategoryDAO();
+    private final ReviewDAO reviewDao = new ReviewDAO();;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -68,9 +69,6 @@ public class UserProductServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-        CategoryDAO categoryDao = new CategoryDAO();
-        ProductDAO productDao = new ProductDAO();
-        ReviewDAO reviewDao = new ReviewDAO();
         String view = request.getParameter("view");
 
         if (view == null || view.isBlank()) {
@@ -119,10 +117,8 @@ public class UserProductServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-        CategoryDAO categoryDao = new CategoryDAO();
-        ProductDAO productDao = new ProductDAO();
-        ReviewDAO reviewDao = new ReviewDAO();
         String view = request.getParameter("view");
+        String quantity = request.getParameter("quantity");
 
         request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
         request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
@@ -131,26 +127,33 @@ public class UserProductServlet extends HttpServlet {
 
         if (view == null || view.isBlank()) {
             response.sendRedirect(request.getContextPath() + "/user-product?view=product");
-
         } else {
 
             switch (view) {
-                case "cart":
-                    try {
-                    Integer.parseInt(request.getParameter("quantity"));
 
-                    if (Integer.parseInt(request.getParameter("quantity")) < 0 || Integer.parseInt(request.getParameter("quantity")) > productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id")))) {
-                        request.setAttribute("Error", new ErrorMessage("Current stock quantity is insufficient."));
+                case "cart":
+
+                    if (UserInputValidate.checkEmptyInput(quantity) != null) {
+                        request.setAttribute("Error", new ErrorMessage("Please enter something."));
                         request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+
+                    } else if (UserInputValidate.checkValidIntegerNumber(quantity) != null) {
+                        request.setAttribute("Error", new ErrorMessage("Please enter a valid number."));
+                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+
+                    } else if (UserInputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity),
+                            UserInputValidate.ZERO_VALUE,
+                            productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id"))))
+                            != null) {
+                        request.setAttribute("Error", new ErrorMessage("The cart value too large."));
+                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+
                     } else {
-                        request.setAttribute("Error", new ErrorMessage("Add to your cart successfully."));
+                        String successMsg = "Add to your cart successfully.";
+                        request.setAttribute("Success", successMsg);
                         request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
                     }
-                } catch (NumberFormatException e) {
-                    request.setAttribute("Error", new ErrorMessage("Please enter a valid number."));
-                    response.sendRedirect(request.getContextPath() + "/user-product?view=product");
-                }
-                break;
+                    break;
 
                 default:
                     response.sendRedirect(request.getContextPath() + "/user-product?view=product");
