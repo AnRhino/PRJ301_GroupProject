@@ -19,19 +19,19 @@ import model.User;
  * @author Dinh Cong Phuc - CE190770
  */
 public class UserDAO extends dbconnect.DBContext {
-
+    
     public User login(String username, String password) {
         try {
             String hashPwd = hashMd5(password);
-
-            String query = "select FullName, Email, Username, Password, RoleID\n"
+            
+            String query = "select Username, Password, RoleID\n"
                     + "from users\n"
                     + "where Username = ?\n"
                     + "and password = ?";
             Object[] params = {username, hashPwd};
             ResultSet rs = execSelectQuery(query, params);
             if (rs.next()) {
-                return new User(rs.getString("Username"), null, rs.getString("FullName"), rs.getString("Email"), rs.getInt("RoleID"));
+                return new User(rs.getString("Username"), null, rs.getInt("RoleID"));
             } else {
                 return null;
             }
@@ -40,11 +40,29 @@ public class UserDAO extends dbconnect.DBContext {
         }
         return null;
     }
-
+    
+    public User getUserByUsername(String username) {
+        try {
+            String query = "select Username, FullName, Email\n"
+                    + "from users\n"
+                    + "where Username = ?";
+            Object[] params = {username};
+            ResultSet rs = execSelectQuery(query, params);
+            if (rs.next()) {
+                return new User(rs.getString("Username"), rs.getString("FullName"), rs.getString("Email"));
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     public User register(String username, String password, String fullName, String email) {
         try {
             String hashPwd = hashMd5(password);
-
+            
             String query = "select UserID, Username, Password, RoleID, Email\n"
                     + "from Users\n"
                     + "where Username = ?\n"
@@ -75,12 +93,12 @@ public class UserDAO extends dbconnect.DBContext {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] mess = md.digest(raw.getBytes());
-
+            
             StringBuilder sb = new StringBuilder();
             for (byte b : mess) {
                 sb.append(String.format("%02x", b));
             }
-
+            
             return sb.toString();
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
