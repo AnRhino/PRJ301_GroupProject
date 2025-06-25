@@ -196,9 +196,9 @@ public class ProductDAO extends dbconnect.DBContext {
 
     /**
      * Lấy số lượng trong kho của sản phẩm.
-     * 
+     *
      * @param productID là id của sản phẩm.
-     * 
+     *
      * @return số lượng của sản phẩm đó.
      */
     public int getMaxQuantity(int productID) {
@@ -218,7 +218,44 @@ public class ProductDAO extends dbconnect.DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return 0;
     }
+
+    public String checkCharacter(String input) {
+        String check = "Invalid";
+        if (input.isEmpty()) {
+            return check;
+        }
+
+        for (int i = 0; i < input.length(); i++) { // Loop through each character
+                    if (!((input.charAt(i) >= 'a' && input.charAt(i) <= 'z')
+                            || (input.charAt(i) >= 'A' && input.charAt(i) <= 'Z'))) { 
+                      input = check;
+                        break;
+                      
+                    }
+                }
+
+
+        return input;
+    }
+
+    public String CheckNumber(String input) {
+
+        String check = "Invalid";
+        if (input.isEmpty()) {
+            return check;
+        }
+
+        for (int i = 0; i < input.length() - 1; i++) { 
+            if (input.charAt(i) < '0' || input.charAt(i) > '9') { 
+                input = check;
+            }
+        }
+
+        return input;
+
+    }
+
 }
