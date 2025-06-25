@@ -10,76 +10,135 @@ package model;
  */
 public class UserInputValidate {
 
-    public final static int MIN_VALUE = 0;
-    
-    public final static String INTEGER_FORMAT = "^"
+    public final static int ZERO_VALUE = 0;
+
+    public final static String INTEGER_REGEX = "^"
             + "(-)?"
-            + "(0|[0-9])+"
+            + "(\\d)+"
             + "$";
-    
-    public final static String DOUBLE_FORMAT = "^"
+
+    public final static String DOUBLE_REGEX = "^"
             + "(-)?"
-            + "([0-9])+"
-            + "(.([0-9])+)?"
+            + "(\\d)+"
+            + "(.(\\d)+)?"
             + "$";
-    
-    public ErrorMessage checkEmptyInput(String input) {
-        
+
+    /**
+     * Kiểm tra giá trị nhập vào từ người dùng có rỗng không.
+     *
+     * @param input là gái trị của người dùng nhập.
+     *
+     * @return ErrorMessage nếu người dùng không nhập gì. Null nếu người dùng có
+     * nhập gì đó.
+     */
+    public static ErrorMessage checkEmptyInput(String input) {
+
         try {
-            
+
             if (input == null) {
                 throw new Exception();
             }
-            
+
             return null;
-            
+
         } catch (Exception e) {
-            return new ErrorMessage("Please input a number.");
-        } 
+            return new ErrorMessage("Please input a valid integer number.");
+        }
     }
-    
-    public ErrorMessage checkValidIntegerNumber(String input) {
-        
+
+    /**
+     * Kiểm tra giá trị người dùng có nhập số nguyên hợp lệ hay không.
+     *
+     * @param input là giá trị nhập của người dùng.
+     *
+     * @return ErrorMessage nếu người dùng nhập 1 số nguyên không hợp lệ. Null
+     * nếu người dùng nhập 1 số nguyên hợp lệ.
+     */
+    public static ErrorMessage checkValidIntegerNumber(String input) {
+
         try {
-            
-            if (!input.matches(INTEGER_FORMAT)) {
+
+            if (!input.matches(INTEGER_REGEX) || Integer.parseInt(input) > Integer.MAX_VALUE || Integer.parseInt(input) < Integer.MIN_VALUE) {
                 throw new NumberFormatException();
             }
-            
+
             return null;
-            
+
         } catch (NumberFormatException e) {
-            return new ErrorMessage("Please enter a number.");
-        } 
+            return new ErrorMessage("Please enter a valid double number.");
+        }
     }
-    
-    public ErrorMessage checkValidDoubleNumber(String input) {
-        
+
+    /**
+     * Kiểm tra giá trị người dùng có nhập số thực hợp lệ hay không.
+     *
+     * @param input là giá trị nhập của người dùng.
+     *
+     * @return ErrorMessage nếu người dùng nhập 1 số thực không hợp lệ. Null nếu
+     * người dùng nhập 1 số thực hợp lệ.
+     */
+    public static ErrorMessage checkValidDoubleNumber(String input) {
+
         try {
-            
-            if (!input.matches(DOUBLE_FORMAT)) {
+
+            if (!input.matches(DOUBLE_REGEX) || Double.parseDouble(input) > Double.MAX_VALUE || Double.parseDouble(input) < Double.MIN_VALUE) {
                 throw new NumberFormatException();
             }
-            
+
             return null;
-            
+
         } catch (NumberFormatException e) {
             return new ErrorMessage("Please enter a number.");
-        } 
+        }
     }
-    
-    public ErrorMessage checkNumberInRange(int number, int start, int end) {
-        
+
+    /**
+     * Kiểm tra số nguyên có thuộc khoảng hợp lệ hay không.
+     *
+     * @param number là số cần kiểm tra.
+     * @param start là giới hạn đầu dưới.
+     * @param end là giới hạn đầu trên.
+     *
+     * @return ErrorMessage nếu người dùng nhập 1 số nguyên nằm ở ngoài khoảng
+     * hợp lệ. Null nếu người dùng nhập 1 số nguyên nằm trong khoảng hợp lệ.
+     */
+    public static ErrorMessage checkIntegerNumberInRange(int number, int start, int end) {
+
         try {
-            
-            if (number < start || number > start) {
+
+            if (start > Integer.MAX_VALUE || end < Integer.MIN_VALUE || number < start || number > start) {
                 throw new Exception();
             }
-            
+
             return null;
-            
+
         } catch (Exception e) {
             return new ErrorMessage("Please enter a valid number.");
-        } 
+        }
+    }
+
+    /**
+     * Kiểm tra số thực có thuộc khoảng hợp lệ hay không.
+     *
+     * @param number là số cần kiểm tra.
+     * @param start là giới hạn đầu dưới.
+     * @param end là giới hạn đầu trên.
+     *
+     * @return ErrorMessage nếu người dùng nhập 1 số thực nằm ở ngoài khoảng hợp
+     * lệ. Null nếu người dùng nhập 1 số thực nằm trong khoảng hợp lệ.
+     */
+    public static ErrorMessage checkIntegerNumberInRange(double number, double start, double end) {
+
+        try {
+
+            if (start > Double.MAX_VALUE || end < Double.MIN_VALUE || number < start || number > start) {
+                throw new Exception();
+            }
+
+            return null;
+
+        } catch (Exception e) {
+            return new ErrorMessage("Please enter a valid number.");
+        }
     }
 }
