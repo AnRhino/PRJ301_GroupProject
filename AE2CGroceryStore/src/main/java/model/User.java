@@ -9,6 +9,7 @@ package model;
  * @author Dinh Cong Phuc - CE190770
  */
 public class User {
+
     private int id;
     private String username;
     private String password;
@@ -32,10 +33,16 @@ public class User {
         this.email = email;
         this.roleId = roleId;
     }
-    
+
     public User(int id, String userName) {
         this.id = id;
         this.username = userName;
+    }
+
+    public User(String userName, String fullName, String email) {
+        this.username = userName;
+        this.fullName = fullName;
+        this.email = email;
     }
 
     public int getId() {
@@ -86,7 +93,4 @@ public class User {
         this.roleId = roleId;
     }
 
-    
-    
-    
 }

@@ -10,6 +10,11 @@
     <%@include file="../include/head.jsp" %>
     <body>
         <%@include file="../include/header.jsp" %>
+        
+          <%
+        User profileUser = (User) session.getAttribute("profileUser");
+    %>
+        
         <form class="d-flex mt-5 bg-light w-50" style="margin-left: 25%; padding-left: 10%;">
             <div style="position: absolute; top: -35px; right: 30px; width: 150px;">
             </div>
@@ -20,10 +25,10 @@
 
                                 <h2>User detail</h2>
                                 <table><tbody>
-                                        <tr><td><b class="ms-5">Login</b></td><td><span class="ms-5">${loggedUser.username}</span></td></tr>
-                                        <tr><td><b class="ms-5">Full name</b></td><td><span class="ms-5">${loggedUser.fullName}</span></td></tr>
+                                        <tr><td><b class="ms-5">Username</b></td><td><span class="ms-5">${profileUser.username}</span></td></tr>
+                                        <tr><td><b class="ms-5">Full name</b></td><td><span class="ms-5">${profileUser.fullName}</span></td></tr>
                                         <tr><td><b class="ms-5">Image</b></td><td><img class="ms-5" src="assets/images/placeHolder.jpg" style="height:150px;width:120px;border-width:0px;"></td></tr>
-                                        <tr><td><b class="ms-5">Email</b></td><td><span class="ms-5">${loggedUser.email}</span></td></tr>
+                                        <tr><td><b class="ms-5">Email</b></td><td><span class="ms-5">${profileUser.email}</span></td></tr>
                                     </tbody></table>
                                 <input name="ctl00$mainContent$txtError" type="hidden" id="ctl00_mainContent_txtError">
 

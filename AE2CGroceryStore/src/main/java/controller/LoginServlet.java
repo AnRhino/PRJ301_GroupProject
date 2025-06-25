@@ -83,7 +83,7 @@ public class LoginServlet extends HttpServlet {
 
         ErrorMessage usernameMsg = UserCredsValidate.usernameValid(username);
         ErrorMessage passwordMsg = UserCredsValidate.passwordValid(password);
-        
+
         if (usernameMsg != null || passwordMsg != null) { // If input is not valid
             // Store validation error msg in request
             request.setAttribute("usernameMsg", usernameMsg);
@@ -100,11 +100,11 @@ public class LoginServlet extends HttpServlet {
             // Redirect after login
             if (loggedUser == null) { // If login fail
                 request.setAttribute("loginError", "Please check your Username/Password");
-                
+
                 // Keep the form data so user doesn't need to retype
                 request.setAttribute("username", username);
                 request.setAttribute("password", password);
-                
+
                 // Redirect to login
                 response.sendRedirect(request.getContextPath() + "/login");
                 return;
@@ -112,7 +112,11 @@ public class LoginServlet extends HttpServlet {
                 // Create new session
                 HttpSession session = request.getSession();
                 session.setAttribute("loggedUser", loggedUser);
-                
+               
+                // Get infomation for profile
+                User profileUser = dao.getUserByUsername(username);
+                session.setAttribute("profileUser", profileUser);
+
                 // Redirect to homepage
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
                 return;
