@@ -80,7 +80,7 @@ public class ProductServlet extends HttpServlet {
             if (check != null && check != "") {
                 if (check.equalsIgnoreCase("1") || check.equalsIgnoreCase("2")) {
 
-                    message.setMessage("Must enter 1 character");
+                    message.setMessage("Must enter character OR Product Code is used");
                     request.setAttribute("message", message.getMessage());
                 } else if (check.equalsIgnoreCase("3") || check.equalsIgnoreCase("4")) {
 
@@ -111,7 +111,7 @@ public class ProductServlet extends HttpServlet {
             if (check != null && check != "") {
                 if (check.equalsIgnoreCase("1") || check.equalsIgnoreCase("2")) {
 
-                    message.setMessage("Must enter 1 character");
+                    message.setMessage("Must enter character OR Product Code is used");
                     request.setAttribute("message", message.getMessage());
                 } else if (check.equalsIgnoreCase("3") || check.equalsIgnoreCase("4")) {
 
@@ -140,7 +140,7 @@ public class ProductServlet extends HttpServlet {
         ProductDAO productDAO = new ProductDAO();
         if (action.equals("create")) {
 
-            String proCode = productDAO.checkCharacter(request.getParameter("productCore"));
+            String proCode = productDAO.ProCode(request.getParameter("productCore"));
             String proName = productDAO.checkCharacter(request.getParameter("productName"));
             String quan = productDAO.CheckNumber(request.getParameter("quantity"));
             String price = productDAO.CheckNumber(request.getParameter("price"));
@@ -169,7 +169,7 @@ public class ProductServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/product?view=list");
         } else if (action.equals("edit")) {
             int id = Integer.parseInt(request.getParameter("id"));
-            String proCode = productDAO.checkCharacter(request.getParameter("productCore"));
+            String proCode = productDAO.ProCode(request.getParameter("productCore"));
             String proName = productDAO.checkCharacter(request.getParameter("productName"));
             String quan = productDAO.CheckNumber(request.getParameter("quantity"));
             String price = productDAO.CheckNumber(request.getParameter("price"));

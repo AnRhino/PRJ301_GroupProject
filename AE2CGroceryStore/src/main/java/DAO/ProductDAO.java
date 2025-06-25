@@ -225,18 +225,17 @@ public class ProductDAO extends dbconnect.DBContext {
     public String checkCharacter(String input) {
         String check = "Invalid";
         if (input.isEmpty()) {
-            return check;
+            input = check;
         }
 
-        for (int i = 0; i < input.length(); i++) { // Loop through each character
-                    if (!((input.charAt(i) >= 'a' && input.charAt(i) <= 'z')
-                            || (input.charAt(i) >= 'A' && input.charAt(i) <= 'Z'))) { 
-                      input = check;
-                        break;
-                      
-                    }
-                }
+        for (int i = 0; i < input.length(); i++) {
+            if (!((input.charAt(i) >= 'a' && input.charAt(i) <= 'z')
+                    || (input.charAt(i) >= 'A' && input.charAt(i) <= 'Z') || (input.charAt(i) >= '0' && input.charAt(i) <= '9'))) {
+                input = check;
+                break;
 
+            }
+        }
 
         return input;
     }
@@ -245,17 +244,62 @@ public class ProductDAO extends dbconnect.DBContext {
 
         String check = "Invalid";
         if (input.isEmpty()) {
-            return check;
+            input = check;
         }
 
-        for (int i = 0; i < input.length() - 1; i++) { 
-            if (input.charAt(i) < '0' || input.charAt(i) > '9') { 
+        for (int i = 0; i < input.length() - 1; i++) {
+            if (input.charAt(i) < '0' || input.charAt(i) > '9') {
                 input = check;
             }
         }
 
         return input;
 
+    }
+
+    public String ProCode(String input) {
+
+        List<Product> list = new ArrayList<>();
+        String check = "Invalid";
+        try {
+            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
+                    + "from Products p \n"
+                    + "join  Categories c on p.CategoryID = c.CategoryID";
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Category Category = new Category(rs.getInt(6), rs.getString(7));
+                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
+                list.add(pro);
+            }
+            if (input.isEmpty()) {
+                 input = check;
+            }
+
+            for (int i = 0; i < input.length(); i++) {
+                if (!((input.charAt(i) >= 'a' && input.charAt(i) <= 'z')
+                        || (input.charAt(i) >= 'A' && input.charAt(i) <= 'Z') || (input.charAt(i) >= '0' && input.charAt(i) <= '9'))) {
+                    input = check;
+                    break;
+
+                }
+            }
+            for (Product pr : list) {
+
+                if (input.equalsIgnoreCase(pr.getProductCode())) {
+
+                    input = check;
+
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+        return input;
     }
 
 }
