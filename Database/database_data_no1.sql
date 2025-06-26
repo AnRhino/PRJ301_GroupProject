@@ -148,18 +148,19 @@ VALUES
 ('FRZ010', 'Frozen Fruit Mix', 60, 7000, 10);
 
 -- Giả sử RoleID = 0 là Customer, 1 là Admin
+-- Password của tất cả là Demo@123 (dùng md5 để mã hóa)
 INSERT INTO Users (Username, Password, FullName, Email, RoleID)
 VALUES 
-('user1', '123456', N'Nguyen Van A', 'user1@gmail.com', 0),
-('user2', '123456', N'Le Thi B', 'user2@example.com', 0),
-('user3', '123456', N'Tran Van C', 'user3@example.com', 0),
-('user4', '123456', N'Pham Thi D', 'user4@example.com', 0),
-('user5', '123456', N'Ngo Van E', 'user5@example.com', 0),
-('user6', '123456', N'Huynh Thi F', 'user6@example.com', 0),
-('user7', '123456', N'Dang Van G', 'user7@example.com', 0),
-('admin1', 'admin123', N'Quan Trị Vien A', 'admin1@gmail.com', 1),
-('admin2', 'admin456', N'Quan Tri Vien B', 'admin2@example.com', 1),
-('admin3', 'admin789', N'Quan Tri Vien C', 'admin2@example.com', 1);
+('user1', 'e14c05f0dc27e6be1fc127abaf474a59', N'Nguyen Van A', 'user1@gmail.com', 0),
+('user2', 'e14c05f0dc27e6be1fc127abaf474a59', N'Le Thi B', 'user2@example.com', 0),
+('user3', 'e14c05f0dc27e6be1fc127abaf474a59', N'Tran Van C', 'user3@example.com', 0),
+('user4', 'e14c05f0dc27e6be1fc127abaf474a59', N'Pham Thi D', 'user4@example.com', 0),
+('user5', 'e14c05f0dc27e6be1fc127abaf474a59', N'Ngo Van E', 'user5@example.com', 0),
+('user6', 'e14c05f0dc27e6be1fc127abaf474a59', N'Huynh Thi F', 'user6@example.com', 0),
+('user7', 'e14c05f0dc27e6be1fc127abaf474a59', N'Dang Van G', 'user7@example.com', 0),
+('admin1', 'e14c05f0dc27e6be1fc127abaf474a59', N'Quan Trị Vien A', 'admin1@gmail.com', 1),
+('admin2', 'e14c05f0dc27e6be1fc127abaf474a59', N'Quan Tri Vien B', 'admin2@example.com', 1),
+('admin3', 'e14c05f0dc27e6be1fc127abaf474a59', N'Quan Tri Vien C', 'admin2@example.com', 1);
 
 -- Thêm sản phẩm vào giỏ hàng cho các User.
 INSERT INTO Carts (UserID, ProductID, Quantity)
@@ -318,6 +319,7 @@ VALUES
 (5, '2025-06-19', N'Completed', NULL),
 (7, '2025-06-20', N'Processing', NULL);
 
+-- OrderDetails chưa dùng dc(chưa fix)
 INSERT INTO OrderDetails (OrderID, ProductID, Quantity, UnitPrice)
 VALUES
 -- Order 1
