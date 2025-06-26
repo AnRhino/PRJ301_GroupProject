@@ -14,8 +14,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Category;
 import model.ErrorMessage;
+import model.User;
 import validate.UserInputValidate;
 
 /**
@@ -27,7 +29,9 @@ public class UserProductServlet extends HttpServlet {
 
     private final ProductDAO productDao = new ProductDAO();
     private final CategoryDAO categoryDao = new CategoryDAO();
-    private final ReviewDAO reviewDao = new ReviewDAO();;
+    private final ReviewDAO reviewDao = new ReviewDAO();
+
+    ;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -117,47 +121,54 @@ public class UserProductServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-        String view = request.getParameter("view");
-        String quantity = request.getParameter("quantity");
+        HttpSession session = request.getSession();
 
-        request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
-        request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
-        request.setAttribute("rateScore", productDao.getRateScore((Integer.parseInt(request.getParameter("id")))));
-        request.setAttribute("reviewList", reviewDao.getByProductID(Integer.parseInt(request.getParameter("id"))));
-
-        if (view == null || view.isBlank()) {
-            response.sendRedirect(request.getContextPath() + "/user-product?view=product");
+        if (((User) session.getAttribute("loggedUser")) == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
         } else {
 
-            switch (view) {
+            String view = request.getParameter("view");
+            String quantity = request.getParameter("quantity");
 
-                case "cart":
+            request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
+            request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
+            request.setAttribute("rateScore", productDao.getRateScore((Integer.parseInt(request.getParameter("id")))));
+            request.setAttribute("reviewList", reviewDao.getByProductID(Integer.parseInt(request.getParameter("id"))));
 
-                    if (UserInputValidate.checkEmptyInput(quantity) != null) {
-                        request.setAttribute("Error", new ErrorMessage("Please enter something."));
-                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+            if (view == null || view.isBlank()) {
+                response.sendRedirect(request.getContextPath() + "/user-product?view=product");
+            } else {
 
-                    } else if (UserInputValidate.checkValidIntegerNumber(quantity) != null) {
-                        request.setAttribute("Error", new ErrorMessage("Please enter a valid number."));
-                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+                switch (view) {
 
-                    } else if (UserInputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity),
-                            UserInputValidate.ZERO_VALUE,
-                            productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id"))))
-                            != null) {
-                        request.setAttribute("Error", new ErrorMessage("The cart value too large."));
-                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+                    case "cart":
 
-                    } else {
-                        String successMsg = "Add to your cart successfully.";
-                        request.setAttribute("Success", successMsg);
-                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-                    }
-                    break;
+                        if (UserInputValidate.checkEmptyInput(quantity) != null) {
+                            request.setAttribute("Error", new ErrorMessage("Please enter something."));
+                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
 
-                default:
-                    response.sendRedirect(request.getContextPath() + "/user-product?view=product");
-                    break;
+                        } else if (UserInputValidate.checkValidIntegerNumber(quantity) != null) {
+                            request.setAttribute("Error", new ErrorMessage("Please enter a valid number."));
+                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+
+                        } else if (UserInputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity),
+                                UserInputValidate.ZERO_VALUE,
+                                productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id"))))
+                                != null) {
+                            request.setAttribute("Error", new ErrorMessage("The cart value too large."));
+                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+
+                        } else {
+                            String successMsg = "Add to your cart successfully.";
+                            request.setAttribute("Success", successMsg);
+                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+                        }
+                        break;
+
+                    default:
+                        response.sendRedirect(request.getContextPath() + "/user-product?view=product");
+                        break;
+                }
             }
         }
     }
