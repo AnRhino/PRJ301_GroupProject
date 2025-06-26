@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Category;
 import model.ErrorMessage;
-import model.UserInputValidate;
+import validate.UserInputValidate;
 
 /**
  *

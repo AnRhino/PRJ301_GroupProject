@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.ErrorMessage;
 import model.User;
-import model.UserCredsValidate;
+import validate.UserCredsValidate;
 
 /**
  *
