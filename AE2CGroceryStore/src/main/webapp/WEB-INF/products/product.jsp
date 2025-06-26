@@ -169,6 +169,14 @@
                                     </div>
                                 </div>
                                 <% } %>
+                                <div class="px-5 gap-3 border-dark p-2 text-light gap-3">
+                                    <form action="<%= request.getContextPath()%>/user-product" method="post">
+                                        <input type="hidden" name="view" value="comment">
+                                        <input type="hidden" name="id" value="<%= ((Product) (request.getAttribute("product"))).getProductID()%>">
+                                        <input type="text" class="text-end border-dark w-100 d-inline" name="comment" placeholder="Enter your comment here.">
+                                        <button class="btn btn-primary d-flex align-items-end justify-content-end">Enter</button>
+                                    </form>
+                                </div>
                             </div>
                             <% } %>
                         </div>

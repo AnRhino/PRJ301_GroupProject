@@ -128,7 +128,6 @@ public class UserProductServlet extends HttpServlet {
         } else {
 
             String view = request.getParameter("view");
-            String quantity = request.getParameter("quantity");
 
             request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
             request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
@@ -142,6 +141,8 @@ public class UserProductServlet extends HttpServlet {
                 switch (view) {
 
                     case "cart":
+
+                        String quantity = request.getParameter("quantity");
 
                         if (UserInputValidate.checkEmptyInput(quantity) != null) {
                             request.setAttribute("Error", new ErrorMessage("Please enter something."));
@@ -161,6 +162,19 @@ public class UserProductServlet extends HttpServlet {
                         } else {
                             String successMsg = "Add to your cart successfully.";
                             request.setAttribute("Success", successMsg);
+                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+                        }
+                        break;
+
+                    case "comment":
+
+                        String comment = request.getParameter("comment");
+
+                        if (UserInputValidate.checkEmptyInput(comment) != null) {
+                            request.setAttribute("Error", new ErrorMessage("Please enter something."));
+                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+
+                        } else {
                             request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
                         }
                         break;
