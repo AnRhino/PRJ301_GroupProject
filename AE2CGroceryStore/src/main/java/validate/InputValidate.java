@@ -10,7 +10,7 @@ import model.ErrorMessage;
  *
  * @author Vu Minh Khang - CE191371
  */
-public class UserInputValidate {
+public class InputValidate {
 
     public final static int ZERO_VALUE = 0;
 
@@ -28,7 +28,7 @@ public class UserInputValidate {
     /**
      * Kiểm tra giá trị nhập vào từ người dùng có rỗng không.
      *
-     * @param input là gái trị của người dùng nhập.
+     * @param input là giá trị của người dùng nhập.
      *
      * @return ErrorMessage nếu người dùng không nhập gì. Null nếu người dùng có
      * nhập gì đó.

@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import model.Category;
 import model.ErrorMessage;
 import model.User;
-import validate.UserInputValidate;
+import validate.InputValidate;
 
 /**
  *
@@ -144,16 +144,16 @@ public class UserProductServlet extends HttpServlet {
 
                         String quantity = request.getParameter("quantity");
 
-                        if (UserInputValidate.checkEmptyInput(quantity) != null) {
+                        if (InputValidate.checkEmptyInput(quantity) != null) {
                             request.setAttribute("Error", new ErrorMessage("Please enter something."));
                             request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
 
-                        } else if (UserInputValidate.checkValidIntegerNumber(quantity) != null) {
+                        } else if (InputValidate.checkValidIntegerNumber(quantity) != null) {
                             request.setAttribute("Error", new ErrorMessage("Please enter a valid number."));
                             request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
 
-                        } else if (UserInputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity),
-                                UserInputValidate.ZERO_VALUE,
+                        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity),
+                                InputValidate.ZERO_VALUE,
                                 productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id"))))
                                 != null) {
                             request.setAttribute("Error", new ErrorMessage("The cart value too large."));
@@ -170,7 +170,7 @@ public class UserProductServlet extends HttpServlet {
 
                         String comment = request.getParameter("comment");
 
-                        if (UserInputValidate.checkEmptyInput(comment) != null) {
+                        if (InputValidate.checkEmptyInput(comment) != null) {
                             request.setAttribute("Error", new ErrorMessage("Please enter something."));
                             request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
 
