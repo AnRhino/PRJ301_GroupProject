@@ -112,19 +112,23 @@ public class ProductServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         ProductDAO productDAO = new ProductDAO();
+        ProductValidation pr = new ProductValidation();
         if (action.equals("create")) {
             List<String> errorMessage = new ArrayList<>();
-            ProductValidation pVa = new ProductValidation();
+
             String Code = request.getParameter("productCore");
             String Name = request.getParameter("productName");
             String Quantity = request.getParameter("quantity");
             String Price = request.getParameter("price");
             String Cate = request.getParameter("categogy");
 
-            errorMessage.addAll(pVa.checkProductCode(Code));
-            errorMessage.addAll(pVa.checkProductName(Name));
-            errorMessage.addAll(pVa.checkQuantity(Quantity));
-            errorMessage.addAll(pVa.checkPrice(Price));
+            errorMessage.addAll(pr.checkProductCode(Code));
+            
+            errorMessage.addAll(pr.checkProductName(Name));
+            
+            errorMessage.addAll(pr.checkQuantity(Quantity));
+            
+            errorMessage.addAll(pr.checkPrice(Price));
 
             if (!errorMessage.isEmpty()) {
                 CategoryDAO cateDAO = new CategoryDAO();
@@ -148,12 +152,8 @@ public class ProductServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             productDAO.delete(id);
             response.sendRedirect(request.getContextPath() + "/product?view=list");
-        } else if (action.equals(
-                "edit")) {
-            ProductValidation pVa = new ProductValidation();
+        } else if (action.equals("edit")) {
             int id = Integer.parseInt(request.getParameter("id"));
-
-            List<String> errorMessage = new ArrayList<>();
 
             String Code = request.getParameter("productCore");
             String Name = request.getParameter("productName");
@@ -161,29 +161,34 @@ public class ProductServlet extends HttpServlet {
             String Price = request.getParameter("price");
             String Cate = request.getParameter("categogy");
 
-            errorMessage.addAll(pVa.checkProductCode(Code));
-            errorMessage.addAll(pVa.checkProductName(Name));
-            errorMessage.addAll(pVa.checkQuantity(Quantity));
-            errorMessage.addAll(pVa.checkPrice(Price));
+            List<String> errorMessage = new ArrayList<>();
+            errorMessage.addAll(pr.checkProductCode(Code));
+            
+            errorMessage.addAll(pr.checkProductName(Name));
+            errorMessage.addAll(pr.checkQuantity(Quantity));
+            
+            errorMessage.addAll(pr.checkPrice(Price));
 
             if (!errorMessage.isEmpty()) {
+
                 CategoryDAO cateDAO = new CategoryDAO();
                 request.setAttribute("cate", cateDAO.getAll());
+
                 request.setAttribute("errorMessage", errorMessage);
 
-                request.setAttribute("PCode", Code);
-                request.setAttribute("PName", Name);
-                request.setAttribute("PQuantity", Quantity);
-                request.setAttribute("PPrice", Price);
-                request.setAttribute("PCate", Cate);
+                request.setAttribute("oldCode", Code);
+                request.setAttribute("oldName", Name);
+                request.setAttribute("oldQuantity", Quantity);
+                request.setAttribute("oldPrice", Price);
+                request.setAttribute("oldCate", Cate);
+                request.setAttribute("pro", productDAO.getById(id)); 
 
                 request.getRequestDispatcher("/WEB-INF/product/edit.jsp").forward(request, response);
                 return;
             }
 
-            productDAO.edit(id, Code, Name, Integer.parseInt(Quantity), Integer.parseInt(Price), Integer.parseInt(Cate));
+            productDAO.edit(id, Code, Name, Integer.parseInt(Quantity), Double.parseDouble(Price), Integer.parseInt(Cate));
             response.sendRedirect(request.getContextPath() + "/product?view=list");
-
         }
 
     }
