@@ -15,8 +15,8 @@ CREATE TABLE Roles (
 
 -- Users table
 CREATE TABLE Users (
-    UserID INT PRIMARY KEY IDENTITY,
-    Username NVARCHAR(50) NOT NULL,
+    UserID INT PRIMARY KEY IDENTITY(1,1),
+    Username NVARCHAR(50) NOT NULL UNIQUE,
     Password NVARCHAR(100) NOT NULL,
     FullName NVARCHAR(100),
     Email NVARCHAR(100),
@@ -25,26 +25,28 @@ CREATE TABLE Users (
 
 -- Categories table
 CREATE TABLE Categories (
-    CategoryID INT PRIMARY KEY IDENTITY,
-    CategoryName NVARCHAR(100)
+    CategoryID INT PRIMARY KEY IDENTITY(1,1),
+    CategoryName NVARCHAR(100),
+	IsHidden BIT NOT NULL DEFAULT 0
 );
 
 -- Products table
 CREATE TABLE Products (
-    ProductID INT PRIMARY KEY IDENTITY,
-    ProductCode NVARCHAR(20),
-    ProductName NVARCHAR(100),
-    Quantity INT,
-    Price INT,
-    CategoryID INT FOREIGN KEY REFERENCES Categories(CategoryID)
+    ProductID INT PRIMARY KEY IDENTITY(1,1),
+    ProductCode NVARCHAR(20) NOT NULL UNIQUE,
+    ProductName NVARCHAR(100) NOT NULL,
+    Quantity INT NOT NULL,
+    Price INT NOT NULL,
+    CategoryID INT FOREIGN KEY REFERENCES Categories(CategoryID) NOT NULL,
+	IsHidden BIT NOT NULL DEFAULT 0
 );
 
 -- Carts table
 CREATE TABLE Carts (
-    CartItemID INT PRIMARY KEY IDENTITY,
-    UserID INT FOREIGN KEY REFERENCES Users(UserID),
-    ProductID INT FOREIGN KEY REFERENCES Products(ProductID),
-    Quantity INT
+    CartItemID INT PRIMARY KEY IDENTITY(1,1),
+    UserID INT FOREIGN KEY REFERENCES Users(UserID) NOT NULL,
+    ProductID INT FOREIGN KEY REFERENCES Products(ProductID) NOT NULL,
+    Quantity INT NOT NULL
 );
 
 -- DiscountTypes table
@@ -55,21 +57,27 @@ CREATE TABLE DiscountTypes (
 
 -- DiscountCodes table
 CREATE TABLE DiscountCodes (
-    DiscountCodeID INT PRIMARY KEY IDENTITY,
-    Code NVARCHAR(50) UNIQUE,
-    DiscountValue DECIMAL(10,2),
-    DiscountTypeID INT FOREIGN KEY REFERENCES DiscountTypes(DiscountTypeID),
+    DiscountCodeID INT PRIMARY KEY IDENTITY(1,1),
+    Code NVARCHAR(50) UNIQUE NOT NULL,
+    DiscountValue DECIMAL(10,2) DEFAULT 0,
+    DiscountTypeID INT FOREIGN KEY REFERENCES DiscountTypes(DiscountTypeID) NOT NULL,
     QuantityAvailable INT,
     ExpiryDate DATE,
-    MinOrderValue DECIMAL(10,2)
+    MinOrderValue DECIMAL(10,2) DEFAULT 0
+);
+
+-- StatusType table
+CREATE TABLE StatusType (
+	StatusID INT PRIMARY KEY,
+	StatusDescription VARCHAR(50)
 );
 
 -- Orders table
 CREATE TABLE Orders (
-    OrderID INT PRIMARY KEY IDENTITY,
-    UserID INT FOREIGN KEY REFERENCES Users(UserID),
-    OrderDate DATE,
-    Status NVARCHAR(50),
+    OrderID INT PRIMARY KEY IDENTITY(1,1),
+    UserID INT FOREIGN KEY REFERENCES Users(UserID) NOT NULL,
+    OrderDate DATE NOT NULL DEFAULT CAST(GETDATE() AS DATE),
+    StatusID INT FOREIGN KEY REFERENCES StatusType(StatusID),
     DiscountCodeID INT FOREIGN KEY REFERENCES DiscountCodes(DiscountCodeID)
 );
 
@@ -92,5 +100,13 @@ CREATE TABLE Reviews (
     ReviewDate DATE
 );
 
--- Insert sample data
+-- Insert sample data for Roles table
 INSERT INTO Roles VALUES (0, 'Customer'), (1, 'Admin');
+
+-- Insert sample data for StatusType sample
+INSERT INTO StatusType VALUES
+(0, 'Cancelled'),
+(1, 'Pending'),
+(2, 'Processing'),
+(3, 'Shipped'),
+(4, 'Completed');

@@ -276,48 +276,48 @@ VALUES
 ('LASTCHANCE', 15.0, 0, 5, '2025-07-01', 120000),
 ('XMAS50', 50000.0, 1, 20, '2025-12-24', 300000);
 
-INSERT INTO Orders (UserID, OrderDate, Status, DiscountCodeID)
+INSERT INTO Orders (UserID, OrderDate, StatusID, DiscountCodeID)
 VALUES
 -- User 1
-(1, '2025-06-01', N'Completed', 1),
-(1, '2025-06-10', N'Processing', NULL),
+(1, '2025-06-01', 4, 1),
+(1, '2025-06-10', 2, NULL),
 
 -- User 2
-(2, '2025-06-02', N'Shipped', 3),
-(2, '2025-06-15', N'Pending', NULL),
+(2, '2025-06-02', 3, 3),
+(2, '2025-06-15', 1, NULL),
 
 -- User 3
-(3, '2025-05-30', N'Completed', 2),
-(3, '2025-06-05', N'Cancelled', NULL),
+(3, '2025-05-30', 4, 2),
+(3, '2025-06-05', 0, NULL),
 
 -- User 4
-(4, '2025-06-03', N'Completed', 5),
+(4, '2025-06-03', 4, 5),
 
 -- User 5
-(5, '2025-06-12', N'Pending', NULL),
+(5, '2025-06-12', 1, NULL),
 
 -- User 6
-(6, '2025-06-01', N'Shipped', 4),
+(6, '2025-06-01', 3, 4),
 
 -- User 7
-(7, '2025-06-07', N'Processing', NULL),
+(7, '2025-06-07', 2, NULL),
 
 -- Admin 1 (UserID 8)
-(8, '2025-06-05', N'Completed', 1),
-(8, '2025-06-13', N'Shipped', NULL),
+(8, '2025-06-05', 4, 1),
+(8, '2025-06-13', 3, NULL),
 
 -- Admin 2 (UserID 9)
-(9, '2025-06-14', N'Processing', 6),
+(9, '2025-06-14', 2, 6),
 
 -- Admin 3 (UserID 10)
-(10, '2025-06-11', N'Pending', NULL),
-(10, '2025-06-17', N'Completed', 7),
+(10, '2025-06-11', 1, NULL),
+(10, '2025-06-17', 4, 7),
 
 -- Thêm 4 đơn lẻ để tăng số lượng
-(3, '2025-06-18', N'Pending', NULL),
-(4, '2025-06-18', N'Shipped', 8),
-(5, '2025-06-19', N'Completed', NULL),
-(7, '2025-06-20', N'Processing', NULL);
+(3, '2025-06-18', 1, NULL),
+(4, '2025-06-18', 3, 8),
+(5, '2025-06-19', 4, NULL),
+(7, '2025-06-20', 2, NULL);
 
 -- OrderDetails chưa dùng dc(chưa fix)
 INSERT INTO OrderDetails (OrderID, ProductID, Quantity, UnitPrice)
