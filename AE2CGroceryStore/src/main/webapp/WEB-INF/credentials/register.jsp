@@ -22,7 +22,6 @@
         
         <div class="container-sm">
         <%-- Show error msg if they exists --%>
-        <c:if test="${true}"><p class="text-danger">Test msg</p></c:if>
         <c:if test="${not empty emailMsg}"><p class="text-danger">${emailMsg.getMessage()}</p></c:if>
         <c:if test="${not empty fullNameMsg}"><p class="text-danger">${fullNameMsg.getMessage()}</p></c:if>
         <c:if test="${not empty usernameMsg}"><p class="text-danger">${usernameMsg.getMessage()}</p></c:if>
