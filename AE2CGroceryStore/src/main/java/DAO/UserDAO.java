@@ -20,7 +20,7 @@ import model.User;
  */
 public class UserDAO extends dbconnect.DBContext {
     
-    public User login(String username, String password) {
+    public boolean authenticate(String username, String password) {
         try {
             String hashPwd = hashMd5(password);
             
@@ -30,15 +30,11 @@ public class UserDAO extends dbconnect.DBContext {
                     + "and password = ?";
             Object[] params = {username, hashPwd};
             ResultSet rs = execSelectQuery(query, params);
-            if (rs.next()) {
-                return new User(rs.getString("Username"), null, rs.getInt("RoleID"));
-            } else {
-                return null;
-            }
+            return rs.next();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
-        return null;
     }
     
     public User getUserByUsername(String username) {

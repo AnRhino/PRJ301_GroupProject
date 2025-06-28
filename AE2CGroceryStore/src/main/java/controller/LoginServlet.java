@@ -95,10 +95,10 @@ public class LoginServlet extends HttpServlet {
         } else { // All validity check passed, proceed to login
             // Log user in
             UserDAO dao = new UserDAO();
-            User loggedUser = dao.login(username, password);
+            boolean isAuthenticated = dao.authenticate(username, password);
 
             // Redirect after login
-            if (loggedUser == null) { // If login fail
+            if (!isAuthenticated) { // If login fail
                 request.setAttribute("loginError", "Please check your Username/Password");
 
                 // Keep the form data so user doesn't need to retype
@@ -110,12 +110,12 @@ public class LoginServlet extends HttpServlet {
                 return;
             } else { // If login success
                 // Create new session
+                User loggedUser = dao.getUserByUsername(username);
                 HttpSession session = request.getSession();
                 session.setAttribute("loggedUser", loggedUser);
                
                 // Get infomation for profile
-                User profileUser = dao.getUserByUsername(username);
-                session.setAttribute("profileUser", profileUser);
+                session.setAttribute("profileUser", loggedUser);
 
                 // Redirect to homepage
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
