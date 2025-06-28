@@ -121,9 +121,7 @@ public class UserProductServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-        HttpSession session = request.getSession();
-
-        if (((User) session.getAttribute("loggedUser")) == null) {
+        if (((User) request.getSession().getAttribute("loggedUser")) == null) {
             response.sendRedirect(request.getContextPath() + "/login");
         } else {
 
@@ -144,19 +142,16 @@ public class UserProductServlet extends HttpServlet {
 
                         String quantity = request.getParameter("quantity");
 
-                        if (InputValidate.checkEmptyInput(quantity) != null) {
+                        if (InputValidate.checkEmptyInput(quantity)) {
                             request.setAttribute("Error", new ErrorMessage("Please enter something."));
                             request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
 
-                        } else if (InputValidate.checkValidIntegerNumber(quantity) != null) {
-                            request.setAttribute("Error", new ErrorMessage("Please enter a valid number."));
+                        } else if (InputValidate.checkValidIntegerNumber(quantity)) {
+                            request.setAttribute("Error", new ErrorMessage("Please enter a valid integer number."));
                             request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
 
-                        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity),
-                                InputValidate.ZERO_VALUE,
-                                productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id"))))
-                                != null) {
-                            request.setAttribute("Error", new ErrorMessage("The cart value too large."));
+                        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity), InputValidate.ZERO_VALUE, productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id"))))) {
+                            request.setAttribute("Error", new ErrorMessage("The number is not available."));
                             request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
 
                         } else {
@@ -168,9 +163,9 @@ public class UserProductServlet extends HttpServlet {
 
                     case "comment":
 
-                        String comment = request.getParameter("comment");
+                        String comment = request.getParameter("comment");;
 
-                        if (InputValidate.checkEmptyInput(comment) != null) {
+                        if (InputValidate.checkEmptyInput(comment)) {
                             request.setAttribute("Error", new ErrorMessage("Please enter something."));
                             request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
 

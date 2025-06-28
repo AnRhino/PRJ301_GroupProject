@@ -4,8 +4,6 @@
  */
 package validate;
 
-import model.ErrorMessage;
-
 /**
  *
  * @author Vu Minh Khang - CE191371
@@ -30,10 +28,10 @@ public class InputValidate {
      *
      * @param input là giá trị của người dùng nhập.
      *
-     * @return ErrorMessage nếu người dùng không nhập gì. Null nếu người dùng có
-     * nhập gì đó.
+     * @return True nếu người dùng không nhập gì. False nếu người dùng có nhập
+     * gì đó.
      */
-    public static ErrorMessage checkEmptyInput(String input) {
+    public static boolean checkEmptyInput(String input) {
 
         try {
 
@@ -41,10 +39,10 @@ public class InputValidate {
                 throw new Exception();
             }
 
-            return null;
+            return false;
 
         } catch (Exception e) {
-            return new ErrorMessage("Please input a valid integer number.");
+            return true;
         }
     }
 
@@ -53,21 +51,21 @@ public class InputValidate {
      *
      * @param input là giá trị nhập của người dùng.
      *
-     * @return ErrorMessage nếu người dùng nhập 1 số nguyên không hợp lệ. Null
-     * nếu người dùng nhập 1 số nguyên hợp lệ.
+     * @return True nếu người dùng nhập 1 số nguyên không hợp lệ. Fasle nếu
+     * người dùng nhập 1 số nguyên hợp lệ.
      */
-    public static ErrorMessage checkValidIntegerNumber(String input) {
+    public static boolean checkValidIntegerNumber(String input) {
 
         try {
 
             if (!input.matches(INTEGER_REGEX) || Integer.parseInt(input) > Integer.MAX_VALUE || Integer.parseInt(input) < Integer.MIN_VALUE) {
                 throw new NumberFormatException();
             }
-            
-            return null;
+
+            return false;
 
         } catch (NumberFormatException e) {
-            return new ErrorMessage("Please enter a valid integer number.");
+            return true;
         }
     }
 
@@ -76,10 +74,10 @@ public class InputValidate {
      *
      * @param input là giá trị nhập của người dùng.
      *
-     * @return ErrorMessage nếu người dùng nhập 1 số thực không hợp lệ. Null nếu
-     * người dùng nhập 1 số thực hợp lệ.
+     * @return True nếu người dùng nhập 1 số thực không hợp lệ. False nếu người
+     * dùng nhập 1 số thực hợp lệ.
      */
-    public static ErrorMessage checkValidDoubleNumber(String input) {
+    public static boolean checkValidDoubleNumber(String input) {
 
         try {
 
@@ -87,10 +85,10 @@ public class InputValidate {
                 throw new NumberFormatException();
             }
 
-            return null;
+            return false;
 
         } catch (NumberFormatException e) {
-            return new ErrorMessage("Please enter a number.");
+            return true;
         }
     }
 
@@ -101,10 +99,10 @@ public class InputValidate {
      * @param start là giới hạn đầu dưới.
      * @param end là giới hạn đầu trên.
      *
-     * @return ErrorMessage nếu người dùng nhập 1 số nguyên nằm ở ngoài khoảng
-     * hợp lệ. Null nếu người dùng nhập 1 số nguyên nằm trong khoảng hợp lệ.
+     * @return True nếu người dùng nhập 1 số nguyên nằm ở ngoài khoảng hợp lệ.
+     * False nếu người dùng nhập 1 số nguyên nằm trong khoảng hợp lệ.
      */
-    public static ErrorMessage checkIntegerNumberInRange(int number, int start, int end) {
+    public static boolean checkIntegerNumberInRange(int number, int start, int end) {
 
         try {
 
@@ -112,10 +110,10 @@ public class InputValidate {
                 throw new Exception();
             }
 
-            return null;
+            return false;
 
         } catch (Exception e) {
-            return new ErrorMessage("Please enter a valid number.");
+            return true;
         }
     }
 
@@ -126,10 +124,10 @@ public class InputValidate {
      * @param start là giới hạn đầu dưới.
      * @param end là giới hạn đầu trên.
      *
-     * @return ErrorMessage nếu người dùng nhập 1 số thực nằm ở ngoài khoảng hợp
-     * lệ. Null nếu người dùng nhập 1 số thực nằm trong khoảng hợp lệ.
+     * @return True nếu người dùng nhập 1 số thực nằm ở ngoài khoảng hợp lệ.
+     * False nếu người dùng nhập 1 số thực nằm trong khoảng hợp lệ.
      */
-    public static ErrorMessage checkDoubleNumberInRange(double number, double start, double end) {
+    public static boolean checkDoubleNumberInRange(double number, double start, double end) {
 
         try {
 
@@ -137,10 +135,10 @@ public class InputValidate {
                 throw new Exception();
             }
 
-            return null;
+            return false;
 
         } catch (Exception e) {
-            return new ErrorMessage("Please enter a valid number.");
+            return true;
         }
     }
 }
