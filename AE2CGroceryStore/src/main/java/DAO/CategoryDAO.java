@@ -8,10 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Category;
+import model.Product;
 
 /**
  *
@@ -31,11 +33,12 @@ public class CategoryDAO extends dbconnect.DBContext {
                 + "FROM Categories";
 
         try {
-            PreparedStatement ps = this.getConnection().prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = execSelectQuery(query, null);
+            
             while (rs.next()) {
                 list.add(new Category(rs.getInt(1), rs.getString(2)));
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -59,11 +62,13 @@ public class CategoryDAO extends dbconnect.DBContext {
         Object[] params = {categoryID};
 
         try {
+            
             ResultSet rs = execSelectQuery(query, params);
 
             while (rs.next()) {
                 cate = new Category(rs.getInt(1), rs.getString(2));
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -99,5 +104,28 @@ public class CategoryDAO extends dbconnect.DBContext {
         }
         
         return cate;
+    }
+    
+    public HashMap<Category, List<Product>> getProductListInEachCategory(List<Product> productList) {
+        
+        if (productList == null || productList.isEmpty()) {
+            return null;
+        }
+        
+        HashMap<Category, List<Product>> map = new HashMap<>();
+        
+        for (Product product : productList) {
+            
+            Category cate = product.getCategory();
+            
+            if (!map.containsKey(product.getCategory())) {
+                map.put(product.getCategory(), new ArrayList<Product>());
+                
+            } else {
+                map.get(cate).add(product);
+            }
+        }
+        
+        return map;
     }
 }
