@@ -53,7 +53,7 @@ public class ProductValidation extends dbconnect.DBContext {
         for (int i = 0; i < input.length(); i++) {
             if (!((input.charAt(i) >= 'a' && input.charAt(i) <= 'z')
                     || (input.charAt(i) >= 'A' && input.charAt(i) <= 'Z') || (input.charAt(i) >= '0' && input.charAt(i) <= '9'))) {
-                msg.add("Product name only character and number");
+                msg.add("Product code only character and number");
                 return msg;
             }
         }
@@ -111,7 +111,7 @@ public class ProductValidation extends dbconnect.DBContext {
 
         for (int i = 0; i < input.length(); i++) {
             if (!((input.charAt(i) >= '0' && input.charAt(i) <= '9'))) {
-                msg.add("Quantity only positive number");
+                msg.add("Price only positive number");
                 return msg;
             }
         }
