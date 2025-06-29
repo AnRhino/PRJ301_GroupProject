@@ -95,6 +95,11 @@ public class ProductValidation {
                 return msg;
             }
         }
+        int inputNumBer = Integer.parseInt(input);
+        if (inputNumBer <= 0) {
+            msg.add("Price only positive number");
+            return msg;
+        }
 
         return msg;
     }
@@ -109,7 +114,7 @@ public class ProductValidation {
 
         int cateId;
         try {
-          cateId = Integer.parseInt(cateID);
+            cateId = Integer.parseInt(cateID);
         } catch (NumberFormatException e) {
             errors.add("Category must be a valid number");
             return errors;
