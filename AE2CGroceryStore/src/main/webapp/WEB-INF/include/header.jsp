@@ -77,7 +77,7 @@
                         <% if (loggedIn) { %>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle  text-center text-light fs-4" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; bottom: 6px;">
+                               data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; bottom: 10px;">
                                 <i class="bi bi-person-circle"></i>                              
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -87,21 +87,15 @@
                                 <a href="logout" class="text-danger text-decoration-none m-4">Logout</a>
                             </ul>
                         </li>
-
-                        <% } else { %>
-                        <a href="login" class="btn btn-outline-success m-2" style="width: 73px; height: 38px; position: relative; top: 20px;">Login</a>
-                        <% }%>
-
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle  text-center text-light" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; bottom: 12px;">  
-                                <button class="btn btn-outline-light m-2" type="submit" style="height: 36px;"><i class="bi bi-cart2"> Cart</i></button>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                            </ul>
+                            <a href="cart" class="btn btn-outline-light" style="position: relative; top: 20px;"><i class="bi bi-cart2"> Cart</i></a>
                         </li>
-
+                        <% } else { %>
+                        <a href="login" class="btn btn-outline-success m-2" style="width: 73px; height: 38px; position: relative; top: 0px;">Login</a>
+                        <li class="nav-item dropdown">
+                            <a href="cart" class="btn btn-outline-light" style="position: relative; top: 8px;"><i class="bi bi-cart2"> Cart</i></a>
+                        </li>
+                        <% }%>
                     </form>
                 </div>
             </div>
