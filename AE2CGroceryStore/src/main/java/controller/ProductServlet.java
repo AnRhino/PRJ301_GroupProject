@@ -113,6 +113,7 @@ public class ProductServlet extends HttpServlet {
         String action = request.getParameter("action");
         ProductDAO productDAO = new ProductDAO();
         ProductValidation pr = new ProductValidation();
+         List<Product> list = productDAO.getAll();
         if (action.equals("create")) {
             List<String> errorMessage = new ArrayList<>();
 
@@ -122,13 +123,16 @@ public class ProductServlet extends HttpServlet {
             String Price = request.getParameter("price");
             String Cate = request.getParameter("categogy");
 
-            errorMessage.addAll(pr.checkProductCode(Code));
-            
+            List<Product> allProducts = productDAO.getAll();
+            errorMessage.addAll(pr.checkProductCode(Code, allProducts));
+
             errorMessage.addAll(pr.checkProductName(Name));
-            
+
             errorMessage.addAll(pr.checkQuantity(Quantity));
-            
+
             errorMessage.addAll(pr.checkPrice(Price));
+
+            errorMessage.addAll(pr.checkCategoryID(Cate));
 
             if (!errorMessage.isEmpty()) {
                 CategoryDAO cateDAO = new CategoryDAO();
@@ -162,12 +166,14 @@ public class ProductServlet extends HttpServlet {
             String Cate = request.getParameter("categogy");
 
             List<String> errorMessage = new ArrayList<>();
-            errorMessage.addAll(pr.checkProductCode(Code));
-            
+            errorMessage.addAll(pr.checkProductCodeEdit(Code, id, list));
+
             errorMessage.addAll(pr.checkProductName(Name));
             errorMessage.addAll(pr.checkQuantity(Quantity));
-            
+
             errorMessage.addAll(pr.checkPrice(Price));
+
+            errorMessage.addAll(pr.checkCategoryID(Cate));
 
             if (!errorMessage.isEmpty()) {
 
@@ -181,7 +187,7 @@ public class ProductServlet extends HttpServlet {
                 request.setAttribute("oldQuantity", Quantity);
                 request.setAttribute("oldPrice", Price);
                 request.setAttribute("oldCate", Cate);
-                request.setAttribute("pro", productDAO.getById(id)); 
+                request.setAttribute("pro", productDAO.getById(id));
 
                 request.getRequestDispatcher("/WEB-INF/product/edit.jsp").forward(request, response);
                 return;

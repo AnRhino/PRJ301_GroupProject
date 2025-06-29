@@ -4,6 +4,7 @@
  */
 package validate;
 
+import DAO.CategoryDAO;
 import DAO.ProductDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,48 +20,27 @@ import model.Product;
  *
  * @author PC
  */
-public class ProductValidation extends dbconnect.DBContext {
+public class ProductValidation {
 
-    public List<Product> getAll() {
-        List<Product> list = new ArrayList<>();
-        try {
-            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
-                    + "from Products p \n"
-                    + "join  Categories c on p.CategoryID = c.CategoryID";
-            PreparedStatement ps = this.getConnection().prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Category Category = new Category(rs.getInt(6), rs.getString(7));
-                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
-                list.add(pro);
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-
-        }
-        return list;
-    }
-
-    public List<String> checkProductCode(String input) {
+    public List<String> checkProductCode(String input, List<Product> products) {
         List<String> msg = new ArrayList<>();
-        if (input == null || input.trim().isEmpty()) {
-            msg.add("Product code not is blank");
+        if (input.trim().isEmpty()) {
+            msg.add("Product input must not be blank");
             return msg;
         }
 
         for (int i = 0; i < input.length(); i++) {
             if (!((input.charAt(i) >= 'a' && input.charAt(i) <= 'z')
-                    || (input.charAt(i) >= 'A' && input.charAt(i) <= 'Z') || (input.charAt(i) >= '0' && input.charAt(i) <= '9'))) {
-                msg.add("Product code only character and number");
+                    || (input.charAt(i) >= 'A' && input.charAt(i) <= 'Z')
+                    || (input.charAt(i) >= '0' && input.charAt(i) <= '9'))) {
+                msg.add("Product input must contain only letters and digits");
                 return msg;
             }
         }
 
-        for (Product p : getAll()) {
+        for (Product p : products) {
             if (input.equalsIgnoreCase(p.getProductCode())) {
-                msg.add("Product code already exists");
+                msg.add("Product input already exists");
                 return msg;
             }
         }
@@ -118,4 +98,66 @@ public class ProductValidation extends dbconnect.DBContext {
 
         return msg;
     }
+
+    public List<String> checkCategoryID(String cateID) {
+        List<String> errors = new ArrayList<>();
+
+        if (cateID.trim().isEmpty()) {
+            errors.add("Category must not be blank");
+            return errors;
+        }
+
+        int cateId;
+        try {
+          cateId = Integer.parseInt(cateID);
+        } catch (NumberFormatException e) {
+            errors.add("Category must be a valid number");
+            return errors;
+        }
+
+        CategoryDAO cateDAO = new CategoryDAO();
+        List<Category> allCate = cateDAO.getAll();
+        boolean found = false;
+        for (Category c : allCate) {
+            if (c.getCategoryID() == cateId) {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            errors.add("Selected category does not exist");
+        }
+
+        return errors;
+    }
+
+    public List<String> checkProductCodeEdit(String input, int productId, List<Product> productList) {
+        List<String> msg = new ArrayList<>();
+
+        if (input == null || input.trim().isEmpty()) {
+            msg.add("Product input must not be blank");
+            return msg;
+        }
+
+        for (int i = 0; i < input.length(); i++) {
+            if (!((input.charAt(i) >= 'a' && input.charAt(i) <= 'z')
+                    || (input.charAt(i) >= 'A' && input.charAt(i) <= 'Z')
+                    || (input.charAt(i) >= '0' && input.charAt(i) <= '9'))) {
+                msg.add("Product input must contain only letters and digits");
+                return msg;
+            }
+        }
+
+        for (Product p : productList) {
+
+            if (p.getProductCode().equalsIgnoreCase(input) && p.getProductID() != productId) {
+                msg.add("Product input already exists");
+                break;
+            }
+        }
+
+        return msg;
+    }
+
 }
