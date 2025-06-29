@@ -105,19 +105,19 @@ public class ProductValidation {
     }
 
     public List<String> checkCategoryID(String cateID) {
-        List<String> errors = new ArrayList<>();
+        List<String> msg = new ArrayList<>();
 
         if (cateID.trim().isEmpty()) {
-            errors.add("Category must not be blank");
-            return errors;
+            msg.add("Category must not be blank");
+            return msg;
         }
 
         int cateId;
         try {
             cateId = Integer.parseInt(cateID);
         } catch (NumberFormatException e) {
-            errors.add("Category must be a valid number");
-            return errors;
+            msg.add("Category must be a valid number");
+            return msg;
         }
 
         CategoryDAO cateDAO = new CategoryDAO();
@@ -131,16 +131,16 @@ public class ProductValidation {
         }
 
         if (!found) {
-            errors.add("Selected category does not exist");
+            msg.add("Selected category does not exist");
         }
 
-        return errors;
+        return msg;
     }
 
     public List<String> checkProductCodeEdit(String input, int productId, List<Product> productList) {
         List<String> msg = new ArrayList<>();
 
-        if (input == null || input.trim().isEmpty()) {
+        if (input.trim().isEmpty()) {
             msg.add("Product input must not be blank");
             return msg;
         }
