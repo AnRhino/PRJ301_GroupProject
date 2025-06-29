@@ -8,8 +8,8 @@
 <!DOCTYPE html>
 <head>
     <title>Start Page</title>
-    <link rel="icon" type="image/png" href="assets/images/logo.png">
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/ae2c/assets/images/logo.png">
+    <link href="/ae2c/assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <style>
         .bd-placeholder-img {
@@ -188,5 +188,5 @@
 
 
     <!-- Custom styles for this template -->
-    <link href="assets/css/sticky-footer-navbar.css" rel="stylesheet"/>
+    <link href="/ae2c/assets/css/sticky-footer-navbar.css" rel="stylesheet"/>
 </head>

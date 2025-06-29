@@ -15,5 +15,5 @@
         </div>
     </footer>
 
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/ae2c/assets/js/bootstrap.bundle.min.js"></script>
 </body>
