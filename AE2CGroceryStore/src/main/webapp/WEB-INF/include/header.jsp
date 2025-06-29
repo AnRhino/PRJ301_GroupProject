@@ -60,7 +60,7 @@
 
                         <c:if test="${loggedUser.roleId == 1}">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="product">Manager</a>
+                                <a class="nav-link active" aria-current="page" href="admin">Manager</a>
                             </li>
                         </c:if>
                         <c:if test="${loggedUser.roleId == 0}">
