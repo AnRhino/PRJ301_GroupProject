@@ -26,7 +26,8 @@ public class ProductDAO extends dbconnect.DBContext {
         try {
             String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
                     + "from Products p \n"
-                    + "join  Categories c on p.CategoryID = c.CategoryID";
+                    + "join  Categories c on p.CategoryID = c.CategoryID\n"
+                    + "where p.IsHidden = 0";
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -111,7 +112,9 @@ public class ProductDAO extends dbconnect.DBContext {
     }
 
     public int delete(int productId) {
-        String query = "delete from Products where ProductID = ? ";
+        String query = "update Products\n"
+                + "set IsHidden = 1\n"
+                + "where ProductID = ?";
         try {
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ps.setObject(1, productId);
@@ -221,7 +224,5 @@ public class ProductDAO extends dbconnect.DBContext {
 
         return 0;
     }
-
-
 
 }
