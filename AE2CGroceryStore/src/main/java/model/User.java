@@ -39,10 +39,11 @@ public class User {
         this.username = userName;
     }
 
-    public User(String userName, String fullName, String email) {
+    public User(String userName, String fullName, String email, int roleId) {
         this.username = userName;
         this.fullName = fullName;
         this.email = email;
+        this.roleId = roleId;
     }
 
     public int getId() {

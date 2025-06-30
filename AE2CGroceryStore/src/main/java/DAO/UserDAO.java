@@ -39,13 +39,13 @@ public class UserDAO extends dbconnect.DBContext {
     
     public User getUserByUsername(String username) {
         try {
-            String query = "select Username, FullName, Email\n"
+            String query = "select Username, FullName, Email, RoleID\n"
                     + "from users\n"
                     + "where Username = ?";
             Object[] params = {username};
             ResultSet rs = execSelectQuery(query, params);
             if (rs.next()) {
-                return new User(rs.getString("Username"), rs.getString("FullName"), rs.getString("Email"));
+                return new User(rs.getString("Username"), rs.getString("FullName"), rs.getString("Email"), rs.getInt("RoleID"));
             } else {
                 return null;
             }
