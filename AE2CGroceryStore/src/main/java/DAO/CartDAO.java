@@ -22,9 +22,9 @@ import model.User;
 public class CartDAO extends dbconnect.DBContext {
 
     /**
-     * Get all the category from the database.
+     * Lấy toàn bộ cart của người dùng trong cơ sở dữ liệu.
      *
-     * @return list of all category.
+     * @return danh sách toàn bộ cart hiện tại.
      */
     public List<Cart> getAll() {
 
@@ -39,6 +39,42 @@ public class CartDAO extends dbconnect.DBContext {
         try {
 
             ResultSet rs = execSelectQuery(query, null);
+
+            while (rs.next()) {
+                list.add(new Cart(rs.getInt(1), new User(rs.getInt(2), rs.getString(3)), new Product(rs.getInt(4)), rs.getInt(5)));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
+    }
+
+    /**
+     * Lấy toàn bộ cart của người dùng trong cơ sở dữ liệu theo id của người
+     * dùng.
+     *
+     * @param userID là id cùa người dùng.
+     * 
+     * @return danh sách toàn bộ cart hiện tại của người dùng.
+     */
+    public List<Cart> getByUserID(int userID) {
+
+        List<Cart> list = new ArrayList<>();
+        String query = "SELECT c.CartItemID, u.UserID, u.Username, p.ProductID, c.Quantity\n"
+                + "FROM [dbo].[Carts] c\n"
+                + "JOIN [dbo].[Users] u\n"
+                + "ON u.UserID = c.UserID\n"
+                + "JOIN [dbo].[Products] p\n"
+                + "ON p.ProductID = c.ProductID\n"
+                + "WHERE p.IsHidden = 1\n"
+                + "AND u.UserID = ?";
+        Object[] params = {userID};
+
+        try {
+
+            ResultSet rs = execSelectQuery(query, params);
 
             while (rs.next()) {
                 list.add(new Cart(rs.getInt(1), new User(rs.getInt(2), rs.getString(3)), new Product(rs.getInt(4)), rs.getInt(5)));

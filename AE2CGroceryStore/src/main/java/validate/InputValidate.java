@@ -32,18 +32,7 @@ public class InputValidate {
      * gì đó.
      */
     public static boolean checkEmptyInput(String input) {
-
-        try {
-
-            if (input == null || input.isBlank()) {
-                throw new Exception();
-            }
-
-            return false;
-
-        } catch (Exception e) {
-            return true;
-        }
+         return input == null || input.isBlank();
     }
 
     /**
@@ -55,15 +44,11 @@ public class InputValidate {
      * người dùng nhập 1 số nguyên hợp lệ.
      */
     public static boolean checkValidIntegerNumber(String input) {
-
+        
+        if (!input.matches(INTEGER_REGEX)) return true;
         try {
-
-            if (!input.matches(INTEGER_REGEX) || Integer.parseInt(input) > Integer.MAX_VALUE || Integer.parseInt(input) < Integer.MIN_VALUE) {
-                throw new NumberFormatException();
-            }
-
+            Integer.parseInt(input);
             return false;
-
         } catch (NumberFormatException e) {
             return true;
         }
@@ -78,15 +63,11 @@ public class InputValidate {
      * dùng nhập 1 số thực hợp lệ.
      */
     public static boolean checkValidDoubleNumber(String input) {
-
+        
+        if (!input.matches(DOUBLE_REGEX)) return true;
         try {
-
-            if (!input.matches(DOUBLE_REGEX) || Double.parseDouble(input) > Double.MAX_VALUE || Double.parseDouble(input) < Double.MIN_VALUE) {
-                throw new NumberFormatException();
-            }
-
-            return false;
-
+            double value = Double.parseDouble(input);
+            return Double.isNaN(value) || Double.isInfinite(value);
         } catch (NumberFormatException e) {
             return true;
         }
@@ -104,17 +85,19 @@ public class InputValidate {
      */
     public static boolean checkIntegerNumberInRange(int number, int start, int end) {
 
-        try {
-
-            if (start > Integer.MAX_VALUE || end < Integer.MIN_VALUE || number < start || number > end) {
-                throw new Exception();
-            }
-
-            return false;
-
-        } catch (Exception e) {
-            return true;
-        }
+//        try {
+//
+//            if (start > Integer.MAX_VALUE || end < Integer.MIN_VALUE || number < start || number > end) {
+//                throw new Exception();
+//            }
+//
+//            return false;
+//
+//        } catch (Exception e) {
+//            return true;
+//        }
+        
+        return number < start || number > end;
     }
 
     /**
@@ -129,16 +112,19 @@ public class InputValidate {
      */
     public static boolean checkDoubleNumberInRange(double number, double start, double end) {
 
-        try {
+//        try {
+//
+//            if (start > Double.MAX_VALUE || end < Double.MIN_VALUE || number < start || number > end) {
+//                throw new Exception();
+//            }
+//
+//            return false;
+//
+//        } catch (Exception e) {
+//            return true;
+//        }
 
-            if (start > Double.MAX_VALUE || end < Double.MIN_VALUE || number < start || number > end) {
-                throw new Exception();
-            }
+        return number < start || number > end;
 
-            return false;
-
-        } catch (Exception e) {
-            return true;
-        }
     }
 }

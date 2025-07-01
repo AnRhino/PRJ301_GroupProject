@@ -74,22 +74,22 @@ public class CartServlet extends HttpServlet {
             view = request.getParameter("view");
 
             if (view == null || view.isBlank()) {
-                request.setAttribute("cartList", categoryDao.getProductListInEachCategory(productDao.getAll()));
-                request.getRequestDispatcher("/WEB-INF/users/cart").forward(request, response);
+                request.setAttribute("cartList", productDao.getProductListInEachCategory());
 
             } else {
 
                 switch (view) {
-                    case "show":
-                        
+                    case "cart":
+                        request.setAttribute("cartList", productDao.getProductListInEachCategory());
                         break;
 
                     default:
-                        request.setAttribute("cartList", categoryDao.getProductListInEachCategory(productDao.getAll()));
-                        request.getRequestDispatcher("/WEB-INF/users/cart").forward(request, response);
+                        request.setAttribute("cartList", productDao.getProductListInEachCategory());
                         break;
                 }
             }
+            
+            request.getRequestDispatcher("/WEB-INF/users/cart.jsp").forward(request, response);
         }
     }
 
