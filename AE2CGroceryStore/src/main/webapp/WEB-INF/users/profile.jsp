@@ -25,6 +25,10 @@
                     <c:if test="${editFullName != true}">
                         <strong>Full Name: </strong> ${sessionScope.profileUser.fullName} <a href="${pageContext.request.contextPath}/user-profile?view=editFullName"><i class="bi bi-pencil-square"></i></a>
                     </p>
+                    <c:if test="${sessionScope.fullNameError != null}">
+                        <div class="ms-4 mb-4 text-danger">${sessionScope.fullNameError.message}</div>
+                        <c:remove var="fullNameError" scope="session"/>
+                    </c:if>
                 </c:if>                              
                 <c:if test="${editFullName == true}">
                     <form class="form d-flex align-items-center ms-4 gap-1 mb-3" method="post" action="${pageContext.request.contextPath}/user-profile">                            
@@ -35,10 +39,10 @@
                         <button class="btn btn-success" type="submit">Save</button>   
                     </form>
                 </c:if>       
-                <c:if test="${sessionScope.fullNameError != null}">
-                    <div class="ms-4 mb-4 text-danger">${sessionScope.fullNameError.message}</div>
-                    <c:remove var="fullNameError" scope="session"/>
-                </c:if>
+
+
+
+
                 <p class="ms-4" id="profile">
                     <strong>Image: </strong> <img src="assets/images/placeHolder.jpg" alt="User image" width="100" height="128">
                 </p>
@@ -46,6 +50,10 @@
                     <p class="ms-4 mb-3" id="profile">
                         <strong>Email: </strong> ${sessionScope.profileUser.email}  <a href="${pageContext.request.contextPath}/user-profile?view=editEmail""><i class="bi bi-pencil-square"></i></a>
                     </p>
+                    <c:if test="${sessionScope.emailError != null}">
+                        <div class="ms-4 text-danger">${sessionScope.emailError.message}</div>
+                        <c:remove var="emailError" scope="session"/>
+                    </c:if>
                 </c:if>
                 <c:if test="${editEmail == true}">
                     <form class="form d-flex align-items-center ms-4 gap-1 mb-3" method="post" action="${pageContext.request.contextPath}/user-profile">
@@ -56,10 +64,7 @@
                         <button class="btn btn-success" type="submit">Save</button>   
                     </form>
                 </c:if>
-                 <c:if test="${sessionScope.emailError != null}">
-                    <div class="ms-4 text-danger">${sessionScope.emailError.message}</div>
-                    <c:remove var="emailError" scope="session"/>
-                </c:if>
+
             </div>
         </div>
         <div>

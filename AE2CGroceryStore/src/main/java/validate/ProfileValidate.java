@@ -38,6 +38,15 @@ public class ProfileValidate {
         }
     }
 
+    public static String checkSpacing(String input){
+        try{
+            String output = input.replaceAll("\\s+", " ");
+            return output.trim();
+        } catch(Exception e){
+            return null;
+        }           
+    }
+    
     public static boolean checkEmptyInput(String input) {
         try {
 

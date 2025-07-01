@@ -99,21 +99,28 @@ public class ProfileServlet extends HttpServlet {
 
         User userProfile = (User) request.getSession().getAttribute("profileUser");
 
-        String fullName = request.getParameter("fullname");
+        String fullName = ProfileValidate.checkSpacing(request.getParameter("fullname"));
         String email = request.getParameter("email");
-
+        
+        boolean whoError = (fullName == null);
         UserDAO dao = new UserDAO();
 
         if (ProfileValidate.checkEmptyInput(email) && ProfileValidate.checkEmptyInput(fullName)) {
             // If empty save old name
             dao.updateFullName(userProfile.getFullName(), userProfile.getEmail(), userProfile.getUsername()); // Update DAO
             request.getSession().setAttribute("profileUser", dao.getUserByUsername(userProfile.getUsername())); // Set Attribute
+            if (whoError) {
+                request.getSession().setAttribute("emailError", new ErrorMessage("Email cannot be empty."));
+            } else {
+                request.getSession().setAttribute("fullNameError", new ErrorMessage("Full name cannot be empty."));
+            }
+
         } else if (email == null) {
             if (ProfileValidate.maxAndMinFullNameLength(fullName)) { // Check length
                 request.getSession().setAttribute("fullNameError", new ErrorMessage("FullName lenght can't be lower than 1 and upper than 50."));
 
             } else if (ProfileValidate.fullNameValidate(fullName)) { // Check validate 
-                request.getSession().setAttribute("fullNameError", new ErrorMessage("This name not allow."));
+                request.getSession().setAttribute("fullNameError", new ErrorMessage("This name cannot be used."));
 
             } else {
                 // change Name
@@ -123,7 +130,7 @@ public class ProfileServlet extends HttpServlet {
             }
         } else if (fullName == null) { // Change email
             if (ProfileValidate.emailValidate(email)) { // Check email validate
-                request.getSession().setAttribute("emailError", new ErrorMessage("This email not allow"));
+                request.getSession().setAttribute("emailError", new ErrorMessage("The email address you entered is invalid."));
 
             } else {
                 // Thay đổi Email
