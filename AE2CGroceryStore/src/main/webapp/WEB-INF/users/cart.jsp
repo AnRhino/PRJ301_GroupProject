@@ -11,25 +11,38 @@
     <body>
         <%@include file="../include/header.jsp" %>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="container-fluid p-5 gap-3">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">First</th>
+                                    <th scope="col">Last</th>
+                                    <th scope="col">Handle</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+            <c:forEach var="cart" items="${requestScope.cartList}">
+            <div>
+                            <form>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>${cart.}</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                </tr>
+                            </form>
+
+                            </tbody>
+                        </table>
+            </div>
+            </c:forEach>
+
+
+        </div>
 
         <jsp:include page="../include/footer.jsp" />
     </body>
