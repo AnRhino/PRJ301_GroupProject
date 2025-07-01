@@ -12,7 +12,7 @@
     <body>
         <%@include file="../include/header.jsp" %>
         <div class="d-flex justify-content-center align-content-center mt-5">
-            <div class="row-1 bg-light w-25">
+            <div class="row-1 bg-light w-50">
                 <div>
                     <h1 class="fw-bold ms-2 mt-2">Profile</h1>
                 </div>
@@ -36,13 +36,10 @@
                             <strong>Full Name: </strong>                                                                                                    
                         </label>
                         <input class="form-control" type="text" id="fullname" name="fullname" value="${profileUser.fullName}">
-                        <button class="btn btn-success" type="submit">Save</button>   
+                        <button class="btn btn-success" type="submit">Save</button>
+                        <a class="btn btn-danger" href="${pageContext.request.contextPath}/user-profile">Cancel</a>
                     </form>
                 </c:if>       
-
-
-
-
                 <p class="ms-4" id="profile">
                     <strong>Image: </strong> <img src="assets/images/placeHolder.jpg" alt="User image" width="100" height="128">
                 </p>
@@ -61,14 +58,11 @@
                             <strong>Email: </strong>                                                                                                    
                         </label>
                         <input class="form-control" type="text" id="email" name="email" value="${profileUser.email}">
-                        <button class="btn btn-success" type="submit">Save</button>   
+                        <button class="btn btn-success" type="submit">Save</button>  
+                        <a class="btn btn-danger" href="${pageContext.request.contextPath}/user-profile">Cancel</a>
                     </form>
                 </c:if>
-
             </div>
-        </div>
-        <div>
-
         </div>
         <%@include file="../include/footer.jsp" %>
     </body>
