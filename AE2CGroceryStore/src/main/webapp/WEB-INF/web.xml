@@ -14,5 +14,7 @@
         <url-pattern>/product</url-pattern>
         <url-pattern>/user-profile</url-pattern>
         <url-pattern>/discount-code</url-pattern>
+        <url-pattern>/cart</url-pattern>
+        <url-pattern>/user-product</url-pattern>
     </filter-mapping>
 </web-app>
