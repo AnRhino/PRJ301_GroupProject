@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.ErrorMessage;
 import model.User;
+import validate.ProfileValidate;
+import validate.UserCredsValidate;
 
 /**
  *
@@ -62,6 +64,22 @@ public class ProfileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //        processRequest(request, response);
+        String view = request.getParameter("view");
+
+        if (view == null || view.isBlank()) {
+
+        } else if (view.equals("editFullName")) {
+            boolean editFullName = true;
+            request.setAttribute("editFullName", editFullName);
+
+        } else if (view.equals("editEmail")) {
+            boolean editEmail = true;
+            request.setAttribute("editEmail", editEmail);
+
+        } else {
+            request.getSession().removeAttribute("fullNameError");
+            request.getSession().removeAttribute("emailError");
+        }
         request.getRequestDispatcher("WEB-INF/users/profile.jsp").forward(request, response);
 
     }
@@ -78,7 +96,43 @@ public class ProfileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-        request.getRequestDispatcher("WEB-INF/users/profile.jsp").forward(request, response);
+
+        User userProfile = (User) request.getSession().getAttribute("profileUser");
+
+        String fullName = request.getParameter("fullname");
+        String email = request.getParameter("email");
+
+        UserDAO dao = new UserDAO();
+
+        if (ProfileValidate.checkEmptyInput(email) && ProfileValidate.checkEmptyInput(fullName)) {
+            // If empty save old name
+            dao.updateFullName(userProfile.getFullName(), userProfile.getEmail(), userProfile.getUsername()); // Update DAO
+            request.getSession().setAttribute("profileUser", dao.getUserByUsername(userProfile.getUsername())); // Set Attribute
+        } else if (email == null) {
+            if (ProfileValidate.maxAndMinFullNameLength(fullName)) { // Check length
+                request.getSession().setAttribute("fullNameError", new ErrorMessage("FullName lenght can't be lower than 1 and upper than 50."));
+
+            } else if (ProfileValidate.fullNameValidate(fullName)) { // Check validate 
+                request.getSession().setAttribute("fullNameError", new ErrorMessage("This name not allow."));
+
+            } else {
+                // change Name
+                dao.updateFullName(fullName, userProfile.getEmail(), userProfile.getUsername());
+                request.getSession().setAttribute("profileUser", dao.getUserByUsername(userProfile.getUsername()));
+
+            }
+        } else if (fullName == null) { // Change email
+            if (ProfileValidate.emailValidate(email)) { // Check email validate
+                request.getSession().setAttribute("emailError", new ErrorMessage("This email not allow"));
+
+            } else {
+                // Thay đổi Email
+                dao.updateFullName(userProfile.getFullName(), email, userProfile.getUsername());
+                request.getSession().setAttribute("profileUser", dao.getUserByUsername(userProfile.getUsername()));
+
+            }
+        }
+        response.sendRedirect(request.getContextPath() + "/user-profile");
     }
 
     /**
