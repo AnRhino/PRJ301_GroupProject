@@ -63,9 +63,6 @@
                                 <a class="nav-link active" aria-current="page" href="admin">Manager</a>
                             </li>
                         </c:if>
-                        <c:if test="${loggedUser.roleId == 0}">
-
-                        </c:if>
                     </ul>
                 </div>
                 <div class="ms-auto">
