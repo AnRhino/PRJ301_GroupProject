@@ -41,22 +41,22 @@
 
                     <p>
                         <label for="productCore">Product Code</label>
-                        <input class="form-control" type="text" id="productCore" name="productCore" value="<%= pCode%>" >
+                        <input class="form-control" type="text" id="productCore" name="productCore" value="<%= pCode%>" required >
                     </p>
 
                     <p>
                         <label for="productName">Product Name</label>
-                        <input class="form-control" type="text" id="productName" name="productName" value="<%= pName%>" >
+                        <input class="form-control" type="text" id="productName" name="productName" value="<%= pName%>" required>
                     </p>
 
                     <p>
                         <label for="quantity">Quantity</label>
-                        <input class="form-control" type="text" id="quantity" name="quantity" value="<%= pQuantity%>" >
+                        <input class="form-control" type="text" id="quantity" name="quantity" value="<%= pQuantity%>" required>
                     </p>
 
                     <p>
                         <label for="price">Price</label>
-                        <input class="form-control" type="text" id="price" name="price" value="<%= pPrice%>" >
+                        <input class="form-control" type="text" id="price" name="price" value="<%= pPrice%>" required >
                     </p>
 
                     <%

@@ -49,22 +49,22 @@
                     <p>
                         <label for="name">Product code</label>
                         <input class="form-control" type="text" id="productCore" name="productCore"
-                               value="<%= request.getAttribute("PCode") != null ? request.getAttribute("PCode") : ""%>" >
+                               value="<%= request.getAttribute("PCode") != null ? request.getAttribute("PCode") : ""%>" required >
                     </p>
                     <p>
                         <label for="name">Product Name</label>
                         <input class="form-control" type="text" id="productName" name="productName"
-                               value="<%= request.getAttribute("PName") != null ? request.getAttribute("PName") : ""%>">
+                               value="<%= request.getAttribute("PName") != null ? request.getAttribute("PName") : ""%>" required>
                     </p>
                     <p>
                         <label for="name">Quantity</label>
                         <input class="form-control" type="text" min="0" id="quantity" name="quantity"
-                               value="<%= request.getAttribute("PQuantity") != null ? request.getAttribute("PQuantity") : ""%>">
+                               value="<%= request.getAttribute("PQuantity") != null ? request.getAttribute("PQuantity") : ""%>" required>
                     </p>
                     <p>
                         <label for="name">Price</label>
                         <input class="form-control" type="text" min="0" id="price" name="price"
-                               value="<%= request.getAttribute("PPrice") != null ? request.getAttribute("PPrice") : ""%>">
+                               value="<%= request.getAttribute("PPrice") != null ? request.getAttribute("PPrice") : ""%>" required>
                     </p>
 
                     <% List<Category> categogy = (List) request.getAttribute("cate");
