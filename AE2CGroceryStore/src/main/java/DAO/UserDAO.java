@@ -55,6 +55,18 @@ public class UserDAO extends dbconnect.DBContext {
         return null;
     }
     
+    
+    public int updateFullName(String fullName, String email, String username){
+        try {
+            String query = "update Users set FullName = ?, email = ? where Username = ?";
+            Object[] params = {fullName, email, username};
+            return execQuery(query, params);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    
     public User register(String username, String password, String fullName, String email) {
         try {
             String hashPwd = hashMd5(password);
