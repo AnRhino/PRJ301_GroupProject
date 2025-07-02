@@ -74,17 +74,17 @@ public class CartServlet extends HttpServlet {
             view = request.getParameter("view");
 
             if (view == null || view.isBlank()) {
-                request.setAttribute("cartList", productDao.getProductListInEachCategory());
+                request.setAttribute("cartList", cartDao.getByUserID(0));
 
             } else {
 
                 switch (view) {
                     case "cart":
-                        request.setAttribute("cartList", productDao.getProductListInEachCategory());
+                        request.setAttribute("cartList", cartDao.getByUserID(0));
                         break;
 
                     default:
-                        request.setAttribute("cartList", productDao.getProductListInEachCategory());
+                        request.setAttribute("cartList", cartDao.getByUserID(0));
                         break;
                 }
             }

@@ -30,7 +30,7 @@
                             <form>
                                 <tr>
                                     <th scope="row">1</th>
-                                    <td>${cart.}</td>
+                                    <td></td>
                                     <td>Otto</td>
                                     <td>@mdo</td>
                                 </tr>
