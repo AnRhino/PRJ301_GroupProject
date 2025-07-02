@@ -56,7 +56,7 @@ public class CartDAO extends dbconnect.DBContext {
      * dùng.
      *
      * @param userID là id cùa người dùng.
-     * 
+     *
      * @return danh sách toàn bộ cart hiện tại của người dùng.
      */
     public List<Cart> getByUserID(int userID) {
@@ -85,5 +85,30 @@ public class CartDAO extends dbconnect.DBContext {
         }
 
         return list;
+    }
+
+    /**
+     * Tạo 1 sản phấm trong cart của người dùng.
+     * 
+     * @param userID là id của người dùng.
+     * @param productID là id của sản phẩm muốn thêm vào cart.
+     * @param quantity là số lượng thêm vào.
+     * 
+     * @return 0 nếu thêm không thành công. Khác 0 nếu thành công.
+     */
+    public int addNewProductToCart(int userID, int productID, int quantity) {
+
+        try {
+            String query = "INSERT INTO [dbo].[Carts] (UserID, ProductID, Quantity)\n"
+                    + "VALUES (?, ?, ?);";
+            Object[] params = {userID, productID, quantity};
+            
+            return execQuery(query, params);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return 0;
     }
 }
