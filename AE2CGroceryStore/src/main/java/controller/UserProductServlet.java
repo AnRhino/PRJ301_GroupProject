@@ -31,8 +31,6 @@ public class UserProductServlet extends HttpServlet {
     private final CategoryDAO categoryDao = new CategoryDAO();
     private final ReviewDAO reviewDao = new ReviewDAO();
 
-    ;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -76,35 +74,103 @@ public class UserProductServlet extends HttpServlet {
         String view = request.getParameter("view");
 
         if (view == null || view.isBlank()) {
-            request.setAttribute("categoryList", categoryDao.getAll());
-            request.setAttribute("productList", productDao.getAll());
-            request.getRequestDispatcher("/WEB-INF/products/show.jsp").forward(request, response);
+            getIndexInfo(request);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
 
         } else {
 
-            switch (view) {
+            try {
 
-                case "category":
-                    request.setAttribute("categoryList", categoryDao.getAll());
-                    request.setAttribute("productList", productDao.getProductsByCategory(Integer.parseInt(request.getParameter("id"))));
-                    request.setAttribute("categoryType", categoryDao.getOneByID(Integer.parseInt(request.getParameter("id"))));
-                    request.getRequestDispatcher("/WEB-INF/products/category.jsp").forward(request, response);
-                    break;
+                String id = request.getParameter("id");
+                int productID = Integer.parseInt(id);
+                request.getSession().setAttribute("productID", id);
 
-                case "product":
-                    request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
-                    request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
-                    request.setAttribute("rateScore", productDao.getRateScore((Integer.parseInt(request.getParameter("id")))));
-                    request.setAttribute("reviewList", reviewDao.getByProductID(Integer.parseInt(request.getParameter("id"))));
-                    request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-                    break;
+                switch (view) {
 
-                default:
-                    request.setAttribute("categoryList", categoryDao.getAll());
-                    request.setAttribute("productList", productDao.getAll());
-                    request.getRequestDispatcher("/WEB-INF/products/show.jsp").forward(request, response);
-                    break;
+                    case "category":
+                        getCategoryInfo(request);
+                        request.getRequestDispatcher("/WEB-INF/products/category.jsp").forward(request, response);
+                        break;
+
+                    case "product":
+                        getProductInfo(request, productID);
+                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+                        break;
+
+                    default:
+                        getProductInfo(request, productID);
+                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+                        break;
+                }
+
+            } catch (NumberFormatException e) {
+                handleUnavailableProductID(request, response);
             }
+        }
+    }
+
+    private void handleUnavailableProductID(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getSession().getAttribute("productID") == null || ((String) request.getSession().getAttribute("productID")).isBlank()) {
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        } else {
+            getProductInfo(request, Integer.parseInt((String) request.getSession().getAttribute("productID")));
+            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+        }
+    }
+
+    private void getCategoryInfo(HttpServletRequest request) {
+        request.setAttribute("categoryList", categoryDao.getAll());
+        request.setAttribute("productList", productDao.getProductsByCategory(Integer.parseInt(request.getParameter("id"))));
+        request.setAttribute("categoryType", categoryDao.getOneByID(Integer.parseInt(request.getParameter("id"))));
+    }
+
+    private void getProductInfo(HttpServletRequest request, int productID) {
+        request.setAttribute("product", productDao.getById(productID));
+        request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(productID).getCategoryID()));
+        request.setAttribute("rateScore", productDao.getRateScore(productID));
+        request.setAttribute("reviewList", reviewDao.getByProductID(productID));
+        
+        getErrorOrSuccessInAddToCartIfExists(request);
+        getErrorOrSuccessInAddCommentIfExists(request);
+    }
+
+    private void getIndexInfo(HttpServletRequest request) {
+        request.setAttribute("categoryList", categoryDao.getAll());
+        request.setAttribute("productList", productDao.getAll());
+    }
+
+    /**
+     * Kiểm tra thông báo thành công hay thất bại nếu khách hàng thêm mới sản
+     * phẩm vào giỏ hàng. Kiểm tra nếu khách hàng tạo ra lỗi thì lấy lỗi từ
+     * session và ném về request. Kiểm tra nếu khách hàng thêm thành công thì
+     * lấy thông báo thành công từ session và ném về request. Còn không có lỗi
+     * hay thông báo thành công thì không làm gì.
+     *
+     * @param request là yêu cầu thêm vào sản phẩm của hàng hàng.
+     */
+    private void getErrorOrSuccessInAddToCartIfExists(HttpServletRequest request) {
+        if (request.getSession().getAttribute("errorCart") != null) {
+            request.setAttribute("errorCartMsg", request.getSession().getAttribute("errorCart"));
+            request.getSession().removeAttribute("errorCart");
+        } else if (request.getSession().getAttribute("success") != null) {
+            request.setAttribute("successMsg", request.getSession().getAttribute("success"));
+            request.getSession().removeAttribute("success");
+        }
+    }
+
+    /**
+     * Kiểm tra thông báo thành công hay thất bại nếu khách hàng thêm mới sản
+     * phẩm vào giỏ hàng. Kiểm tra nếu khách hàng tạo ra lỗi thì lấy lỗi từ
+     * session và ném về request. Kiểm tra nếu khách hàng thêm thành công thì
+     * lấy thông báo thành công từ session và ném về request. Còn không có lỗi
+     * hay thông báo thành công thì không làm gì.
+     *
+     * @param request là yêu cầu thêm vào sản phẩm của hàng hàng.
+     */
+    private void getErrorOrSuccessInAddCommentIfExists(HttpServletRequest request) {
+        if (request.getSession().getAttribute("errorComment") != null) {
+            request.setAttribute("errorComment", request.getSession().getAttribute("errorComment"));
+            request.getSession().removeAttribute("errorComment");
         }
     }
 
@@ -121,64 +187,75 @@ public class UserProductServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-        if (((User) request.getSession().getAttribute("loggedUser")) == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        String view = request.getParameter("view");
+
+        if (view == null || view.isBlank()) {
+            response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + request.getParameter("id"));
+
         } else {
 
-            String view = request.getParameter("view");
+            switch (view) {
 
-            request.setAttribute("product", productDao.getById(Integer.parseInt(request.getParameter("id"))));
-            request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(Integer.parseInt(request.getParameter("id"))).getCategoryID()));
-            request.setAttribute("rateScore", productDao.getRateScore((Integer.parseInt(request.getParameter("id")))));
-            request.setAttribute("reviewList", reviewDao.getByProductID(Integer.parseInt(request.getParameter("id"))));
+                case "cart":
 
-            if (view == null || view.isBlank()) {
-                response.sendRedirect(request.getContextPath() + "/user-product?view=product");
-            } else {
+                    handleCartInput(request);
+                    break;
 
-                switch (view) {
+                case "comment":
 
-                    case "cart":
+                    handleCommentInput(request);
+                    break;
 
-                        String quantity = request.getParameter("quantity");
-
-                        if (InputValidate.checkEmptyInput(quantity)) {
-                            request.setAttribute("Error", new ErrorMessage("Please enter something."));
-                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-
-                        } else if (InputValidate.checkValidIntegerNumber(quantity)) {
-                            request.setAttribute("Error", new ErrorMessage("Please enter a valid integer number."));
-                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-
-                        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity), InputValidate.ZERO_VALUE, productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id"))))) {
-                            request.setAttribute("Error", new ErrorMessage("The number is not available."));
-                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-
-                        } else {
-                            String successMsg = "Add to your cart successfully.";
-                            request.setAttribute("Success", successMsg);
-                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-                        }
-                        break;
-
-                    case "comment":
-
-                        String comment = request.getParameter("comment");;
-
-                        if (InputValidate.checkEmptyInput(comment)) {
-                            request.setAttribute("Error", new ErrorMessage("Please enter something."));
-                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-
-                        } else {
-                            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-                        }
-                        break;
-
-                    default:
-                        response.sendRedirect(request.getContextPath() + "/user-product?view=product");
-                        break;
-                }
+                default:
+                    break;
             }
+
+            request.getSession().setAttribute("productID", request.getParameter("id"));
+            response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + request.getSession().getAttribute("productID"));
+        }
+
+    }
+
+    /**
+     * Xử lí thêm vào cart của người dùng.
+     *
+     * Nếu số lượng thêm vào cùa người dùng xảy ra lỗi thì sẽ thêm lỗi đó vào
+     * session của người dùng. Nếu thêm số lượng phù hợp mà không xảy ra lỗi thì
+     * sẽ thêm thông báo thành công vào session của người dùng.
+     *
+     * @param request là yêu cầu của người dùng.
+     */
+    private void handleCartInput(HttpServletRequest request) {
+        String quantity = request.getParameter("quantity");
+
+        if (InputValidate.checkEmptyInput(quantity)) {
+            request.getSession().setAttribute("errorCart", new ErrorMessage("Please enter something."));
+
+        } else if (InputValidate.checkValidIntegerNumber(quantity)) {
+            request.getSession().setAttribute("errorCart", new ErrorMessage("Please enter a valid integer number."));
+
+        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity), InputValidate.ZERO_VALUE, productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id"))))) {
+            request.getSession().setAttribute("errorCart", new ErrorMessage("The number is not available."));
+
+        } else {
+            String successMsg = "Add to your cart successfully.";
+            request.getSession().setAttribute("success", successMsg);
+        }
+    }
+
+    /**
+     * Xử lí tạo comment mới của người dùng.
+     *
+     * Nếu comment của người dùng lỗi thù sẽ thêm lỗi đó vào session của người
+     * dùng.
+     *
+     * @param request là yêu cầu của người dùng.
+     */
+    private void handleCommentInput(HttpServletRequest request) {
+        String comment = request.getParameter("comment");
+
+        if (InputValidate.checkEmptyInput(comment)) {
+            request.getSession().setAttribute("errorComment", new ErrorMessage("Please enter something."));
         }
     }
 

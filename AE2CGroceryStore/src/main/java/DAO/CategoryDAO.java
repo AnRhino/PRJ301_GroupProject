@@ -106,26 +106,4 @@ public class CategoryDAO extends dbconnect.DBContext {
         return cate;
     }
     
-    public HashMap<Category, List<Product>> getProductListInEachCategory(List<Product> productList) {
-        
-        if (productList == null || productList.isEmpty()) {
-            return null;
-        }
-        
-        HashMap<Category, List<Product>> map = new HashMap<>();
-        
-        for (Product product : productList) {
-            
-            Category cate = product.getCategory();
-            
-            if (!map.containsKey(product.getCategory())) {
-                map.put(product.getCategory(), new ArrayList<Product>());
-                
-            } else {
-                map.get(cate).add(product);
-            }
-        }
-        
-        return map;
-    }
 }

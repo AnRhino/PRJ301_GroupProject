@@ -64,7 +64,8 @@ public class ReviewDAO extends dbconnect.DBContext {
                 + "ON prod.ProductID = rv.ProductID\n"
                 + "JOIN [dbo].[Users] us\n"
                 + "ON us.UserID = rv.UserID\n"
-                + "WHERE prod.ProductID = ?;";
+                + "WHERE prod.ProductID = ?\n"
+                + "AND prod.IsHidden = 0;";
         Object[] params = {productID};
 
         try {

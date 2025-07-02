@@ -9,7 +9,6 @@
 <%@page import="model.Product"%>
 <%@page import="java.util.List"%>
 <%@page import="model.Category"%>
-<%@page import="model.Category"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,7 +21,9 @@
             List<Product> productList = (List) request.getAttribute("productList");
             List<Review> reviewList = (List) request.getAttribute("reviewList");
             Product product = (Product) request.getAttribute("product");
-            ErrorMessage msg = (ErrorMessage) request.getAttribute("Error");
+            ErrorMessage msgErrorCart = (ErrorMessage) request.getAttribute("errorCartMsg");
+            String msgSuccess = (String) request.getAttribute("successMsg");
+            ErrorMessage msgErrorComment = (ErrorMessage) request.getAttribute("errorComment");
 
             // Kiểm tra null và coi có rỗng không.
             // Nếu có thì hiện thông báo.
@@ -116,13 +117,13 @@
                                                         <div class="d-flex align-items-center gap-2">
                                                             <input type="hidden" name="id" value="<%= product.getProductID()%>">
                                                             <div class="fw-bold d-inline">Add to cart:</div>
-                                                            <input type="number" class="text-end border-dark w-100 d-inline" name="quantity" placeholder="0" min="0" max="<%= product.getQuantity()%>">
+                                                            <input type="number" class="text-end border-dark w-100 d-inline" name="quantity" placeholder="1" min="1" max="<%= product.getQuantity()%>">
                                                         </div>
                                                         <div class="d-flex align-items-center gap-2">
-                                                            <% if (msg != null && request.getAttribute("Success") == null) {%>
-                                                            <p class="text-danger"><%= msg.getMessage()%></p>
-                                                            <%} else if (msg == null && request.getAttribute("Success") != null) {%>
-                                                            <p class="text-success"><%= request.getAttribute("Success")%></p>
+                                                            <% if (msgErrorCart != null && msgSuccess == null) {%>
+                                                            <p class="text-danger"><%= msgErrorCart.getMessage()%></p>
+                                                            <%} else if (msgErrorCart == null && msgSuccess != null) {%>
+                                                            <p class="text-success"><%= msgSuccess%></p>
                                                             <%}%>
                                                         </div>
                                                     </div>
