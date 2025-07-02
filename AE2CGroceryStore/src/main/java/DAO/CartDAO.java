@@ -45,7 +45,7 @@ public class CartDAO extends dbconnect.DBContext {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return list;
@@ -81,7 +81,7 @@ public class CartDAO extends dbconnect.DBContext {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return list;

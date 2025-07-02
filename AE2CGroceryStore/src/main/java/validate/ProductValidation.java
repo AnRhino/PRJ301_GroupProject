@@ -18,8 +18,9 @@ import model.Product;
 
 /**
  *
- * @author PC
+ * @author Phan Duc Tho - CE191246
  */
+
 public class ProductValidation {
 
     public List<String> checkProductCode(String input, List<Product> products) {
