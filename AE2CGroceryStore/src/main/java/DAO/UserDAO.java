@@ -27,7 +27,7 @@ public class UserDAO extends dbconnect.DBContext {
             String query = "select Username, Password, RoleID\n"
                     + "from users\n"
                     + "where Username = ?\n"
-                    + "and password = ?";
+                    + "and Password = ?";
             Object[] params = {username, hashPwd};
             ResultSet rs = execSelectQuery(query, params);
             return rs.next();
@@ -39,13 +39,13 @@ public class UserDAO extends dbconnect.DBContext {
     
     public User getUserByUsername(String username) {
         try {
-            String query = "select Username, FullName, Email, RoleID\n"
+            String query = "select UserID, Username, FullName, Email, RoleID\n"
                     + "from users\n"
                     + "where Username = ?";
             Object[] params = {username};
             ResultSet rs = execSelectQuery(query, params);
             if (rs.next()) {
-                return new User(rs.getString("Username"), rs.getString("FullName"), rs.getString("Email"), rs.getInt("RoleID"));
+                return new User(rs.getInt("UserID"), rs.getString("Username"), rs.getString("FullName"), rs.getString("Email"), rs.getInt("RoleID"));
             } else {
                 return null;
             }

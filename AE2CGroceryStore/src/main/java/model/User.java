@@ -26,7 +26,8 @@ public class User {
         this.roleId = roleId;
     }
 
-    public User(String username, String password, String fullName, String email, int roleId) {
+    public User(int id, String username, String password, String fullName, String email, int roleId) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.fullName = fullName;
@@ -39,7 +40,8 @@ public class User {
         this.username = userName;
     }
 
-    public User(String userName, String fullName, String email, int roleId) {
+    public User(int id, String userName, String fullName, String email, int roleId) {
+        this.id = id;
         this.username = userName;
         this.fullName = fullName;
         this.email = email;
