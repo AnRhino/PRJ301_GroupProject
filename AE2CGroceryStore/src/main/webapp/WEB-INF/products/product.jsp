@@ -145,13 +145,32 @@
                             <div class="">
                                 <h3 class="fw-bold">Review</h3>
                             </div>
-                            <% if (reviewList == null || reviewList.isEmpty()) { %>
+                            <% if (reviewList == null || reviewList.isEmpty()) {%>
 
                             <div class="bg-secondary border border-dark rounded-3 py-3">
                                 <p class="d-flex flex-column px-5 gap-2 border-dark p-2 text-light">There are currently no review about this product.</p>
                                 <img class="px-5" src="assets/images/placeHolder.jpg" alt="placeholder">
+                                <div class="px-5 gap-3 p-2 text-light">
+                                    <form action="<%= request.getContextPath()%>/user-product" method="post"class="d-flex gap-2">
+                                        <input type="hidden" name="view" value="comment">
+                                        <input type="hidden" name="id" value="<%= ((Product) (request.getAttribute("product"))).getProductID()%>">
+                                        <input type="text" class="form-control" name="comment" placeholder="Enter your comment here.">
+                                        <select name="rating" id="rating" required>-- Select rating --
+                                            <option value="1">1 ⭐</option>
+                                            <option value="2">2 ⭐⭐</option>
+                                            <option value="3">3 ⭐⭐⭐</option>
+                                            <option value="4">4 ⭐⭐⭐⭐</option>
+                                            <option value="5">5 ⭐⭐⭐⭐⭐</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary">Enter</button>
+                                    </form>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <% if (msgErrorComment != null) {%>
+                                        <p class="text-danger"><%= msgErrorComment.getMessage()%></p>
+                                        <%}%>
+                                    </div>
+                                </div>
                             </div>
-
                             <% } else { %>
 
                             <div class="bg-secondary border border-dark rounded-3 py-3">
