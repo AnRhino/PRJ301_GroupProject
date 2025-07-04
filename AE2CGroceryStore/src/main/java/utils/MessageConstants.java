@@ -22,6 +22,6 @@ public class MessageConstants {
     public final static String EMPTY_RATING_INPUT_MESSAGE = "Please select a rate for this product.";
     public final static String INVALID_RATING_INPUT_MESSAGE = "Please choose a valid rate for this product.";
     public final static String OUT_OF_RANGE_RATING_INPUT_MESSAGE = "Rating only from 1 to 5.";
-    
+    public final static String SUCCESS_DELETE_COMMENT_MESSAGE = "Successfully remove the comment.";
     
 }
