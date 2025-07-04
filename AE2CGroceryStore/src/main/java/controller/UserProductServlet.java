@@ -109,6 +109,19 @@ public class UserProductServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Xử lí người dùng chỉnh lại id trong html.
+     *
+     * Lưu id của sản phẩm vào session nếu người dùng truy cập và xem 1 sản phẩm
+     * nào đó. Nếu truy cập id sản phẩm mới thì thay đổi id sản phẩm trong
+     * session. Không thì không thay đổi nếu người dùng có chỉnh lại id sản
+     * phẩm.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     private void handleUnavailableProductID(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute("productID") == null || ((String) request.getSession().getAttribute("productID")).isBlank()) {
             request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -118,22 +131,38 @@ public class UserProductServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Lấy thông tin của category và trả về cho người dùng.
+     *
+     * @param request servlet request
+     */
     private void getCategoryInfo(HttpServletRequest request) {
         request.setAttribute("categoryList", categoryDao.getAll());
         request.setAttribute("productList", productDao.getProductsByCategory(Integer.parseInt(request.getParameter("id"))));
         request.setAttribute("categoryType", categoryDao.getOneByID(Integer.parseInt(request.getParameter("id"))));
     }
 
+    /**
+     * Lấy thông tin của sản phẩm và trả về cho người dùng.
+     *
+     * @param request servlet request
+     * @param productID là id của sản phẩm.
+     */
     private void getProductInfo(HttpServletRequest request, int productID) {
         request.setAttribute("product", productDao.getById(productID));
         request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(productID).getCategoryID()));
         request.setAttribute("rateScore", productDao.getRateScore(productID));
         request.setAttribute("reviewList", reviewDao.getByProductID(productID));
-        
+
         getErrorOrSuccessInAddToCartIfExists(request);
         getErrorOrSuccessInAddCommentIfExists(request);
     }
 
+    /**
+     * Lấy thông tin của index và trả về người dùng.
+     *
+     * @param request servlet request
+     */
     private void getIndexInfo(HttpServletRequest request) {
         request.setAttribute("categoryList", categoryDao.getAll());
         request.setAttribute("productList", productDao.getAll());
@@ -189,11 +218,14 @@ public class UserProductServlet extends HttpServlet {
 
         String view = request.getParameter("view");
 
+        // Xử lí view trống.
         if (view == null || view.isBlank()) {
             response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + request.getParameter("id"));
 
+            // Xử lí theo view của người dùng.
         } else {
 
+            // Xử lí yêu cầu của người dùng.
             switch (view) {
 
                 case "cart":
@@ -213,7 +245,6 @@ public class UserProductServlet extends HttpServlet {
             request.getSession().setAttribute("productID", request.getParameter("id"));
             response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + request.getSession().getAttribute("productID"));
         }
-
     }
 
     /**

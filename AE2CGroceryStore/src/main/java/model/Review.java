@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author Vu Minh Khang - CE191371
@@ -15,12 +17,12 @@ public class Review {
     private Product product;
     private int rating;
     private String comment;
-    private Date date;
+    private LocalDateTime date;
 
     public Review() {
     }
 
-    public Review(int reviewID, User user, Product product, int rating, String comment, Date date) {
+    public Review(int reviewID, User user, Product product, int rating, String comment, LocalDateTime date) {
         this.reviewID = reviewID;
         this.user = user;
         this.product = product;
@@ -69,11 +71,11 @@ public class Review {
         this.comment = comment;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
