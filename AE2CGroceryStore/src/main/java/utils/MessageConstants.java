@@ -11,9 +11,9 @@ package utils;
 public class MessageConstants {
     
     public final static String EMPTY_INPUT_MESSAGE = "Please enter something.";
-    public final static String UNVALID_INTEGER_INPUT_MESSAGE = "Please enter a valid integer number.";
+    public final static String INVALID_INTEGER_INPUT_MESSAGE = "Please enter a valid integer number.";
     
-    public final static String UNVALID_CART_INPUT_MESSAGE = "The number is not available.";
+    public final static String INVALID_CART_INPUT_MESSAGE = "The number is not available.";
     public final static String SUCCESS_CART_INPUT_MESSAGE = "Add to your cart successfully.";
     
     public final static String EMPTY_COMMENT_INPUT_MESSAGE = "Please enter a comment for this product.";
