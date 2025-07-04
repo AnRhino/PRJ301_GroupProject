@@ -77,9 +77,10 @@ public class CartServlet extends HttpServlet {
             view = request.getParameter("view");
 
             if (view == null || view.isBlank()) {
-                List<Cart> list = cartDao.getAll();
-               request.setAttribute("cartList", list); // ✅ trùng với cart.jsp
-
+                User user = (User) request.getSession().getAttribute("loggedUser");
+                List<Cart> list = cartDao.getAll(user.getId());
+                request.setAttribute("cartList", list);
+              
 
             }
 

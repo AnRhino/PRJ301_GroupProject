@@ -29,7 +29,7 @@
                             <th scope="row">${status.index + 1}</th>
                             <td>${cart.cartItemID}</td>
                             <td>${cart.user.username}</td>
-                            <td>${cart.product.productName}</td> <!-- ✅ Chỉ hiển thị tên sản phẩm -->
+                            <td>${cart.product.productName}</td> 
                             <td>${cart.quantity}</td>
                         </tr>
                     </c:forEach>

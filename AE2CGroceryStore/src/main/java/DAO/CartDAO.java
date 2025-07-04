@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,22 +27,30 @@ public class CartDAO extends dbconnect.DBContext {
      *
      * @return danh sách toàn bộ cart hiện tại.
      */
-    public List<Cart> getAll() {
+    public List<Cart> getAll(int userId) {
 
         List<Cart> list = new ArrayList<>();
-        String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity\n"
-                + "FROM [dbo].[Carts] c\n"
-                + "JOIN [dbo].[Users] u\n"
-                + "ON u.UserID = c.UserID\n"
-                + "JOIN [dbo].[Products] prod\n"
-                + "ON prod.ProductID = c.ProductID";
 
+        PreparedStatement ps;
         try {
+            String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName\n"
+                    + "FROM [dbo].[Carts] c\n"
+                    + "JOIN [dbo].[Users] u\n"
+                    + "ON u.UserID = c.UserID\n"
+                    + "JOIN [dbo].[Products] prod\n"
+                    + "ON prod.ProductID = c.ProductID\n"
+                    + "WHERE u.UserID = ? ";
 
-            ResultSet rs = execSelectQuery(query, null);
-
+            ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new Cart(rs.getInt(1), new User(rs.getInt(2), rs.getString(3)), new Product(rs.getInt(4)), rs.getInt(5)));
+                Product product = new Product(rs.getInt(4));
+                product.setProductName(rs.getString(6));
+                User user = new User(rs.getInt(2), rs.getString(3));
+                Cart cart = new Cart(rs.getInt(1), user, product, rs.getInt(5));
+                list.add(cart);
+
             }
 
         } catch (SQLException ex) {
@@ -49,6 +58,7 @@ public class CartDAO extends dbconnect.DBContext {
         }
 
         return list;
+
     }
 
     /**
@@ -59,41 +69,41 @@ public class CartDAO extends dbconnect.DBContext {
      *
      * @return danh sách toàn bộ cart hiện tại của người dùng.
      */
-    public List<Cart> getByUserID(int userID) {
-
-        List<Cart> list = new ArrayList<>();
-        String query = "SELECT c.CartItemID, u.UserID, u.Username, p.ProductID, c.Quantity\n"
-                + "FROM [dbo].[Carts] c\n"
-                + "JOIN [dbo].[Users] u\n"
-                + "ON u.UserID = c.UserID\n"
-                + "JOIN [dbo].[Products] p\n"
-                + "ON p.ProductID = c.ProductID\n"
-                + "WHERE p.IsHidden = 1\n"
-                + "AND u.UserID = ?";
-        Object[] params = {userID};
-
-        try {
-
-            ResultSet rs = execSelectQuery(query, params);
-
-            while (rs.next()) {
-                list.add(new Cart(rs.getInt(1), new User(rs.getInt(2), rs.getString(3)), new Product(rs.getInt(4)), rs.getInt(5)));
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return list;
-    }
+//    public List<Cart> getByUserID(int userID) {
+//
+//        List<Cart> list = new ArrayList<>();
+//        String query = "SELECT c.CartItemID, u.UserID, u.Username, p.ProductID, c.Quantity\n"
+//                + "FROM [dbo].[Carts] c\n"
+//                + "JOIN [dbo].[Users] u\n"
+//                + "ON u.UserID = c.UserID\n"
+//                + "JOIN [dbo].[Products] p\n"
+//                + "ON p.ProductID = c.ProductID\n"
+//                + "WHERE p.IsHidden = 1\n"
+//                + "AND u.UserID = ?";
+//        Object[] params = {userID};
+//
+//        try {
+//
+//            ResultSet rs = execSelectQuery(query, params);
+//
+//            while (rs.next()) {
+//                list.add(new Cart(rs.getInt(1), new User(rs.getInt(2), rs.getString(3)), new Product(rs.getInt(4)), rs.getInt(5)));
+//            }
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        return list;
+//    }
 
     /**
      * Tạo 1 sản phấm trong cart của người dùng.
-     * 
+     *
      * @param userID là id của người dùng.
      * @param productID là id của sản phẩm muốn thêm vào cart.
      * @param quantity là số lượng thêm vào.
-     * 
+     *
      * @return 0 nếu thêm không thành công. Khác 0 nếu thành công.
      */
     public int addNewProductToCart(int userID, int productID, int quantity) {
@@ -102,13 +112,13 @@ public class CartDAO extends dbconnect.DBContext {
             String query = "INSERT INTO [dbo].[Carts] (UserID, ProductID, Quantity)\n"
                     + "VALUES (?, ?, ?);";
             Object[] params = {userID, productID, quantity};
-            
+
             return execQuery(query, params);
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return 0;
     }
 }
