@@ -10,6 +10,8 @@ package utils;
  */
 public class MessageConstants {
     
+    public final static String UNKNOWN_ERROR_MESSAGE = "There is an error.";
+    
     public final static String EMPTY_INPUT_MESSAGE = "Please enter something.";
     public final static String INVALID_INTEGER_INPUT_MESSAGE = "Please enter a valid integer number.";
     
