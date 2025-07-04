@@ -4,6 +4,7 @@
  */
 package controller;
 
+import DAO.CartDAO;
 import DAO.ProductDAO;
 import DAO.CategoryDAO;
 import DAO.ReviewDAO;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import model.Category;
 import model.ErrorMessage;
 import model.User;
@@ -30,6 +32,7 @@ public class UserProductServlet extends HttpServlet {
     private final ProductDAO productDao = new ProductDAO();
     private final CategoryDAO categoryDao = new CategoryDAO();
     private final ReviewDAO reviewDao = new ReviewDAO();
+    private final CartDAO cartDao = new CartDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -220,7 +223,7 @@ public class UserProductServlet extends HttpServlet {
 
         // Xử lí view trống.
         if (view == null || view.isBlank()) {
-            response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + request.getParameter("id"));
+            response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + request.getSession().getAttribute("id"));
 
             // Xử lí theo view của người dùng.
         } else {
@@ -269,6 +272,7 @@ public class UserProductServlet extends HttpServlet {
             request.getSession().setAttribute("errorCart", new ErrorMessage("The number is not available."));
 
         } else {
+            cartDao.addNewProductToCart(((User)request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String)(request.getSession().getAttribute("productID"))), Integer.parseInt(quantity));
             String successMsg = "Add to your cart successfully.";
             request.getSession().setAttribute("success", successMsg);
         }
@@ -284,9 +288,19 @@ public class UserProductServlet extends HttpServlet {
      */
     private void handleCommentInput(HttpServletRequest request) {
         String comment = request.getParameter("comment");
+        String rating = request.getParameter("rating");
 
         if (InputValidate.checkEmptyInput(comment)) {
-            request.getSession().setAttribute("errorComment", new ErrorMessage("Please enter something."));
+            request.getSession().setAttribute("errorComment", new ErrorMessage("Please enter a comment for this product."));
+        
+        } else if (InputValidate.checkEmptyInput(rating)) {
+            request.getSession().setAttribute("errorComment", new ErrorMessage("Please select a rate for this product."));
+            
+        } else if (InputValidate.checkValidIntegerNumber(rating)) {
+            request.getSession().setAttribute("errorComment", new ErrorMessage("Please choose a valid rate for this product."));
+        
+        } else {
+            reviewDao.add(((User)request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String)(request.getSession().getAttribute("productID"))), Integer.parseInt(request.getParameter("rating")), request.getParameter("comment"), LocalDateTime.now());
         }
     }
 

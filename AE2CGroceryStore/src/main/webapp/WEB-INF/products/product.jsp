@@ -4,6 +4,7 @@
     Author     : Vu Minh Khang - CE191371
 --%>
 
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="model.ErrorMessage"%>
 <%@page import="model.Review"%>
 <%@page import="model.Product"%>
@@ -22,7 +23,7 @@
             List<Review> reviewList = (List) request.getAttribute("reviewList");
             Product product = (Product) request.getAttribute("product");
             ErrorMessage msgErrorCart = (ErrorMessage) request.getAttribute("errorCartMsg");
-            String msgSuccess = (String) request.getAttribute("successMsg");
+            String msgCartSuccess = (String) request.getAttribute("successMsg");
             ErrorMessage msgErrorComment = (ErrorMessage) request.getAttribute("errorComment");
 
             // Kiểm tra null và coi có rỗng không.
@@ -120,10 +121,10 @@
                                                             <input type="number" class="text-end border-dark w-100 d-inline" name="quantity" placeholder="1" min="1" max="<%= product.getQuantity()%>">
                                                         </div>
                                                         <div class="d-flex align-items-center gap-2">
-                                                            <% if (msgErrorCart != null && msgSuccess == null) {%>
+                                                            <% if (msgErrorCart != null && msgCartSuccess == null) {%>
                                                             <p class="text-danger"><%= msgErrorCart.getMessage()%></p>
-                                                            <%} else if (msgErrorCart == null && msgSuccess != null) {%>
-                                                            <p class="text-success"><%= msgSuccess%></p>
+                                                            <%} else if (msgErrorCart == null && msgCartSuccess != null) {%>
+                                                            <p class="text-success"><%= msgCartSuccess%></p>
                                                             <%}%>
                                                         </div>
                                                     </div>
@@ -155,7 +156,7 @@
 
                             <div class="bg-secondary border border-dark rounded-3 py-3">
                                 <% for (Review rv : reviewList) {%>
-                                <div class="row px-5 gap-3 border-dark p-2 text-light">
+                                <div class="row px-5 gap-3 p-2 text-light">
                                     <div class="col-12">
                                         <p class="d-inline fw-bold text-dark bg-primary px-2 py-1 rounded-2"><%= rv.getUser().getUsername()%></p>
                                     </div>
@@ -163,20 +164,39 @@
                                         <p class="d-inline fw-bold text-wrap"><%= rv.getComment()%></p>
                                     </div>
                                     <div class="col-12">
-                                        <p class="d-inline fw-bold text-white">Rate:</p>
-                                        <% for (int idx = 0; idx < rv.getRating(); idx++) { %>
-                                        <i class="bi bi-star-fill" style="color: #f4a82c;"></i>
-                                        <%}%>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <p class="d-inline fw-bold text-white">Rate:</p>
+                                                <% for (int idx = 0; idx < rv.getRating(); idx++) { %>
+                                                ⭐
+                                                <%}%>
+                                            </div>
+                                            <div class="d-inline text-end">
+                                                <%= rv.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))%>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <% } %>
-                                <div class="px-5 gap-3 border-dark p-2 text-light gap-3">
-                                    <form action="<%= request.getContextPath()%>/user-product" method="post">
+                                <% }%>
+                                <div class="px-5 gap-3 p-2 text-light">
+                                    <form action="<%= request.getContextPath()%>/user-product" method="post"class="d-flex gap-2">
                                         <input type="hidden" name="view" value="comment">
                                         <input type="hidden" name="id" value="<%= ((Product) (request.getAttribute("product"))).getProductID()%>">
-                                        <input type="text" class="text-end border-dark w-100 d-inline" name="comment" placeholder="Enter your comment here.">
-                                        <button type="submit" class="btn btn-primary d-flex align-items-end justify-content-end">Enter</button>
+                                        <input type="text" class="form-control" name="comment" placeholder="Enter your comment here.">
+                                        <select name="rating" id="rating" required>-- Select rating --
+                                            <option value="1">1 ⭐</option>
+                                            <option value="2">2 ⭐⭐</option>
+                                            <option value="3">3 ⭐⭐⭐</option>
+                                            <option value="4">4 ⭐⭐⭐⭐</option>
+                                            <option value="5">5 ⭐⭐⭐⭐⭐</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary">Enter</button>
                                     </form>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <% if (msgErrorComment != null) {%>
+                                        <p class="text-danger"><%= msgErrorComment.getMessage()%></p>
+                                        <%}%>
+                                    </div>
                                 </div>
                             </div>
                             <% } %>

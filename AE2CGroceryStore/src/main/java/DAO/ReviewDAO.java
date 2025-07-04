@@ -81,4 +81,21 @@ public class ReviewDAO extends dbconnect.DBContext {
 
         return list;
     }
+
+    public int add(int userID, int productID, int rating, String comment, LocalDateTime reviewDate) {
+
+        try {
+
+            String query = "INSERT INTO [dbo].[Reviews] (UserID, ProductID, Rating, Comment, ReviewDate)\n"
+                    + "VALUES (?, ?, ?, ?, ?)";
+            Object[] params = {userID, productID, rating, comment, reviewDate};
+
+            return execQuery(query, params);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ReviewDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return 0;
+    }
 }
