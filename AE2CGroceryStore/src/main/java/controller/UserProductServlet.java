@@ -298,6 +298,9 @@ public class UserProductServlet extends HttpServlet {
             
         } else if (InputValidate.checkValidIntegerNumber(rating)) {
             request.getSession().setAttribute("errorComment", new ErrorMessage("Please choose a valid rate for this product."));
+            
+        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(rating), 1, 5)) {
+            request.getSession().setAttribute("errorComment", new ErrorMessage("Rating only from 1 to 5."));
         
         } else {
             reviewDao.add(((User)request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String)(request.getSession().getAttribute("productID"))), Integer.parseInt(request.getParameter("rating")), request.getParameter("comment"), LocalDateTime.now());

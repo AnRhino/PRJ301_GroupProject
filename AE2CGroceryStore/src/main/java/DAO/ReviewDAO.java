@@ -82,6 +82,17 @@ public class ReviewDAO extends dbconnect.DBContext {
         return list;
     }
 
+    /**
+     * Tạo comment mới.
+     * 
+     * @param userID là id của người dùng.
+     * @param productID là id của sản phẩm.
+     * @param rating là đánh giá sản phẩm (1-5).
+     * @param comment là comment của người dùng về sản phẩm.
+     * @param reviewDate là ngảy comment.
+     * 
+     * @return 0 nếu thêm comment không thành công. Khác 0 nếu thành công.
+     */
     public int add(int userID, int productID, int rating, String comment, LocalDateTime reviewDate) {
 
         try {
