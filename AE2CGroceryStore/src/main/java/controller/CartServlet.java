@@ -14,6 +14,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Cart;
+import model.Product;
 import model.User;
 
 /**
@@ -74,21 +77,12 @@ public class CartServlet extends HttpServlet {
             view = request.getParameter("view");
 
             if (view == null || view.isBlank()) {
-                request.setAttribute("cartList", cartDao.getByUserID(0));
+                List<Cart> list = cartDao.getAll();
+               request.setAttribute("cartList", list); // ✅ trùng với cart.jsp
 
-            } else {
 
-                switch (view) {
-                    case "cart":
-                        request.setAttribute("cartList", cartDao.getByUserID(0));
-                        break;
-
-                    default:
-                        request.setAttribute("cartList", cartDao.getByUserID(0));
-                        break;
-                }
             }
-            
+
             request.getRequestDispatcher("/WEB-INF/users/cart.jsp").forward(request, response);
         }
     }

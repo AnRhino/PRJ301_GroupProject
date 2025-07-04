@@ -13,37 +13,35 @@
 
         <div class="container-fluid p-5 gap-3">
 
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                </tr>
-                            </thead>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cart ID</th>
+                        <th>User</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="cart" items="${cartList}" varStatus="status">
+                        <tr>
+                            <th scope="row">${status.index + 1}</th>
+                            <td>${cart.cartItemID}</td>
+                            <td>${cart.user.username}</td>
+                            <td>${cart.product.productName}</td> <!-- ✅ Chỉ hiển thị tên sản phẩm -->
+                            <td>${cart.quantity}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
 
-                            <tbody>
-
-            <c:forEach var="cart" items="${requestScope.cartList}">
-            <div>
-                            <form>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td></td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                            </form>
-
-                            </tbody>
-                        </table>
-            </div>
-            </c:forEach>
-
-
+            </table>
         </div>
 
-        <jsp:include page="../include/footer.jsp" />
-    </body>
+
+
+</div>
+
+<jsp:include page="../include/footer.jsp" />
+</body>
 </html>
