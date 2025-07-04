@@ -84,7 +84,7 @@
                                     <div class="">
                                         <div class="row border border-secondary bg-white border-dark">   
                                             <div class="col-6 d-flex justify-content-start p-0">
-                                                <img src="assets/images/placeHolder.jpg" alt="placeholder">
+                                                <img src="assets/images/placeHolder.jpg" alt="placeholder" style=" height: 500px; object-fit: cover; width: 100%;">
                                             </div>
                                             <div class="col-6 py-3">
                                                 <h3>Information:</h3>
@@ -111,8 +111,7 @@
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="fw-bold d-inline">Rating:</div>
-                                                        <div class="text-dark d-inline"><%= request.getAttribute("rateScore")%></div>
-                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                        <div class="text-dark d-inline"><%= request.getAttribute("rateScore")%>⭐</div>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="d-flex align-items-center gap-2">
@@ -191,10 +190,21 @@
                                                 <%}%>
                                             </div>
                                             <div class="d-inline text-end">
-                                                <%= rv.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))%>
+                                                <%= rv.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))%>
                                             </div>
                                         </div>
                                     </div>
+                                    <c:if test="${sessionScope.roleId == 1}">
+                                        <div class="col-12 d-flex justify-content-end">
+                                            <form action="${pageContext.request.contextPath}/user-product" method="post">
+                                                <input type="hidden" name="view" value="removeComment">
+                                                <input type="hidden" name="id" value="<%= product.getProductID()%>">
+                                                <input type="hidden" name="reviewID" value="<%= rv.getReviewID()%>">
+                                                <button type="button" class="btn btn-primary">Do nothing</button>
+                                                <button type="submit" class="btn btn-danger ">Delete</button>
+                                            </form>
+                                        </div>
+                                    </c:if>
                                 </div>
                                 <% }%>
                                 <div class="px-5 gap-3 p-2 text-light">
@@ -202,7 +212,7 @@
                                         <input type="hidden" name="view" value="comment">
                                         <input type="hidden" name="id" value="<%= ((Product) (request.getAttribute("product"))).getProductID()%>">
                                         <input type="text" class="form-control" name="comment" placeholder="Enter your comment here.">
-                                        <select name="rating" id="rating" required>-- Select rating --
+                                        <select name="rating" id="rating" required>
                                             <option value="1">1 ⭐</option>
                                             <option value="2">2 ⭐⭐</option>
                                             <option value="3">3 ⭐⭐⭐</option>
@@ -212,9 +222,27 @@
                                         <button type="submit" class="btn btn-primary">Enter</button>
                                     </form>
                                     <div class="d-flex align-items-center gap-2">
-                                        <% if (msgErrorComment != null) {%>
-                                        <p class="text-danger"><%= msgErrorComment.getMessage()%></p>
-                                        <%}%>
+                                        <c:choose>
+                                            <c:when test="sessionScope.roleId != 1">
+                                                <c:if test="${not empty errorComment}">
+                                                    <p class="text-danger">${errorComment.message}</p>
+                                                </c:if>
+                                                <c:if test="${not empty errorDeleteComment}">
+                                                    <p class="text-danger">${requestScope.errorDeleteComment.message}</p>
+                                                </c:if>
+                                                <c:if test="${not empty successDeleteComment}">
+                                                    <p class="text-success">${requestScope.successDeleteComment.message}</p>
+                                                </c:if>
+                                            </c:when>
+                                            <c:when test="sessionScope.roleId == 1">
+                                                <c:if test="${not empty errorDeleteComment}">
+                                                    <p class="text-danger">${requestScope.errorDeleteComment.message}</p>
+                                                </c:if>
+                                                <c:if test="${not empty successDeleteComment}">
+                                                    <p class="text-success">${requestScope.successDeleteComment.message}</p>
+                                                </c:if>
+                                            </c:when>
+                                        </c:choose>
                                     </div>
                                 </div>
                             </div>
@@ -226,7 +254,7 @@
             <%
                 }
             %>
-
-            <jsp:include page="../include/footer.jsp" />
+        </div>
+        <jsp:include page="../include/footer.jsp" />
     </body>
 </html>

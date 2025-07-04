@@ -28,7 +28,7 @@ public class ReviewDAO extends dbconnect.DBContext {
      */
     public List<Review> getAll() {
         List<Review> list = new ArrayList<>();
-        String query = "SELECT rv.ReviewID, us.UserID, us.UserName, prod.ProductID, rv.Rating , rv.Comment, rv.ReviewDate\n"
+        String query = "SELECT rv.ReviewID, us.UserID, us.UserName, prod.ProductID, rv.Rating , rv.Comment, rv.ReviewTime\n"
                 + "FROM [dbo].[Reviews] rv\n"
                 + "JOIN [dbo].[Products] prod\n"
                 + "ON prod.ProductID = rv.ProductID\n"
@@ -58,7 +58,7 @@ public class ReviewDAO extends dbconnect.DBContext {
      */
     public List<Review> getByProductID(int productID) {
         List<Review> list = new ArrayList<>();
-        String query = "SELECT rv.ReviewID, us.UserID, us.UserName, prod.ProductID, rv.Rating , rv.Comment, rv.ReviewDate\n"
+        String query = "SELECT rv.ReviewID, us.UserID, us.UserName, prod.ProductID, rv.Rating , rv.Comment, rv.ReviewTime\n"
                 + "FROM [dbo].[Reviews] rv\n"
                 + "JOIN [dbo].[Products] prod\n"
                 + "ON prod.ProductID = rv.ProductID\n"
@@ -84,20 +84,20 @@ public class ReviewDAO extends dbconnect.DBContext {
 
     /**
      * Tạo comment mới.
-     * 
+     *
      * @param userID là id của người dùng.
      * @param productID là id của sản phẩm.
      * @param rating là đánh giá sản phẩm (1-5).
      * @param comment là comment của người dùng về sản phẩm.
      * @param reviewDate là ngảy comment.
-     * 
+     *
      * @return 0 nếu thêm comment không thành công. Khác 0 nếu thành công.
      */
     public int add(int userID, int productID, int rating, String comment, LocalDateTime reviewDate) {
 
         try {
 
-            String query = "INSERT INTO [dbo].[Reviews] (UserID, ProductID, Rating, Comment, ReviewDate)\n"
+            String query = "INSERT INTO [dbo].[Reviews] (UserID, ProductID, Rating, Comment, ReviewTime)\n"
                     + "VALUES (?, ?, ?, ?, ?)";
             Object[] params = {userID, productID, rating, comment, reviewDate};
 
@@ -107,6 +107,22 @@ public class ReviewDAO extends dbconnect.DBContext {
             Logger.getLogger(ReviewDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        return 0;
+    }
+
+    public int delete(int reviewID) {
+
+        try {
+            String query = "DELETE FROM [dbo].[Reviews] \n"
+                    + "WHERE ReviewID = ?";
+            Object[] params = {reviewID};
+
+            return execQuery(query, params);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ReviewDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return 0;
     }
 }

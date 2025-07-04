@@ -15,11 +15,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
-import model.Category;
 import model.ErrorMessage;
 import model.User;
+import utils.MessageConstants;
 import validate.InputValidate;
 
 /**
@@ -159,6 +158,7 @@ public class UserProductServlet extends HttpServlet {
 
         getErrorOrSuccessInAddToCartIfExists(request);
         getErrorOrSuccessInAddCommentIfExists(request);
+        getErrorOrSuccessInDeleteCommentIfExists(request);
     }
 
     /**
@@ -206,6 +206,16 @@ public class UserProductServlet extends HttpServlet {
         }
     }
 
+    private void getErrorOrSuccessInDeleteCommentIfExists(HttpServletRequest request) {
+        if (request.getSession().getAttribute("errorDeleteComment") != null) {
+            request.setAttribute("errorDeleteComment", request.getSession().getAttribute("errorDeleteComment"));
+            request.getSession().removeAttribute("errorDeleteComment");
+        } else if (request.getSession().getAttribute("successDeleteComment") != null) {
+            request.setAttribute("successDeleteComment", request.getSession().getAttribute("successDeleteComment"));
+            request.getSession().removeAttribute("successDeleteComment");
+        }
+    }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -232,13 +242,15 @@ public class UserProductServlet extends HttpServlet {
             switch (view) {
 
                 case "cart":
-
                     handleCartInput(request);
                     break;
 
                 case "comment":
-
                     handleCommentInput(request);
+                    break;
+
+                case "removeComment":
+                    handleDeleteComment(request);
                     break;
 
                 default:
@@ -263,18 +275,17 @@ public class UserProductServlet extends HttpServlet {
         String quantity = request.getParameter("quantity");
 
         if (InputValidate.checkEmptyInput(quantity)) {
-            request.getSession().setAttribute("errorCart", new ErrorMessage("Please enter something."));
+            request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.EMPTY_INPUT_MESSAGE));
 
         } else if (InputValidate.checkValidIntegerNumber(quantity)) {
-            request.getSession().setAttribute("errorCart", new ErrorMessage("Please enter a valid integer number."));
+            request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.INVALID_INTEGER_INPUT_MESSAGE));
 
         } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity), InputValidate.ZERO_VALUE, productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id"))))) {
-            request.getSession().setAttribute("errorCart", new ErrorMessage("The number is not available."));
+            request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.INVALID_CART_INPUT_MESSAGE));
 
         } else {
-            cartDao.addNewProductToCart(((User)request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String)(request.getSession().getAttribute("productID"))), Integer.parseInt(quantity));
-            String successMsg = "Add to your cart successfully.";
-            request.getSession().setAttribute("success", successMsg);
+            cartDao.addNewProductToCart(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String) (request.getSession().getAttribute("productID"))), Integer.parseInt(quantity));
+            request.getSession().setAttribute("success", MessageConstants.SUCCESS_CART_INPUT_MESSAGE);
         }
     }
 
@@ -291,19 +302,43 @@ public class UserProductServlet extends HttpServlet {
         String rating = request.getParameter("rating");
 
         if (InputValidate.checkEmptyInput(comment)) {
-            request.getSession().setAttribute("errorComment", new ErrorMessage("Please enter a comment for this product."));
-        
+            request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.EMPTY_COMMENT_INPUT_MESSAGE));
+
         } else if (InputValidate.checkEmptyInput(rating)) {
-            request.getSession().setAttribute("errorComment", new ErrorMessage("Please select a rate for this product."));
-            
+            request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.EMPTY_RATING_INPUT_MESSAGE));
+
         } else if (InputValidate.checkValidIntegerNumber(rating)) {
-            request.getSession().setAttribute("errorComment", new ErrorMessage("Please choose a valid rate for this product."));
-            
+            request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.INVALID_RATING_INPUT_MESSAGE));
+
         } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(rating), 1, 5)) {
-            request.getSession().setAttribute("errorComment", new ErrorMessage("Rating only from 1 to 5."));
-        
+            request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.OUT_OF_RANGE_RATING_INPUT_MESSAGE));
+
         } else {
-            reviewDao.add(((User)request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String)(request.getSession().getAttribute("productID"))), Integer.parseInt(request.getParameter("rating")), request.getParameter("comment"), LocalDateTime.now());
+            reviewDao.add(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String) (request.getSession().getAttribute("productID"))), Integer.parseInt(request.getParameter("rating")), request.getParameter("comment"), LocalDateTime.now());
+        }
+    }
+
+    /**
+     * Xử lí xóa comment của người dùng.
+     *
+     * Nếu comment của người dùng lỗi sẽ ném ra thông báo lỗi. Nếu không có lỗi
+     * sẽ thông báo thành công.
+     *
+     * @param request là yêu cầu người dùng.
+     */
+    private void handleDeleteComment(HttpServletRequest request) {
+
+        System.out.println((String) (request.getParameter("reviewID")));
+
+        if (InputValidate.checkEmptyInput((String) (request.getParameter("reviewID")))) {
+            request.getSession().setAttribute("errorDeleteComment", new ErrorMessage(MessageConstants.UNKNOWN_ERROR_MESSAGE));
+
+        } else if (InputValidate.checkValidIntegerNumber((String) (request.getParameter("reviewID")))) {
+            request.getSession().setAttribute("errorDeleteComment", new ErrorMessage(MessageConstants.UNKNOWN_ERROR_MESSAGE));
+
+        } else {
+            reviewDao.delete(Integer.parseInt((String) (request.getParameter("reviewID"))));
+            request.getSession().setAttribute("successDeleteComment", MessageConstants.SUCCESS_DELETE_COMMENT_MESSAGE);
         }
     }
 
