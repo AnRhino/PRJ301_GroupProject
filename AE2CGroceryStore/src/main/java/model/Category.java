@@ -12,6 +12,7 @@ public class Category {
     
     private int categoryID;
     private String categoryName;
+    private String coverImg;
 
     public Category() {
     }
@@ -19,6 +20,12 @@ public class Category {
     public Category(int categoryID, String categoryName) {
         this.categoryID = categoryID;
         this.categoryName = categoryName;
+    }
+
+    public Category(int categoryID, String categoryName, String coverImg) {
+        this.categoryID = categoryID;
+        this.categoryName = categoryName;
+        this.coverImg = coverImg;
     }
 
     public int getCategoryID() {
@@ -36,6 +43,13 @@ public class Category {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
-    
+
+    public String getCover() {
+        return coverImg;
+    }
+
+    public void setCover(String coverImg) {
+        this.coverImg = coverImg;
+    }    
     
 }
