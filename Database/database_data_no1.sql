@@ -388,7 +388,7 @@ VALUES
 (20, 90, 1, 40000),
 (20, 91, 1, 33000);
 
-INSERT INTO Reviews (UserID, ProductID, Rating, Comment, ReviewDate)
+INSERT INTO Reviews (UserID, ProductID, Rating, Comment, ReviewTime)
 VALUES
 (1, 1, 5, N'Rất hài lòng với sản phẩm!', '2025-06-15'),
 (1, 5, 4, N'Sản phẩm tốt nhưng giao hàng hơi lâu.', '2025-06-16'),
