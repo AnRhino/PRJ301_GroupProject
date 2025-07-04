@@ -19,11 +19,11 @@
                 <c:if test="${not empty emailMsg}"><p class="text-danger">${emailMsg.getMessage()}</p></c:if>
                 <c:if test="${not empty fullNameMsg}"><p class="text-danger">${fullNameMsg.getMessage()}</p></c:if>
                     <p class="ms-4" id="profile">
-                        <strong>Username: </strong> ${profileUser.username}
+                        <strong>Username: </strong> ${loggedUser.username}
                 </p>                  
                 <p class="ms-4" id="profile">
                     <c:if test="${editFullName != true}">
-                        <strong>Full Name: </strong> ${sessionScope.profileUser.fullName} <a href="${pageContext.request.contextPath}/user-profile?view=editFullName"><i class="bi bi-pencil-square"></i></a>
+                        <strong>Full Name: </strong> ${sessionScope.loggedUser.fullName} <a href="${pageContext.request.contextPath}/user-profile?view=editFullName"><i class="bi bi-pencil-square"></i></a>
                     </p>
                     <c:if test="${sessionScope.fullNameError != null}">
                         <div class="ms-4 mb-4 text-danger">${sessionScope.fullNameError.message}</div>
@@ -35,7 +35,7 @@
                         <label class="text-nowrap" for="fullname">
                             <strong>Full Name: </strong>                                                                                                    
                         </label>
-                        <input class="form-control" type="text" id="fullname" name="fullname" value="${profileUser.fullName}">
+                        <input class="form-control" type="text" id="fullname" name="fullname" value="${loggedUser.fullName}">
                         <button class="btn btn-success" type="submit">Save</button>
                         <a class="btn btn-danger" href="${pageContext.request.contextPath}/user-profile">Cancel</a>
                     </form>
@@ -45,7 +45,7 @@
                 </p>
                 <c:if test="${editEmail != true}">
                     <p class="ms-4 mb-3" id="profile">
-                        <strong>Email: </strong> ${sessionScope.profileUser.email}  <a href="${pageContext.request.contextPath}/user-profile?view=editEmail""><i class="bi bi-pencil-square"></i></a>
+                        <strong>Email: </strong> ${sessionScope.loggedUser.email}  <a href="${pageContext.request.contextPath}/user-profile?view=editEmail""><i class="bi bi-pencil-square"></i></a>
                     </p>
                     <c:if test="${sessionScope.emailError != null}">
                         <div class="ms-4 text-danger">${sessionScope.emailError.message}</div>
@@ -57,7 +57,7 @@
                         <label class="text-nowrap" for="email">
                             <strong>Email: </strong>                                                                                                    
                         </label>
-                        <input class="form-control" type="text" id="email" name="email" value="${profileUser.email}">
+                        <input class="form-control" type="text" id="email" name="email" value="${loggedUser.email}">
                         <button class="btn btn-success" type="submit">Save</button>  
                         <a class="btn btn-danger" href="${pageContext.request.contextPath}/user-profile">Cancel</a>
                     </form>

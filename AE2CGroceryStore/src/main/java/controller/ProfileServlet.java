@@ -97,7 +97,7 @@ public class ProfileServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-        User userProfile = (User) request.getSession().getAttribute("profileUser");
+        User userProfile = (User) request.getSession().getAttribute("loggedUser");
 
         String fullName = ProfileValidate.checkSpacing(request.getParameter("fullname"));
         String email = request.getParameter("email");
@@ -108,7 +108,7 @@ public class ProfileServlet extends HttpServlet {
         if (ProfileValidate.checkEmptyInput(email) && ProfileValidate.checkEmptyInput(fullName)) {
             // If empty save old name
             dao.updateFullName(userProfile.getFullName(), userProfile.getEmail(), userProfile.getUsername()); // Update DAO
-            request.getSession().setAttribute("profileUser", dao.getUserByUsername(userProfile.getUsername())); // Set Attribute
+            request.getSession().setAttribute("loggedUser", dao.getUserByUsername(userProfile.getUsername())); // Set Attribute
             if (whoError) {
                 request.getSession().setAttribute("emailError", new ErrorMessage("Email cannot be empty."));
             } else {
@@ -125,7 +125,7 @@ public class ProfileServlet extends HttpServlet {
             } else {
                 // change Name
                 dao.updateFullName(fullName, userProfile.getEmail(), userProfile.getUsername());
-                request.getSession().setAttribute("profileUser", dao.getUserByUsername(userProfile.getUsername()));
+                request.getSession().setAttribute("loggedUser", dao.getUserByUsername(userProfile.getUsername()));
 
             }
         } else if (fullName == null) { // Change email
@@ -135,7 +135,7 @@ public class ProfileServlet extends HttpServlet {
             } else {
                 // Thay đổi Email
                 dao.updateFullName(userProfile.getFullName(), email, userProfile.getUsername());
-                request.getSession().setAttribute("profileUser", dao.getUserByUsername(userProfile.getUsername()));
+                request.getSession().setAttribute("loggedUser", dao.getUserByUsername(userProfile.getUsername()));
 
             }
         }
