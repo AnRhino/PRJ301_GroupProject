@@ -128,7 +128,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-12 d-flex gap-3">
-                                                        <button class="btn px-5 py-3 bg-success border-dark d-flex justify-content-end" name="view" value="cart">
+                                                        <button type="submit" class="btn px-5 py-3 bg-success border-dark d-flex justify-content-end" name="view" value="cart">
                                                             <i class="bi bi-basket text-white"></i>
                                                         </button>
                                                     </div>
