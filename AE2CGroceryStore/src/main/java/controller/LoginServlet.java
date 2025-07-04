@@ -106,19 +106,20 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("password", password);
 
                 // Redirect to login
-                response.sendRedirect(request.getContextPath() + "/login");
+                response.sendRedirect(request.getContextPath());
                 return;
             } else { // If login success
                 // Create new session
                 User loggedUser = dao.getUserByUsername(username);
                 HttpSession session = request.getSession();
                 session.setAttribute("loggedUser", loggedUser);
+                session.setAttribute("roleId", loggedUser.getRoleId());
                
                 // Get infomation for profile
                 session.setAttribute("profileUser", loggedUser);
 
                 // Redirect to homepage
-                response.sendRedirect(request.getContextPath() + "/index.jsp");
+                response.sendRedirect(request.getContextPath());
                 return;
             }
         }
