@@ -11,6 +11,8 @@ package validate;
 public class InputValidate {
 
     public final static int ZERO_VALUE = 0;
+    public final static int MIN_RATING_VALUE = 1;
+    public final static int MAX_RATING_VALUE = 5;
 
     public final static String INTEGER_REGEX = "^"
             + "(-)?"
