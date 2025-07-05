@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import utils.FileUploadUtil;
+import utils.FileIOUtil;
 
 /**
  *
@@ -64,10 +64,10 @@ public class GetImgServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-        File image = new File(FileUploadUtil.UPLOAD_LOCATION + request.getPathInfo());
+        File image = new File(FileIOUtil.getRootPath() + "images" + request.getPathInfo());
         if (!image.exists()) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            System.err.println(FileUploadUtil.UPLOAD_LOCATION + request.getPathInfo() + " Not found"); //debug
+            System.err.println(FileIOUtil.getRootPath() + request.getPathInfo() + " Not found"); //debug
             return;
         }
 
