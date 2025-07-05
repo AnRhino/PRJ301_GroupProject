@@ -184,9 +184,9 @@ public class UserProductServlet extends HttpServlet {
         if (request.getSession().getAttribute("errorCart") != null) {
             request.setAttribute("errorCartMsg", request.getSession().getAttribute("errorCart"));
             request.getSession().removeAttribute("errorCart");
-        } else if (request.getSession().getAttribute("success") != null) {
-            request.setAttribute("successMsg", request.getSession().getAttribute("success"));
-            request.getSession().removeAttribute("success");
+        } else if (request.getSession().getAttribute("successCart") != null) {
+            request.setAttribute("successCartMsg", request.getSession().getAttribute("successCart"));
+            request.getSession().removeAttribute("successCart");
         }
     }
 
@@ -285,7 +285,7 @@ public class UserProductServlet extends HttpServlet {
 
         } else {
             cartDao.addNewProductToCart(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String) (request.getSession().getAttribute("productID"))), Integer.parseInt(quantity));
-            request.getSession().setAttribute("success", MessageConstants.SUCCESS_CART_INPUT_MESSAGE);
+            request.getSession().setAttribute("successCart", MessageConstants.SUCCESS_CART_INPUT_MESSAGE);
         }
     }
 
@@ -310,11 +310,11 @@ public class UserProductServlet extends HttpServlet {
         } else if (InputValidate.checkValidIntegerNumber(rating)) {
             request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.INVALID_RATING_INPUT_MESSAGE));
 
-        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(rating), 1, 5)) {
+        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(rating), InputValidate.MIN_RATING_VALUE, InputValidate.MAX_RATING_VALUE)) {
             request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.OUT_OF_RANGE_RATING_INPUT_MESSAGE));
 
         } else {
-            reviewDao.add(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String) (request.getSession().getAttribute("productID"))), Integer.parseInt(request.getParameter("rating")), request.getParameter("comment"), LocalDateTime.now());
+            reviewDao.add(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String) (request.getSession().getAttribute("productID"))), Integer.parseInt(rating), comment, LocalDateTime.now());
         }
     }
 
@@ -327,8 +327,6 @@ public class UserProductServlet extends HttpServlet {
      * @param request là yêu cầu người dùng.
      */
     private void handleDeleteComment(HttpServletRequest request) {
-
-        System.out.println((String) (request.getParameter("reviewID")));
 
         if (InputValidate.checkEmptyInput((String) (request.getParameter("reviewID")))) {
             request.getSession().setAttribute("errorDeleteComment", new ErrorMessage(MessageConstants.UNKNOWN_ERROR_MESSAGE));
