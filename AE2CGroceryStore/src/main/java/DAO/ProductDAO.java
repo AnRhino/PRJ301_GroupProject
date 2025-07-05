@@ -24,7 +24,7 @@ public class ProductDAO extends dbconnect.DBContext {
     public List<Product> getAll() {
         List<Product> list = new ArrayList<>();
         try {
-            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
+            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden\n"
                     + "from Products p \n"
                     + "join  Categories c on p.CategoryID = c.CategoryID\n"
                     + "where p.IsHidden = 0";
@@ -32,7 +32,7 @@ public class ProductDAO extends dbconnect.DBContext {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 
-                Category Category = new Category(rs.getInt(6), rs.getString(7));
+                Category Category = new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8));
                 Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
                 list.add(pro);
             }
@@ -88,7 +88,7 @@ public class ProductDAO extends dbconnect.DBContext {
 
     public Product getById(int ProductID) {
         try {
-            String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName "
+            String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden "
                     + "FROM Products p "
                     + "JOIN Categories c ON p.CategoryID = c.CategoryID "
                     + "WHERE ProductID = ?";
@@ -98,7 +98,7 @@ public class ProductDAO extends dbconnect.DBContext {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                Category cat = new Category(rs.getInt(6), rs.getString(7));
+                Category cat = new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8));
                 return new Product(rs.getInt(1), rs.getString(2), rs.getString(3),
                         rs.getInt(4), rs.getInt(5), cat);
             } else {
@@ -135,7 +135,7 @@ public class ProductDAO extends dbconnect.DBContext {
      */
     public List<Product> getProductsByCategory(int categoryID) {
         List<Product> list = new ArrayList<>();
-        String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
+        String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden\n"
                 + "FROM Products p\n"
                 + "JOIN  Categories c on p.CategoryID = c.CategoryID\n"
                 + "WHERE c.CategoryID = ?";
@@ -145,7 +145,7 @@ public class ProductDAO extends dbconnect.DBContext {
             ResultSet rs = execSelectQuery(query, params);
 
             while (rs.next()) {
-                Product pro = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), new Category(rs.getInt(6), rs.getString(7)));
+                Product pro = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8)));
                 list.add(pro);
             }
 

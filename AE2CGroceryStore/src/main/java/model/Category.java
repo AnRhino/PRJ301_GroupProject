@@ -13,13 +13,22 @@ public class Category {
     private int categoryID;
     private String categoryName;
     private String coverImg;
+    private boolean isHidden;
 
     public Category() {
     }
 
-    public Category(int categoryID, String categoryName) {
+    public Category(int categoryID, String categoryName, String coverImg, boolean isHidden) {
         this.categoryID = categoryID;
         this.categoryName = categoryName;
+        this.coverImg = coverImg;
+        this.isHidden = isHidden;
+    }
+
+    public Category(int categoryID, String categoryName, boolean isHidden) {
+        this.categoryID = categoryID;
+        this.categoryName = categoryName;
+        this.isHidden = isHidden;
     }
 
     public Category(int categoryID, String categoryName, String coverImg) {
@@ -44,12 +53,20 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public String getCover() {
+    public String getCoverImg() {
         return coverImg;
     }
 
-    public void setCover(String coverImg) {
+    public void setCoverImg(String coverImg) {
         this.coverImg = coverImg;
-    }    
+    }
+
+    public boolean isIsHidden() {
+        return isHidden;
+    }
+
+    public void setIsHidden(boolean isHidden) {
+        this.isHidden = isHidden;
+    }
     
 }
