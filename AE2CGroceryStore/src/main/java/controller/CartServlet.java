@@ -86,7 +86,14 @@ public class CartServlet extends HttpServlet {
                 Cart cart = cartDao.getCartByID(cartId);
                 request.setAttribute("cart", cart);
                 request.getRequestDispatcher("/WEB-INF/users/edit.jsp").forward(request, response);
-                return;
+              
+            
+            } else if ("delete".equals(view)) {
+                int cartId = Integer.parseInt(request.getParameter("id"));
+                Cart cart = cartDao.getCartByID(cartId);
+                request.setAttribute("cart", cart);
+                request.getRequestDispatcher("/WEB-INF/users/delete.jsp").forward(request, response);
+                
             }
 
             request.getRequestDispatcher("/WEB-INF/users/cart.jsp").forward(request, response);
@@ -114,7 +121,10 @@ public class CartServlet extends HttpServlet {
                 String cartid = request.getParameter("cartId");
                 String quantity = request.getParameter("quantity");          
                 cartDao.edit(Integer.parseInt(cartid), Integer.parseInt(quantity));
-
+                
+            } else if(action.equals("delete")){
+                String cartid = request.getParameter("cartId");
+                cartDao.delete(Integer.parseInt(cartid));
             }
 
           

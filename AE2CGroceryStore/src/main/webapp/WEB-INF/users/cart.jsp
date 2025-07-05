@@ -38,7 +38,7 @@
                             <td>${cart.product.price*cart.quantity}</td>
                             <td>
                                 <a href="${pageContext.request.contextPath}/cart?view=edit&id=${cart.cartItemID}" class="btn btn-primary btn-sm">edit</a>
-                                <a href=" <%= request.getContextPath()%>/cart?view=delete&id=1" class="btn btn-danger btn-sm">delete</a>
+                                <a href="${pageContext.request.contextPath}/cart?view=delete&id=${cart.cartItemID}" class="btn btn-danger btn-sm">delete</a>
 
 
                             </td>
