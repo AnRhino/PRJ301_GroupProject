@@ -17,20 +17,35 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Cart ID</th>
-                        <th>User</th>
+                        <th>Image</th>
+                       
                         <th>Product Name</th>
                         <th>Quantity</th>
+                        <th>Price</th>
+                        
+                        <th>Buy</th>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach var="cart" items="${cartList}" varStatus="status">
                         <tr>
                             <th scope="row">${status.index + 1}</th>
-                            <td>${cart.cartItemID}</td>
-                            <td>${cart.user.username}</td>
+                            <td> <img src="${pageContext.request.contextPath}/assets/images/category/1.png" alt="alt" style="width: 80px; height: auto;" />
+  </td>
+                            
                             <td>${cart.product.productName}</td> 
-                            <td>${cart.quantity}</td>
+                            <td>
+                                
+                                ${cart.quantity}
+                                <button type="submit" class="btn btn-primary btn-sm">edit</button>
+                            
+                            </td>
+                            <td>${cart.product.price*cart.quantity}</td>
+                          
+                            
+                            <td>
+                                <input type="checkbox" value="Button">  
+                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>

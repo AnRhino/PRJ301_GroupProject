@@ -33,7 +33,7 @@ public class CartDAO extends dbconnect.DBContext {
 
         PreparedStatement ps;
         try {
-            String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName\n"
+            String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price\n"
                     + "FROM [dbo].[Carts] c\n"
                     + "JOIN [dbo].[Users] u\n"
                     + "ON u.UserID = c.UserID\n"
@@ -47,6 +47,7 @@ public class CartDAO extends dbconnect.DBContext {
             while (rs.next()) {
                 Product product = new Product(rs.getInt(4));
                 product.setProductName(rs.getString(6));
+                product.setPrice(rs.getInt(7));
                 User user = new User(rs.getInt(2), rs.getString(3));
                 Cart cart = new Cart(rs.getInt(1), user, product, rs.getInt(5));
                 list.add(cart);
