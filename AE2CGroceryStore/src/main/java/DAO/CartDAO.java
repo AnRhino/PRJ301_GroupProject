@@ -97,7 +97,6 @@ public class CartDAO extends dbconnect.DBContext {
 //
 //        return list;
 //    }
-
     /**
      * Tạo 1 sản phấm trong cart của người dùng.
      *
@@ -122,4 +121,41 @@ public class CartDAO extends dbconnect.DBContext {
 
         return 0;
     }
+
+    public Cart getCartByID(int cartItemID) {
+        String query = "SELECT c.CartItemID, u.UserID, u.Username, p.ProductID, p.ProductName, p.Price, c.Quantity "
+                + "FROM Carts c "
+                + "JOIN Users u ON u.UserID = c.UserID "
+                + "JOIN Products p ON p.ProductID = c.ProductID "
+                + "WHERE c.CartItemID = ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, cartItemID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                User user = new User(rs.getInt("UserID"), rs.getString("Username"));
+                Product product = new Product(rs.getInt("ProductID"));
+                product.setProductName(rs.getString("ProductName")); 
+                product.setPrice(rs.getInt("Price")); 
+                return new Cart(rs.getInt("CartItemID"), user, product, rs.getInt("Quantity"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void edit(int cartId, int quantity) {
+        String query = "UPDATE Carts SET Quantity = ? WHERE CartItemID = ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, quantity);
+            ps.setInt(2, cartId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

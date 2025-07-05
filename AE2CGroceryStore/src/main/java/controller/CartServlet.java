@@ -80,8 +80,13 @@ public class CartServlet extends HttpServlet {
                 User user = (User) request.getSession().getAttribute("loggedUser");
                 List<Cart> list = cartDao.getAll(user.getId());
                 request.setAttribute("cartList", list);
-              
-
+                request.getRequestDispatcher("/WEB-INF/users/cart.jsp").forward(request, response);
+            } else if ("edit".equals(view)) {
+                int cartId = Integer.parseInt(request.getParameter("id"));
+                Cart cart = cartDao.getCartByID(cartId);
+                request.setAttribute("cart", cart);
+                request.getRequestDispatcher("/WEB-INF/users/edit.jsp").forward(request, response);
+                return;
             }
 
             request.getRequestDispatcher("/WEB-INF/users/cart.jsp").forward(request, response);
@@ -99,12 +104,21 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
 
         if (((User) request.getSession().getAttribute("loggedUser")) == null) {
             response.sendRedirect(request.getContextPath() + "/login");
         } else {
+            String action = request.getParameter("action");
 
+            if (action.equals("edit")) {
+                String cartid = request.getParameter("cartId");
+                String quantity = request.getParameter("quantity");          
+                cartDao.edit(Integer.parseInt(cartid), Integer.parseInt(quantity));
+
+            }
+
+          
+            response.sendRedirect(request.getContextPath() + "/cart");
         }
     }
 
