@@ -136,8 +136,9 @@ public class CartDAO extends dbconnect.DBContext {
             if (rs.next()) {
                 User user = new User(rs.getInt("UserID"), rs.getString("Username"));
                 Product product = new Product(rs.getInt("ProductID"));
-                product.setProductName(rs.getString("ProductName")); 
-                product.setPrice(rs.getInt("Price")); 
+                product.setProductName(rs.getString("ProductName"));
+                product.setPrice(rs.getInt("Price"));
+                product.setQuantity(rs.getInt("Quantity"));
                 return new Cart(rs.getInt("CartItemID"), user, product, rs.getInt("Quantity"));
             }
         } catch (Exception e) {
@@ -158,4 +159,17 @@ public class CartDAO extends dbconnect.DBContext {
         }
     }
 
+    public int delete(int cartID) {
+        String query = "delete from Carts\n"
+                + "where CartItemID = ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setObject(1, cartID);
+            return ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+
+    }
 }

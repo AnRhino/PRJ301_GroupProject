@@ -14,11 +14,11 @@
         <%@include file="../include/header.jsp" %>
 
         <div class="container p-5">
-            <h3>Edit Cart </h3>
+            <h3>Delete Cart </h3>
 
             <form method="post" action="${pageContext.request.contextPath}/cart">
                 <input type="hidden" name="cartId" value="${cart.cartItemID}"/>
-                <input type="hidden" name="action" value="edit"/> 
+                <input type="hidden" name="action" value="delete"/> 
 
 
                 <table class="table">
@@ -38,14 +38,12 @@
                     </tr>
                     <tr>
                         <th>Quantity</th>
-                        <td>
-                            <input type="number" name="quantity" min="1" value="${cart.quantity}" required/>
-                        </td>
+                        <td>${cart.product.quantity}</td>
                     </tr>
                 </table>
 
-                <button type="submit" class="btn btn-success">Update</button>
-                <button type="reset" class="btn btn-secondary">Clear</button>
+                <button type="submit" class="btn btn-success">Delete</button>
+                <a href="${pageContext.request.contextPath}/cart" class="btn btn-secondary">Back</a>
             </form>
         </div>
 
