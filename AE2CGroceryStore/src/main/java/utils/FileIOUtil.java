@@ -66,7 +66,7 @@ public class FileIOUtil {
      * @param output The target File where the uploaded content should be saved
      * @throws IOException If an I/O error occurs during file transfer
      */
-    public static void uploadFile(Part input, File output) throws IOException {
+    public static void fileUploader(Part input, File output) throws IOException {
         // Using try-with-resources to ensure proper resource cleanup
         // The OutputStream and InputStream will be automatically closed when done
         try ( OutputStream os = new FileOutputStream(output);
@@ -79,4 +79,5 @@ public class FileIOUtil {
             }
         }
     }
+            
 }

@@ -13,6 +13,22 @@ List all sp - line 50
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        const imagePreview = document.getElementById('imagePreview');
+        const file = event.target.files[0];
+
+        if (file) {
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
 <html>
     <%@include file="/WEB-INF/include/head.jsp" %>
     <body>
@@ -26,18 +42,36 @@ List all sp - line 50
                 </div>
                 <c:choose>
                     <c:when test="${requestScope.category == null}">
-                        <p>Category with ID = ${param.id} was not found</p>
+                        <p>Category with ID = ${param.categoryID} was not found</p>
                     </c:when>
                     <c:otherwise>
-                        <form class="form" method="post" action="#">
+                    <strong>${errorMessage}</strong>
+                        <form class="form" method="post" action="<c:url value="/admin/categories/edit"/>" enctype="multipart/form-data">
                             <p>
                                 <label class="form-label" for="categoryID">ID</label>
-                                <input class="form-control" type="text" id="categoryID" name="categoryID" value="${param.id}">
+                                <input class="form-control" type="text" id="categoryID" name="categoryID" value="${category.categoryID}" readonly>
                             </p>
                             <p>
                                 <label class="form-label" for="categoryName">Name</label>
                                 <input class="form-control" type="text" id="categoryName" name="categoryName" value="${category.categoryName}">
                             </p>
+                            <div class="mb-3">
+                                <label> Album cover</label>
+                                <div class="mb-2">
+                                    <img id="imagePreview" src="<c:url value="/get-image/${category.coverImg}"/>" alt="${category.categoryName}" style="max-width: 200px; max-height: 200px; display:block;" class="img-thumbnail"/>
+                                </div>
+                                <input type="file"
+                                       name="coverImg"
+                                       accept="image/*"
+                                       class="form-control"
+                                       id="coverImg"
+                                       onchange="previewImage(event)"
+                                       />
+                            </div>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" name="isHidden" id="isHidden" role="switch" value="true" class="form-check-input"  <c:if test="${category.checkIsHidden()}">checked</c:if> />
+                                <label class="form-check-label" for="isHidden">Hide Category</label>
+                            </div>
                             <p>
                                 <button class="btn btn-primary" type="apply" name="action" value="apply">Apply</button>
                                 <button class="btn btn-secondary" type="reset">Clear</button> // not working
@@ -46,8 +80,6 @@ List all sp - line 50
                     </c:otherwise>
                 </c:choose>
             </div>
-            
-            <!-- list all sp trong category -->
         </main>
 
         <%@include file="/WEB-INF/include/footer.jsp" %>

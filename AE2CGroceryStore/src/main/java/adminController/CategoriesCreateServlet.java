@@ -2,11 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
- /*
-Not done
-doPost
- */
 package adminController;
 
 import DAO.CategoryDAO;
@@ -21,24 +16,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.util.Arrays;
-import model.Category;
-import model.ErrorMessage;
-import utils.FileIOUtil;
-import utils.MessageConstants;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.ErrorMessage;
+import utils.FileIOUtil;
 
 /**
  *
- * @author Dinh Cong Phuc - CE190770
+ * @author Dinh Cong Phuc - CE190770 Not tested for bugs
  */
-@WebServlet(name = "CategoriesEditServlet", urlPatterns = {"/admin/categories/edit"})
+@WebServlet(name = "CategoriesCreateServlet", urlPatterns = {"/admin/categories/create"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
-public class CategoriesEditServlet extends HttpServlet {
+public class CategoriesCreateServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -57,10 +50,10 @@ public class CategoriesEditServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CategoriesEditServlet</title>");
+            out.println("<title>Servlet CategoriesCreateServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CategoriesEditServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CategoriesCreateServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -75,19 +68,11 @@ public class CategoriesEditServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    int categoryID;
-    CategoryDAO dao;
-    Category category;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-        categoryID = Integer.parseInt(request.getParameter("categoryID"));
-        dao = new CategoryDAO();
-        category = dao.getOneByID(categoryID);
-        request.setAttribute("category", category);
-        request.getRequestDispatcher("/WEB-INF/adminFeatures/categoriesMgmt/categoriesEdit.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/adminFeatures/categoriesMgmt/categoriesCreate.jsp").forward(request, response);
     }
 
     /**
@@ -101,62 +86,66 @@ public class CategoriesEditServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Initialize variables
+//        processRequest(request, response);
+        CategoryDAO dao = new CategoryDAO();
         boolean hasErrors = false;
         String errorMessage = null;
+        String categoryName = request.getParameter("categoryName");
+        boolean isHidden = Boolean.parseBoolean(request.getParameter("isHidden"));
+        String imagePath = ""; // Default empty image path
 
-        try {
-            boolean changedName = (!category.getCategoryName().equals(request.getParameter("categoryName")));
-            boolean changedHidden = (category.checkIsHidden() != Boolean.parseBoolean(request.getParameter("isHidden")));
-
-            // Process name change
-            if (changedName) {
-                if (dao.updateCategoryName(categoryID, request.getParameter("categoryName")) <= 0) {
-                    hasErrors = true;
-                    errorMessage = "Failed to update category name.";
-                }
-            }
-
-            // Process hidden status
-            if (changedHidden && !hasErrors) {
-                int hiddenStatus = Boolean.parseBoolean(request.getParameter("isHidden")) ? 1 : 0;
-                if (dao.updateHidden(categoryID, hiddenStatus) <= 0) {
-                    hasErrors = true;
-                    errorMessage = "Failed to update category visibility.";
-                }
-            }
-
-            // Process image upload
-            Part coverImgPart = request.getPart("coverImg");
-            boolean changedCoverImg = (coverImgPart != null && coverImgPart.getSize() > 0);
-
-            if (changedCoverImg && !hasErrors) {
-                String result = processImageUpload(coverImgPart, categoryID, request);
-                if (result != null) {
-                    hasErrors = true;
-                    errorMessage = result;
-                }
-            }
-
-            if (hasErrors) {
-                request.setAttribute("errorMessage", new ErrorMessage(errorMessage));
-                request.getRequestDispatcher("/admin/categories/edit?categoryID=" + categoryID)
-                        .forward(request, response);
-                return;
-            }
-
-            // If everything is successful
-            response.sendRedirect(request.getContextPath() + "/admin/categories");
-
-        } catch (Exception e) {
-            Logger.getLogger(CategoriesEditServlet.class.getName()).log(Level.SEVERE, "Error updating category", e);
-            request.setAttribute("errorMessage", new ErrorMessage("An unexpected error occurred."));
-            request.getRequestDispatcher("/admin/categories/edit?categoryID=" + categoryID)
-                    .forward(request, response);
+        // Validate category name
+        if (categoryName == null || categoryName.trim().isEmpty()) {
+            hasErrors = true;
+            errorMessage = "Category name cannot be empty.";
         }
+
+        // Process image upload if no errors
+        if (!hasErrors) {
+            try {
+                Part coverImgPart = request.getPart("coverImg");
+
+                // Check if an image was uploaded
+                if (coverImgPart != null && coverImgPart.getSize() > 0) {
+                    // Get next available category ID
+                    int nextCategoryID = dao.getMaxId() + 1;
+
+                    // Process the image upload
+                    String result = processImageUpload(coverImgPart, nextCategoryID);
+                    if (result != null) {
+                        // If there was an error processing the image
+                        hasErrors = true;
+                        errorMessage = result;
+                    } else {
+                        // Set the image path for the new category
+                        imagePath = "category/" + nextCategoryID
+                                + coverImgPart.getSubmittedFileName()
+                                        .substring(coverImgPart.getSubmittedFileName().lastIndexOf("."))
+                                        .toLowerCase();
+                    }
+                }
+
+            } catch (Exception e) {
+                hasErrors = true;
+                errorMessage = "Error processing image upload: " + e.getMessage();
+                Logger.getLogger(CategoriesCreateServlet.class.getName())
+                        .log(Level.SEVERE, "Error in image upload", e);
+            }
+        }
+
+        // If there are any errors, return to the create form
+        if (hasErrors) {
+            request.setAttribute("errorMessage", new ErrorMessage(errorMessage));
+            request.getRequestDispatcher("/admin/categories/create")
+                    .forward(request, response);
+            return;
+        }
+
+            dao.create(categoryName, (isHidden) ? 1 : 0, imagePath);
+            response.sendRedirect(request.getContextPath() + "/admin/categories");
     }
 
-    private String processImageUpload(Part coverImgPart, int categoryID, HttpServletRequest request) {
+    private String processImageUpload(Part coverImgPart, int categoryID) {
         try {
             String[] allowedExtensions = {".jpg", ".png", ".jpeg"};
             File folder = new File(FileIOUtil.getRootPath() + "images/category");
@@ -185,34 +174,21 @@ public class CategoriesEditServlet extends HttpServlet {
 
             // Process file upload
             String newFilename = categoryID + fileExtension;
-            int oldDotIndex = category.getCoverImg().lastIndexOf("/");
-            String oldFilename = category.getCoverImg().substring(oldDotIndex + 1);
             File newFile = new File(folder, newFilename);
-            File oldFile = new File(folder, oldFilename);
 
             // Delete existing file if it exists
             if (newFile.exists() && !newFile.delete()) {
                 return "Failed to replace existing image.";
             }
 
-            // Delete old file
-            if (oldFile.exists() && !oldFile.delete()) {
-                return "Failed to delete old image.";
-            }
-
             // Save new file
             FileIOUtil.fileUploader(coverImgPart, newFile);
-
-            // Update database
-            String imgPath = "category/" + newFilename;
-            if (dao.updateCoverImg(categoryID, imgPath) <= 0) {
-                return "Failed to update image in database.";
-            }
 
             return null; // No error
 
         } catch (Exception e) {
-            Logger.getLogger(CategoriesEditServlet.class.getName()).log(Level.SEVERE, "Error processing image upload", e);
+            Logger.getLogger(CategoriesCreateServlet.class.getName())
+                    .log(Level.SEVERE, "Error processing image upload", e);
             return "Error processing image: " + e.getMessage();
         }
     }

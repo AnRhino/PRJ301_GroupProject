@@ -29,14 +29,14 @@ public class CategoryDAO extends dbconnect.DBContext {
     public List<Category> getAll() {
 
         List<Category> list = new ArrayList<>();
-        String query = "SELECT CategoryID, CategoryName, IsHidden \n"
+        String query = "SELECT CategoryID, CategoryName, IsHidden, ImagePath\n"
                 + "FROM Categories";
 
         try {
             ResultSet rs = execSelectQuery(query, null);
 
             while (rs.next()) {
-                list.add(new Category(rs.getInt(1), rs.getString(2), rs.getBoolean(3)));
+                list.add(new Category(rs.getInt(1), rs.getString(2), rs.getString(4), rs.getBoolean(3)));
             }
 
         } catch (SQLException ex) {
@@ -55,8 +55,8 @@ public class CategoryDAO extends dbconnect.DBContext {
      */
     public Category getOneByID(int categoryID) {
 
-        Category cate = null;
-        String query = "SELECT c.CategoryID, c.CategoryName, c.IsHidden \n"
+        Category category = null;
+        String query = "SELECT c.CategoryID, c.CategoryName, c.IsHidden, c.ImagePath\n"
                 + "FROM [dbo].[Categories] c\n"
                 + "WHERE c.CategoryID = ?";
         Object[] params = {categoryID};
@@ -66,14 +66,14 @@ public class CategoryDAO extends dbconnect.DBContext {
             ResultSet rs = execSelectQuery(query, params);
 
             while (rs.next()) {
-                cate = new Category(rs.getInt(1), rs.getString(2), rs.getBoolean(3));
+                category = new Category(rs.getInt(1), rs.getString(2), rs.getString(4), rs.getBoolean(3));
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return cate;
+        return category;
     }
 
     /**
@@ -105,14 +105,33 @@ public class CategoryDAO extends dbconnect.DBContext {
 
         return cate;
     }
-    
-    public int getMaxId(){
+
+    public int getMaxId() {
         try {
             String getMaxIdQuery = "SELECT MAX(CategoryID) FROM Categories";
-            PreparedStatement psMaxId = this.getConnection().prepareStatement(getMaxIdQuery);
-            ResultSet rsMaxId = psMaxId.executeQuery();
-            if(rsMaxId.next()){
-                return rsMaxId.getInt(1);
+            PreparedStatement maxIdPs = this.getConnection().prepareStatement(getMaxIdQuery);
+            ResultSet maxIdRs = maxIdPs.executeQuery();
+            if (maxIdRs.next()) {
+                return maxIdRs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
+    public int getProductCount(int categoryID) {
+        try {
+            String countQuery = "SELECT c.CategoryID, c.CategoryName, COUNT(p.ProductID) AS ProductCount\n"
+                    + "FROM Categories c \n"
+                    + "LEFT JOIN Products p ON c.CategoryID = p.CategoryID\n"
+                    + "WHERE c.CategoryID = ? \n"
+                    + "GROUP BY c.CategoryID, c.CategoryName;";
+            PreparedStatement psCount = this.getConnection().prepareStatement(countQuery);
+            psCount.setObject(1, categoryID);
+            ResultSet countRs = psCount.executeQuery();
+            if (countRs.next()) {
+                return countRs.getInt(3);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,16 +143,62 @@ public class CategoryDAO extends dbconnect.DBContext {
         try {
 
             String createQuery = "INSERT INTO Categories VALUES (?, ?, ?)";
-            PreparedStatement psCreate = this.getConnection().prepareStatement(createQuery);
-            psCreate.setObject(1, categoryName);
-            psCreate.setObject(2, isHidden);
-            psCreate.setObject(3, coverImg);
-            
-            return psCreate.executeUpdate();
+            PreparedStatement createPs = this.getConnection().prepareStatement(createQuery);
+            createPs.setObject(1, categoryName);
+            createPs.setObject(2, isHidden);
+            createPs.setObject(3, coverImg);
+
+            return createPs.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
     }
+
+    
+    public int updateCategoryName(int categoryID, String categoryName) {
+        try {
+            String updateQuery = "UPDATE Categories\n"
+                    + "SET CategoryName = ?\n"
+                    + "WHERE CategoryID = ?;";
+            PreparedStatement updatePs = this.getConnection().prepareStatement(updateQuery);
+            updatePs.setObject(1, categoryName);
+            updatePs.setObject(2, categoryID);
+            return updatePs.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+    public int updateHidden(int categoryID, int isHidden) {
+        try {
+            String updateQuery = "UPDATE Categories\n"
+                    + "SET IsHidden = ?\n"
+                    + "WHERE CategoryID = ?;";
+            PreparedStatement updatePs = this.getConnection().prepareStatement(updateQuery);
+            updatePs.setObject(1, isHidden);
+            updatePs.setObject(2, categoryID);
+            return updatePs.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+    public int updateCoverImg(int categoryID, String coverImg) {
+        try {
+            String updateQuery = "UPDATE Categories\n"
+                    + "SET ImagePath = ?\n"
+                    + "WHERE CategoryID = ?;";
+            PreparedStatement updatePs = this.getConnection().prepareStatement(updateQuery);
+            updatePs.setObject(1, coverImg);
+            updatePs.setObject(2, categoryID);
+            return updatePs.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+    
+    
 
 }

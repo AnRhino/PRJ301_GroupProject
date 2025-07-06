@@ -61,7 +61,7 @@ public class Category {
         this.coverImg = coverImg;
     }
 
-    public boolean isIsHidden() {
+    public boolean checkIsHidden() {
         return isHidden;
     }
 
