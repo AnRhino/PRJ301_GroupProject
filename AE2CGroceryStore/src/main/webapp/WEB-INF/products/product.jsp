@@ -247,6 +247,12 @@
                                                     <c:if test="${not empty successDeleteComment}">
                                                         <p class="text-success">${requestScope.successDeleteComment}</p>
                                                     </c:if>
+                                                    <c:if test="${not empty errorEditComment}">
+                                                        <p class="text-danger">${requestScope.errorEditComment.message}</p>
+                                                    </c:if>
+                                                    <c:if test="${not empty successEditComment}">
+                                                        <p class="text-success">${requestScope.successEditComment}</p>
+                                                    </c:if>
                                                 </div>
                                             </div>
                                         </div>
