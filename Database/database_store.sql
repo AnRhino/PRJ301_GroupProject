@@ -1,6 +1,16 @@
 USE master
 GO
 
+/*******************************************************************************
+   Drop database if it exists
+********************************************************************************/
+IF EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'GroceryStore')
+BEGIN
+	ALTER DATABASE GroceryStore SET OFFLINE WITH ROLLBACK IMMEDIATE;
+	ALTER DATABASE GroceryStore SET ONLINE;
+	DROP DATABASE GroceryStore;
+END
+
 CREATE DATABASE GroceryStore
 GO
 
