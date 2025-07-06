@@ -22,6 +22,11 @@ public class MessageConstants {
     public final static String EMPTY_RATING_INPUT_MESSAGE = "Please select a rate for this product.";
     public final static String INVALID_RATING_INPUT_MESSAGE = "Please choose a valid rate for this product.";
     public final static String OUT_OF_RANGE_RATING_INPUT_MESSAGE = "Rating only from 1 to 5.";
+    
+    public final static String UNKNOWN_COMMENT_MESSAGE = "There is an error with this comment. Please try again.";
+    public final static String ERROR_EDIT_COMMENT_MESSAGE = "You must enter something in the comment.";
+    public final static String SUCCESS_EDIT_COMMENT_MESSAGE = "Successfully edit the comment.";
+    public final static String ERROR_DELETE_COMMENT_MESSAGE = "Fail to delete the comment.";
     public final static String SUCCESS_DELETE_COMMENT_MESSAGE = "Successfully remove the comment.";
     
 }
