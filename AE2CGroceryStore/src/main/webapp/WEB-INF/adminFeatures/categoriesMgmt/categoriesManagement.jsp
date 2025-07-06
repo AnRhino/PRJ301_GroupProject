@@ -25,6 +25,9 @@ Delete - line 43
             <div class="container">
                 <a href="<c:url value="/admin/categories/create"/>" class="btn btn-primary">Create</a>
             </div>
+            <div>
+                <strong>${errorMessage}</strong>
+            </div>
             <div id="categories" class="container pb-4">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                     <c:forEach var="category" items="${categories}">
@@ -43,16 +46,45 @@ Delete - line 43
                                     </a>
 
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-category-id="${category.categoryID}" data-category-name="${category.categoryName}">
-                                        Delete
-                                    </button>
+                                    <c:choose>
+                                        <c:when test="${productCounts[category.categoryID] == 0}">
+                                            <button type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-category-id="${category.categoryID}" data-category-name="${category.categoryName}" >Delete</button>
+                                        </c:when>
+                                        <c:when test="${category.checkIsHidden() == false}">
+                                            <button type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#visibilityModal" data-category-id="${category.categoryID}" data-category-name="${category.categoryName}" data-category-hidden="false">Hide</button>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#visibilityModal" data-category-id="${category.categoryID}" data-category-name="${category.categoryName}" data-category-hidden="true">Unhide</button>                                        
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
                         </div>
                     </c:forEach>
                 </div>
             </div>
-            <!-- Modal -->
+            <!-- Hide Modal -->
+            <div class="modal fade" id="visibilityModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="visibilityModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="visibilityModalLabel">Hide Category</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Category ID: <strong id="categoryIdDisplay"></strong></p>
+                            <p>Category Name: <strong id="categoryNameDisplay"></strong></p>
+                            <p class="modal-content text-danger" id="visibilityModalContent">Are you sure you want to hide this category?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+                            <a id="confirmVisibilityBtn" href="" type="button" class="btn btn-primary">Hide</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Modal -->
             <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -63,7 +95,8 @@ Delete - line 43
                         <div class="modal-body">
                             <p>Category ID: <strong id="categoryIdDisplay"></strong></p>
                             <p>Category Name: <strong id="categoryNameDisplay"></strong></p>
-                            <p class="text-danger">Are you sure you want to delete this category?</p>
+                            <p class="modal-content text-danger">Are you sure you want to Delete this category?</p>
+                            <p class="modal-content text-danger">This action can't be undone</p>
                         </div>
                         <div class="modal-footer">
                             <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
@@ -76,6 +109,44 @@ Delete - line 43
 
         <%@include file="/WEB-INF/include/footer.jsp" %>
         <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const visibilityModal = document.getElementById('visibilityModal');
+
+                visibilityModal.addEventListener('show.bs.modal', function (event) {
+                    // Get the button that triggered the modal
+                    const button = event.relatedTarget;
+
+                    // Extract info from data-* attributes
+                    const categoryId = button.getAttribute('data-category-id');
+                    const categoryName = button.getAttribute('data-category-name');
+                    const categoryHidden = button.getAttribute('data-category-hidden');
+
+                    // Update the modal's content
+                    const modalTitle = visibilityModal.querySelector('.modal-title');
+                    const modalContent = visibilityModal.querySelector('#visibilityModalContent');
+                    const categoryIdDisplay = visibilityModal.querySelector('#categoryIdDisplay');
+                    const categoryNameDisplay = visibilityModal.querySelector('#categoryNameDisplay');
+                    const confirmVisibilityBtn = visibilityModal.querySelector('#confirmVisibilityBtn');
+
+                    // Update the modal content based on visibility status
+                    if (categoryHidden === "true") {
+                        modalTitle.textContent = "Unhide Category";
+                        modalContent.textContent = "Are you sure you want to unhide this category?";
+                        confirmVisibilityBtn.textContent = "Unhide";
+                        confirmVisibilityBtn.href = "${pageContext.request.contextPath}/admin/categories/visibility?id=" + categoryId + "&hidden=0";
+                    } else {
+                        modalTitle.textContent = "Hide Category";
+                        modalContent.textContent = "Are you sure you want to hide this category?";
+                        confirmVisibilityBtn.textContent = "Hide";
+                        confirmVisibilityBtn.href = "${pageContext.request.contextPath}/admin/categories/visibility?id=" + categoryId + "&hidden=1";
+                    }
+
+                    categoryIdDisplay.textContent = categoryId;
+                    categoryNameDisplay.textContent = categoryName;
+
+                });
+            });
+
             document.addEventListener('DOMContentLoaded', function () {
                 const deleteModal = document.getElementById('deleteModal');
 
@@ -96,8 +167,9 @@ Delete - line 43
                     categoryIdDisplay.textContent = categoryId;
                     categoryNameDisplay.textContent = categoryName;
                     confirmDeleteBtn.href = "${pageContext.request.contextPath}/admin/categories/delete?id=" + categoryId;
-                            });
-                        });
+                });
+            });
+
         </script>
     </body>
 </html>

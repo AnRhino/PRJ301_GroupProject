@@ -19,8 +19,8 @@ import model.ErrorMessage;
  *
  * @author Dinh Cong Phuc - CE190770
  */
-@WebServlet(name="CategoriesDeleteServlet", urlPatterns={"/admin/categories/delete"})
-public class CategoriesDeleteServlet extends HttpServlet {
+@WebServlet(name="CategoriesVisibilityServlet", urlPatterns={"/admin/categories/visibility"})
+public class CategoriesVisibilityServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +37,10 @@ public class CategoriesDeleteServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CategoryDeleteServlet</title>");  
+            out.println("<title>Servlet CategoriesDeleteServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CategoryDeleteServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CategoriesDeleteServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,10 +57,10 @@ public class CategoriesDeleteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-//        processRequest(request, response);
         int id = Integer.parseInt(request.getParameter("id"));
+        int hidden = Integer.parseInt(request.getParameter("hidden"));
         CategoryDAO dao = new CategoryDAO();
-        dao.deleteCategoryById(id);
+        dao.updateHidden(id, hidden);
 //        request.setAttribute("errorMessage", new ErrorMessage("Category with ID: " + id + " does not exists."));
         response.sendRedirect(request.getContextPath() + "/admin/categories");
     } 

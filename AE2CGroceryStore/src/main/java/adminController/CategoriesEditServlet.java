@@ -140,7 +140,7 @@ public class CategoriesEditServlet extends HttpServlet {
 
             if (hasErrors) {
                 request.setAttribute("errorMessage", new ErrorMessage(errorMessage));
-                request.getRequestDispatcher("/admin/categories/edit?categoryID=" + categoryID)
+                request.getRequestDispatcher("/WEB-INF/adminFeatures/categoriesMgmt/categoriesEdit.jsp")
                         .forward(request, response);
                 return;
             }
@@ -151,7 +151,7 @@ public class CategoriesEditServlet extends HttpServlet {
         } catch (Exception e) {
             Logger.getLogger(CategoriesEditServlet.class.getName()).log(Level.SEVERE, "Error updating category", e);
             request.setAttribute("errorMessage", new ErrorMessage("An unexpected error occurred."));
-            request.getRequestDispatcher("/admin/categories/edit?categoryID=" + categoryID)
+            request.getRequestDispatcher("/WEB-INF/adminFeatures/categoriesMgmt/categoriesEdit.jsp")
                     .forward(request, response);
         }
     }
@@ -183,21 +183,25 @@ public class CategoriesEditServlet extends HttpServlet {
                 return "Only " + Arrays.toString(allowedExtensions) + " files are allowed.";
             }
 
+            // If category has coverImg then delete it
+
+            if (!category.getCoverImg().isEmpty() || !category.getCoverImg().isBlank() || category.getCoverImg() == null) {
+                int oldDotIndex = category.getCoverImg().lastIndexOf("/");
+                String oldFilename = category.getCoverImg().substring(oldDotIndex + 1);
+                File oldFile = new File(folder, oldFilename);
+                // Delete old file
+                if (oldFile.exists() && !oldFile.delete()) {
+                    return "Failed to delete old image.";
+                }
+            }
+            
             // Process file upload
             String newFilename = categoryID + fileExtension;
-            int oldDotIndex = category.getCoverImg().lastIndexOf("/");
-            String oldFilename = category.getCoverImg().substring(oldDotIndex + 1);
             File newFile = new File(folder, newFilename);
-            File oldFile = new File(folder, oldFilename);
 
             // Delete existing file if it exists
             if (newFile.exists() && !newFile.delete()) {
                 return "Failed to replace existing image.";
-            }
-
-            // Delete old file
-            if (oldFile.exists() && !oldFile.delete()) {
-                return "Failed to delete old image.";
             }
 
             // Save new file

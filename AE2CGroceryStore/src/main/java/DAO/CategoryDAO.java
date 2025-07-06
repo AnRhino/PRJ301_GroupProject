@@ -155,7 +155,6 @@ public class CategoryDAO extends dbconnect.DBContext {
         return -1;
     }
 
-    
     public int updateCategoryName(int categoryID, String categoryName) {
         try {
             String updateQuery = "UPDATE Categories\n"
@@ -170,6 +169,7 @@ public class CategoryDAO extends dbconnect.DBContext {
         }
         return -1;
     }
+
     public int updateHidden(int categoryID, int isHidden) {
         try {
             String updateQuery = "UPDATE Categories\n"
@@ -184,6 +184,7 @@ public class CategoryDAO extends dbconnect.DBContext {
         }
         return -1;
     }
+
     public int updateCoverImg(int categoryID, String coverImg) {
         try {
             String updateQuery = "UPDATE Categories\n"
@@ -198,7 +199,17 @@ public class CategoryDAO extends dbconnect.DBContext {
         }
         return -1;
     }
-    
-    
+
+    public int deleteCategoryById(int categoryID) {
+        try {
+            String deleteQuery = "DELETE FROM Categories WHERE CategoryID = ?";
+            PreparedStatement deletePs = this.getConnection().prepareStatement(deleteQuery);
+            deletePs.setObject(1, categoryID);
+            return deletePs.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
 
 }
