@@ -106,7 +106,7 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("password", password);
 
                 // Redirect to login
-                response.sendRedirect(request.getContextPath());
+                request.getRequestDispatcher("WEB-INF/credentials/login.jsp").forward(request, response);
                 return;
             } else { // If login success
                 // Create new session
