@@ -17,7 +17,7 @@ Not done
 
         <main>
             <div class="container g-3">
-                <<h1>Admin Management Dashboard</h1>
+                <h1>Admin Management Dashboard</h1>
             </div>
             <div class="container">
                 <a href="<c:url value="/admin/categories"/>" class="btn btn-primary">Categories</a>
