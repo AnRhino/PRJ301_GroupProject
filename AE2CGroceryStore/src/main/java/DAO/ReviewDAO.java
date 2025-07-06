@@ -110,6 +110,13 @@ public class ReviewDAO extends dbconnect.DBContext {
         return 0;
     }
 
+    /**
+     * Delete 1 review nào đó.
+     * 
+     * @param reviewID là id của review cần xóa.
+     * 
+     * @return 0 nếu delete thất bại. Khác 0 nếu delete thành công.
+     */
     public int delete(int reviewID) {
 
         try {
@@ -122,7 +129,32 @@ public class ReviewDAO extends dbconnect.DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(ReviewDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+        return 0;
+    }
+
+    /**
+     * Update comment cũ thành 1 comment trong 1 review.
+     * 
+     * @param reviewID là id của review.
+     * @param comment là comment mới.
+     * 
+     * @return 0 nếu update thất bại. Khác 0 nếu thành công.
+     */
+    public int edit(int reviewID, String comment) {
+
+        try {
+            String query = "UPDATE [dbo].[Reviews]\n"
+                    + "SET Comment = ?\n"
+                    + "WHERE ReviewID = ?";
+            Object[] params = {comment, reviewID};
+
+            return execQuery(query, params);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ReviewDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return 0;
     }
 }

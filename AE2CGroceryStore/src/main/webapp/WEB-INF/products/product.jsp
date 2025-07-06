@@ -138,12 +138,15 @@
                                             <c:otherwise>
                                                 <c:forEach var="rv" items="${requestScope.reviewList}">
                                                     <div class="row px-5 gap-3 p-2 text-light">
+
                                                         <div class="col-12">
                                                             <p class="d-inline fw-bold text-dark bg-primary px-2 py-1 rounded-2">${rv.user.username}</p>
                                                         </div>
-                                                        <div class="col-12 text-dark bg-white  px-2 py-1 rounded-2">    
+
+                                                        <div class="col-12 text-dark bg-white px-2 py-1 rounded-2">    
                                                             <p class="d-inline fw-bold text-wrap">${rv.comment}</p>
                                                         </div>
+
                                                         <div class="col-12">
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <div>
@@ -155,30 +158,66 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <c:choose>
                                                             <c:when test="${sessionScope.roleId == 1}">
-                                                                <div class="col-12 d-flex justify-content-end">
-                                                                    <form action="${pageContext.request.contextPath}/user-product" method="post">
-                                                                        <input type="hidden" name="view" value="removeComment">
-                                                                        <input type="hidden" name="id" value="${requestScope.product.productID}">
-                                                                        <input type="hidden" name="reviewID" value="${rv.reviewID}">
-                                                                        <button type="button" class="btn btn-primary">Do nothing</button>
-                                                                        <button type="submit" class="btn btn-danger ">Delete</button>
-                                                                    </form>
+                                                                <div class="col-12 d-flex justify-content-end gap-1">
+                                                                    <button type="button" class="btn btn-primary">Do nothing</button>
+                                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDeleteComment${rv.reviewID}">Delete</button>
                                                                 </div>
                                                             </c:when>
                                                             <c:when test="${sessionScope.roleId != 1 and rv.user.id == sessionScope.loggedUser.id}">
-                                                                <div class="col-12 d-flex justify-content-end">
-                                                                    <form action="${pageContext.request.contextPath}/user-product" method="post">
-                                                                        <input type="hidden" name="view" value="removeComment">
-                                                                        <input type="hidden" name="id" value="${requestScope.product.productID}">
-                                                                        <input type="hidden" name="reviewID" value="${rv.reviewID}">
-                                                                        <button type="button" class="btn btn-primary">Do nothing</button>
-                                                                        <button type="submit" class="btn btn-danger ">Delete</button>
-                                                                    </form>
+                                                                <div class="col-12 d-flex justify-content-end gap-1">
+                                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditComment${rv.reviewID}">Edit</button>
+                                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDeleteComment${rv.reviewID}">Delete</button>
                                                                 </div>
                                                             </c:when>
                                                         </c:choose>
+
+                                                        <div class="modal fade text-dark" id="modalDeleteComment${rv.reviewID}" tabindex="-1">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title">Delete</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>Are you sure to delete this comment?</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <form action="${pageContext.request.contextPath}/user-product" method="post">
+                                                                            <input type="hidden" name="view" value="removeComment">
+                                                                            <input type="hidden" name="id" value="${requestScope.product.productID}">
+                                                                            <input type="hidden" name="reviewID" value="${rv.reviewID}">
+                                                                            <button type="submit" class="btn btn-danger" data-bs-toggle="modal">Delete</button>
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal fade text-dark" id="modalEditComment${rv.reviewID}" tabindex="-1">
+                                                            <div class="modal-dialog">
+                                                                <form action="${pageContext.request.contextPath}/user-product" method="post">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h4 class="modal-title">Edit</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <input type="text" name="newComment" placeholder="${rv.comment}" class="w-100 border border-dark rounded-3">
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <input type="hidden" name="view" value="editComment">
+                                                                            <input type="hidden" name="id" value="${requestScope.product.productID}">
+                                                                            <input type="hidden" name="reviewID" value="${rv.reviewID}">
+                                                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal">Edit</button>
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </c:forEach>
                                             </c:otherwise>

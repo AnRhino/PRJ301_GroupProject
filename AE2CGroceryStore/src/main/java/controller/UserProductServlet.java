@@ -75,36 +75,41 @@ public class UserProductServlet extends HttpServlet {
 
         String view = request.getParameter("view");
 
+        // Nếu view null hoặc rỗng.
         if (view == null || view.isBlank()) {
             getIndexInfo(request);
             request.getRequestDispatcher("index.jsp").forward(request, response);
 
+            // Nếu người dùng có yêu cầu từ view.
         } else {
 
             try {
-
+                
+                // Kiểm tra id có hợp lệ hay không.
                 String id = request.getParameter("id");
                 int productID = Integer.parseInt(id);
                 request.getSession().setAttribute("productID", id);
 
+                // Xử lí yêu càu của người dùng.
                 switch (view) {
 
-                    case "category":
+                    case "category": // Hiện ra 1 danh mục.
                         getCategoryInfo(request);
                         request.getRequestDispatcher("/WEB-INF/products/category.jsp").forward(request, response);
                         break;
 
-                    case "product":
+                    case "product": // Hiện ra 1 sản phẩm.
                         getProductInfo(request, productID);
                         request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
                         break;
 
-                    default:
+                    default: // Không có yêu cầu thì dẫn người dùng về product.jsp.
                         getProductInfo(request, productID);
                         request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
                         break;
                 }
 
+                // Nếu id không hợp lệ.
             } catch (NumberFormatException e) {
                 handleUnavailableProductID(request, response);
             }
@@ -125,8 +130,12 @@ public class UserProductServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private void handleUnavailableProductID(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        // Nếu id trong session null hoặc rỗng.
         if (request.getSession().getAttribute("productID") == null || ((String) request.getSession().getAttribute("productID")).isBlank()) {
             request.getRequestDispatcher("index.jsp").forward(request, response);
+
+            // Nếu trong session có tồn tại id.
         } else {
             getProductInfo(request, Integer.parseInt((String) request.getSession().getAttribute("productID")));
             request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
@@ -156,9 +165,11 @@ public class UserProductServlet extends HttpServlet {
         request.setAttribute("rateScore", productDao.getRateScore(productID));
         request.setAttribute("reviewList", reviewDao.getByProductID(productID));
 
+        // Kiểm tra xem có thông báo lỗi hay thành công nào không.
         getErrorOrSuccessInAddToCartIfExists(request);
         getErrorOrSuccessInAddCommentIfExists(request);
         getErrorOrSuccessInDeleteCommentIfExists(request);
+        getErrorOrSuccessInEditCommentIfExists(request);
     }
 
     /**
@@ -181,9 +192,13 @@ public class UserProductServlet extends HttpServlet {
      * @param request là yêu cầu thêm vào sản phẩm của hàng hàng.
      */
     private void getErrorOrSuccessInAddToCartIfExists(HttpServletRequest request) {
+
+        // Nếu có lỗi.
         if (request.getSession().getAttribute("errorCart") != null) {
             request.setAttribute("errorCartMsg", request.getSession().getAttribute("errorCart"));
             request.getSession().removeAttribute("errorCart");
+
+            // Nếu thành công.
         } else if (request.getSession().getAttribute("successCart") != null) {
             request.setAttribute("successCartMsg", request.getSession().getAttribute("successCart"));
             request.getSession().removeAttribute("successCart");
@@ -200,19 +215,57 @@ public class UserProductServlet extends HttpServlet {
      * @param request là yêu cầu thêm vào sản phẩm của hàng hàng.
      */
     private void getErrorOrSuccessInAddCommentIfExists(HttpServletRequest request) {
+
+        // Nếu có lỗi.
         if (request.getSession().getAttribute("errorComment") != null) {
             request.setAttribute("errorComment", request.getSession().getAttribute("errorComment"));
             request.getSession().removeAttribute("errorComment");
         }
     }
 
+    /**
+     * Kiểm tra thông báo thành công hay thất bại nếu người dùng xóa 1 comment.
+     * Kiểm tra nếu người dùng tạo ra lỗi thì lấy lỗi từ session và ném về
+     * request. Kiểm tra nếu người dùng xóa comment thành công thì lấy thông báo
+     * thành công từ session và ném về request. Còn không có lỗi hay thông báo
+     * thành công thì không làm gì.
+     *
+     * @param request là yêu cầu xóa 1 comment của người dùng.
+     */
     private void getErrorOrSuccessInDeleteCommentIfExists(HttpServletRequest request) {
+
+        // Nếu có lỗi.
         if (request.getSession().getAttribute("errorDeleteComment") != null) {
             request.setAttribute("errorDeleteComment", request.getSession().getAttribute("errorDeleteComment"));
             request.getSession().removeAttribute("errorDeleteComment");
+
+            // Nếu thành công.
         } else if (request.getSession().getAttribute("successDeleteComment") != null) {
             request.setAttribute("successDeleteComment", request.getSession().getAttribute("successDeleteComment"));
             request.getSession().removeAttribute("successDeleteComment");
+        }
+    }
+
+    /**
+     * Kiểm tra thông báo thành công hay thất bại nếu người dùng chỉnh sửa 1
+     * comment. Kiểm tra nếu người dùng tạo ra lỗi thì lấy lỗi từ session và ném
+     * về request. Kiểm tra nếu người dùng chỉnh sửa comment thành công thì lấy
+     * thông báo thành công từ session và ném về request. Còn không có lỗi hay
+     * thông báo thành công thì không làm gì.
+     *
+     * @param request là yêu cầu xóa 1 comment của người dùng.
+     */
+    private void getErrorOrSuccessInEditCommentIfExists(HttpServletRequest request) {
+
+        // Nếu có lỗi.
+        if (request.getSession().getAttribute("errorEditComment") != null) {
+            request.setAttribute("errorEditComment", request.getSession().getAttribute("errorEditComment"));
+            request.getSession().removeAttribute("errorEditComment");
+
+            // Nếu thành công.
+        } else if (request.getSession().getAttribute("successEditComment") != null) {
+            request.setAttribute("successEditComment", request.getSession().getAttribute("successEditComment"));
+            request.getSession().removeAttribute("successEditComment");
         }
     }
 
@@ -241,22 +294,27 @@ public class UserProductServlet extends HttpServlet {
             // Xử lí yêu cầu của người dùng.
             switch (view) {
 
-                case "cart":
+                case "cart":  // Thêm vào giỏ hàng.
                     handleCartInput(request);
                     break;
 
-                case "comment":
+                case "comment": // Tạo comment mới.
                     handleCommentInput(request);
                     break;
 
-                case "removeComment":
+                case "removeComment": // Xóa comment.
                     handleDeleteComment(request);
                     break;
 
-                default:
+                case "editComment": // Chỉnh sửa 1 comment.
+                    handleEditComment(request);
+                    break;
+
+                default: // Không có yêu cầu gì.
                     break;
             }
 
+            // Chuyển hướng về chính jsp hiện tại.
             request.getSession().setAttribute("productID", request.getParameter("id"));
             response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + request.getSession().getAttribute("productID"));
         }
@@ -274,15 +332,19 @@ public class UserProductServlet extends HttpServlet {
     private void handleCartInput(HttpServletRequest request) {
         String quantity = request.getParameter("quantity");
 
+        //  Kiểm tra nếu số lượng sản phẩm thêm vào giỏ hàng rỗng.
         if (InputValidate.checkEmptyInput(quantity)) {
             request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.EMPTY_INPUT_MESSAGE));
 
+            // Kiểm tra nếu số lượng sản phẩm thêm vào giỏ hàng không phải là số nguyên.
         } else if (InputValidate.checkValidIntegerNumber(quantity)) {
             request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.INVALID_INTEGER_INPUT_MESSAGE));
 
+            // Kiểm tra nếu số lượng sản phẩm thêm vào giỏ hàng nhỏ hơn 1 hoặc lớn hơn số lượng tối đa của sản phẩm đó.
         } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity), InputValidate.ZERO_VALUE, productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id"))))) {
             request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.INVALID_CART_INPUT_MESSAGE));
 
+            // Nếu không có lỗi thì thêm vào giỏ hàng cho khách hàng.
         } else {
             cartDao.addNewProductToCart(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String) (request.getSession().getAttribute("productID"))), Integer.parseInt(quantity));
             request.getSession().setAttribute("successCart", MessageConstants.SUCCESS_CART_INPUT_MESSAGE);
@@ -301,18 +363,23 @@ public class UserProductServlet extends HttpServlet {
         String comment = request.getParameter("comment");
         String rating = request.getParameter("rating");
 
+        // Kiểm tra comment rỗng.
         if (InputValidate.checkEmptyInput(comment)) {
             request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.EMPTY_COMMENT_INPUT_MESSAGE));
 
+            // Kiểm tra rating rỗng.
         } else if (InputValidate.checkEmptyInput(rating)) {
             request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.EMPTY_RATING_INPUT_MESSAGE));
 
+            // Kiểm tra rating không phải số hợp lệ.
         } else if (InputValidate.checkValidIntegerNumber(rating)) {
             request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.INVALID_RATING_INPUT_MESSAGE));
 
+            // Kiểm tra rating vượt ngoài phạm vi (1-5).
         } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(rating), InputValidate.MIN_RATING_VALUE, InputValidate.MAX_RATING_VALUE)) {
             request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.OUT_OF_RANGE_RATING_INPUT_MESSAGE));
 
+            // Nếu không có lỗi thì tạo comment mới.
         } else {
             reviewDao.add(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String) (request.getSession().getAttribute("productID"))), Integer.parseInt(rating), comment, LocalDateTime.now());
         }
@@ -328,15 +395,47 @@ public class UserProductServlet extends HttpServlet {
      */
     private void handleDeleteComment(HttpServletRequest request) {
 
+        // Kiểm tra nếu id comment rỗng.
         if (InputValidate.checkEmptyInput((String) (request.getParameter("reviewID")))) {
-            request.getSession().setAttribute("errorDeleteComment", new ErrorMessage(MessageConstants.UNKNOWN_ERROR_MESSAGE));
+            request.getSession().setAttribute("errorDeleteComment", new ErrorMessage(MessageConstants.ERROR_DELETE_COMMENT_MESSAGE));
 
+            // Kiểm tra nếu id comment không hợp lệ.
         } else if (InputValidate.checkValidIntegerNumber((String) (request.getParameter("reviewID")))) {
-            request.getSession().setAttribute("errorDeleteComment", new ErrorMessage(MessageConstants.UNKNOWN_ERROR_MESSAGE));
+            request.getSession().setAttribute("errorDeleteComment", new ErrorMessage(MessageConstants.UNKNOWN_COMMENT_MESSAGE));;
 
+            // Kiểm tra nếu xóa comment thành công.
         } else {
             reviewDao.delete(Integer.parseInt((String) (request.getParameter("reviewID"))));
             request.getSession().setAttribute("successDeleteComment", MessageConstants.SUCCESS_DELETE_COMMENT_MESSAGE);
+        }
+    }
+
+    /**
+     * Xử lí chỉnh sửa comment của người dùng.
+     *
+     * Nếu comment của người dùng lỗi sẽ ném ra thông báo lỗi. Nếu không có lỗi
+     * sẽ thông báo thành công.
+     *
+     * @param request là yêu cầu người dùng.
+     */
+    private void handleEditComment(HttpServletRequest request) {
+
+        // Kiểm tra nếu id comment rỗng.
+        if (InputValidate.checkEmptyInput((String) (request.getParameter("reviewID")))) {
+            request.getSession().setAttribute("errorEditComment", new ErrorMessage(MessageConstants.ERROR_EDIT_COMMENT_MESSAGE));
+
+            // Kiểm tra nếu id comment không hợp lệ.
+        } else if (InputValidate.checkValidIntegerNumber((String) (request.getParameter("reviewID")))) {
+            request.getSession().setAttribute("errorEditComment", new ErrorMessage(MessageConstants.UNKNOWN_COMMENT_MESSAGE));
+
+            //  Kiểm tra nếu comment mới bị null hoặc rỗng.
+        } else if (InputValidate.checkEmptyInput((String) (request.getParameter("newComment")))) {
+            request.getSession().setAttribute("errorEditComment", new ErrorMessage(MessageConstants.EMPTY_COMMENT_INPUT_MESSAGE));
+
+            // Kiểm tra nếu chỉnh sửa thành công.
+        } else {
+            reviewDao.edit(Integer.parseInt((String) (request.getParameter("reviewID"))), request.getParameter("newComment"));
+            request.getSession().setAttribute("successEditComment", MessageConstants.SUCCESS_EDIT_COMMENT_MESSAGE);
         }
     }
 
