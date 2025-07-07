@@ -52,90 +52,96 @@
             </button>
         </div>
 
-
-        <%
-            // Lấy danh sách danh mục và sản phầm từ db.
-            CategoryDAO categoryDao = new CategoryDAO();
-            ProductDAO productDao = new ProductDAO();
-
-            request.setAttribute("categoryList", categoryDao.getAll());
-            request.setAttribute("productList", productDao.getAll());
-
-//            System.out.println(categoryList.size());       
-            // Kiểm tra null và coi có rỗng không.
-            // Nếu có thì hiện thông báo.
-
-        %>
-        <c:if test="${empty productList || empty categoryList}">
-            <div class="container-fluid">
-                <div>
-                    <h1 class="fw-bold">Category</h1>
-                    <div class="row">
-                        <div>There are no category and product to display.</div>
+        <c:choose>
+            
+            <c:when test="${empty requestScope.categoryList}">
+                <div class="container-fluid">
+                    <div>
+                        <h1 class="fw-bold">Category</h1>
+                        <div class="row">
+                            <p>There are no category and product to display.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </c:if>
+            </c:when>
 
-        <div class="mb-4" style="background-color: #555555;">
-            <h1 class="fw-bold ms-5 text-light">Category</h1>
-        </div>
-        <div class="container-fluid">
-            <div class="ms-5 me-5">           
-                <div class="row">
-                    <c:forEach var="cate" items="${categoryList}">
-                        <div class="col-3 d-flex justify-content-center border border-secondary">
-                            <form action="<%= request.getContextPath()%>/user-product" method="get">
-                                <input type="hidden" name="view" value="category">
-                                <input type="hidden" name="id" value="${cate.categoryID}">
-                                <button class="btn p-0 border-0 bg-transparent">
-                                    <div class="row">
-                                        <div class="col-12 d-flex justify-content-center">
-                                            <img src="assets/images/category/${cate.categoryID}.png" id="cate-img" alt="placeholder" width="250" height="180">
-                                        </div>
-                                        <div class="col-12 d-flex justify-content-center fw-bold text-uppercase">
-                                            ${cate.categoryName}
-                                        </div>
-                                    </div>
-                                </button>
-                            </form>
-                        </div>                 
-                    </c:forEach>
+            <c:otherwise>
+                <div class="mb-4" style="background-color: #555555;">
+                    <h1 class="fw-bold ms-5 text-light">Category</h1>
                 </div>
-            </div>
-        </div>
-
-        <div class="my-4" style="background-color: #555555;">
-            <h1 class="fw-bold text-light ms-5">Product</h1>
-        </div>
-        <div class="ms-5 me-5">
-            <div class="row">
-                <c:forEach var="pro" items="${productList}">
-                    <div class="col-3 d-flex justify-content-center">
-                        <form action="<%= request.getContextPath()%>/user-product" method="get">
-                            <input type="hidden" name="view" value="product">
-                            <input type="hidden" name="id" value="${pro.productID}">
-                            <button class="btn">
-                                <div class="row d-flex justify-content-center">
-                                    <div class="col-12 d-flex justify-content-center">
-                                        <img src="assets/images/placeHolder.jpg" id="img" alt="placeholder">
-                                    </div>  
-                                    <div id="productInfo">
-                                        <div class="col-12 d-flex justify-content-center">
-                                            ${pro.productName}
-                                        </div>
-                                        <div class="col-12 d-flex justify-content-center">
-                                            Price: 
-                                            ${pro.price}
-                                        </div>
-                                    </div>
-                                </div>
-                            </button>
-                        </form>
+                <div class="container-fluid">
+                    <div class="ms-5 me-5">           
+                        <div class="row">
+                            <c:forEach var="cate" items="${categoryList}">
+                                <div class="col-3 d-flex justify-content-center border border-secondary">
+                                    <form action="${pageContext.request.contextPath}/user-product" method="get">
+                                        <input type="hidden" name="view" value="category">
+                                        <input type="hidden" name="id" value="${cate.categoryID}">
+                                        <button class="btn p-0 border-0 bg-transparent">
+                                            <div class="row">
+                                                <div class="col-12 d-flex justify-content-center">
+                                                    <img src="assets/images/category/${cate.categoryID}.png" id="cate-img" alt="placeholder" width="250" height="180">
+                                                </div>
+                                                <div class="col-12 d-flex justify-content-center fw-bold text-uppercase">
+                                                    ${cate.categoryName}
+                                                </div>
+                                            </div>
+                                        </button>
+                                    </form>
+                                </div>                 
+                            </c:forEach>
+                        </div>
                     </div>
-                </c:forEach>
-            </div>
-        </div>
+                </div>
+
+                <c:choose>
+                    
+                    <c:when test="${empty requestScope.productList}">
+                        <div class="my-4" style="background-color: #555555;">
+                            <h1 class="fw-bold text-light ms-5">Product</h1>
+                        </div>
+                        <div class="ms-5 me-5">
+                            <p>There are no product to display.</p>
+                        </div>
+                    </c:when>
+
+                    <c:otherwise>
+                        <div class="my-4" style="background-color: #555555;">
+                            <h1 class="fw-bold text-light ms-5">Product</h1>
+                        </div>
+                        <div class="ms-5 me-5">
+                            <div class="row">
+                                <c:forEach var="pro" items="${productList}">
+                                    <div class="col-3 d-flex justify-content-center">
+                                        <form action="${pageContext.request.contextPath}/user-product" method="get">
+                                            <input type="hidden" name="view" value="product">
+                                            <input type="hidden" name="id" value="${pro.productID}">
+                                            <button class="btn">
+                                                <div class="row d-flex justify-content-center">
+                                                    <div class="col-12 d-flex justify-content-center">
+                                                        <img src="assets/images/placeHolder.jpg" id="img" alt="placeholder">
+                                                    </div>  
+                                                    <div id="productInfo">
+                                                        <div class="col-12 d-flex justify-content-center">
+                                                            ${pro.productName}
+                                                        </div>
+                                                        <div class="col-12 d-flex justify-content-center">
+                                                            Price: 
+                                                            ${pro.price}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                    
+                </c:choose>
+            </c:otherwise>
+        </c:choose>
         <%@include file="/WEB-INF/include/footer.jsp" %>
     </body>
 </html>
