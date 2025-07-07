@@ -1,8 +1,9 @@
 ﻿USE [GroceryStore]
 GO
 
--- Chạy 1 lần.
+-- Chạy được nhiều lần.
 -- Password của tất cả là người dung là Demo@123 (dùng md5 để mã hóa).
+-- Tên username là tên + họ tên đệm viết tắt (VD: Nguyen Van Nam ==> NamNV). 
 -- Password của từng thành viên là CE + MSSV + @.
 
 -- Xóa data cũ nếu tồn tại.
@@ -198,7 +199,9 @@ VALUES
 ('FRZ010', 'Frozen Fruit Mix', 60, 7000, 10, 0, NULL);
 
 -- Giả sử RoleID = 0 là Customer, 1 là Admin
--- Password của tất cả là Demo@123 (dùng md5 để mã hóa)
+-- Password của tất cả là người dùng là Demo@123 (dùng md5 để mã hóa).
+-- Tên username là tên + họ tên đệm viết tắt (VD: Nguyen Van Nam ==> NamNV). 
+-- Password của từng thành viên là CE + MSSV + @.
 INSERT INTO Users (Username, Password, FullName, Email, RoleID)
 VALUES 
 ('user1', 'e14c05f0dc27e6be1fc127abaf474a59', N'Nguyen Van A', 'user1@gmail.com', 0),
@@ -208,12 +211,12 @@ VALUES
 ('user5', 'e14c05f0dc27e6be1fc127abaf474a59', N'Ngo Van E', 'user5@example.com', 0),
 ('user6', 'e14c05f0dc27e6be1fc127abaf474a59', N'Huynh Thi F', 'user6@example.com', 0),
 ('user7', 'e14c05f0dc27e6be1fc127abaf474a59', N'Dang Van G', 'user7@example.com', 0),
-('admin', 'e14c05f0dc27e6be1fc127abaf474a59', N'Quan Trị Vien A', 'admin@gmail.com', 1),
-('AnNHP', 'f599fcffac6ad26e9b8b8f7e9365654b', N'Quan Tri Vien B', 'AnNHPCE190747@example.com', 1),
-('PhucDC', '13427726f8118b38d22fc682e1d7ca8f', N'Quan Trị Vien A', 'PhucDCCE190770@gmail.com', 1),
-('ThoPD', '41276b0f09995f2c66d4d6d64b0bad98', N'Quan Tri Vien B', 'ThoPDCE191246@example.com', 1),
-('TriLT', '21e3b645009fec466a3b694150915eb1', N'Quan Trị Vien A', 'TriLTCE190149@gmail.com', 1),
-('KhangVM', '43d4e592a448b7d46afd0f066657c5ef', N'Quan Tri Vien B', 'KhangVMCE191371@example.com', 1);
+('admin', 'e14c05f0dc27e6be1fc127abaf474a59', N'Quan Trị Vien', 'admin@gmail.com', 1),
+('AnNHP', 'f599fcffac6ad26e9b8b8f7e9365654b', N'Nguyen Ho Phuoc An', 'AnNHPCE190747@example.com', 1),
+('PhucDC', '13427726f8118b38d22fc682e1d7ca8f', N'Dinh Cong Phuc', 'PhucDCCE190770@gmail.com', 1),
+('ThoPD', '41276b0f09995f2c66d4d6d64b0bad98', N'Phan Duc Tho', 'ThoPDCE191246@example.com', 1),
+('TriLT', '21e3b645009fec466a3b694150915eb1', N'Le Thien Tri', 'TriLTCE190149@gmail.com', 1),
+('KhangVM', '43d4e592a448b7d46afd0f066657c5ef', N'Vu Minh Khang', 'KhangVMCE191371@example.com', 1);
 
 -- Thêm sản phẩm vào giỏ hàng cho các User.
 INSERT INTO Carts (UserID, ProductID, Quantity)
