@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
-   <!--
-    Công dụng tìm thấy welcome file tạo request đến home tomcat mapping thấy thì gọi HomeServlet.doGet 
-    -->
-    <welcome-file-list>
-    <welcome-file>home</welcome-file>
-   </welcome-file-list>
     <filter>
         <filter-name>AuthFilter</filter-name>
         <filter-class>filter.AuthenticationFilter</filter-class>
