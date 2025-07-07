@@ -44,6 +44,32 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
+    public List<Product> getAllToPaging(int pagings, int maxProduct) {
+        List<Product> list = new ArrayList<>();
+        try {
+            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
+                    + "from Products p \n"
+                    + "join  Categories c on p.CategoryID = c.CategoryID\n"
+                    + "where p.IsHidden = 0\n"
+                    + "order by ProductID asc\n"
+                    + "offset ? rows fetch next ? rows only";
+            Object[] params = {pagings, maxProduct};
+            ResultSet rs = execSelectQuery(query, params);
+            while (rs.next()) {
+
+                Category Category = new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8));
+                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
+                list.add(pro);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        return list;
+    }
+    
+
     public int create(String productCore, String productName, int quantity, double price, int categoryId) {
         int check = 0;
         try {
