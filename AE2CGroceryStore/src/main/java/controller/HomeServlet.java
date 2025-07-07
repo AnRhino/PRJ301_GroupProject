@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(name = "HomeServlet", urlPatterns = {"/home"})
 public class HomeServlet extends HttpServlet {
 
-    private final CategoryDAO cateogoryDao = new CategoryDAO();
+    private final CategoryDAO categoryDao = new CategoryDAO();
     private final ProductDAO productDao = new ProductDAO();
 
     /**
@@ -112,10 +112,8 @@ public class HomeServlet extends HttpServlet {
             page = Integer.parseInt(pageParam);
         }
 
-        request.setAttribute("categoryList", cateogoryDao.getAll());
+        request.setAttribute("categoryList", categoryDao.getAll());
         request.setAttribute("productList", productDao.getProductForEachPage(page));
-        System.out.println(cateogoryDao.getAll().size());
-        System.out.println(productDao.getAll().size());
     }
 
     /**
