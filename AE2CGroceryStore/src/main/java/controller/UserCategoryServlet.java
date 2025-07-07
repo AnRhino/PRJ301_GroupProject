@@ -18,11 +18,11 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Vu Minh Khang - CE191371
  */
-@WebServlet(name = "HomeServlet", urlPatterns = {"/home"})
-public class HomeServlet extends HttpServlet {
-
-    private final CategoryDAO cateogoryDao = new CategoryDAO();
+@WebServlet(name = "UserCategoryServlet", urlPatterns = {"/user-category"})
+public class UserCategoryServlet extends HttpServlet {
+    
     private final ProductDAO productDao = new ProductDAO();
+    private final CategoryDAO categoryDao = new CategoryDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +41,10 @@ public class HomeServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeServlet</title>");
+            out.println("<title>Servlet UserCategoryServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomeServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UserCategoryServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,13 +66,12 @@ public class HomeServlet extends HttpServlet {
 
         String view = request.getParameter("view");
         String idParam = request.getParameter("id");
-
+        
         if (view == null || idParam == null || view.isBlank() || idParam.isBlank()) {
-            getDataIndex(request);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-
+            response.sendRedirect("index.jsp");
+            
         } else {
-
+            
             try {
                 
                 int id = Integer.parseInt(idParam);
@@ -88,28 +87,25 @@ public class HomeServlet extends HttpServlet {
                         break;
 
                     default:
-                        getDataIndex(request);
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
+                        response.sendRedirect("index.jsp");
                         break;
                 }
 
             } catch (NumberFormatException ex) {
-                getDataIndex(request);
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+                response.sendRedirect("index.jsp");
             }
         }
     }
 
     /**
-     * Lấy danh sách danh mục và danh sách sản phẩm.
+     * Lấy thông tin của category và trả về cho người dùng.
      *
-     * @param request là yêu cầu người dùng.
+     * @param request servlet request
      */
-    private void getDataIndex(HttpServletRequest request) {
-        request.setAttribute("categoryList", cateogoryDao.getAll());
-        request.setAttribute("productList", productDao.getAll());
-        System.out.println(cateogoryDao.getAll().size());
-        System.out.println(productDao.getAll().size());
+    private void getCategoryInfo(HttpServletRequest request) {
+        request.setAttribute("categoryList", categoryDao.getAll());
+        request.setAttribute("productList", productDao.getProductsByCategory(Integer.parseInt(request.getParameter("id"))));
+        request.setAttribute("categoryType", categoryDao.getOneByID(Integer.parseInt(request.getParameter("id"))));
     }
 
     /**
@@ -123,7 +119,7 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
     }
 
     /**
