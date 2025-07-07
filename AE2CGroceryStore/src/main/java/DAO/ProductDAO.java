@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Category;
 import model.Product;
+import utils.PaginationUtil;
 
 /**
  *
@@ -44,16 +45,16 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
-    public List<Product> getProductForEachPage(int pagings, int maxProduct) {
+    public List<Product> getProductForEachPage(int page) {
         List<Product> list = new ArrayList<>();
         try {
-            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
+            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden\n"
                     + "from Products p \n"
                     + "join  Categories c on p.CategoryID = c.CategoryID\n"
                     + "where p.IsHidden = 0\n"
                     + "order by ProductID asc\n"
                     + "offset ? rows fetch next ? rows only";
-            Object[] params = {pagings, maxProduct};
+            Object[] params = {(page - 1) * PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE, PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE};
             ResultSet rs = execSelectQuery(query, params);
             while (rs.next()) {
 

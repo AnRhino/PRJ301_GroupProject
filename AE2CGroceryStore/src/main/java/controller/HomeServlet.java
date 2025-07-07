@@ -74,7 +74,7 @@ public class HomeServlet extends HttpServlet {
         } else {
 
             try {
-                
+
                 int id = Integer.parseInt(idParam);
 
                 switch (view) {
@@ -106,8 +106,14 @@ public class HomeServlet extends HttpServlet {
      * @param request là yêu cầu người dùng.
      */
     private void getDataIndex(HttpServletRequest request) {
+        int page = 1;
+        String pageParam = request.getParameter("page");
+        if (pageParam != null && Integer.parseInt(pageParam) > 1) {
+            page = Integer.parseInt(pageParam);
+        }
+
         request.setAttribute("categoryList", cateogoryDao.getAll());
-        request.setAttribute("productList", productDao.getAll());
+        request.setAttribute("productList", productDao.getProductForEachPage(page));
         System.out.println(cateogoryDao.getAll().size());
         System.out.println(productDao.getAll().size());
     }

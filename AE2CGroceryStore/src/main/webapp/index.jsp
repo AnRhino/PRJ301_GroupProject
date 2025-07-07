@@ -53,7 +53,7 @@
         </div>
 
         <c:choose>
-            
+
             <c:when test="${empty requestScope.categoryList}">
                 <div class="container-fluid">
                     <div>
@@ -95,7 +95,7 @@
                 </div>
 
                 <c:choose>
-                    
+
                     <c:when test="${empty requestScope.productList}">
                         <div class="my-4" style="background-color: #555555;">
                             <h1 class="fw-bold text-light ms-5">Product</h1>
@@ -138,10 +138,11 @@
                             </div>
                         </div>
                     </c:otherwise>
-                    
+
                 </c:choose>
             </c:otherwise>
         </c:choose>
+        <%@include file="WEB-INF/include/pagination.jsp" %>
         <%@include file="/WEB-INF/include/footer.jsp" %>
     </body>
 </html>
