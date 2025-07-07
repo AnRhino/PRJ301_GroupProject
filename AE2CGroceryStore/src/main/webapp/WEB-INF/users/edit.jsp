@@ -15,6 +15,15 @@
 
         <div class="container p-5">
             <h3>Edit Cart </h3>
+            <c:if test="${not empty checkQuantity}">
+                <div class="alert alert-danger">
+                    <ul>
+                        <c:forEach var="ErrorMessage" items="${checkQuantity}">
+                            <li>${ErrorMessage}</li>
+                            </c:forEach>
+                    </ul>
+                </div>
+            </c:if>
 
             <form method="post" action="${pageContext.request.contextPath}/cart">
                 <input type="hidden" name="cartId" value="${cart.cartItemID}"/>

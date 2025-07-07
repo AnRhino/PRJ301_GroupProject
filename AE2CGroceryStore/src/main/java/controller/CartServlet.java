@@ -20,6 +20,7 @@ import java.util.List;
 import model.Cart;
 import model.Product;
 import model.User;
+import validate.ProductValidation;
 
 /**
  *
@@ -133,10 +134,19 @@ public class CartServlet extends HttpServlet {
         if ("edit".equals(action)) {
             String cartid = request.getParameter("cartId");
             String quantity = request.getParameter("quantity");
+            ProductValidation pr = new ProductValidation();
+            List<String> checkQuantity = pr.checkQuantity(quantity);
+            if (!checkQuantity.isEmpty()) {
+                Cart cart = cartDao.getCartByID(Integer.parseInt(cartid));
+                request.setAttribute("cart", cart);
+                request.setAttribute("checkQuantity", checkQuantity);
+                request.getRequestDispatcher("/WEB-INF/users/edit.jsp").forward(request, response);
+                return;
+            }
+
             cartDao.edit(Integer.parseInt(cartid), Integer.parseInt(quantity));
             response.sendRedirect(request.getContextPath() + "/cart");
             return;
-
         } else if ("delete".equals(action)) {
             String cartid = request.getParameter("cartId");
             cartDao.delete(Integer.parseInt(cartid));
