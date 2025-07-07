@@ -44,7 +44,7 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
-    public List<Product> getAllToPaging(int pagings, int maxProduct) {
+    public List<Product> getProductForEachPage(int pagings, int maxProduct) {
         List<Product> list = new ArrayList<>();
         try {
             String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName\n"
