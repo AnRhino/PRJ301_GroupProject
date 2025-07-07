@@ -1,4 +1,9 @@
-USE master
+USE master;
 GO
 
-DROP DATABASE [GroceryStore]
+ALTER DATABASE GroceryStore
+SET SINGLE_USER
+WITH ROLLBACK IMMEDIATE;
+GO
+
+DROP DATABASE GroceryStore;

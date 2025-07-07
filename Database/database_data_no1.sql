@@ -1,151 +1,201 @@
 ﻿USE [GroceryStore]
 GO
 
+-- Chạy 1 lần.
+-- Password của tất cả là Demo@123 (dùng md5 để mã hóa)
+-- Password của từng thành viên là CE + MSSV + @.
+
+-- Xóa data cũ nếu tồn tại.
+-- Reset lại id tự tăng của identity.
+IF EXISTS (SELECT 1 FROM OrderDetails)
+	DBCC CHECKIDENT (OrderDetails, RESEED, 0);
+    DELETE FROM OrderDetails;
+
+IF EXISTS (SELECT 1 FROM Orders)
+DBCC CHECKIDENT (Orders, RESEED, 0);
+    DELETE FROM Orders;
+
+IF EXISTS (SELECT 1 FROM Carts)
+	DBCC CHECKIDENT (Carts, RESEED, 0);
+    DELETE FROM Carts;
+
+IF EXISTS (SELECT 1 FROM Reviews)
+	DBCC CHECKIDENT (Reviews, RESEED, 0);
+    DELETE FROM Reviews;
+
+IF EXISTS (SELECT 1 FROM DiscountCodes)
+	DBCC CHECKIDENT (DiscountCodes, RESEED, 0);
+    DELETE FROM DiscountCodes;
+
+IF EXISTS (SELECT 1 FROM DiscountTypes)
+    DELETE FROM DiscountTypes;
+
+IF EXISTS (SELECT 1 FROM Products)
+	DBCC CHECKIDENT (Products, RESEED, 0);
+    DELETE FROM Products;
+
+IF EXISTS (SELECT 1 FROM Categories)
+	DBCC CHECKIDENT (Categories, RESEED, 0);
+    DELETE FROM Categories;
+
+IF EXISTS (SELECT 1 FROM Users)
+	DBCC CHECKIDENT (Users, RESEED, 0);
+    DELETE FROM Users;
+
 -- 10 Categories
-INSERT INTO Categories (CategoryName)
-VALUES 
-(N'Beverages'), (N'Snacks'), (N'Fruits'), (N'Vegetables'), (N'Dairy'),
-(N'Bakery'), (N'Meats'), (N'Seafood'), (N'Canned Goods'), (N'Frozen Foods');
+INSERT INTO Categories (CategoryName, IsHidden, ImagePath)
+VALUES
+
+(N'Beverages', 0, NULL), 
+(N'Snacks', 0, NULL), 
+(N'Fruits', 0, NULL), 
+(N'Vegetables', 0, NULL), 
+(N'Dairy', 0, NULL),
+(N'Bakery', 0, NULL), 
+(N'Meats', 0, NULL), 
+(N'Seafood', 0, NULL), 
+(N'Canned Goods', 0, NULL), 
+(N'Frozen Foods', 0, NULL);
 
 -- Beverages (CategoryID = 1)
-INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
+INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID, IsHidden, ImagePath)
 VALUES 
-('BEV001', 'Coca-Cola', 100, 10000, 1),
-('BEV002', 'Pepsi', 120, 9500, 1),
-('BEV003', 'Sprite', 90, 10000, 1),
-('BEV004', 'Fanta', 85, 9750, 1),
-('BEV005', '7Up', 80, 10200, 1),
-('BEV006', 'Red Bull', 70, 15000, 1),
-('BEV007', 'Monster', 60, 16000, 1),
-('BEV008', 'Iced Tea', 100, 8500, 1),
-('BEV009', 'Lemonade', 95, 7000, 1),
-('BEV010', 'Water Bottle', 200, 5000, 1);
+('BEV001', 'Coca-Cola', 100, 10000, 1, 0, NULL),
+('BEV002', 'Pepsi', 120, 9500, 1, 0, NULL),
+('BEV003', 'Sprite', 90, 10000, 1, 0, NULL),
+('BEV004', 'Fanta', 85, 9750, 1, 0, NULL),
+('BEV005', '7Up', 80, 10200, 1, 0, NULL),
+('BEV006', 'Red Bull', 70, 15000, 1, 0, NULL),
+('BEV007', 'Monster', 60, 16000, 1, 0, NULL),
+('BEV008', 'Iced Tea', 100, 8500, 1, 0, NULL),
+('BEV009', 'Lemonade', 95, 7000, 1, 0, NULL),
+('BEV010', 'Water Bottle', 200, 5000, 1, 0, NULL);
 
 -- Snacks (CategoryID = 2)
-INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
+INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID, IsHidden, ImagePath)
 VALUES 
-('SNK001', 'Lays Chips', 150, 12000, 2),
-('SNK002', 'Doritos', 140, 13000, 2),
-('SNK003', 'Pringles', 130, 14000, 2),
-('SNK004', 'KitKat', 110, 6000, 2),
-('SNK005', 'Snickers', 100, 6500, 2),
-('SNK006', 'M&Ms', 120, 7000, 2),
-('SNK007', 'Twix', 90, 6000, 2),
-('SNK008', 'Oreo', 80, 8000, 2),
-('SNK009', 'Cheez-It', 70, 9000, 2),
-('SNK010', 'Trail Mix', 60, 10000, 2);
+('SNK001', 'Lays Chips', 150, 12000, 2, 0, NULL),
+('SNK002', 'Doritos', 140, 13000, 2, 0, NULL),
+('SNK003', 'Pringles', 130, 14000, 2, 0, NULL),
+('SNK004', 'KitKat', 110, 6000, 2, 0, NULL),
+('SNK005', 'Snickers', 100, 6500, 2, 0, NULL),
+('SNK006', 'M&Ms', 120, 7000, 2, 0, NULL),
+('SNK007', 'Twix', 90, 6000, 2, 0, NULL),
+('SNK008', 'Oreo', 80, 8000, 2, 0, NULL),
+('SNK009', 'Cheez-It', 70, 9000, 2, 0, NULL),
+('SNK010', 'Trail Mix', 60, 10000, 2, 0, NULL);
 
 -- Fruits (CategoryID = 3)
-INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
+INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID, IsHidden, ImagePath)
 VALUES 
-('FRT001', 'Apple', 100, 5000, 3),
-('FRT002', 'Banana', 120, 4000, 3),
-('FRT003', 'Orange', 110, 4500, 3),
-('FRT004', 'Mango', 90, 6000, 3),
-('FRT005', 'Pineapple', 80, 7000, 3),
-('FRT006', 'Grapes', 95, 5500, 3),
-('FRT007', 'Strawberry', 85, 8000, 3),
-('FRT008', 'Blueberry', 70, 9000, 3),
-('FRT009', 'Watermelon', 60, 10000, 3),
-('FRT010', 'Papaya', 50, 6500, 3);
+('FRT001', 'Apple', 100, 5000, 3, 0, NULL),
+('FRT002', 'Banana', 120, 4000, 3, 0, NULL),
+('FRT003', 'Orange', 110, 4500, 3, 0, NULL),
+('FRT004', 'Mango', 90, 6000, 3, 0, NULL),
+('FRT005', 'Pineapple', 80, 7000, 3, 0, NULL),
+('FRT006', 'Grapes', 95, 5500, 3, 0, NULL),
+('FRT007', 'Strawberry', 85, 8000, 3, 0, NULL),
+('FRT008', 'Blueberry', 70, 9000, 3, 0, NULL),
+('FRT009', 'Watermelon', 60, 10000, 3, 0, NULL),
+('FRT010', 'Papaya', 50, 6500, 3, 0, NULL);
 
 -- Vegetables (CategoryID = 4)
-INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
+INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID, IsHidden, ImagePath)
 VALUES 
-('VEG001', 'Carrot', 100, 3000, 4),
-('VEG002', 'Broccoli', 90, 4000, 4),
-('VEG003', 'Spinach', 85, 3500, 4),
-('VEG004', 'Cabbage', 80, 2500, 4),
-('VEG005', 'Potato', 200, 2000, 4),
-('VEG006', 'Tomato', 190, 2200, 4),
-('VEG007', 'Onion', 180, 1800, 4),
-('VEG008', 'Garlic', 150, 2500, 4),
-('VEG009', 'Cucumber', 160, 2800, 4),
-('VEG010', 'Lettuce', 170, 3200, 4);
+('VEG001', 'Carrot', 100, 3000, 4, 0, NULL),
+('VEG002', 'Broccoli', 90, 4000, 4, 0, NULL),
+('VEG003', 'Spinach', 85, 3500, 4, 0, NULL),
+('VEG004', 'Cabbage', 80, 2500, 4, 0, NULL),
+('VEG005', 'Potato', 200, 2000, 4, 0, NULL),
+('VEG006', 'Tomato', 190, 2200, 4, 0, NULL),
+('VEG007', 'Onion', 180, 1800, 4, 0, NULL),
+('VEG008', 'Garlic', 150, 2500, 4, 0, NULL),
+('VEG009', 'Cucumber', 160, 2800, 4, 0, NULL),
+('VEG010', 'Lettuce', 170, 3200, 4, 0, NULL);
 
 -- Dairy (CategoryID = 5)
-INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
+INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID, IsHidden, ImagePath)
 VALUES 
-('DRY001', 'Milk', 100, 6000, 5),
-('DRY002', 'Yogurt', 90, 5500, 5),
-('DRY003', 'Cheddar Cheese', 80, 7000, 5),
-('DRY004', 'Butter', 70, 6500, 5),
-('DRY005', 'Cream', 60, 5000, 5),
-('DRY006', 'Cottage Cheese', 50, 6000, 5),
-('DRY007', 'Sour Cream', 45, 4500, 5),
-('DRY008', 'Ghee', 40, 8000, 5),
-('DRY009', 'Milk Powder', 55, 9000, 5),
-('DRY010', 'Condensed Milk', 60, 7500, 5);
+('DRY001', 'Milk', 100, 6000, 5, 0, NULL),
+('DRY002', 'Yogurt', 90, 5500, 5, 0, NULL),
+('DRY003', 'Cheddar Cheese', 80, 7000, 5, 0, NULL),
+('DRY004', 'Butter', 70, 6500, 5, 0, NULL),
+('DRY005', 'Cream', 60, 5000, 5, 0, NULL),
+('DRY006', 'Cottage Cheese', 50, 6000, 5, 0, NULL),
+('DRY007', 'Sour Cream', 45, 4500, 5, 0, NULL),
+('DRY008', 'Ghee', 40, 8000, 5, 0, NULL),
+('DRY009', 'Milk Powder', 55, 9000, 5, 0, NULL),
+('DRY010', 'Condensed Milk', 60, 7500, 5, 0, NULL);
 
 -- Bakery (CategoryID = 6)
-INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
+INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID, IsHidden, ImagePath)
 VALUES 
-('BKY001', 'White Bread', 100, 4000, 6),
-('BKY002', 'Whole Grain Bread', 90, 4500, 6),
-('BKY003', 'Croissant', 80, 5000, 6),
-('BKY004', 'Baguette', 70, 4800, 6),
-('BKY005', 'Donut', 60, 3500, 6),
-('BKY006', 'Cake', 50, 8000, 6),
-('BKY007', 'Muffin', 40, 3800, 6),
-('BKY008', 'Bagel', 45, 4200, 6),
-('BKY009', 'Biscuit', 55, 4000, 6),
-('BKY010', 'Pastry', 60, 5500, 6);
+('BKY001', 'White Bread', 100, 4000, 6, 0, NULL),
+('BKY002', 'Whole Grain Bread', 90, 4500, 6, 0, NULL),
+('BKY003', 'Croissant', 80, 5000, 6, 0, NULL),
+('BKY004', 'Baguette', 70, 4800, 6, 0, NULL),
+('BKY005', 'Donut', 60, 3500, 6, 0, NULL),
+('BKY006', 'Cake', 50, 8000, 6, 0, NULL),
+('BKY007', 'Muffin', 40, 3800, 6, 0, NULL),
+('BKY008', 'Bagel', 45, 4200, 6, 0, NULL),
+('BKY009', 'Biscuit', 55, 4000, 6, 0, NULL),
+('BKY010', 'Pastry', 60, 5500, 6, 0, NULL);
 
 -- Meats (CategoryID = 7)
-INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
+INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID, IsHidden, ImagePath)
 VALUES 
-('MEAT001', 'Chicken Breast', 100, 10000, 7),
-('MEAT002', 'Beef Steak', 90, 15000, 7),
-('MEAT003', 'Pork Chop', 85, 12000, 7),
-('MEAT004', 'Bacon', 80, 9000, 7),
-('MEAT005', 'Sausage', 70, 8000, 7),
-('MEAT006', 'Ground Beef', 60, 10500, 7),
-('MEAT007', 'Turkey', 50, 13000, 7),
-('MEAT008', 'Ham', 45, 11000, 7),
-('MEAT009', 'Ribs', 55, 14000, 7),
-('MEAT010', 'Lamb', 60, 16000, 7);
+('MEAT001', 'Chicken Breast', 100, 10000, 7, 0, NULL),
+('MEAT002', 'Beef Steak', 90, 15000, 7, 0, NULL),
+('MEAT003', 'Pork Chop', 85, 12000, 7, 0, NULL),
+('MEAT004', 'Bacon', 80, 9000, 7, 0, NULL),
+('MEAT005', 'Sausage', 70, 8000, 7, 0, NULL),
+('MEAT006', 'Ground Beef', 60, 10500, 7, 0, NULL),
+('MEAT007', 'Turkey', 50, 13000, 7, 0, NULL),
+('MEAT008', 'Ham', 45, 11000, 7, 0, NULL),
+('MEAT009', 'Ribs', 55, 14000, 7, 0, NULL),
+('MEAT010', 'Lamb', 60, 16000, 7, 0, NULL);
 
 -- Seafood (CategoryID = 8)
-INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
+INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID, IsHidden, ImagePath)
 VALUES 
-('SF001', 'Salmon', 100, 14000, 8),
-('SF002', 'Shrimp', 90, 13000, 8),
-('SF003', 'Tuna', 85, 12500, 8),
-('SF004', 'Crab', 80, 15000, 8),
-('SF005', 'Lobster', 70, 20000, 8),
-('SF006', 'Squid', 60, 10000, 8),
-('SF007', 'Clam', 50, 9000, 8),
-('SF008', 'Oyster', 45, 11000, 8),
-('SF009', 'Mackerel', 55, 8500, 8),
-('SF010', 'Anchovy', 60, 7000, 8);
+('SF001', 'Salmon', 100, 14000, 8, 0, NULL),
+('SF002', 'Shrimp', 90, 13000, 8, 0, NULL),
+('SF003', 'Tuna', 85, 12500, 8, 0, NULL),
+('SF004', 'Crab', 80, 15000, 8, 0, NULL),
+('SF005', 'Lobster', 70, 20000, 8, 0, NULL),
+('SF006', 'Squid', 60, 10000, 8, 0, NULL),
+('SF007', 'Clam', 50, 9000, 8, 0, NULL),
+('SF008', 'Oyster', 45, 11000, 8, 0, NULL),
+('SF009', 'Mackerel', 55, 8500, 8, 0, NULL),
+('SF010', 'Anchovy', 60, 7000, 8, 0, NULL);
 
 -- Canned Goods (CategoryID = 9)
-INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
+INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID, IsHidden, ImagePath)
 VALUES 
-('CAN001', 'Canned Beans', 100, 4000, 9),
-('CAN002', 'Canned Corn', 90, 3500, 9),
-('CAN003', 'Canned Tuna', 85, 5000, 9),
-('CAN004', 'Canned Tomatoes', 80, 3800, 9),
-('CAN005', 'Canned Soup', 70, 4500, 9),
-('CAN006', 'Canned Peas', 60, 3200, 9),
-('CAN007', 'Canned Pineapple', 50, 4800, 9),
-('CAN008', 'Canned Chicken', 45, 6000, 9),
-('CAN009', 'Canned Fruit Cocktail', 55, 5500, 9),
-('CAN010', 'Canned Mushroom', 60, 4200, 9);
+('CAN001', 'Canned Beans', 100, 4000, 9, 0, NULL),
+('CAN002', 'Canned Corn', 90, 3500, 9, 0, NULL),
+('CAN003', 'Canned Tuna', 85, 5000, 9, 0, NULL),
+('CAN004', 'Canned Tomatoes', 80, 3800, 9, 0, NULL),
+('CAN005', 'Canned Soup', 70, 4500, 9, 0, NULL),
+('CAN006', 'Canned Peas', 60, 3200, 9, 0, NULL),
+('CAN007', 'Canned Pineapple', 50, 4800, 9, 0, NULL),
+('CAN008', 'Canned Chicken', 45, 6000, 9, 0, NULL),
+('CAN009', 'Canned Fruit Cocktail', 55, 5500, 9, 0, NULL),
+('CAN010', 'Canned Mushroom', 60, 4200, 9, 0, NULL);
 
 -- Frozen Foods (CategoryID = 10)
-INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID)
+INSERT INTO Products (ProductCode, ProductName, Quantity, Price, CategoryID, IsHidden, ImagePath)
 VALUES 
-('FRZ001', 'Frozen Pizza', 100, 10000, 10),
-('FRZ002', 'Frozen Vegetables', 90, 5000, 10),
-('FRZ003', 'Frozen Fries', 85, 4000, 10),
-('FRZ004', 'Frozen Chicken Nuggets', 80, 8000, 10),
-('FRZ005', 'Frozen Fish Fillet', 70, 9000, 10),
-('FRZ006', 'Frozen Burger Patty', 60, 7500, 10),
-('FRZ007', 'Frozen Dumplings', 50, 6500, 10),
-('FRZ008', 'Frozen Spring Rolls', 45, 6000, 10),
-('FRZ009', 'Frozen Pasta', 55, 5500, 10),
-('FRZ010', 'Frozen Fruit Mix', 60, 7000, 10);
+('FRZ001', 'Frozen Pizza', 100, 10000, 10, 0, NULL),
+('FRZ002', 'Frozen Vegetables', 90, 5000, 10, 0, NULL),
+('FRZ003', 'Frozen Fries', 85, 4000, 10, 0, NULL),
+('FRZ004', 'Frozen Chicken Nuggets', 80, 8000, 10, 0, NULL),
+('FRZ005', 'Frozen Fish Fillet', 70, 9000, 10, 0, NULL),
+('FRZ006', 'Frozen Burger Patty', 60, 7500, 10, 0, NULL),
+('FRZ007', 'Frozen Dumplings', 50, 6500, 10, 0, NULL),
+('FRZ008', 'Frozen Spring Rolls', 45, 6000, 10, 0, NULL),
+('FRZ009', 'Frozen Pasta', 55, 5500, 10, 0, NULL),
+('FRZ010', 'Frozen Fruit Mix', 60, 7000, 10, 0, NULL);
 
 -- Giả sử RoleID = 0 là Customer, 1 là Admin
 -- Password của tất cả là Demo@123 (dùng md5 để mã hóa)
@@ -158,9 +208,12 @@ VALUES
 ('user5', 'e14c05f0dc27e6be1fc127abaf474a59', N'Ngo Van E', 'user5@example.com', 0),
 ('user6', 'e14c05f0dc27e6be1fc127abaf474a59', N'Huynh Thi F', 'user6@example.com', 0),
 ('user7', 'e14c05f0dc27e6be1fc127abaf474a59', N'Dang Van G', 'user7@example.com', 0),
-('admin1', 'e14c05f0dc27e6be1fc127abaf474a59', N'Quan Trị Vien A', 'admin1@gmail.com', 1),
-('admin2', 'e14c05f0dc27e6be1fc127abaf474a59', N'Quan Tri Vien B', 'admin2@example.com', 1),
-('admin3', 'e14c05f0dc27e6be1fc127abaf474a59', N'Quan Tri Vien C', 'admin2@example.com', 1);
+('admin', 'e14c05f0dc27e6be1fc127abaf474a59', N'Quan Trị Vien A', 'admin@gmail.com', 1),
+('AnNHP', 'f599fcffac6ad26e9b8b8f7e9365654b', N'Quan Tri Vien B', 'AnNHPCE190747@example.com', 1),
+('PhucDC', '13427726f8118b38d22fc682e1d7ca8f', N'Quan Trị Vien A', 'PhucDCCE190770@gmail.com', 1),
+('ThoPD', '41276b0f09995f2c66d4d6d64b0bad98', N'Quan Tri Vien B', 'ThoPDCE191246@example.com', 1),
+('TriLT', '21e3b645009fec466a3b694150915eb1', N'Quan Trị Vien A', 'TriLTCE190149@gmail.com', 1),
+('KhangVM', '43d4e592a448b7d46afd0f066657c5ef', N'Quan Tri Vien B', 'KhangVMCE191371@example.com', 1);
 
 -- Thêm sản phẩm vào giỏ hàng cho các User.
 INSERT INTO Carts (UserID, ProductID, Quantity)
@@ -213,21 +266,12 @@ VALUES
 (7, 99, 1),
 (7, 99, 1),
 
--- Admin 1 cũng có cart để test (không cần thiết nhưng có thể dùng demo)
+-- Admin cũng có cart để test (không cần thiết nhưng có thể dùng demo)
 (8, 65, 2),
 (8, 68, 1),
 (8, 70, 3),
 (8, 68, 1),
-(8, 70, 3),
-
--- Admin 2 cũng có cart để test (không cần thiết nhưng có thể dùng demo)
-(9, 73, 1),
-(9, 75, 2),
-
--- Admin 3 cũng có cart để test (không cần thiết nhưng có thể dùng demo)
-(10, 99, 3),
-(10, 40, 2),
-(10, 60, 2);
+(8, 70, 3);
 
 INSERT INTO DiscountTypes (DiscountTypeID, TypeName)
 VALUES
@@ -302,16 +346,12 @@ VALUES
 -- User 7
 (7, '2025-06-07', 2, NULL),
 
--- Admin 1 (UserID 8)
+-- Admin (UserID 8)
 (8, '2025-06-05', 4, 1),
 (8, '2025-06-13', 3, NULL),
-
--- Admin 2 (UserID 9)
-(9, '2025-06-14', 2, 6),
-
--- Admin 3 (UserID 10)
-(10, '2025-06-11', 1, NULL),
-(10, '2025-06-17', 4, 7),
+(8, '2025-06-14', 2, 6),
+(8, '2025-06-11', 1, NULL),
+(8, '2025-06-17', 4, 7),
 
 -- Thêm 4 đơn lẻ để tăng số lượng
 (3, '2025-06-18', 1, NULL),
@@ -322,71 +362,48 @@ VALUES
 -- OrderDetails chưa dùng dc(chưa fix)
 INSERT INTO OrderDetails (OrderID, ProductID, Quantity, UnitPrice)
 VALUES
--- Order 1
 (1, 1, 2, 15000),
 (1, 5, 1, 30000),
 
--- Order 2
 (2, 10, 1, 25000),
 
--- Order 3
 (3, 12, 3, 20000),
 (3, 14, 1, 50000),
 
--- Order 4
 (4, 7, 1, 35000),
 
--- Order 5
 (5, 3, 2, 10000),
 (5, 8, 1, 45000),
 
--- Order 6
 (6, 2, 1, 18000),
 
--- Order 7
 (7, 22, 2, 25000),
 (7, 23, 1, 29000),
 
--- Order 8
 (8, 30, 1, 15000),
 
--- Order 9
 (9, 35, 2, 20000),
 
--- Order 10
 (10, 40, 1, 60000),
 (10, 41, 1, 25000),
 
--- Order 11
 (11, 44, 1, 17000),
 
--- Order 12
 (12, 50, 2, 40000),
 
--- Order 13
 (13, 55, 1, 22000),
 
--- Order 14
 (14, 60, 3, 28000),
 
--- Order 15
 (15, 65, 1, 19000),
 
--- Order 16
 (16, 70, 2, 30000),
 
--- Order 17
 (17, 75, 1, 27000),
 
--- Order 18
 (18, 80, 2, 26000),
 
--- Order 19
-(19, 85, 3, 31000),
-
--- Order 20
-(20, 90, 1, 40000),
-(20, 91, 1, 33000);
+(19, 85, 3, 31000);
 
 INSERT INTO Reviews (UserID, ProductID, Rating, Comment, ReviewTime)
 VALUES
