@@ -14,6 +14,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import model.Cart;
 import model.Product;
@@ -81,19 +83,28 @@ public class CartServlet extends HttpServlet {
                 List<Cart> list = cartDao.getAll(user.getId());
                 request.setAttribute("cartList", list);
                 request.getRequestDispatcher("/WEB-INF/users/cart.jsp").forward(request, response);
+                return;
             } else if ("edit".equals(view)) {
                 int cartId = Integer.parseInt(request.getParameter("id"));
                 Cart cart = cartDao.getCartByID(cartId);
                 request.setAttribute("cart", cart);
                 request.getRequestDispatcher("/WEB-INF/users/edit.jsp").forward(request, response);
-              
-            
+
             } else if ("delete".equals(view)) {
                 int cartId = Integer.parseInt(request.getParameter("id"));
                 Cart cart = cartDao.getCartByID(cartId);
                 request.setAttribute("cart", cart);
                 request.getRequestDispatcher("/WEB-INF/users/delete.jsp").forward(request, response);
-                
+
+            } else if ("order".equals(view)) {
+                HttpSession session = request.getSession();
+                if (session.getAttribute("cartListToOrder") == null) {
+                    session.setAttribute("cartListToOrder", new ArrayList<Cart>());
+
+                }
+
+                request.getRequestDispatcher("/WEB-INF/users/order.jsp").forward(request, response);
+                return;
             }
 
             request.getRequestDispatcher("/WEB-INF/users/cart.jsp").forward(request, response);
@@ -114,22 +125,53 @@ public class CartServlet extends HttpServlet {
 
         if (((User) request.getSession().getAttribute("loggedUser")) == null) {
             response.sendRedirect(request.getContextPath() + "/login");
-        } else {
-            String action = request.getParameter("action");
-
-            if (action.equals("edit")) {
-                String cartid = request.getParameter("cartId");
-                String quantity = request.getParameter("quantity");          
-                cartDao.edit(Integer.parseInt(cartid), Integer.parseInt(quantity));
-                
-            } else if(action.equals("delete")){
-                String cartid = request.getParameter("cartId");
-                cartDao.delete(Integer.parseInt(cartid));
-            }
-
-          
-            response.sendRedirect(request.getContextPath() + "/cart");
+            return;
         }
+
+        String action = request.getParameter("action");
+
+        if ("edit".equals(action)) {
+            String cartid = request.getParameter("cartId");
+            String quantity = request.getParameter("quantity");
+            cartDao.edit(Integer.parseInt(cartid), Integer.parseInt(quantity));
+            response.sendRedirect(request.getContextPath() + "/cart");
+            return;
+
+        } else if ("delete".equals(action)) {
+            String cartid = request.getParameter("cartId");
+            cartDao.delete(Integer.parseInt(cartid));
+            response.sendRedirect(request.getContextPath() + "/cart");
+            return;
+
+        } else if ("order".equals(action)) {
+            User user = (User) request.getSession().getAttribute("loggedUser");
+            List<Cart> cartList = cartDao.getAll(user.getId());
+
+            int totalQuantity = 0;
+            int totalPrice = 0;
+            List<Cart> Buy = new ArrayList<>();
+            for (Cart cart : cartList) {
+                String isBuy = "isBuy" + cart.getCartItemID();
+                if (request.getParameter(isBuy) != null) {
+                    Buy.add(cart);
+                    totalQuantity += cart.getQuantity();
+                    totalPrice += cart.getQuantity() * cart.getProduct().getPrice();
+                }
+            }
+            List<Integer> checkBox = new ArrayList<>();
+            for (Cart c : Buy) {
+                checkBox.add(c.getCartItemID());
+            }
+            request.getSession().setAttribute("checkBox", checkBox);
+            request.getSession().setAttribute("Order", Buy);
+            request.getSession().setAttribute("totalQuantity", totalQuantity);
+            request.getSession().setAttribute("totalPrice", totalPrice);
+
+            response.sendRedirect(request.getContextPath() + "/cart?view=order");
+            return;
+        }
+
+        response.sendRedirect(request.getContextPath() + "/cart");
     }
 
     /**
