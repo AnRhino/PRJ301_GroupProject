@@ -212,11 +212,11 @@ VALUES
 ('user6', 'e14c05f0dc27e6be1fc127abaf474a59', N'Huynh Thi F', 'user6@example.com', 0),
 ('user7', 'e14c05f0dc27e6be1fc127abaf474a59', N'Dang Van G', 'user7@example.com', 0),
 ('admin', 'e14c05f0dc27e6be1fc127abaf474a59', N'Quan Trị Vien', 'admin@gmail.com', 1),
-('AnNHP', 'f599fcffac6ad26e9b8b8f7e9365654b', N'Nguyen Ho Phuoc An', 'AnNHPCE190747@example.com', 1),
-('PhucDC', '13427726f8118b38d22fc682e1d7ca8f', N'Dinh Cong Phuc', 'PhucDCCE190770@gmail.com', 1),
-('ThoPD', '41276b0f09995f2c66d4d6d64b0bad98', N'Phan Duc Tho', 'ThoPDCE191246@example.com', 1),
-('TriLT', '21e3b645009fec466a3b694150915eb1', N'Le Thien Tri', 'TriLTCE190149@gmail.com', 1),
-('KhangVM', '43d4e592a448b7d46afd0f066657c5ef', N'Vu Minh Khang', 'KhangVMCE191371@example.com', 1);
+('AnNHP', 'a61acd6c759f831eb8e2aa92098bf5cf', N'Nguyen Ho Phuoc An', 'AnNHPCE190747@example.com', 1),
+('PhucDC', '7d6f97a810a93b6d5091d0bf81ac38a2', N'Dinh Cong Phuc', 'PhucDCCE190770@gmail.com', 1),
+('ThoPD', '4fc5da50d877670f36d0081e18b95361', N'Phan Duc Tho', 'ThoPDCE191246@example.com', 1),
+('TriLT', '9c766d74d3539593e0256781c23c40c0', N'Le Thien Tri', 'TriLTCE190149@gmail.com', 1),
+('KhangVM', '40b2d50c63a3516fba5789a5a13d63d6', N'Vu Minh Khang', 'KhangVMCE191371@example.com', 1);
 
 -- Thêm sản phẩm vào giỏ hàng cho các User.
 INSERT INTO Carts (UserID, ProductID, Quantity)
