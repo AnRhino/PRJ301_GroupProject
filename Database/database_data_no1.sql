@@ -2,7 +2,7 @@
 GO
 
 -- Chạy 1 lần.
--- Password của tất cả là Demo@123 (dùng md5 để mã hóa)
+-- Password của tất cả là người dung là Demo@123 (dùng md5 để mã hóa).
 -- Password của từng thành viên là CE + MSSV + @.
 
 -- Xóa data cũ nếu tồn tại.
