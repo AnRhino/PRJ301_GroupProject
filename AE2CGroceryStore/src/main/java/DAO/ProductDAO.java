@@ -197,7 +197,7 @@ public class ProductDAO extends dbconnect.DBContext {
 
         return list;
     }
-    
+
     /**
      * Lấy sản phẩm khả dụng theo loại doanh mục người dùng chọn.
      *
@@ -291,6 +291,30 @@ public class ProductDAO extends dbconnect.DBContext {
                 return rs.getInt(1);
             }
 
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return 0;
+    }
+
+    /**
+     * Lấy id cao nhất trong database của product.
+     *
+     * @return id cao nhất của product.
+     */
+    public int getMaxID() {
+
+        try {
+            String query = "SELECT MAX(p.ProductID)\n"
+                    + "FROM [dbo].[Products] p;";
+            
+            ResultSet rs = execSelectQuery(query);
+            
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
