@@ -115,17 +115,17 @@ public class HomeServlet extends HttpServlet {
         int page = 1; // Trang mặc định = 1.
         String pageParam = request.getParameter("page");
 
-        if (pageParam != null && !pageParam.isBlank()) {
+        if (pageParam != null && !pageParam.isBlank()) { // check nếu không null thì xử lý logic ở dưới
             try {
-                page = Integer.parseInt(pageParam);
+                page = Integer.parseInt(pageParam); 
 
-                if (page < 1) {
+                if (page < 1) { // check xem nếu page nhỏ hơn min thì page = 1
                     page = 1;
-                } else if (page > totalPages) {
+                } else if (page > totalPages) { // check nếu page lớn hơn max thì page = max
                     page = totalPages;
                 }
 
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) { // Nếu khác số thì vào đây
                 page = 1;
             }
         }
