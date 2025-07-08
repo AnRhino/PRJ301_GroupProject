@@ -78,14 +78,14 @@ public class UserProductServlet extends HttpServlet {
 
         // Nếu view null hoặc rỗng.
         if (view == null || view.isBlank()) {
-            handleUnavailableProductID(response);
+            handleErrorWhenExcute(response);
 
             // Nếu người dùng có yêu cầu từ view.
         } else {
 
             // Nếu id sản phẩm không hợp lệ.
             if (!checkValidProductID(productIDParam)) {
-                handleUnavailableProductID(response);
+                handleErrorWhenExcute(response);
                 return;
             }
 
@@ -101,7 +101,7 @@ public class UserProductServlet extends HttpServlet {
                     break;
 
                 default: // Không có yêu cầu thì dẫn người dùng về product.jsp.
-                    handleUnavailableProductID(response);
+                    handleErrorWhenExcute(response);
                     break;
             }
         }
@@ -157,7 +157,7 @@ public class UserProductServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private void handleUnavailableProductID(HttpServletResponse response) throws ServletException, IOException {
+    private void handleErrorWhenExcute (HttpServletResponse response) throws ServletException, IOException {
 
         // Chuyển hướng đến trang lỗi.
         response.sendRedirect("index.jsp");
@@ -287,61 +287,19 @@ public class UserProductServlet extends HttpServlet {
 
         // Xử lí view trống.
         if (view == null || view.isBlank()) {
-            handleUnavailableProductID(response);
+            handleErrorWhenExcute(response);
 
             // Xử lí theo view của người dùng.
         } else {
             
             // Nếu id sản phẩm không hợp lệ.
             if (!checkValidProductID(productIDParam)) {
-                handleUnavailableProductID(response);
+                handleErrorWhenExcute(response);
                 return;
             }
 
-            // Xử lí yêu cầu của người dùng.
-            switch (view) {
-
-                case "cart":  // Thêm vào giỏ hàng.
-                    handleCartInput(request);
-                    break;
-
-                default: // Không có yêu cầu gì.
-                    break;
-            }
-
             // Chuyển hướng về chính jsp hiện tại.
-            response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + productIDParam);
-        }
-    }
-
-    /**
-     * Xử lí thêm vào cart của người dùng.
-     *
-     * Nếu số lượng thêm vào cùa người dùng xảy ra lỗi thì sẽ thêm lỗi đó vào
-     * session của người dùng. Nếu thêm số lượng phù hợp mà không xảy ra lỗi thì
-     * sẽ thêm thông báo thành công vào session của người dùng.
-     *
-     * @param request là yêu cầu của người dùng.
-     */
-    private void handleCartInput(HttpServletRequest request) {
-        String quantity = request.getParameter("quantity");
-
-        //  Kiểm tra nếu số lượng sản phẩm thêm vào giỏ hàng rỗng.
-        if (InputValidate.checkEmptyInput(quantity)) {
-            request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.EMPTY_INPUT_MESSAGE));
-
-            // Kiểm tra nếu số lượng sản phẩm thêm vào giỏ hàng không phải là số nguyên.
-        } else if (InputValidate.checkValidIntegerNumber(quantity)) {
-            request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.INVALID_INTEGER_INPUT_MESSAGE));
-
-            // Kiểm tra nếu số lượng sản phẩm thêm vào giỏ hàng nhỏ hơn 1 hoặc lớn hơn số lượng tối đa của sản phẩm đó.
-        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity), InputValidate.ZERO_VALUE, productDao.getMaxQuantity(Integer.parseInt(request.getParameter("productID"))))) {
-            request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.INVALID_CART_INPUT_MESSAGE));
-
-            // Nếu không có lỗi thì thêm vào giỏ hàng cho khách hàng.
-        } else {
-            cartDao.addNewProductToCart(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt(request.getParameter("productID")), Integer.parseInt(quantity));
-            request.getSession().setAttribute("successCart", MessageConstants.SUCCESS_CART_INPUT_MESSAGE);
+            response.sendRedirect(request.getContextPath() + "/user-product?view=product&productID=" + productIDParam);
         }
     }
     

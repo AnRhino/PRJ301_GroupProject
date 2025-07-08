@@ -13,9 +13,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Category;
-import model.Product;
 import validate.InputValidate;
 
 /**
@@ -73,14 +70,14 @@ public class UserCategoryServlet extends HttpServlet {
 
         // Nếu view null hoặc rỗng.
         if (view == null || view.isBlank()) {
-            handleUnavailableCategoryID(response);
+            handleErrorWhenExcute(response);
 
             // Nếu view có gì đó.
         } else {
 
             // Xử lí nếu id danh mục không hợp lệ.
             if (!checkValidCategoryID(categoryIDParam)) {
-                handleUnavailableCategoryID(response);
+                handleErrorWhenExcute(response);
                 return;
             }
 
@@ -92,11 +89,11 @@ public class UserCategoryServlet extends HttpServlet {
                     break;
 
                 case "product": // Nếu người dùng chọn 1 sản phẩm.
-                    response.sendRedirect(request.getContextPath() + "/user-product?id=" + request.getParameter("productID"));
+                    response.sendRedirect(request.getContextPath() + "/user-product?productID=" + request.getParameter("productID"));
                     break;
 
                 default: // Nếu view rỗng.
-                    handleUnavailableCategoryID(response);
+                    handleErrorWhenExcute(response);
                     break;
             }
         }
@@ -104,9 +101,9 @@ public class UserCategoryServlet extends HttpServlet {
 
     /**
      * Kiểm tra id của category.
-     * 
+     *
      * @param categoryIDParam là id của category.
-     * 
+     *
      * @return True nếu id hợp lệ. False nếu id không hợp lệ.
      */
     private boolean checkValidCategoryID(String categoryIDParam) {
@@ -122,7 +119,7 @@ public class UserCategoryServlet extends HttpServlet {
             // Kiểm tra id của category có trong phạm vi hợp lệ không.
         } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(categoryIDParam), InputValidate.ZERO_VALUE, categoryDao.getMaxId())) {
             return false;
-            
+
             // Nếu tất cả hợp lệ.
         } else {
             return true;
@@ -144,15 +141,15 @@ public class UserCategoryServlet extends HttpServlet {
     }
 
     /**
-     * Xử lí người dùng truy cập vào category mà id không hợp lệ. .
+     * Xử lí người dùng truy cập vào category mà id không hợp lệ.
      *
      * @param response là phản hồi của người dùng.
      *
      * @throws IOException
      * @throws ServletException
      */
-    private void handleUnavailableCategoryID(HttpServletResponse response) throws IOException, ServletException {
-        
+    private void handleErrorWhenExcute (HttpServletResponse response) throws IOException, ServletException {
+
         // Chuyển hướng người dùng đến nơi muốn hiện lỗi.
         response.sendRedirect("index.jsp");
     }
@@ -181,6 +178,16 @@ public class UserCategoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
+
+        String categoryIDParam = request.getParameter("categoryID");
+
+        // Xử lí nếu id danh mục không hợp lệ.
+        if (!checkValidCategoryID(categoryIDParam)) {
+            handleErrorWhenExcute(response);
+            return;
+        }
+
+        response.sendRedirect(request.getContextPath() + "/user-category?categoryID=" + request.getParameter("categoryID"));
     }
 
     /**
