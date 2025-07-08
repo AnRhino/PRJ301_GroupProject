@@ -19,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="item" items="${sessionScope.Order}" varStatus="loop">
+                <c:forEach var="item" items="${sessionScope.wantedCartList}" varStatus="loop">
 
                     <tr>
                         <td>${loop.index + 1}</td>
@@ -32,8 +32,7 @@
             </tbody>
         </table>
 
-        <h5>Total Quantity: ${sessionScope.totalQuantity}</h5>
-        <h5>Total Price: ${sessionScope.totalPrice}</h5>
+     
 
         <button class="btn btn-success">Buy</button>
     </div>

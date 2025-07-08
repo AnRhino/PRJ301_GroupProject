@@ -156,26 +156,16 @@ public class CartServlet extends HttpServlet {
         } else if ("order".equals(action)) {
             User user = (User) request.getSession().getAttribute("loggedUser");
             List<Cart> cartList = cartDao.getAll(user.getId());
-
-            int totalQuantity = 0;
-            int totalPrice = 0;
-            List<Cart> Buy = new ArrayList<>();
+            List<Cart> wantedCartList = new ArrayList<>();
             for (Cart cart : cartList) {
-                String isBuy = "isBuy" + cart.getCartItemID();
-                if (request.getParameter(isBuy) != null) {
-                    Buy.add(cart);
-                    totalQuantity += cart.getQuantity();
-                    totalPrice += cart.getQuantity() * cart.getProduct().getPrice();
+                String autoCheckBox = "isBuy" + cart.getCartItemID();
+                if (request.getParameter(autoCheckBox) != null) {
+                    wantedCartList.add(cart);
+
                 }
             }
-            List<Integer> checkBox = new ArrayList<>();
-            for (Cart c : Buy) {
-                checkBox.add(c.getCartItemID());
-            }
-            request.getSession().setAttribute("checkBox", checkBox);
-            request.getSession().setAttribute("Order", Buy);
-            request.getSession().setAttribute("totalQuantity", totalQuantity);
-            request.getSession().setAttribute("totalPrice", totalPrice);
+
+            request.getSession().setAttribute("wantedCartList", wantedCartList);
 
             response.sendRedirect(request.getContextPath() + "/cart?view=order");
             return;

@@ -172,4 +172,37 @@ public class CartDAO extends dbconnect.DBContext {
         return 0;
 
     }
+
+    public List<Cart> getHave(int userId) {
+        List<Cart> list = new ArrayList<>();
+
+        PreparedStatement ps;
+        try {
+            String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price\n"
+                    + "FROM [dbo].[Carts] c\n"
+                    + "JOIN [dbo].[Users] u\n"
+                    + "ON u.UserID = c.UserID\n"
+                    + "JOIN [dbo].[Products] prod\n"
+                    + "ON prod.ProductID = c.ProductID\n"
+                    + "WHERE u.UserID = ? and prod.IsHidden";
+
+            ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Product product = new Product(rs.getInt(4));
+                product.setProductName(rs.getString(6));
+                product.setPrice(rs.getInt(7));
+                User user = new User(rs.getInt(2), rs.getString(3));
+                Cart cart = new Cart(rs.getInt(1), user, product, rs.getInt(5));
+                list.add(cart);
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
+    }
 }
