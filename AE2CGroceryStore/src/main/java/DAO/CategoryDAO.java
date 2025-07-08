@@ -73,18 +73,19 @@ public class CategoryDAO extends dbconnect.DBContext {
     }
 
     /**
-     * Lấy danh mục dựa trên id được cho.
+     * Lấy danh mục khả thi dựa trên id được cho.
      *
      * @param categoryID là id được truyền vào.
      *
      * @return 1 object category với id khớp với id truyền vào.
      */
-    public Category getOneByID(int categoryID) {
+    public Category getAvailableOneByID(int categoryID) {
 
         Category category = null;
         String query = "SELECT c.CategoryID, c.CategoryName, c.IsHidden, c.ImagePath\n"
                 + "FROM [dbo].[Categories] c\n"
-                + "WHERE c.CategoryID = ?";
+                + "WHERE c.CategoryID = ?"
+                + "AND c.IsHidden = 0;";
         Object[] params = {categoryID};
 
         try {
