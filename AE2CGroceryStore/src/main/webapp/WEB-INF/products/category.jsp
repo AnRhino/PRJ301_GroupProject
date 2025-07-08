@@ -35,22 +35,22 @@
                             <div class="col-3">
                                 <h1 class="fw-bold">Other category</h1>
                                 <div class="overflow-auto h-50">
-                                <c:forEach var="cate" items="${requestScope.categoryList}">
-                                    <div class="col-12 d-flex justify-content-center my-3 border bg-dark py-2">
-                                        <form action="${pageContext.request.contextPath}/user-category" method="get">
-                                            <input type="hidden" name="view" value="category">
-                                            <input type="hidden" name="categoryID" value="${cate.categoryID}">
-                                            <button class="btn p-0 border-0 text-white">
-                                                <div class="row">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        ${cate.categoryName}
+                                    <c:forEach var="cate" items="${requestScope.categoryList}">
+                                        <div class="col-12 d-flex justify-content-center my-3 border bg-dark py-2">
+                                            <form action="${pageContext.request.contextPath}/user-category" method="get">
+                                                <input type="hidden" name="view" value="category">
+                                                <input type="hidden" name="categoryID" value="${cate.categoryID}">
+                                                <button class="btn p-0 border-0 text-white">
+                                                    <div class="row">
+                                                        <div class="col-12 d-flex justify-content-center">
+                                                            ${cate.categoryName}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </c:forEach>
-                                    </div>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </c:forEach>
+                                </div>
                             </div>
                             <div class="col-9">
                                 <div class="ms-5 me-5">
@@ -66,7 +66,7 @@
                                         </c:when>
 
                                         <c:otherwise>
-                                            
+
                                             <h1 class="fw-bold">${requestScope.categoryType.categoryName}</h1>
                                             <div class="row"> 
 
@@ -102,22 +102,20 @@
                                                                 </form>
                                                             </div>
                                                         </c:forEach>
-
                                                     </c:otherwise>
-
                                                 </c:choose>
-
                                             </div>
                                         </c:otherwise>
                                     </c:choose>
-                                </div>
+                                </div>                            
                             </div>
+
                         </div>
                     </div>
                 </div>
             </c:otherwise>
-
         </c:choose>
+        <%@include file="../include/category_pagination.jsp" %>
         <jsp:include page="../include/footer.jsp" />
     </body>
 </html>
