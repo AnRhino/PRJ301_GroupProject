@@ -54,21 +54,22 @@ public class CategoryDAO extends dbconnect.DBContext {
     public List<Category> getAllCategoryAvailable() {
 
         List<Category> list = new ArrayList<>();
-        String query = "SELECT CategoryID, CategoryName, IsHidden, ImagePath\n"
-                + "FROM Categories"
+        String query = "SELECT CategoryID, CategoryName, ImagePath, IsHidden\n"
+                + "FROM Categories\n"
                 + "WHERE IsHidden = 0;";
 
         try {
-            ResultSet rs = execSelectQuery(query, null);
+            ResultSet rs = execSelectQuery(query);
 
             while (rs.next()) {
-                list.add(new Category(rs.getInt(1), rs.getString(2), rs.getString(4), rs.getBoolean(3)));
+                list.add(new Category(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getBoolean(4)));
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        System.out.println(list.size());
         return list;
     }
 
