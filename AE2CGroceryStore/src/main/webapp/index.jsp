@@ -74,9 +74,9 @@
                         <div class="row">
                             <c:forEach var="cate" items="${categoryList}">
                                 <div class="col-3 d-flex justify-content-center border border-secondary">
-                                    <form action="${pageContext.request.contextPath}/user-product" method="get">
+                                    <form action="${pageContext.request.contextPath}/user-category" method="get">
                                         <input type="hidden" name="view" value="category">
-                                        <input type="hidden" name="id" value="${cate.categoryID}">
+                                        <input type="hidden" name="categoryID" value="${cate.categoryID}">
                                         <button class="btn p-0 border-0 bg-transparent">
                                             <div class="row">
                                                 <div class="col-12 d-flex justify-content-center">
@@ -115,7 +115,7 @@
                                     <div class="col-3 d-flex justify-content-center">
                                         <form action="${pageContext.request.contextPath}/user-product" method="get">
                                             <input type="hidden" name="view" value="product">
-                                            <input type="hidden" name="id" value="${pro.productID}">
+                                            <input type="hidden" name="productID" value="${pro.productID}">
                                             <button class="btn">
                                                 <div class="row d-flex justify-content-center">
                                                     <div class="col-12 d-flex justify-content-center">

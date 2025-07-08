@@ -33,10 +33,12 @@
                         <div class="row border border-dark rounded-3 my-3" style="background: #91bbe5;">
                             <div class="col-3">
                                 <div class="m-2 p-2 text-center border border-dark rounded-3" style="background: #0c2333;">
-                                    <form action="${pageContext.request.contextPath}/user-product" method="get">
+                                    <form action="${pageContext.request.contextPath}/user-category" method="get">
                                         <h1 class="fw-bold text-uppercase d-flex justify-content-center align-items-center text-white">
-                                            <button class="btn btn-transparent">
-                                                Other product
+                                            <input type="hidden" name="view" value="category">
+                                            <input type="hidden" name="categoryID" value="${requestScope.product.category.categoryID}">
+                                            <button type="submit" class="btn btn-transparent">
+                                                <h3 class="text-white ">Other product</h3>
                                             </button>
                                         </h1>
                                     </form>
@@ -47,7 +49,7 @@
                                             <div class="col-10 m-3 p-2 mx-auto" style="background: #3376bc;">
                                                 <form action="${pageContext.request.contextPath}/user-product" method="get">
                                                     <input type="hidden" name="view" value="product">
-                                                    <input type="hidden" name="id" value="${prod.productID}">
+                                                    <input type="hidden" name="productID" value="${prod.productID}">
                                                     <button class="btn border-0 text-white w-100 text-center">
                                                         ${prod.productName}
                                                     </button>
@@ -97,7 +99,7 @@
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="d-flex align-items-center gap-2">
-                                                                    <input type="hidden" name="id" value="${requestScope.product.productID}">
+                                                                    <input type="hidden" name="productID" value="${requestScope.product.productID}">
                                                                     <div class="fw-bold d-inline">Add to cart:</div>
                                                                     <input type="number" class="text-end border-dark w-100 d-inline" name="quantity" placeholder="1" min="1" max="${requestScope.product.quantity}">
                                                                 </div>
@@ -186,7 +188,7 @@
                                                                     <div class="modal-footer">
                                                                         <form action="${pageContext.request.contextPath}/user-product" method="post">
                                                                             <input type="hidden" name="view" value="removeComment">
-                                                                            <input type="hidden" name="id" value="${requestScope.product.productID}">
+                                                                            <input type="hidden" name="productID" value="${requestScope.product.productID}">
                                                                             <input type="hidden" name="reviewID" value="${rv.reviewID}">
                                                                             <button type="submit" class="btn btn-danger" data-bs-toggle="modal">Delete</button>
                                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -208,7 +210,7 @@
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <input type="hidden" name="view" value="editComment">
-                                                                            <input type="hidden" name="id" value="${requestScope.product.productID}">
+                                                                            <input type="hidden" name="productID" value="${requestScope.product.productID}">
                                                                             <input type="hidden" name="reviewID" value="${rv.reviewID}">
                                                                             <button type="submit" class="btn btn-primary" data-bs-toggle="modal">Edit</button>
                                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -225,7 +227,7 @@
                                         <div class="px-5 gap-3 p-2 text-light">
                                             <form action="${pageContext.request.contextPath}/user-product" method="post" class="d-flex gap-2">
                                                 <input type="hidden" name="view" value="comment">
-                                                <input type="hidden" name="id" value="${requestScope.product.productID}">
+                                                <input type="hidden" name="productID" value="${requestScope.product.productID}">
                                                 <input type="text" class="form-control" name="comment" placeholder="Enter your comment here.">
                                                 <select name="rating" id="rating" required>
                                                     <option value="1">1 ⭐</option>

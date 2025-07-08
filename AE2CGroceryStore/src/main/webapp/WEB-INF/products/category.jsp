@@ -15,92 +15,109 @@
     <body>
         <%@include file="../include/header.jsp" %>
 
-        <%
-            // Lấy danh sách danh mục và sản phầm từ db.
-            List<Category> categoryList = (List) request.getAttribute("categoryList");
-            List<Product> productList = (List) request.getAttribute("productList");
-            Category c = (Category) request.getAttribute("categoryType");
+        <c:choose>
 
-            // Kiểm tra null và coi có rỗng không.
-            // Nếu có thì hiện thông báo.
-            if (categoryList == null || productList == null || productList.isEmpty() || categoryList.isEmpty()) {
-        %>
-
-        <div class="container-fluid">
-            <div>
-                <h1 class="fw-bold">Error</h1>
-                <div class="row">
-                    <div>There are no product to display.</div>
-                </div>
-            </div>
-        </div>
-
-        <%
-            // Nếu có sản phẩm thì hiện ra.
-        } else {
-        %>
-
-        <div class="container-fluid">
-            <div class="ms-5 me-5"> 
-                <div class="row">
-                    <div class="col-3">
-                        <h1 class="fw-bold">Other category</h1>
-                        <%
-                            for (Category cate : categoryList) {
-                        %>   
-
-                        <div class="col-12 d-flex justify-content-center my-3 border bg-dark py-2">
-                            <form action="<%= request.getContextPath()%>/user-product" method="get">
-                                <input type="hidden" name="view" value="category">
-                                <input type="hidden" name="id" value="<%= cate.getCategoryID()%>">
-                                <button class="btn p-0 border-0 text-white">
-                                    <div class="row">
-                                        <div class="col-12 d-flex justify-content-center">
-                                            <%= cate.getCategoryName()%>
-                                        </div>
-                                    </div>
-                                </button>
-                            </form>
+            <c:when test="${empty categoryList}">
+                <div class="container-fluid">
+                    <div>
+                        <h1 class="fw-bold">Error</h1>
+                        <div class="row">
+                            <div>There are no product to display.</div>
                         </div>
-
-                        <%}%>
                     </div>
-                    <div class="col-9">
-                        <div class="ms-5 me-5">
-                            <h1 class="fw-bold"><%= c.getCategoryName()%></h1>
-                            <div class="row"> 
-                                <c:forEach var="prod" items="${requestScope.productList}">
+                </div>
+            </c:when>
 
-                                    <div class="col-3 d-flex justify-content-center my-3 border border-secondary">
-                                        <form action="<%= request.getContextPath()%>/user-product" method="get">
-                                            <input type="hidden" name="view" value="product">
-                                            <input type="hidden" name="id" value="${prod.productID}">
-                                            <button class="btn-secondary border-secondary">
+            <c:otherwise>
+                <div class="container-fluid">
+                    <div class="ms-5 me-5"> 
+                        <div class="row">
+                            <div class="col-3">
+                                <h1 class="fw-bold">Other category</h1>
+
+                                <c:forEach var="cate" items="${requestScope.categoryList}">
+                                    <div class="col-12 d-flex justify-content-center my-3 border bg-dark py-2">
+                                        <form action="${pageContext.request.contextPath}/user-category" method="get">
+                                            <input type="hidden" name="view" value="category">
+                                            <input type="hidden" name="categoryID" value="${cate.categoryID}">
+                                            <button class="btn p-0 border-0 text-white">
                                                 <div class="row">
                                                     <div class="col-12 d-flex justify-content-center">
-                                                        <img src="assets/images/placeHolder.jpg" alt="placeholder">
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        ${prod.productName}
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        Price: 
-                                                        ${prod.price} VND
+                                                        ${cate.categoryName}
                                                     </div>
                                                 </div>
                                             </button>
                                         </form>
                                     </div>
                                 </c:forEach>
+
+                            </div>
+                            <div class="col-9">
+                                <div class="ms-5 me-5">
+
+                                    <c:choose>
+
+                                        <c:when test="${requestScope.categoryType == null}">
+                                            <h1 class="fw-bold">Unavailable category</h1>
+                                            <div class="row">
+                                                <div class="col-12">There are no available product in this category currently.</div>
+                                                <div class="col-12">Please try another.</div>
+                                            </div>
+                                        </c:when>
+
+                                        <c:otherwise>
+                                            
+                                            <h1 class="fw-bold">${requestScope.categoryType.categoryName}</h1>
+                                            <div class="row"> 
+
+                                                <c:choose>
+
+                                                    <c:when test="${empty requestScope.productList}">
+                                                        <div class="col-3 d-flex justify-content-center my-3 border border-secondary">
+                                                            <p>There are currently no available product in this category.</p>
+                                                        </div>
+                                                    </c:when>
+
+                                                    <c:otherwise>
+
+                                                        <c:forEach var="prod" items="${requestScope.productList}">
+                                                            <div class="col-3 d-flex justify-content-center my-3 border border-secondary">
+                                                                <form action="${pageContext.request.contextPath}/user-product" method="get">
+                                                                    <input type="hidden" name="view" value="product">
+                                                                    <input type="hidden" name="productID" value="${prod.productID}">
+                                                                    <button class="btn-secondary border-secondary">
+                                                                        <div class="row">
+                                                                            <div class="col-12 d-flex justify-content-center">
+                                                                                <img src="assets/images/placeHolder.jpg" alt="placeholder">
+                                                                            </div>
+                                                                            <div class="col-12 d-flex justify-content-center">
+                                                                                ${prod.productName}
+                                                                            </div>
+                                                                            <div class="col-12 d-flex justify-content-center">
+                                                                                Price: 
+                                                                                ${prod.price} VND
+                                                                            </div>
+                                                                        </div>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </c:forEach>
+
+                                                    </c:otherwise>
+
+                                                </c:choose>
+
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <%
-                }
-            %>
+            </c:otherwise>
 
-            <jsp:include page="../include/footer.jsp" />
+        </c:choose>
+        <jsp:include page="../include/footer.jsp" />
     </body>
 </html>
