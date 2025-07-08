@@ -10,4 +10,8 @@ package utils;
  */
 public class PaginationUtil {
     public static final int NUMBER_OF_ITEMS_PER_PAGE = 16;
+    
+    public static int getTotalPages(int countItem){
+        return (int) Math.ceil((double) countItem / PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE);
+    }
 }
