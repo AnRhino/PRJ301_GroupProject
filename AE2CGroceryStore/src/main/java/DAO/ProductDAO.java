@@ -45,6 +45,7 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
+    // Hàm này dùng để phân trang, show ra số lượng sản phẩm nhất định.
     public List<Product> getProductForEachPage(int page) {
         List<Product> list = new ArrayList<>();
         try {
@@ -69,7 +70,20 @@ public class ProductDAO extends dbconnect.DBContext {
         }
         return list;
     }
-    
+
+    // Hàm này dùng để đếm số lượng sản phẩm còn hàng trong shop.
+    public int countItem() {
+        try {
+            String query = "select count(ProductID) as numrow from Products where isHidden = 0";
+            ResultSet rs = execSelectQuery(query, null);
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 
     public int create(String productCore, String productName, int quantity, double price, int categoryId) {
         int check = 0;

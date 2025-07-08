@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import utils.PaginationUtil;
 
 /**
  *
@@ -106,10 +107,19 @@ public class HomeServlet extends HttpServlet {
      * @param request là yêu cầu người dùng.
      */
     private void getDataIndex(HttpServletRequest request) {
-        int page = 1;
+        int countProducts = productDao.countItem();
+        int totalPages = (int) Math.ceil((double) countProducts / PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE); // Tổng số page = số product isHidden = 0 / số product hiển thị cho 1 page.
+        request.setAttribute("totalPages", totalPages);
+
+        int page = 1; // Trang mặc định = 0.
         String pageParam = request.getParameter("page");
-        if (pageParam != null && Integer.parseInt(pageParam) > 1) {
+        if (pageParam != null && Integer.parseInt(pageParam) > 1) { // khác null với số mới được đổi trang
             page = Integer.parseInt(pageParam);
+        }
+        if (page > totalPages) {
+            page = totalPages;
+        } else if (page < 1) {
+            page = 1;
         }
 
         request.setAttribute("categoryList", categoryDao.getAll());
