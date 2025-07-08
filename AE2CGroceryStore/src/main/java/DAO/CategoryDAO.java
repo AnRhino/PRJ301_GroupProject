@@ -73,6 +73,37 @@ public class CategoryDAO extends dbconnect.DBContext {
     }
 
     /**
+     * Lấy danh mục dựa trên id được cho.
+     *
+     * @param categoryID là id được truyền vào.
+     *
+     * @return 1 object category với id khớp với id truyền vào.
+     */
+    public Category getOneByID(int categoryID) {
+
+        Category category = null;
+        String query = "SELECT c.CategoryID, c.CategoryName, c.IsHidden, c.ImagePath\n"
+                + "FROM [dbo].[Categories] c\n"
+                + "WHERE c.CategoryID = ?"
+                + "AND c.IsHidden = 0;";
+        Object[] params = {categoryID};
+
+        try {
+
+            ResultSet rs = execSelectQuery(query, params);
+
+            while (rs.next()) {
+                category = new Category(rs.getInt(1), rs.getString(2), rs.getString(4), rs.getBoolean(3));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return category;
+    }
+    
+    /**
      * Lấy danh mục khả thi dựa trên id được cho.
      *
      * @param categoryID là id được truyền vào.
