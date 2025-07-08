@@ -34,7 +34,7 @@
                         <div class="row">
                             <div class="col-3">
                                 <h1 class="fw-bold">Other category</h1>
-
+                                <div class="overflow-auto h-50">
                                 <c:forEach var="cate" items="${requestScope.categoryList}">
                                     <div class="col-12 d-flex justify-content-center my-3 border bg-dark py-2">
                                         <form action="${pageContext.request.contextPath}/user-category" method="get">
@@ -50,7 +50,7 @@
                                         </form>
                                     </div>
                                 </c:forEach>
-
+                                    </div>
                             </div>
                             <div class="col-9">
                                 <div class="ms-5 me-5">

@@ -9,7 +9,7 @@ package utils;
  * @author Le Thien Tri - CE191249
  */
 public class PaginationUtil {
-    public static final int NUMBER_OF_ITEMS_PER_PAGE = 16;
+    public static final int NUMBER_OF_ITEMS_PER_PAGE = 8;
     
     public static int getTotalPages(int countItem){
         return (int) Math.ceil((double) countItem / PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE);
