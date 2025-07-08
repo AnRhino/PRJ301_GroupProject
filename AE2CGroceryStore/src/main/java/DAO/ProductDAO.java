@@ -179,7 +179,39 @@ public class ProductDAO extends dbconnect.DBContext {
         String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden\n"
                 + "FROM Products p\n"
                 + "JOIN  Categories c on p.CategoryID = c.CategoryID\n"
-                + "WHERE c.CategoryID = ?";
+                + "WHERE c.CategoryID = ?;";
+        Object[] params = {categoryID};
+
+        try {
+            ResultSet rs = execSelectQuery(query, params);
+
+            while (rs.next()) {
+                Product pro = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8)));
+                list.add(pro);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+        return list;
+    }
+    
+    /**
+     * Lấy sản phẩm khả dụng theo loại doanh mục người dùng chọn.
+     *
+     * @param categoryID là loại danh mục người dùng muốn hiện sản phẩm ra.
+     *
+     * @return danh sách sản phẩm theo loại doanh mục người dùng chọn.
+     */
+    public List<Product> getAvailableProductsByCategory(int categoryID) {
+        List<Product> list = new ArrayList<>();
+        String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden\n"
+                + "FROM Products p\n"
+                + "JOIN  Categories c on p.CategoryID = c.CategoryID\n"
+                + "WHERE c.CategoryID = ?"
+                + "AND c.IsHidden = 0;";
         Object[] params = {categoryID};
 
         try {

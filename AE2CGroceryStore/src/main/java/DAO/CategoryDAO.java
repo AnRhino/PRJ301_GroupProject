@@ -42,7 +42,33 @@ public class CategoryDAO extends dbconnect.DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return list;
+    }
+    
+    /**
+     * Lấy tất cả danh mục khả thi trong cơ sở dữ liệu.
+     *
+     * @return danh sách các danh mục khả dụng.
+     */
+    public List<Category> getAllCategoryAvailable() {
 
+        List<Category> list = new ArrayList<>();
+        String query = "SELECT CategoryID, CategoryName, IsHidden, ImagePath\n"
+                + "FROM Categories"
+                + "WHERE IsHidden = 0;";
+
+        try {
+            ResultSet rs = execSelectQuery(query, null);
+
+            while (rs.next()) {
+                list.add(new Category(rs.getInt(1), rs.getString(2), rs.getString(4), rs.getBoolean(3)));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return list;
     }
 
