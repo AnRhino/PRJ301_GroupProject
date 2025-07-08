@@ -74,83 +74,93 @@ public class UserProductServlet extends HttpServlet {
 //        processRequest(request, response);
 
         String view = request.getParameter("view");
+        String productIDParam = request.getParameter("productID");
 
         // Nếu view null hoặc rỗng.
         if (view == null || view.isBlank()) {
-            getIndexInfo(request);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            handleUnavailableProductID(response);
 
             // Nếu người dùng có yêu cầu từ view.
         } else {
 
-            try {
-                
-                // Kiểm tra id có hợp lệ hay không.
-                String id = request.getParameter("id");
-                int productID = Integer.parseInt(id);
-                request.getSession().setAttribute("productID", id);
+            // Nếu id sản phẩm không hợp lệ.
+            if (!checkValidProductID(productIDParam)) {
+                handleUnavailableProductID(response);
+                return;
+            }
 
-                // Xử lí yêu càu của người dùng.
-                switch (view) {
+            // Xử lí yêu càu của người dùng.
+            switch (view) {
 
-                    case "category": // Hiện ra 1 danh mục.
-                        getCategoryInfo(request);
-                        request.getRequestDispatcher("/WEB-INF/products/category.jsp").forward(request, response);
-                        break;
+                case "category": // Hiện ra 1 danh mục.
+                    response.sendRedirect(request.getContextPath() + "/user-category?id=" + request.getParameter("categoryID"));
+                    break;
 
-                    case "product": // Hiện ra 1 sản phẩm.
-                        getProductInfo(request, productID);
-                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-                        break;
+                case "product": // Hiện ra 1 sản phẩm.
+                    showProduct(request, response, Integer.parseInt(productIDParam));
+                    break;
 
-                    default: // Không có yêu cầu thì dẫn người dùng về product.jsp.
-                        getProductInfo(request, productID);
-                        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
-                        break;
-                }
-
-                // Nếu id không hợp lệ.
-            } catch (NumberFormatException e) {
-                handleUnavailableProductID(request, response);
+                default: // Không có yêu cầu thì dẫn người dùng về product.jsp.
+                    handleUnavailableProductID(response);
+                    break;
             }
         }
     }
 
     /**
-     * Xử lí người dùng chỉnh lại id trong html.
+     * Kiểm tra id của product.
      *
-     * Lưu id của sản phẩm vào session nếu người dùng truy cập và xem 1 sản phẩm
-     * nào đó. Nếu truy cập id sản phẩm mới thì thay đổi id sản phẩm trong
-     * session. Không thì không thay đổi nếu người dùng có chỉnh lại id sản
-     * phẩm.
+     * @param categoryIDParam là id của product.
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @return True nếu id hợp lệ. False nếu id không hợp lệ.
      */
-    private void handleUnavailableProductID(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private boolean checkValidProductID(String productIDParam) {
 
-        // Nếu id trong session null hoặc rỗng.
-        if (request.getSession().getAttribute("productID") == null || ((String) request.getSession().getAttribute("productID")).isBlank()) {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+        // Kiểm tra id của category có null hoặc rỗng không.
+        if (InputValidate.checkEmptyInput(productIDParam)) {
+            return false;
 
-            // Nếu trong session có tồn tại id.
+            // Kiểm tra id của category có phải là số không.
+        } else if (InputValidate.checkValidIntegerNumber(productIDParam)) {
+            return false;
+
+            // Kiểm tra id của category có trong phạm vi hợp lệ không.
+        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(productIDParam), InputValidate.ZERO_VALUE, productDao.getMaxID())) {
+            return false;
+
+            // Nếu tất cả hợp lệ.
         } else {
-            getProductInfo(request, Integer.parseInt((String) request.getSession().getAttribute("productID")));
-            request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+            return true;
         }
     }
 
     /**
-     * Lấy thông tin của category và trả về cho người dùng.
+     * Hiện ra sản phẩm cho người dùng.
      *
-     * @param request servlet request
+     * @param request là yêu cầu của người dùng.
+     * @param response là phản hồi của người dùng.
+     * @param productID là id của sản phẩm.
+     *
+     * @throws ServletException
+     * @throws IOException
      */
-    private void getCategoryInfo(HttpServletRequest request) {
-        request.setAttribute("categoryList", categoryDao.getAll());
-        request.setAttribute("productList", productDao.getProductsByCategory(Integer.parseInt(request.getParameter("id"))));
-        request.setAttribute("categoryType", categoryDao.getOneByID(Integer.parseInt(request.getParameter("id"))));
+    private void showProduct(HttpServletRequest request, HttpServletResponse response, int productID) throws ServletException, IOException {
+        getProductInfo(request, productID);
+        request.getRequestDispatcher("/WEB-INF/products/product.jsp").forward(request, response);
+    }
+
+    /**
+     * Chuyển hướng người dùng đến trang lỗi.
+     *
+     * @param response servlet response
+     *
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    private void handleUnavailableProductID(HttpServletResponse response) throws ServletException, IOException {
+
+        // Chuyển hướng đến trang lỗi.
+        response.sendRedirect("index.jsp");
     }
 
     /**
@@ -170,16 +180,6 @@ public class UserProductServlet extends HttpServlet {
         getErrorOrSuccessInAddCommentIfExists(request);
         getErrorOrSuccessInDeleteCommentIfExists(request);
         getErrorOrSuccessInEditCommentIfExists(request);
-    }
-
-    /**
-     * Lấy thông tin của index và trả về người dùng.
-     *
-     * @param request servlet request
-     */
-    private void getIndexInfo(HttpServletRequest request) {
-        request.setAttribute("categoryList", categoryDao.getAll());
-        request.setAttribute("productList", productDao.getAll());
     }
 
     /**
@@ -283,13 +283,20 @@ public class UserProductServlet extends HttpServlet {
 //        processRequest(request, response);
 
         String view = request.getParameter("view");
+        String productIDParam = request.getParameter("productID");
 
         // Xử lí view trống.
         if (view == null || view.isBlank()) {
-            response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + request.getSession().getAttribute("id"));
+            handleUnavailableProductID(response);
 
             // Xử lí theo view của người dùng.
         } else {
+            
+            // Nếu id sản phẩm không hợp lệ.
+            if (!checkValidProductID(productIDParam)) {
+                handleUnavailableProductID(response);
+                return;
+            }
 
             // Xử lí yêu cầu của người dùng.
             switch (view) {
@@ -315,8 +322,7 @@ public class UserProductServlet extends HttpServlet {
             }
 
             // Chuyển hướng về chính jsp hiện tại.
-            request.getSession().setAttribute("productID", request.getParameter("id"));
-            response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + request.getSession().getAttribute("productID"));
+            response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + productIDParam);
         }
     }
 
@@ -341,12 +347,12 @@ public class UserProductServlet extends HttpServlet {
             request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.INVALID_INTEGER_INPUT_MESSAGE));
 
             // Kiểm tra nếu số lượng sản phẩm thêm vào giỏ hàng nhỏ hơn 1 hoặc lớn hơn số lượng tối đa của sản phẩm đó.
-        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity), InputValidate.ZERO_VALUE, productDao.getMaxQuantity(Integer.parseInt(request.getParameter("id"))))) {
+        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity), InputValidate.ZERO_VALUE, productDao.getMaxQuantity(Integer.parseInt(request.getParameter("productID"))))) {
             request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.INVALID_CART_INPUT_MESSAGE));
 
             // Nếu không có lỗi thì thêm vào giỏ hàng cho khách hàng.
         } else {
-            cartDao.addNewProductToCart(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String) (request.getSession().getAttribute("productID"))), Integer.parseInt(quantity));
+            cartDao.addNewProductToCart(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt(request.getParameter("productID")), Integer.parseInt(quantity));
             request.getSession().setAttribute("successCart", MessageConstants.SUCCESS_CART_INPUT_MESSAGE);
         }
     }
@@ -381,7 +387,7 @@ public class UserProductServlet extends HttpServlet {
 
             // Nếu không có lỗi thì tạo comment mới.
         } else {
-            reviewDao.add(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt((String) (request.getSession().getAttribute("productID"))), Integer.parseInt(rating), comment, LocalDateTime.now());
+            reviewDao.add(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt(request.getParameter("productID")), Integer.parseInt(rating), comment, LocalDateTime.now());
         }
     }
 
