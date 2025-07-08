@@ -76,7 +76,8 @@ CREATE TABLE DiscountCodes (
     DiscountTypeID INT FOREIGN KEY REFERENCES DiscountTypes(DiscountTypeID) NOT NULL,
     QuantityAvailable INT,
     ExpiryDate DATE,
-    MinOrderValue DECIMAL(10,2) DEFAULT 0
+    MinOrderValue DECIMAL(10,2) DEFAULT 0,
+	IsHidden BIT DEFAULT 0
 );
 
 -- StatusType table
@@ -92,7 +93,9 @@ CREATE TABLE Orders (
     OrderDate DATE NOT NULL DEFAULT CAST(GETDATE() AS DATE),
 	DeliveryDate DATE,
     StatusID INT FOREIGN KEY REFERENCES StatusType(StatusID),
-    DiscountCodeID INT FOREIGN KEY REFERENCES DiscountCodes(DiscountCodeID)
+    DiscountCodeID INT FOREIGN KEY REFERENCES DiscountCodes(DiscountCodeID),
+	PhoneNumber VARCHAR(15),
+	[Address] VARCHAR(255)
 );
 
 -- OrderDetails table
