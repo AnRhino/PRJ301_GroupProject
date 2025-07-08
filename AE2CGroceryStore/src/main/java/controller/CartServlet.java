@@ -18,8 +18,11 @@ import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import model.Cart;
+import model.ErrorMessage;
 import model.Product;
 import model.User;
+import utils.MessageConstants;
+import validate.InputValidate;
 import validate.ProductValidation;
 
 /**
@@ -128,11 +131,6 @@ public class CartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (((User) request.getSession().getAttribute("loggedUser")) == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
         String action = request.getParameter("action");
 
         if ("edit".equals(action)) {
@@ -161,22 +159,110 @@ public class CartServlet extends HttpServlet {
             User user = (User) request.getSession().getAttribute("loggedUser");
             List<Cart> listCanBuy = cartDao.getCanBuy(user.getId());
             List<Cart> wantedCartList = new ArrayList<>();
-            List<Integer> selectedCheckedBox= new ArrayList<>(); 
+            List<Integer> selectedCheckedBox = new ArrayList<>();
             for (Cart cart : listCanBuy) {
                 String autoCheckBox = "isBuy" + cart.getCartItemID();
                 if (request.getParameter(autoCheckBox) != null) {
                     wantedCartList.add(cart);
-                    selectedCheckedBox.add(cart.getCartItemID()); 
+                    selectedCheckedBox.add(cart.getCartItemID());
                 }
             }
-            request.getSession().setAttribute("checkBox", selectedCheckedBox); 
+            request.getSession().setAttribute("checkBox", selectedCheckedBox);
             request.getSession().setAttribute("wantedCartList", wantedCartList);
 
             response.sendRedirect(request.getContextPath() + "/cart?view=order");
             return;
+        } else if ("cart".equals(action)) {
+            
+            String productIDParam = request.getParameter("productID");
+            
+            System.out.println(productIDParam);
+            
+            // Nếu id sản phẩm không hợp lệ.
+            if (!checkValidProductID(productIDParam)) {
+                handleUnavailableProductID(response);
+                return;
+            }
+            
+            handleCartInput(request);
+            
+            response.sendRedirect(request.getContextPath() + "/user-product?view=product&productID=" + productIDParam);
+            return;
         }
 
         response.sendRedirect(request.getContextPath() + "/cart");
+    }
+    
+    /**
+     * Chuyển hướng người dùng đến trang lỗi.
+     *
+     * @param response servlet response
+     *
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    private void handleUnavailableProductID(HttpServletResponse response) throws ServletException, IOException {
+
+        // Chuyển hướng đến trang lỗi.
+        response.sendRedirect("index.jsp");
+    }
+    
+    /**
+     * Kiểm tra id của product.
+     *
+     * @param categoryIDParam là id của product.
+     *
+     * @return True nếu id hợp lệ. False nếu id không hợp lệ.
+     */
+    private boolean checkValidProductID(String productIDParam) {
+
+        // Kiểm tra id của category có null hoặc rỗng không.
+        if (InputValidate.checkEmptyInput(productIDParam)) {
+            return false;
+
+            // Kiểm tra id của category có phải là số không.
+        } else if (InputValidate.checkValidIntegerNumber(productIDParam)) {
+            return false;
+
+            // Kiểm tra id của category có trong phạm vi hợp lệ không.
+        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(productIDParam), InputValidate.ZERO_VALUE, productDao.getMaxID())) {
+            return false;
+
+            // Nếu tất cả hợp lệ.
+        } else {
+            return true;
+        }
+    }
+    
+    /**
+     * Xử lí thêm vào cart của người dùng.
+     *
+     * Nếu số lượng thêm vào cùa người dùng xảy ra lỗi thì sẽ thêm lỗi đó vào
+     * session của người dùng. Nếu thêm số lượng phù hợp mà không xảy ra lỗi thì
+     * sẽ thêm thông báo thành công vào session của người dùng.
+     *
+     * @param request là yêu cầu của người dùng.
+     */
+    private void handleCartInput(HttpServletRequest request) {
+        String quantity = request.getParameter("quantity");
+
+        //  Kiểm tra nếu số lượng sản phẩm thêm vào giỏ hàng rỗng.
+        if (InputValidate.checkEmptyInput(quantity)) {
+            request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.EMPTY_INPUT_MESSAGE));
+
+            // Kiểm tra nếu số lượng sản phẩm thêm vào giỏ hàng không phải là số nguyên.
+        } else if (InputValidate.checkValidIntegerNumber(quantity)) {
+            request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.INVALID_INTEGER_INPUT_MESSAGE));
+
+            // Kiểm tra nếu số lượng sản phẩm thêm vào giỏ hàng nhỏ hơn 1 hoặc lớn hơn số lượng tối đa của sản phẩm đó.
+        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(quantity), InputValidate.ZERO_VALUE, productDao.getMaxQuantity(Integer.parseInt(request.getParameter("productID"))))) {
+            request.getSession().setAttribute("errorCart", new ErrorMessage(MessageConstants.INVALID_CART_INPUT_MESSAGE));
+
+            // Nếu không có lỗi thì thêm vào giỏ hàng cho khách hàng.
+        } else {
+            cartDao.addNewProductToCart(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt(request.getParameter("productID")), Integer.parseInt(quantity));
+            request.getSession().setAttribute("successCart", MessageConstants.SUCCESS_CART_INPUT_MESSAGE);
+        }
     }
 
     /**

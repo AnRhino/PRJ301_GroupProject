@@ -182,7 +182,7 @@ public class ReviewServlet extends HttpServlet {
      * @throws IOException
      */
     private void redirectToProductPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + request.getParameter("productID"));
+        response.sendRedirect(request.getContextPath() + "/user-product?view=product&productID=" + request.getParameter("productID"));
     }
 
     /**
