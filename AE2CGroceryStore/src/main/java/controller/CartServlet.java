@@ -81,8 +81,12 @@ public class CartServlet extends HttpServlet {
 
             if (view == null || view.isBlank()) {
                 User user = (User) request.getSession().getAttribute("loggedUser");
-                List<Cart> list = cartDao.getAll(user.getId());
-                request.setAttribute("cartList", list);
+                List<Cart> listCanBuy = cartDao.getCanBuy(user.getId());
+                List<Cart> listOutOfStock = cartDao.getOutOfStock(user.getId());
+                List<Cart> ListProductIsHidden = cartDao.getProductIsHidden(user.getId());
+                request.setAttribute("listOutOfStock", listOutOfStock);
+                request.setAttribute("ListProductIsHidden", ListProductIsHidden);
+                request.setAttribute("listCanBuy", listCanBuy);
                 request.getRequestDispatcher("/WEB-INF/users/cart.jsp").forward(request, response);
                 return;
             } else if ("edit".equals(view)) {
@@ -155,16 +159,17 @@ public class CartServlet extends HttpServlet {
 
         } else if ("order".equals(action)) {
             User user = (User) request.getSession().getAttribute("loggedUser");
-            List<Cart> cartList = cartDao.getAll(user.getId());
+            List<Cart> listCanBuy = cartDao.getCanBuy(user.getId());
             List<Cart> wantedCartList = new ArrayList<>();
-            for (Cart cart : cartList) {
+            List<Integer> selectedCheckedBox= new ArrayList<>(); 
+            for (Cart cart : listCanBuy) {
                 String autoCheckBox = "isBuy" + cart.getCartItemID();
                 if (request.getParameter(autoCheckBox) != null) {
                     wantedCartList.add(cart);
-
+                    selectedCheckedBox.add(cart.getCartItemID()); 
                 }
             }
-
+            request.getSession().setAttribute("checkBox", selectedCheckedBox); 
             request.getSession().setAttribute("wantedCartList", wantedCartList);
 
             response.sendRedirect(request.getContextPath() + "/cart?view=order");

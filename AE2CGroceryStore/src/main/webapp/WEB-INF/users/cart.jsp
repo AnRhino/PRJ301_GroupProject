@@ -18,12 +18,15 @@
 
                 <c:set var="choose" value="${checkBox}" />
 
+                <%
+                    int stt = 1;
+                %>
+
                 <table class="table">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Image</th>
-
                             <th>Product Name</th>
                             <th>Quantity</th>
                             <th>Price</th>
@@ -32,20 +35,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="cart" items="${cartList}" varStatus="status">
+                        <c:forEach var="cart" items="${listCanBuy}">
                             <tr>
-                                <th scope="row">${status.index + 1}</th>
-                                <td> <img src="${pageContext.request.contextPath}/assets/images/lonely.png" alt="alt" style="width: 80px; height: auto;" />
+                                <th scope="row"><%= stt++%></th>
+                                <td>
+                                    <img src="${pageContext.request.contextPath}/assets/images/lonely.png" alt="alt" style="width: 80px; height: auto;" />
                                 </td>
-
                                 <td>${cart.product.productName}</td> 
                                 <td>${cart.quantity}</td>
-                                <td>${cart.product.price*cart.quantity}</td>
+                                <td>${cart.product.price * cart.quantity}</td>
                                 <td>
                                     <a href="${pageContext.request.contextPath}/cart?view=edit&id=${cart.cartItemID}" class="btn btn-primary btn-sm">edit</a>
                                     <a href="${pageContext.request.contextPath}/cart?view=delete&id=${cart.cartItemID}" class="btn btn-danger btn-sm">delete</a>
-
-
                                 </td>
                                 <td>
                                     <c:choose>
@@ -57,20 +58,48 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                          
-                        </tr>
-                    </c:forEach>
-                </tbody>
+                            </tr>
+                        </c:forEach>
 
-            </table>
-            <button type="submit" class="btn btn-success float-end">Order</button>
-        </form>
-    </div>
+                        <c:forEach var="cart" items="${listOutOfStock}">
+                            <tr>
+                                <th scope="row"><%= stt++%></th>
+                                <td>
+                                    <img src="${pageContext.request.contextPath}/assets/images/lonely.png" alt="alt" style="width: 80px; height: auto;" />
+                                </td>
+                                <td>${cart.product.productName}</td> 
+                                <td>${cart.quantity}</td>
+                                <td>${cart.product.price * cart.quantity}</td>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/cart?view=edit&id=${cart.cartItemID}" class="btn btn-primary btn-sm">edit</a>
+                                    <a href="${pageContext.request.contextPath}/cart?view=delete&id=${cart.cartItemID}" class="btn btn-danger btn-sm">delete</a>
+                                </td>
+                                <td>Out of stock</td>
+                            </tr>
+                        </c:forEach>
 
+                        <c:forEach var="cart" items="${ListProductIsHidden}">
+                            <tr>
+                                <th scope="row"><%= stt++%></th>
+                                <td>
+                                    <img src="${pageContext.request.contextPath}/assets/images/lonely.png" alt="alt" style="width: 80px; height: auto;" />
+                                </td>
+                                <td>${cart.product.productName}</td> 
+                                <td>${cart.quantity}</td>
+                                <td>${cart.product.price * cart.quantity}</td>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/cart?view=edit&id=${cart.cartItemID}" class="btn btn-primary btn-sm">edit</a>
+                                    <a href="${pageContext.request.contextPath}/cart?view=delete&id=${cart.cartItemID}" class="btn btn-danger btn-sm">delete</a>
+                                </td>
+                                <td>Is Hidden</td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-success float-end">Order</button>
+            </form>
+        </div>
 
-
-</div>
-
-<jsp:include page="../include/footer.jsp" />
-</body>
+        <jsp:include page="../include/footer.jsp" />
+    </body>
 </html>
