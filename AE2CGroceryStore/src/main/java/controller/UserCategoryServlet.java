@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Category;
 import model.Product;
+import utils.PaginationUtil;
 import validate.InputValidate;
 
 /**
@@ -24,7 +25,7 @@ import validate.InputValidate;
  */
 @WebServlet(name = "UserCategoryServlet", urlPatterns = {"/user-category"})
 public class UserCategoryServlet extends HttpServlet {
-
+    
     private final ProductDAO productDao = new ProductDAO();
     private final CategoryDAO categoryDao = new CategoryDAO();
 
@@ -86,15 +87,15 @@ public class UserCategoryServlet extends HttpServlet {
 
             // Xử lí theo yêu cầu người dùng.
             switch (view) {
-
+                
                 case "category": // Nếu người dùng chọn 1 danh mục.
                     showCategory(request, response, Integer.parseInt(categoryIDParam));
                     break;
-
+                
                 case "product": // Nếu người dùng chọn 1 sản phẩm.
                     response.sendRedirect(request.getContextPath() + "/user-product?id=" + request.getParameter("productID"));
                     break;
-
+                
                 default: // Nếu view rỗng.
                     handleUnavailableCategoryID(response);
                     break;
@@ -104,9 +105,9 @@ public class UserCategoryServlet extends HttpServlet {
 
     /**
      * Kiểm tra id của category.
-     * 
+     *
      * @param categoryIDParam là id của category.
-     * 
+     *
      * @return True nếu id hợp lệ. False nếu id không hợp lệ.
      */
     private boolean checkValidCategoryID(String categoryIDParam) {
@@ -122,7 +123,7 @@ public class UserCategoryServlet extends HttpServlet {
             // Kiểm tra id của category có trong phạm vi hợp lệ không.
         } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(categoryIDParam), InputValidate.ZERO_VALUE, categoryDao.getMaxId())) {
             return false;
-            
+
             // Nếu tất cả hợp lệ.
         } else {
             return true;
@@ -152,7 +153,7 @@ public class UserCategoryServlet extends HttpServlet {
      * @throws ServletException
      */
     private void handleUnavailableCategoryID(HttpServletResponse response) throws IOException, ServletException {
-        
+
         // Chuyển hướng người dùng đến nơi muốn hiện lỗi.
         response.sendRedirect("index.jsp");
     }
@@ -164,8 +165,31 @@ public class UserCategoryServlet extends HttpServlet {
      * @param categoryID là id của danh mục.
      */
     private void getCategoryInfo(HttpServletRequest request, int categoryID) {
+        int countItem = productDao.countItemByCategory(categoryID);
+        int totalPages = PaginationUtil.getTotalPages(countItem);
+        request.setAttribute("totalPages", totalPages); // Set tổng số page
+
+        int page = 1; // Trang mặc định = 1.
+        String pageParam = request.getParameter("page");
+        
+        if (pageParam != null && !pageParam.isBlank()) { // check nếu không null thì xử lý logic ở dưới
+            try {
+                page = Integer.parseInt(pageParam);
+                
+                if (page < 1) { // check xem nếu page nhỏ hơn min thì page = 1
+                    page = 1;
+                } else if (page > totalPages) { // check nếu page lớn hơn max thì page = max
+                    page = totalPages;
+                }
+                
+            } catch (NumberFormatException ex) { // Nếu khác số thì vào đây
+                page = 1;
+            }
+        }
+        
+        // need clean code
         request.setAttribute("categoryList", categoryDao.getAllCategoryAvailable());
-        request.setAttribute("productList", productDao.getAvailableProductsByCategory(categoryID));
+        request.setAttribute("productList", productDao.getAvailableProductsByCategoryPage(categoryID, page));
         request.setAttribute("categoryType", categoryDao.getAvailableOneByID(categoryID));
     }
 

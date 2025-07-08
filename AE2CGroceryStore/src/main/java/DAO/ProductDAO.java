@@ -71,6 +71,64 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
+    
+    // need clean code
+    public List<Product> getAvailableProductsByCategoryPage(int categoryID, int page) {
+        List<Product> list = new ArrayList<>();
+        String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden\n"
+                + "FROM Products p\n"
+                + "JOIN Categories c ON p.CategoryID = c.CategoryID\n"
+                + "WHERE c.CategoryID = ? AND c.IsHidden = 0\n"
+                + "ORDER BY ProductID ASC\n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        Object[] params = {
+            categoryID,
+            (page - 1) * PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE,
+            PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE
+        };
+
+        try {
+            ResultSet rs = execSelectQuery(query, params);
+
+            while (rs.next()) {
+                Product pro = new Product(
+                        rs.getInt("ProductID"),
+                        rs.getString("ProductCode"),
+                        rs.getString("ProductName"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("Price"),
+                        new Category(
+                                rs.getInt("CategoryID"),
+                                rs.getString("CategoryName"),
+                                rs.getBoolean("IsHidden")
+                        )
+                );
+                list.add(pro);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
+    }
+
+    // need clean code
+    public int countItemByCategory(int categoryID) {
+        try {
+            String query = "SELECT COUNT(ProductID) FROM Products WHERE isHidden = 0 AND CategoryID = ?";
+            Object[] params = {categoryID};
+            ResultSet rs = execSelectQuery(query, params);
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
     // Hàm này dùng để đếm số lượng sản phẩm còn hàng trong shop.
     public int countItem() {
         try {
@@ -308,13 +366,13 @@ public class ProductDAO extends dbconnect.DBContext {
         try {
             String query = "SELECT MAX(p.ProductID)\n"
                     + "FROM [dbo].[Products] p;";
-            
+
             ResultSet rs = execSelectQuery(query);
-            
+
             while (rs.next()) {
                 return rs.getInt(1);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
