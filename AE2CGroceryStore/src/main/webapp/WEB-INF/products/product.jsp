@@ -186,7 +186,7 @@
                                                                         <p>Are you sure to delete this comment?</p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <form action="${pageContext.request.contextPath}/user-product" method="post">
+                                                                        <form action="${pageContext.request.contextPath}/review" method="post">
                                                                             <input type="hidden" name="view" value="removeComment">
                                                                             <input type="hidden" name="productID" value="${requestScope.product.productID}">
                                                                             <input type="hidden" name="reviewID" value="${rv.reviewID}">
@@ -200,7 +200,7 @@
 
                                                         <div class="modal fade text-dark" id="modalEditComment${rv.reviewID}" tabindex="-1">
                                                             <div class="modal-dialog">
-                                                                <form action="${pageContext.request.contextPath}/user-product" method="post">
+                                                                <form action="${pageContext.request.contextPath}/review" method="post">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
                                                                             <h4 class="modal-title">Edit</h4>
@@ -225,7 +225,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                         <div class="px-5 gap-3 p-2 text-light">
-                                            <form action="${pageContext.request.contextPath}/user-product" method="post" class="d-flex gap-2">
+                                            <form action="${pageContext.request.contextPath}/review" method="post" class="d-flex gap-2">
                                                 <input type="hidden" name="view" value="comment">
                                                 <input type="hidden" name="productID" value="${requestScope.product.productID}">
                                                 <input type="text" class="form-control" name="comment" placeholder="Enter your comment here.">

@@ -305,18 +305,6 @@ public class UserProductServlet extends HttpServlet {
                     handleCartInput(request);
                     break;
 
-                case "comment": // Tạo comment mới.
-                    handleCommentInput(request);
-                    break;
-
-                case "removeComment": // Xóa comment.
-                    handleDeleteComment(request);
-                    break;
-
-                case "editComment": // Chỉnh sửa 1 comment.
-                    handleEditComment(request);
-                    break;
-
                 default: // Không có yêu cầu gì.
                     break;
             }
@@ -356,95 +344,7 @@ public class UserProductServlet extends HttpServlet {
             request.getSession().setAttribute("successCart", MessageConstants.SUCCESS_CART_INPUT_MESSAGE);
         }
     }
-
-    /**
-     * Xử lí tạo comment mới của người dùng.
-     *
-     * Nếu comment của người dùng lỗi thù sẽ thêm lỗi đó vào session của người
-     * dùng.
-     *
-     * @param request là yêu cầu của người dùng.
-     */
-    private void handleCommentInput(HttpServletRequest request) {
-        String comment = request.getParameter("comment");
-        String rating = request.getParameter("rating");
-
-        // Kiểm tra comment rỗng.
-        if (InputValidate.checkEmptyInput(comment)) {
-            request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.EMPTY_COMMENT_INPUT_MESSAGE));
-
-            // Kiểm tra rating rỗng.
-        } else if (InputValidate.checkEmptyInput(rating)) {
-            request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.EMPTY_RATING_INPUT_MESSAGE));
-
-            // Kiểm tra rating không phải số hợp lệ.
-        } else if (InputValidate.checkValidIntegerNumber(rating)) {
-            request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.INVALID_RATING_INPUT_MESSAGE));
-
-            // Kiểm tra rating vượt ngoài phạm vi (1-5).
-        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(rating), InputValidate.MIN_RATING_VALUE, InputValidate.MAX_RATING_VALUE)) {
-            request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.OUT_OF_RANGE_RATING_INPUT_MESSAGE));
-
-            // Nếu không có lỗi thì tạo comment mới.
-        } else {
-            reviewDao.add(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt(request.getParameter("productID")), Integer.parseInt(rating), comment, LocalDateTime.now());
-        }
-    }
-
-    /**
-     * Xử lí xóa comment của người dùng.
-     *
-     * Nếu comment của người dùng lỗi sẽ ném ra thông báo lỗi. Nếu không có lỗi
-     * sẽ thông báo thành công.
-     *
-     * @param request là yêu cầu người dùng.
-     */
-    private void handleDeleteComment(HttpServletRequest request) {
-
-        // Kiểm tra nếu id comment rỗng.
-        if (InputValidate.checkEmptyInput((String) (request.getParameter("reviewID")))) {
-            request.getSession().setAttribute("errorDeleteComment", new ErrorMessage(MessageConstants.ERROR_DELETE_COMMENT_MESSAGE));
-
-            // Kiểm tra nếu id comment không hợp lệ.
-        } else if (InputValidate.checkValidIntegerNumber((String) (request.getParameter("reviewID")))) {
-            request.getSession().setAttribute("errorDeleteComment", new ErrorMessage(MessageConstants.UNKNOWN_COMMENT_MESSAGE));;
-
-            // Kiểm tra nếu xóa comment thành công.
-        } else {
-            reviewDao.delete(Integer.parseInt((String) (request.getParameter("reviewID"))));
-            request.getSession().setAttribute("successDeleteComment", MessageConstants.SUCCESS_DELETE_COMMENT_MESSAGE);
-        }
-    }
-
-    /**
-     * Xử lí chỉnh sửa comment của người dùng.
-     *
-     * Nếu comment của người dùng lỗi sẽ ném ra thông báo lỗi. Nếu không có lỗi
-     * sẽ thông báo thành công.
-     *
-     * @param request là yêu cầu người dùng.
-     */
-    private void handleEditComment(HttpServletRequest request) {
-
-        // Kiểm tra nếu id comment rỗng.
-        if (InputValidate.checkEmptyInput((String) (request.getParameter("reviewID")))) {
-            request.getSession().setAttribute("errorEditComment", new ErrorMessage(MessageConstants.ERROR_EDIT_COMMENT_MESSAGE));
-
-            // Kiểm tra nếu id comment không hợp lệ.
-        } else if (InputValidate.checkValidIntegerNumber((String) (request.getParameter("reviewID")))) {
-            request.getSession().setAttribute("errorEditComment", new ErrorMessage(MessageConstants.UNKNOWN_COMMENT_MESSAGE));
-
-            //  Kiểm tra nếu comment mới bị null hoặc rỗng.
-        } else if (InputValidate.checkEmptyInput((String) (request.getParameter("newComment")))) {
-            request.getSession().setAttribute("errorEditComment", new ErrorMessage(MessageConstants.EMPTY_COMMENT_INPUT_MESSAGE));
-
-            // Kiểm tra nếu chỉnh sửa thành công.
-        } else {
-            reviewDao.edit(Integer.parseInt((String) (request.getParameter("reviewID"))), request.getParameter("newComment"));
-            request.getSession().setAttribute("successEditComment", MessageConstants.SUCCESS_EDIT_COMMENT_MESSAGE);
-        }
-    }
-
+    
     /**
      * Returns a short description of the servlet.
      *
