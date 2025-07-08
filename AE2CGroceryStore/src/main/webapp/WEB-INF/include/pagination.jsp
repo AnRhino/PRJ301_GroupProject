@@ -22,6 +22,36 @@
     </c:otherwise>
 </c:choose>
 
+<c:choose>
+    <c:when test="${currentPage == 1}">
+        <c:set var="previousPage" value="2"/>
+    </c:when>
+    <c:when test="${currentPage == 2}">
+        <c:set var="previousPage" value="2"/>
+    </c:when>
+    <c:when test="${currentPage == 3}">
+        <c:set var="previousPage" value="2"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="previousPage" value="${currentPage - 1}"/>
+    </c:otherwise>
+</c:choose>
+
+<c:choose>
+    <c:when test="${currentPage == requestScope.totalPages}">
+        <c:set var="nextPage" value="${requestScope.totalPages - 1}"/>
+    </c:when>
+    <c:when test="${currentPage == requestScope.totalPages - 1}">
+        <c:set var="nextPage" value="${requestScope.totalPages - 1}"/>
+    </c:when>
+    <c:when test="${currentPage == requestScope.totalPages - 2}">
+        <c:set var="nextPage" value="${requestScope.totalPages - 1}"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="nextPage" value="${currentPage + 1}"/>
+    </c:otherwise>
+</c:choose>
+
 <nav aria-label="Page navigation example" class="ms-auto me-auto">
     <ul class="pagination">
 
@@ -74,13 +104,15 @@
             </a>
         </li>
 
-        <li class="page-item disabled">
-            <a class="page-link" href="#">   
-                ...
-            </a>
-        </li>
+        <c:if test="${previousPage != 2}">
+            <li class="page-item disabled">
+                <a class="page-link" href="#">   
+                    ...
+                </a>
+            </li>
+        </c:if>
 
-        <c:forEach begin="${currentPage - 1}" end="${currentPage + 1}" var="i">
+        <c:forEach begin="${previousPage}" end="${nextPage}" var="i">
             <li class="page-item ${pageZone == i ? 'active' : ''}">
                 <a class="page-link" href="<c:url value="/home">
                        <c:param name="view" value="list"/>
@@ -91,11 +123,13 @@
             </li>
         </c:forEach>
 
-        <li class="page-item disabled">
-            <a class="page-link" href="#">   
-                ...
-            </a>
-        </li>
+        <c:if test="${nextPage != requestScope.totalPages - 1}">
+            <li class="page-item disabled">
+                <a class="page-link" href="#">   
+                    ...
+                </a>
+            </li>
+        </c:if>
 
         <li class="page-item ${pageZone == requestScope.totalPages ? 'active' : ''}">
             <a class="page-link" href="<c:url value="/home">
