@@ -13,6 +13,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Category;
+import model.Product;
+import validate.InputValidate;
 
 /**
  *
@@ -20,7 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "UserCategoryServlet", urlPatterns = {"/user-category"})
 public class UserCategoryServlet extends HttpServlet {
-    
+
     private final ProductDAO productDao = new ProductDAO();
     private final CategoryDAO categoryDao = new CategoryDAO();
 
@@ -65,47 +69,104 @@ public class UserCategoryServlet extends HttpServlet {
 //        processRequest(request, response);
 
         String view = request.getParameter("view");
-        String idParam = request.getParameter("id");
-        
-        if (view == null || idParam == null || view.isBlank() || idParam.isBlank()) {
-            response.sendRedirect("index.jsp");
-            
+        String categoryIDParam = request.getParameter("categoryID");
+
+        // Nếu view null hoặc rỗng.
+        if (view == null || view.isBlank()) {
+            handleUnavailableCategoryID(response);
+
+            // Nếu view có gì đó.
         } else {
-            
-            try {
-                
-                int id = Integer.parseInt(idParam);
 
-                switch (view) {
+            // Xử lí nếu id danh mục không hợp lệ.
+            if (!checkValidCategoryID(categoryIDParam)) {
+                handleUnavailableCategoryID(response);
+                return;
+            }
 
-                    case "category":
-                        response.sendRedirect(request.getContextPath() + "/user-category?id=" + id);
-                        break;
+            // Xử lí theo yêu cầu người dùng.
+            switch (view) {
 
-                    case "product":
-                        response.sendRedirect(request.getContextPath() + "/user-product?id=" + id);
-                        break;
+                case "category": // Nếu người dùng chọn 1 danh mục.
+                    showCategory(request, response, Integer.parseInt(categoryIDParam));
+                    break;
 
-                    default:
-                        response.sendRedirect("index.jsp");
-                        break;
-                }
+                case "product": // Nếu người dùng chọn 1 sản phẩm.
+                    response.sendRedirect(request.getContextPath() + "/user-product?id=" + request.getParameter("productID"));
+                    break;
 
-            } catch (NumberFormatException ex) {
-                response.sendRedirect("index.jsp");
+                default: // Nếu view rỗng.
+                    handleUnavailableCategoryID(response);
+                    break;
             }
         }
     }
 
     /**
+     * Kiểm tra id của category.
+     * 
+     * @param categoryIDParam là id của category.
+     * 
+     * @return True nếu id hợp lệ. False nếu id không hợp lệ.
+     */
+    private boolean checkValidCategoryID(String categoryIDParam) {
+
+        // Kiểm tra id của category có null hoặc rỗng không.
+        if (InputValidate.checkEmptyInput(categoryIDParam)) {
+            return false;
+
+            // Kiểm tra id của category có phải là số không.
+        } else if (InputValidate.checkValidIntegerNumber(categoryIDParam)) {
+            return false;
+
+            // Kiểm tra id của category có trong phạm vi hợp lệ không.
+        } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(categoryIDParam), InputValidate.ZERO_VALUE, categoryDao.getMaxId())) {
+            return false;
+            
+            // Nếu tất cả hợp lệ.
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Xem danh mục mà người dùng mong muốn.
+     *
+     * @param request là yêu cầu người dùng.
+     * @param response là phản hồi người dùng.
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void showCategory(HttpServletRequest request, HttpServletResponse response, int categoryID) throws ServletException, IOException {
+        getCategoryInfo(request, categoryID);
+        request.getRequestDispatcher("/WEB-INF/products/category.jsp").forward(request, response);
+    }
+
+    /**
+     * Xử lí người dùng truy cập vào category mà id không hợp lệ. .
+     *
+     * @param response là phản hồi của người dùng.
+     *
+     * @throws IOException
+     * @throws ServletException
+     */
+    private void handleUnavailableCategoryID(HttpServletResponse response) throws IOException, ServletException {
+        
+        // Chuyển hướng người dùng đến nơi muốn hiện lỗi.
+        response.sendRedirect("index.jsp");
+    }
+
+    /**
      * Lấy thông tin của category và trả về cho người dùng.
      *
-     * @param request servlet request
+     * @param request là yêu cầu người dùng.
+     * @param categoryID là id của danh mục.
      */
-    private void getCategoryInfo(HttpServletRequest request) {
-        request.setAttribute("categoryList", categoryDao.getAll());
-        request.setAttribute("productList", productDao.getProductsByCategory(Integer.parseInt(request.getParameter("id"))));
-        request.setAttribute("categoryType", categoryDao.getOneByID(Integer.parseInt(request.getParameter("id"))));
+    private void getCategoryInfo(HttpServletRequest request, int categoryID) {
+        request.setAttribute("categoryList", categoryDao.getAllCategoryAvailable());
+        request.setAttribute("productList", productDao.getAvailableProductsByCategory(categoryID));
+        request.setAttribute("categoryType", categoryDao.getAvailableOneByID(categoryID));
     }
 
     /**
