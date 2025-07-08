@@ -24,6 +24,8 @@
 
 <nav aria-label="Page navigation example" class="ms-auto me-auto">
     <ul class="pagination">
+
+
         <c:choose>
             <c:when test="${currentPage > 1}">
                 <c:url var="pageUrlPrev" value="/home">
@@ -44,6 +46,8 @@
                 </li>
             </c:otherwise>
         </c:choose>
+
+
         <c:set var="pageZone">
             <c:choose>
                 <c:when test="${empty param.page}">
@@ -60,7 +64,23 @@
                 </c:otherwise>
             </c:choose>
         </c:set>
-        <c:forEach begin="1" end="${requestScope.totalPages}" var="i">
+
+        <li class="page-item ${pageZone == 1 ? 'active' : ''}">
+            <a class="page-link" href="<c:url value="/home">
+                   <c:param name="view" value="list"/>
+                   <c:param name="page" value="1"/>
+               </c:url>">   
+                1
+            </a>
+        </li>
+
+        <li class="page-item disabled">
+            <a class="page-link" href="#">   
+                ...
+            </a>
+        </li>
+
+        <c:forEach begin="${currentPage - 1}" end="${currentPage + 1}" var="i">
             <li class="page-item ${pageZone == i ? 'active' : ''}">
                 <a class="page-link" href="<c:url value="/home">
                        <c:param name="view" value="list"/>
@@ -70,6 +90,23 @@
                 </a>
             </li>
         </c:forEach>
+
+        <li class="page-item disabled">
+            <a class="page-link" href="#">   
+                ...
+            </a>
+        </li>
+
+        <li class="page-item ${pageZone == requestScope.totalPages ? 'active' : ''}">
+            <a class="page-link" href="<c:url value="/home">
+                   <c:param name="view" value="list"/>
+                   <c:param name="page" value="${requestScope.totalPages}"/>
+               </c:url>">   
+                ${requestScope.totalPages}
+            </a>
+        </li>
+
+
         <c:choose>
             <c:when test="${currentPage < requestScope.totalPages}">
                 <c:url var="pageUrlNext" value="/home">
@@ -90,5 +127,7 @@
                 </li>
             </c:otherwise>
         </c:choose>
+
+
     </ul>
 </nav>
