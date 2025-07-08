@@ -19,8 +19,9 @@
             -moz-user-select: none;
             user-select: none;
         }
-
-
+        .d-flex.overflow-auto {
+            scroll-behavior: smooth;
+        }
 
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
