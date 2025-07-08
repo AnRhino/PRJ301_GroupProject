@@ -115,17 +115,21 @@ public class HomeServlet extends HttpServlet {
         int page = 1; // Trang mặc định = 1.
         String pageParam = request.getParameter("page");
 
-        if (PaginationValidate.isInvalidPageNumber(pageParam)) {
-            page = Integer.parseInt(pageParam);
+        if (pageParam != null && !pageParam.isBlank()) {
+            try {
+                page = Integer.parseInt(pageParam);
+
+                if (page < 1) {
+                    page = 1;
+                } else if (page > totalPages) {
+                    page = totalPages;
+                }
+
+            } catch (NumberFormatException ex) {
+                page = 1;
+            }
         }
 
-        if (page > totalPages) {
-            page = totalPages;
-        }
-
-        if (page < 1) {
-            page = 1;
-        }
         request.setAttribute("categoryList", categoryDao.getAll());
         request.setAttribute("productList", productDao.getProductForEachPage(page));
     }
