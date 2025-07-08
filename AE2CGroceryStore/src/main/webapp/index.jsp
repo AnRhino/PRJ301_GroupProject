@@ -70,25 +70,26 @@
                     <h1 class="fw-bold ms-5 text-light">Category</h1>
                 </div>
                 <div class="container-fluid">
-                    <div class="ms-5 me-5">           
-                        <div class="row">
+                    <div class="ms-5 me-5">
+                        <div class="d-flex overflow-auto"> <% // cái này overflow dùng để scrollable %>
                             <c:forEach var="cate" items="${categoryList}">
-                                <div class="col-3 d-flex justify-content-center border border-secondary">
+                                <div class="flex-shrink-0 me-3" style="width: 180px;"> <% // ngăn item tự thu nhỏ khi ko đủ chổ %>
                                     <form action="${pageContext.request.contextPath}/user-category" method="get">
                                         <input type="hidden" name="view" value="category">
                                         <input type="hidden" name="categoryID" value="${cate.categoryID}">
-                                        <button class="btn p-0 border-0 bg-transparent">
-                                            <div class="row">
-                                                <div class="col-12 d-flex justify-content-center">
-                                                    <img src="assets/images/category/${cate.categoryID}.png" id="cate-img" alt="placeholder" width="250" height="180">
-                                                </div>
-                                                <div class="col-12 d-flex justify-content-center fw-bold text-uppercase">
+                                        <button class="btn p-0 border-0 bg-transparent w-100">
+                                            <div class="d-flex flex-column align-items-center">
+                                                <img src="assets/images/category/${cate.categoryID}.png"
+                                                     alt="placeholder"
+                                                     class="img-fluid"
+                                                     style="width: 150px; height: 100px; object-fit: cover;"> <% // ảnh tự thu nhỏ vừa khung.%>
+                                                <div class="fw-bold text-uppercase text-center mt-2" style="font-size: 0.9rem;">
                                                     ${cate.categoryName}
                                                 </div>
                                             </div>
                                         </button>
                                     </form>
-                                </div>                 
+                                </div>
                             </c:forEach>
                         </div>
                     </div>

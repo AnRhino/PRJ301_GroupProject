@@ -25,7 +25,7 @@ import validate.InputValidate;
  */
 @WebServlet(name = "ReviewServlet", urlPatterns = {"/review"})
 public class ReviewServlet extends HttpServlet {
-    
+
     private final ReviewDAO reviewDao = new ReviewDAO();
     private final ProductDAO productDao = new ProductDAO();
 
@@ -67,7 +67,17 @@ public class ReviewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+
+        String productIDParam = request.getParameter("productID");
+
+        // Nếu id sản phẩm không hợp lệ.
+        if (!checkValidProductID(productIDParam)) {
+            handleErrorWhenExcute(response);
+            return;
+        }
+        
+        redirectToProductPage(request, response);
     }
 
     /**
@@ -92,7 +102,7 @@ public class ReviewServlet extends HttpServlet {
 
             // Nếu view có gì đó.
         } else {
-            
+
             // Nếu id sản phẩm không hợp lệ.
             if (!checkValidProductID(productIDParam)) {
                 handleErrorWhenExcute(response);
@@ -121,7 +131,7 @@ public class ReviewServlet extends HttpServlet {
             redirectToProductPage(request, response);
         }
     }
-    
+
     /**
      * Chuyển hướng người dùng đến trang lỗi.
      *
@@ -135,7 +145,7 @@ public class ReviewServlet extends HttpServlet {
         // Chuyển hướng đến trang lỗi.
         response.sendRedirect("index.jsp");
     }
-    
+
     /**
      * Kiểm tra id của product.
      *
@@ -165,11 +175,11 @@ public class ReviewServlet extends HttpServlet {
 
     /**
      * Chuyển hướng về chỉnh product hiện tại.
-     * 
+     *
      * @param request là yêu cầu của người dùng.
      * @param response là phản hồi của người dùng.
-     * 
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     private void redirectToProductPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.sendRedirect(request.getContextPath() + "/user-product?view=product&id=" + request.getParameter("productID"));
