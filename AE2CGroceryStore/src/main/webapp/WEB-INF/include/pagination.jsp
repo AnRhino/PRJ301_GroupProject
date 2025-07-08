@@ -7,8 +7,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-
-<% // set page hiện tại %>
 <c:choose>
     <c:when test="${empty param.page}">
         <c:set var="currentPage" value="1"/>
@@ -26,9 +24,6 @@
 
 <nav aria-label="Page navigation example" class="ms-auto me-auto">
     <ul class="pagination">
-        
-        
-        <% // nút lùi %>
         <c:choose>
             <c:when test="${currentPage > 1}">
                 <c:url var="pageUrlPrev" value="/home">
@@ -48,9 +43,6 @@
                     </a>
                 </li>
             </c:otherwise>
-                
-                
-            <% // check active %>
         </c:choose>
         <c:set var="pageZone">
             <c:choose>
@@ -68,8 +60,6 @@
                 </c:otherwise>
             </c:choose>
         </c:set>
-
-        <% // hiển thị trang theo số %>
         <c:forEach begin="1" end="${requestScope.totalPages}" var="i">
             <li class="page-item ${pageZone == i ? 'active' : ''}">
                 <a class="page-link" href="<c:url value="/home">
@@ -80,10 +70,6 @@
                 </a>
             </li>
         </c:forEach>
-
-
-
-        <% // nút next %>
         <c:choose>
             <c:when test="${currentPage < requestScope.totalPages}">
                 <c:url var="pageUrlNext" value="/home">
