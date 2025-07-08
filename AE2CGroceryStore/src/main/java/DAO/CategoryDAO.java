@@ -69,7 +69,6 @@ public class CategoryDAO extends dbconnect.DBContext {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        System.out.println(list.size());
         return list;
     }
 
