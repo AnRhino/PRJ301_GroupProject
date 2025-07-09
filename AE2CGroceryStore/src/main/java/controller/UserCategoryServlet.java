@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import utils.PaginationUtil;
 import validate.InputValidate;
 
 /**
@@ -148,7 +149,7 @@ public class UserCategoryServlet extends HttpServlet {
      * @throws IOException
      * @throws ServletException
      */
-    private void handleErrorWhenExcute (HttpServletResponse response) throws IOException, ServletException {
+    private void handleErrorWhenExcute(HttpServletResponse response) throws IOException, ServletException {
 
         // Chuyển hướng người dùng đến nơi muốn hiện lỗi.
         response.sendRedirect("index.jsp");
@@ -161,8 +162,30 @@ public class UserCategoryServlet extends HttpServlet {
      * @param categoryID là id của danh mục.
      */
     private void getCategoryInfo(HttpServletRequest request, int categoryID) {
+        int countItem = productDao.countItemByCategory(categoryID);
+        int totalPages = PaginationUtil.getTotalPages(countItem);
+        request.setAttribute("totalPages", totalPages); // Set tổng số page
+
+        int page = 1; // Trang mặc định = 1.
+        String pageParam = request.getParameter("page");
+
+        if (pageParam != null && !pageParam.isBlank()) { // check nếu không null thì xử lý logic ở dưới
+            try {
+                page = Integer.parseInt(pageParam);
+
+                if (page < 1) { // check xem nếu page nhỏ hơn min thì page = 1
+                    page = 1;
+                } else if (page > totalPages) { // check nếu page lớn hơn max thì page = max
+                    page = totalPages;
+                }
+
+            } catch (NumberFormatException ex) { // Nếu khác số thì vào đây
+                page = 1;
+            }
+        }
+
         request.setAttribute("categoryList", categoryDao.getAllCategoryAvailable());
-        request.setAttribute("productList", productDao.getAvailableProductsByCategory(categoryID));
+        request.setAttribute("productList", productDao.getAvailableProductsByCategoryPage(categoryID, page));
         request.setAttribute("categoryType", categoryDao.getAvailableOneByID(categoryID));
     }
 
