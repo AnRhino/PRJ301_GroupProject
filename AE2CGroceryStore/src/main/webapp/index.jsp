@@ -128,7 +128,7 @@
                                                         </div>
                                                         <div class="col-12 d-flex justify-content-center">
                                                             Price: 
-                                                            ${pro.price}
+                                                            <fmt:formatNumber value="${pro.price}" type="number" groupingUsed="true" /> VND
                                                         </div>
                                                     </div>
                                                 </div>
