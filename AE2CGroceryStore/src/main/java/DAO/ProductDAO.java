@@ -90,8 +90,8 @@ public class ProductDAO extends dbconnect.DBContext {
                     + "JOIN [dbo].[Categories] c ON p.CategoryID = c.CategoryID\n"
                     + "WHERE p.IsHidden = 0\n"
                     + "AND (p.ProductCode LIKE '%' + ? + '%' OR p.ProductName LIKE '%' + ? + '%')\n"
-                    + "ORDER BY ProductID ASC\n"
-                    + "offset ? rows fetch next ? rows only";
+                    + "ORDER BY p.ProductID ASC\n"
+                    + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
             Object[] params = {searchInput, searchInput, (page - 1) * PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE, PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE};
 
             ResultSet rs = execSelectQuery(query, params);
@@ -170,19 +170,19 @@ public class ProductDAO extends dbconnect.DBContext {
      * Đếm số lượng sản phẩm khả thi với yêu cầu của người dùng.
      *
      * @param input là sản phầm người dùng tìm kiếm.
-     * 
+     *
      * @return số lượng sản phẩm khớp người dùng tìm kiếm.
      */
     public int countSearchItemMatchWithSearchInput(String input) {
 
         try {
 
-            String query = "SELECT COUNT(ProductID)\n"
+            String query = "SELECT COUNT(p.ProductID)\n"
                     + "FROM [dbo].[Products] p\n"
                     + "WHERE p.IsHidden = 0\n"
-                    + "AND (p.ProductCode LIKE '%' + '?' + '%' OR p.ProductName LIKE '%' + 'coca' + '%')";
+                    + "AND (p.ProductCode LIKE '%' + ? + '%' OR p.ProductName LIKE '%' + ? + '%');";
             Object[] params = {input, input};
-            
+
             ResultSet rs = execSelectQuery(query, params);
 
             if (rs.next()) {
