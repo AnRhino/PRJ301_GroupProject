@@ -31,7 +31,6 @@ public class UserProductServlet extends HttpServlet {
     private final ProductDAO productDao = new ProductDAO();
     private final CategoryDAO categoryDao = new CategoryDAO();
     private final ReviewDAO reviewDao = new ReviewDAO();
-    private final CartDAO cartDao = new CartDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -78,14 +77,14 @@ public class UserProductServlet extends HttpServlet {
 
         // Nếu view null hoặc rỗng.
         if (view == null || view.isBlank()) {
-            handleErrorWhenExcute(response);
+            handleErrorWhenExcute(request, response);
 
             // Nếu người dùng có yêu cầu từ view.
         } else {
 
             // Nếu id sản phẩm không hợp lệ.
             if (!checkValidProductID(productIDParam)) {
-                handleErrorWhenExcute(response);
+                handleErrorWhenExcute(request, response);
                 return;
             }
 
@@ -101,7 +100,7 @@ public class UserProductServlet extends HttpServlet {
                     break;
 
                 default: // Không có yêu cầu thì dẫn người dùng về product.jsp.
-                    handleErrorWhenExcute(response);
+                    handleErrorWhenExcute(request, response);
                     break;
             }
         }
@@ -157,10 +156,10 @@ public class UserProductServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private void handleErrorWhenExcute (HttpServletResponse response) throws ServletException, IOException {
+    private void handleErrorWhenExcute (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // Chuyển hướng đến trang lỗi.
-        response.sendRedirect("index.jsp");
+        // Chuyển hướng người dùng đến nơi muốn hiện lỗi.
+        response.sendRedirect(request.getContextPath() + "/error-page");
     }
 
     /**
@@ -287,14 +286,14 @@ public class UserProductServlet extends HttpServlet {
 
         // Xử lí view trống.
         if (view == null || view.isBlank()) {
-            handleErrorWhenExcute(response);
+            handleErrorWhenExcute(request, response);
 
             // Xử lí theo view của người dùng.
         } else {
             
             // Nếu id sản phẩm không hợp lệ.
             if (!checkValidProductID(productIDParam)) {
-                handleErrorWhenExcute(response);
+                handleErrorWhenExcute(request, response);
                 return;
             }
 

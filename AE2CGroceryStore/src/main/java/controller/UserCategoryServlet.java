@@ -71,14 +71,14 @@ public class UserCategoryServlet extends HttpServlet {
 
         // Nếu view null hoặc rỗng.
         if (view == null || view.isBlank()) {
-            handleErrorWhenExcute(response);
+            handleErrorWhenExcute(request, response);
 
             // Nếu view có gì đó.
         } else {
 
             // Xử lí nếu id danh mục không hợp lệ.
             if (!checkValidCategoryID(categoryIDParam)) {
-                handleErrorWhenExcute(response);
+                handleErrorWhenExcute(request, response);
                 return;
             }
 
@@ -94,7 +94,7 @@ public class UserCategoryServlet extends HttpServlet {
                     break;
 
                 default: // Nếu view rỗng.
-                    handleErrorWhenExcute(response);
+                    handleErrorWhenExcute(request, response);
                     break;
             }
         }
@@ -149,10 +149,10 @@ public class UserCategoryServlet extends HttpServlet {
      * @throws IOException
      * @throws ServletException
      */
-    private void handleErrorWhenExcute(HttpServletResponse response) throws IOException, ServletException {
+    private void handleErrorWhenExcute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         // Chuyển hướng người dùng đến nơi muốn hiện lỗi.
-        response.sendRedirect("index.jsp");
+        response.sendRedirect(request.getContextPath() + "/error-page");
     }
 
     /**
@@ -206,7 +206,7 @@ public class UserCategoryServlet extends HttpServlet {
 
         // Xử lí nếu id danh mục không hợp lệ.
         if (!checkValidCategoryID(categoryIDParam)) {
-            handleErrorWhenExcute(response);
+            handleErrorWhenExcute(request, response);
             return;
         }
 
