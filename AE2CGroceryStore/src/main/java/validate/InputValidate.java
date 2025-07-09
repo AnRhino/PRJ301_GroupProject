@@ -4,6 +4,8 @@
  */
 package validate;
 
+import java.text.Normalizer;
+
 /**
  *
  * @author Vu Minh Khang - CE191371
@@ -13,6 +15,10 @@ public class InputValidate {
     public final static int ZERO_VALUE = 0;
     public final static int MIN_RATING_VALUE = 1;
     public final static int MAX_RATING_VALUE = 5;
+    
+    public final static String EMPTY_STRING = "";
+    public final static String SPECIAL_CHARACTER_REGEX = "[^a-zA-Z0-9 ]";
+    public final static String SPACE_REGEX = "\\s+";
 
     public final static String INTEGER_REGEX = "^"
             + "(-)?"
@@ -127,6 +133,27 @@ public class InputValidate {
 //        }
 
         return number < start || number > end;
-
+    }
+    
+    /**
+     * Biến chuỗi đầu vào thành 1 chuỗi chữ được chuẩn hóa.
+     * 
+     * Không khoảng cách thừa ở giữa chuỗi và 2 đầu.
+     * Không kí tự đặc biệt.
+     * Không viết hoa.
+     * 
+     * @param input là chuỗi cần được chuẩn hóa.
+     * 
+     * @return chuỗi đã được chuẩn hóa.
+     */
+    public static String normalizeInputString(String input) {
+        String normalizedString = Normalizer.normalize(input, Normalizer.Form.NFD);
+        
+        normalizedString = normalizedString.trim(); // Xóa khoảng trắng ở 2 đầu.
+        normalizedString = normalizedString.replaceAll(SPACE_REGEX, EMPTY_STRING); // Xóa khoảng trắng.
+        normalizedString = normalizedString.replaceAll(SPECIAL_CHARACTER_REGEX, EMPTY_STRING); // Xóa kí tự đặc biệt.
+        normalizedString = normalizedString.toLowerCase(); // Viết thường kí tự.
+                
+        return normalizedString;
     }
 }
