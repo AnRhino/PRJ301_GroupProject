@@ -66,8 +66,10 @@
                     </ul>
                 </div>
                 <div class="ms-auto">
-                    <input class="search border-2" id="Search-bar" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success m-2"  type="submit">Search</button>
+                    <form action="${pageContext.request.contextPath}/user-search" method="post">
+                        <input class="search border-2" id="Search-bar" type="search" placeholder="Search" aria-label="Search" name="searchInput">
+                        <button class="btn btn-outline-success m-2" type="submit">Search</button>
+                    </form>
                 </div>
                 <div class="flex align-content-end ms-auto">
                     <form class="d-flex">   
