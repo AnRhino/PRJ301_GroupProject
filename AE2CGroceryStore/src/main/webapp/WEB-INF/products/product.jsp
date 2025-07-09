@@ -45,17 +45,19 @@
                                 </div>
                                 <div class="container my-3">
                                     <div class="row border border-dark rounded-3" style="background: #0c2333;"> 
-                                        <c:forEach var="prod" items="${requestScope.productList}">
-                                            <div class="col-10 m-3 p-2 mx-auto" style="background: #3376bc;">
-                                                <form action="${pageContext.request.contextPath}/user-product" method="get">
-                                                    <input type="hidden" name="view" value="product">
-                                                    <input type="hidden" name="productID" value="${prod.productID}">
-                                                    <button class="btn border-0 text-white w-100 text-center">
-                                                        ${prod.productName}
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </c:forEach>
+                                        <div class="overflow-auto" style="max-height: 500px;">
+                                            <c:forEach var="prod" items="${requestScope.productList}">
+                                                <div class="col-10 m-3 p-2 mx-auto" style="background: #3376bc;">
+                                                    <form action="${pageContext.request.contextPath}/user-product" method="get">
+                                                        <input type="hidden" name="view" value="product">
+                                                        <input type="hidden" name="productID" value="${prod.productID}">
+                                                        <button class="btn border-0 text-white w-100 text-center">
+                                                            ${prod.productName}
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </c:forEach>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +93,7 @@
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="fw-bold d-inline">Price:</div>
-                                                                <div class="text-dark d-inline">${requestScope.product.price} VND</div>
+                                                                <div class="text-dark d-inline"><fmt:formatNumber value="${requestScope.product.price}" type="number" groupingUsed="true" /> VND</div>
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="fw-bold d-inline">Rating:</div>

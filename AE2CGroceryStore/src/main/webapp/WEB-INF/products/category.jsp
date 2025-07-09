@@ -95,7 +95,7 @@
                                                                             </div>
                                                                             <div class="col-12 d-flex justify-content-center">
                                                                                 Price: 
-                                                                                ${prod.price} VND
+                                                                                <fmt:formatNumber value="${prod.price}" type="number" groupingUsed="true" /> VND
                                                                             </div>
                                                                         </div>
                                                                     </button>
