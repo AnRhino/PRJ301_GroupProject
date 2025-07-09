@@ -71,7 +71,44 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
-    
+    /**
+     * Lấy từng trang sản phẩm mà người dùng tìm kiếm.
+     *
+     * @param searchInput là sản phẩm người dùng muốn tìm.
+     * @param page là thứ tự trang.
+     *
+     * @return danh sách sản phẩm của 1 trang khớp với tìm kiếm của người dùng.
+     */
+    public List<Product> getSearchProductForEachPage(String searchInput, int page) {
+
+        List<Product> list = new ArrayList<>();
+
+        try {
+
+            String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden\n"
+                    + "FROM [dbo].[Products] p\n"
+                    + "JOIN [dbo].[Categories] c ON p.CategoryID = c.CategoryID\n"
+                    + "WHERE p.IsHidden = 0\n"
+                    + "AND (p.ProductCode LIKE '%' + ? + '%' OR p.ProductName LIKE '%' + ? + '%')\n"
+                    + "ORDER BY ProductID ASC\n"
+                    + "offset ? rows fetch next ? rows only";
+            Object[] params = {searchInput, searchInput, (page - 1) * PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE, PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE};
+
+            ResultSet rs = execSelectQuery(query, params);
+
+            while (rs.next()) {
+                Category Category = new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8));
+                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
+                list.add(pro);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
+    }
+
     // need clean code
     public List<Product> getAvailableProductsByCategoryPage(int categoryID, int page) {
         List<Product> list = new ArrayList<>();
@@ -126,6 +163,36 @@ public class ProductDAO extends dbconnect.DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return 0;
+    }
+
+    /**
+     * Đếm số lượng sản phẩm khả thi với yêu cầu của người dùng.
+     *
+     * @param input là sản phầm người dùng tìm kiếm.
+     * 
+     * @return số lượng sản phẩm khớp người dùng tìm kiếm.
+     */
+    public int countSearchItemMatchWithSearchInput(String input) {
+
+        try {
+
+            String query = "SELECT COUNT(ProductID)\n"
+                    + "FROM [dbo].[Products] p\n"
+                    + "WHERE p.IsHidden = 0\n"
+                    + "AND (p.ProductCode LIKE '%' + '?' + '%' OR p.ProductName LIKE '%' + 'coca' + '%')";
+            Object[] params = {input, input};
+            
+            ResultSet rs = execSelectQuery(query, params);
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return 0;
     }
 
