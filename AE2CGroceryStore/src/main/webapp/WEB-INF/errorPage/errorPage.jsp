@@ -17,9 +17,9 @@
 <body class="bg-light">
     <%@include file="/WEB-INF/include/header.jsp" %>
 
-    <div class="d-flex justify-content-center align-items-start min-vh-100">
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
         <div class="card text-center shadow p-4" style="max-width: 600px; width: 100%;">
-            <h1 class="text-dark">204 - Not find</h1>
+            <h1 class="text-dark">404 - Not found</h1>
             <p class="text-muted">
              Please check the link or you can top up to continue using the service.
             </p>

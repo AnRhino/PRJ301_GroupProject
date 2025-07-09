@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * CE191246 - Phan Duc Tho
  */
-@WebServlet(name = "ErrorPageServlet", urlPatterns = {"/errorPage"})
+@WebServlet(name = "ErrorPageServlet", urlPatterns = {"/error-page"})
 public class ErrorPageServlet extends HttpServlet {
 
     /**
@@ -58,6 +58,7 @@ public class ErrorPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
     }
 

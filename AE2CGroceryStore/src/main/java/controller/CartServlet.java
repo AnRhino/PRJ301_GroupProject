@@ -145,10 +145,16 @@ public class CartServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/users/edit.jsp").forward(request, response);
                 return;
             }
+            if (Integer.parseInt(quantity) == 0) {              
+                cartDao.delete(Integer.parseInt(cartid));
+                response.sendRedirect(request.getContextPath() + "/cart");
+                return;
+            } else {
 
-            cartDao.edit(Integer.parseInt(cartid), Integer.parseInt(quantity));
-            response.sendRedirect(request.getContextPath() + "/cart");
-            return;
+                cartDao.edit(Integer.parseInt(cartid), Integer.parseInt(quantity));
+                response.sendRedirect(request.getContextPath() + "/cart");
+                return;
+            }
         } else if ("delete".equals(action)) {
             String cartid = request.getParameter("cartId");
             cartDao.delete(Integer.parseInt(cartid));
@@ -173,26 +179,26 @@ public class CartServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/cart?view=order");
             return;
         } else if ("cart".equals(action)) {
-            
+
             String productIDParam = request.getParameter("productID");
-            
+
             System.out.println(productIDParam);
-            
+
             // Nếu id sản phẩm không hợp lệ.
             if (!checkValidProductID(productIDParam)) {
                 handleUnavailableProductID(response);
                 return;
             }
-            
+
             handleCartInput(request);
-            
+
             response.sendRedirect(request.getContextPath() + "/user-product?view=product&productID=" + productIDParam);
             return;
         }
 
         response.sendRedirect(request.getContextPath() + "/cart");
     }
-    
+
     /**
      * Chuyển hướng người dùng đến trang lỗi.
      *
@@ -206,7 +212,7 @@ public class CartServlet extends HttpServlet {
         // Chuyển hướng đến trang lỗi.
         response.sendRedirect("index.jsp");
     }
-    
+
     /**
      * Kiểm tra id của product.
      *
@@ -233,7 +239,7 @@ public class CartServlet extends HttpServlet {
             return true;
         }
     }
-    
+
     /**
      * Xử lí thêm vào cart của người dùng.
      *
