@@ -109,7 +109,7 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
-    // need clean code
+    // Dùng để phân trang cho categories.
     public List<Product> getAvailableProductsByCategoryPage(int categoryID, int page) {
         List<Product> list = new ArrayList<>();
         String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden\n"
@@ -151,7 +151,7 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
-    // need clean code
+    // Đếm số lượng sản phẩm trong category.
     public int countItemByCategory(int categoryID) {
         try {
             String query = "SELECT COUNT(ProductID) FROM Products WHERE isHidden = 0 AND CategoryID = ?";
