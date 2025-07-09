@@ -66,38 +66,29 @@ public class HomeServlet extends HttpServlet {
 //        processRequest(request, response);
 
         String view = request.getParameter("view");
-        String idParam = request.getParameter("id");
 
-        if (view == null || idParam == null || view.isBlank() || idParam.isBlank()) {
+        if (view == null || view.isBlank()) {
             getDataIndex(request);
             request.getRequestDispatcher("index.jsp").forward(request, response);
 
         } else {
 
-            try {
+            switch (view) {
 
-                int id = Integer.parseInt(idParam);
+                case "category":
+                    response.sendRedirect(request.getContextPath() + "/user-category?categoryID=" + request.getParameter("categoryID"));
+                    break;
 
-                switch (view) {
+                case "product":
+                    response.sendRedirect(request.getContextPath() + "/user-product?productID=" + request.getParameter("productID"));
+                    break;
 
-                    case "category":
-                        response.sendRedirect(request.getContextPath() + "/user-category?id=" + id);
-                        break;
-
-                    case "product":
-                        response.sendRedirect(request.getContextPath() + "/user-product?id=" + id);
-                        break;
-
-                    default:
-                        getDataIndex(request);
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
-                        break;
-                }
-
-            } catch (NumberFormatException ex) {
-                getDataIndex(request);
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+                default:
+                    getDataIndex(request);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                    break;
             }
+
         }
     }
 
@@ -116,7 +107,7 @@ public class HomeServlet extends HttpServlet {
 
         if (pageParam != null && !pageParam.isBlank()) { // check nếu không null thì xử lý logic ở dưới
             try {
-                page = Integer.parseInt(pageParam); 
+                page = Integer.parseInt(pageParam);
 
                 if (page < 1) { // check xem nếu page nhỏ hơn min thì page = 1
                     page = 1;
@@ -144,7 +135,9 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+
+        response.sendRedirect(request.getContextPath() + "/home");
     }
 
     /**
