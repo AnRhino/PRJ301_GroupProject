@@ -107,6 +107,18 @@ public class InputValidate {
         
         return number < start || number > end;
     }
+    
+    /**
+     * Kiểm tra xem số nguyên này có nhỏ hơn số kia không.
+     * 
+     * @param numberOne là số nguyên thứ nhất.
+     * @param numberTwo là số nguyên thứ hai.
+     * 
+     * @return True nếu số nguyên thứ nhất nhỏ hơn số nguyên thứ hai. 
+     */
+    public static boolean checkIntegerNumberHaveSmallerValueThanOther(int numberOne, int numberTwo) {
+        return numberOne < numberTwo;
+    }
 
     /**
      * Kiểm tra số thực có thuộc khoảng hợp lệ hay không.
@@ -133,6 +145,18 @@ public class InputValidate {
 //        }
 
         return number < start || number > end;
+    }
+    
+    /**
+     * Kiểm tra xem số thực này có nhỏ hơn số thực kia không.
+     * 
+     * @param numberOne là số thực thứ nhất.
+     * @param numberTwo là số thực thứ hai.
+     * 
+     * @return True nếu số thứ thực nhất nhỏ hơn số thực thứ hai. 
+     */
+    public static boolean checkDoubleNumberHaveSmallerValueThanOther(double numberOne, double numberTwo) {
+        return numberOne < numberTwo;
     }
     
     /**
