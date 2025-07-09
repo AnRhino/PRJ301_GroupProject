@@ -65,7 +65,7 @@
                                         <h1 class="fw-bold text-white">${requestScope.product.productName}</h1>
                                     </div>
                                     <div class="my-2 p-2">
-                                        <form action="${pageContext.request.contextPath}/user-product" method="post">
+                                        <form action="${pageContext.request.contextPath}/cart" method="post">
                                             <div class="">
                                                 <div class="row border border-secondary bg-white border-dark">   
                                                     <div class="col-6 d-flex justify-content-start p-0">
@@ -115,7 +115,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-12 d-flex gap-3">
-                                                                <button type="submit" class="btn px-5 py-3 bg-success border-dark d-flex justify-content-end" name="view" value="cart">
+                                                                <button type="submit" class="btn px-5 py-3 bg-success border-dark d-flex justify-content-end" name="action" value="cart">
                                                                     <i class="bi bi-basket text-white"></i>
                                                                 </button>
                                                             </div>
