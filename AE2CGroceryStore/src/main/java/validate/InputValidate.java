@@ -180,4 +180,15 @@ public class InputValidate {
                 
         return normalizedString;
     }
+    
+    /**
+     * Hàm xóa hết những khoảng trắng thừa ra khỏi chuỗi.
+     * 
+     * @param input là chuỗi cần xóa khoảng trắng.
+     * 
+     * @return chuỗi đã xóa khoảng trắng.
+     */
+    public static String removeSpaceFromString(String input) {
+        return input.replaceAll(SPACE_REGEX, EMPTY_STRING);
+    }
 }
