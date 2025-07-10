@@ -9,15 +9,29 @@ package model;
  * @author Vu Minh Khang - CE191371
  */
 public class Product {
-    
+
     private int productID;
     private String productCode;
     private String productName;
     private int quantity;
     private int price;
     private Category category;
+    private String coverImg;
+    private boolean isHidden;
 
     public Product() {
+    }
+
+    public Product(int productID, String productCode, String productName,
+            int quantity, int price, Category category, String coverImg, boolean isHidden) {
+        this.productID = productID;
+        this.productCode = productCode;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.price = price;
+        this.category = category;
+        this.coverImg = coverImg;
+        this.isHidden = isHidden;
     }
 
     public Product(int productID, String productCode, String productName, int quantity, int price, Category category) {
@@ -32,7 +46,7 @@ public class Product {
     public Product(int productID) {
         this.productID = productID;
     }
-    
+
     public int getProductID() {
         return productID;
     }
@@ -80,6 +94,20 @@ public class Product {
     public void setCategory(Category category) {
         this.category = category;
     }
-    
-    
+
+    public String getCoverImg() {
+        return coverImg;
+    }
+
+    public void setCoverImg(String coverImg) {
+        this.coverImg = coverImg;
+    }
+
+    public boolean isIsHidden() {
+        return isHidden;
+    }
+
+    public void setIsHidden(boolean isHidden) {
+        this.isHidden = isHidden;
+    }
 }
