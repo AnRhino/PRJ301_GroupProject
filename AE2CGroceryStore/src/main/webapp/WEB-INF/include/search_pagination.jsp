@@ -28,9 +28,8 @@
         <c:choose>
             <c:when test="${currentPage > 1}">
                 <c:url var="pageUrlPrev" value="/user-search">
-                    <c:param name="view" value="category"/>
-                    <c:param name="categoryID" value="${param.categoryID}"/>
-                    <c:param name="page" value="${currentPage - 1}"/>
+                    <c:param name="key" value="${param.key}" />
+                    <c:param name="page" value="${currentPage - 1}" />
                 </c:url>
                 <li class="page-item">
                     <a class="page-link" href="${pageUrlPrev}" aria-label="Previous">
@@ -49,9 +48,8 @@
 
         <c:forEach begin="1" end="${requestScope.totalPages}" var="i">
             <c:url var="pageUrl" value="/user-search">
-                <c:param name="view" value="category"/>
-                <c:param name="categoryID" value="${param.categoryID}"/>
-                <c:param name="page" value="${i}"/>
+                <c:param name="key" value="${param.key}" />
+                <c:param name="page" value="${i}" />
             </c:url>
             <li class="page-item ${i == currentPage ? 'active' : ''}">
                 <a class="page-link" href="${pageUrl}">${i}</a>
@@ -61,9 +59,8 @@
         <c:choose>
             <c:when test="${currentPage < requestScope.totalPages}">
                 <c:url var="pageUrlNext" value="/user-search">
-                    <c:param name="view" value="category"/>
-                    <c:param name="categoryID" value="${param.categoryID}"/>
-                    <c:param name="page" value="${currentPage + 1}"/>
+                    <c:param name="key" value="${param.key}" />
+                    <c:param name="page" value="${currentPage + 1}" />
                 </c:url>
                 <li class="page-item">
                     <a class="page-link" href="${pageUrlNext}" aria-label="Next">

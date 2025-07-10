@@ -112,8 +112,6 @@ public class UserSearchServlet extends HttpServlet {
         // Set tổng số page.
         request.setAttribute("totalPages", totalPages);
 
-        System.out.println(totalPages);
-        System.out.println(getValidPage(request.getParameter("page"), totalPages));
         return getValidPage(request.getParameter("page"), totalPages);
     }
 
