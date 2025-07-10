@@ -22,6 +22,11 @@ import utils.PaginationUtil;
  */
 public class ProductDAO extends dbconnect.DBContext {
 
+    /**
+     * Lấy toàn bộ danh sách sản phẩm đang hoạt động (chưa bị ẩn).
+     *
+     * @return danh sách tất cả sản phẩm có IsHidden = 0.
+     */
     public List<Product> getAll() {
         List<Product> list = new ArrayList<>();
         try {
@@ -210,6 +215,11 @@ public class ProductDAO extends dbconnect.DBContext {
         return 0;
     }
 
+    /**
+     * Thêm sản phẩm mới vào cơ sở dữ liệu.
+     *
+     * @return 0 nếu thêm thành công, ngược lại trả về lỗi.
+     */
     public int create(String productCore, String productName, int quantity, double price, int categoryId) {
         int check = 0;
         try {
@@ -230,6 +240,11 @@ public class ProductDAO extends dbconnect.DBContext {
         return 0;
     }
 
+    /**
+     * Chỉnh sửa thông tin của sản phẩm dựa theo mã sản phẩm.
+     *
+     * @return 0 nếu sửa thành công, ngược lại trả về lỗi.
+     */
     public int edit(int prouductId, String productCode, String productName, int quantity, double price, int cateID) {
         try {
             String query = "update  Products\n"
@@ -251,6 +266,7 @@ public class ProductDAO extends dbconnect.DBContext {
         }
         return 0;
     }
+// dùng để lấy productId
 
     public Product getById(int ProductID) {
         try {
@@ -277,6 +293,13 @@ public class ProductDAO extends dbconnect.DBContext {
         }
     }
 
+    /**
+     * Xóa mềm một sản phẩm (ẩn khỏi danh sách hiển thị).
+     *
+     * @param productId là mã sản phẩm cần xóa.
+     *
+     * @return số dòng bị ảnh hưởng (1 nếu thành công).
+     */
     public int delete(int productId) {
         String query = "update Products\n"
                 + "set IsHidden = 1\n"
