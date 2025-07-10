@@ -23,25 +23,19 @@ import model.User;
 public class CartDAO extends dbconnect.DBContext {
 
     /**
-     * Lấy toàn bộ cart của người dùng trong cơ sở dữ liệu.
+     * Lấy các sản phẩm có thể mua trong giỏ hàng của người dùng.
      *
-     * @return danh sách toàn bộ cart hiện tại.
+     * @param userId ID người dùng
+     * @return Danh sách sản phẩm có thể mua
      */
     public List<Cart> getCanBuy(int userId) {
-
         List<Cart> list = new ArrayList<>();
-
-        PreparedStatement ps;
-        try {
-            String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price\n"
-                    + "FROM [dbo].[Carts] c\n"
-                    + "JOIN [dbo].[Users] u\n"
-                    + "ON u.UserID = c.UserID\n"
-                    + "JOIN [dbo].[Products] prod\n"
-                    + "ON prod.ProductID = c.ProductID\n"
-                    + "WHERE u.UserID = ? and prod.Quantity > 0 and prod.IsHidden = 0";
-
-            ps = this.getConnection().prepareStatement(query);
+        String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price "
+                + "FROM Carts c "
+                + "JOIN Users u ON u.UserID = c.UserID "
+                + "JOIN Products prod ON prod.ProductID = c.ProductID "
+                + "WHERE u.UserID = ? AND prod.Quantity > 0 AND prod.IsHidden = 0";
+        try ( PreparedStatement ps = this.getConnection().prepareStatement(query)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -51,32 +45,27 @@ public class CartDAO extends dbconnect.DBContext {
                 User user = new User(rs.getInt(2), rs.getString(3));
                 Cart cart = new Cart(rs.getInt(1), user, product, rs.getInt(5));
                 list.add(cart);
-
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return list;
-
     }
 
+    /**
+     * Lấy danh sách sản phẩm hết hàng trong giỏ hàng.
+     *
+     * @param userId ID người dùng
+     * @return Danh sách sản phẩm hết hàng
+     */
     public List<Cart> getOutOfStock(int userId) {
-
         List<Cart> list = new ArrayList<>();
-
-        PreparedStatement ps;
-        try {
-            String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price\n"
-                    + "FROM [dbo].[Carts] c\n"
-                    + "JOIN [dbo].[Users] u\n"
-                    + "ON u.UserID = c.UserID\n"
-                    + "JOIN [dbo].[Products] prod\n"
-                    + "ON prod.ProductID = c.ProductID\n"
-                    + "WHERE u.UserID = ? and prod.Quantity = 0 and prod.IsHidden = 0";
-
-            ps = this.getConnection().prepareStatement(query);
+        String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price "
+                + "FROM Carts c "
+                + "JOIN Users u ON u.UserID = c.UserID "
+                + "JOIN Products prod ON prod.ProductID = c.ProductID "
+                + "WHERE u.UserID = ? AND prod.Quantity = 0 AND prod.IsHidden = 0";
+        try ( PreparedStatement ps = this.getConnection().prepareStatement(query)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -86,32 +75,27 @@ public class CartDAO extends dbconnect.DBContext {
                 User user = new User(rs.getInt(2), rs.getString(3));
                 Cart cart = new Cart(rs.getInt(1), user, product, rs.getInt(5));
                 list.add(cart);
-
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return list;
-
     }
 
+    /**
+     * Lấy danh sách sản phẩm đã ẩn nhưng vẫn còn trong giỏ hàng.
+     *
+     * @param userId ID người dùng
+     * @return Danh sách sản phẩm đã bị ẩn
+     */
     public List<Cart> getProductIsHidden(int userId) {
-
         List<Cart> list = new ArrayList<>();
-
-        PreparedStatement ps;
-        try {
-            String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price\n"
-                    + "FROM [dbo].[Carts] c\n"
-                    + "JOIN [dbo].[Users] u\n"
-                    + "ON u.UserID = c.UserID\n"
-                    + "JOIN [dbo].[Products] prod\n"
-                    + "ON prod.ProductID = c.ProductID\n"
-                    + "WHERE u.UserID = ? and prod.IsHidden = 1";
-
-            ps = this.getConnection().prepareStatement(query);
+        String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price "
+                + "FROM Carts c "
+                + "JOIN Users u ON u.UserID = c.UserID "
+                + "JOIN Products prod ON prod.ProductID = c.ProductID "
+                + "WHERE u.UserID = ? AND prod.IsHidden = 1";
+        try ( PreparedStatement ps = this.getConnection().prepareStatement(query)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -121,18 +105,13 @@ public class CartDAO extends dbconnect.DBContext {
                 User user = new User(rs.getInt(2), rs.getString(3));
                 Cart cart = new Cart(rs.getInt(1), user, product, rs.getInt(5));
                 list.add(cart);
-
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return list;
-
     }
 
-  
     /**
      * Tạo 1 sản phấm trong cart của người dùng.
      *
@@ -183,31 +162,38 @@ public class CartDAO extends dbconnect.DBContext {
         return null;
     }
 
+    /**
+     * Cập nhật số lượng sản phẩm trong cart.
+     *
+     * @param cartId ID mục cart
+     * @param quantity Số lượng mới
+     */
     public void edit(int cartId, int quantity) {
         String query = "UPDATE Carts SET Quantity = ? WHERE CartItemID = ?";
-        try {
-            PreparedStatement ps = this.getConnection().prepareStatement(query);
+        try ( PreparedStatement ps = this.getConnection().prepareStatement(query)) {
             ps.setInt(1, quantity);
             ps.setInt(2, cartId);
             ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Xoá mục cart theo ID.
+     *
+     * @param cartID ID mục cart cần xoá
+     * @return Số dòng bị ảnh hưởng
+     */
     public int delete(int cartID) {
-        String query = "delete from Carts\n"
-                + "where CartItemID = ?";
-        try {
-            PreparedStatement ps = this.getConnection().prepareStatement(query);
-            ps.setObject(1, cartID);
+        String query = "DELETE FROM Carts WHERE CartItemID = ?";
+        try ( PreparedStatement ps = this.getConnection().prepareStatement(query)) {
+            ps.setInt(1, cartID);
             return ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
-
     }
 
-    
 }

@@ -6,207 +6,147 @@ package controller;
 
 import DAO.CategoryDAO;
 import DAO.ProductDAO;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 import model.Category;
-import model.ErrorMessage;
 import model.Product;
 import validate.ProductValidation;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
+ * Servlet Controller xử lý các hành động liên quan đến sản phẩm.
  *
- * @author Phan Duc Tho - CE191246
+ * @author Phan Duc Tho
  */
 @WebServlet(name = "ProductServlet", urlPatterns = {"/product"})
 public class ProductServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ProductServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ProductServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fP defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO dao = new ProductDAO();
+
         String view = request.getParameter("view");
+        ProductDAO productDAO = new ProductDAO();
+
         if (view == null || view.isBlank() || view.equals("list")) {
-            List<Product> list = dao.getAll();
-            request.setAttribute("list", list);
-
+            // Hiển thị danh sách sản phẩm
+            request.setAttribute("list", productDAO.getAll());
             request.getRequestDispatcher("/WEB-INF/product/list.jsp").forward(request, response);
-        } else if (view.equals("create")) {
-            CategoryDAO cateDAO = new CategoryDAO();
-            List<Category> cate = cateDAO.getAll();
-            request.setAttribute("cate", cate);
 
+        } else if (view.equals("create")) {
+            // Hiển thị form tạo sản phẩm
+            CategoryDAO cateDAO = new CategoryDAO();
+            List<Category> categories = cateDAO.getAll();
+            request.setAttribute("cate", categories);
             request.getRequestDispatcher("/WEB-INF/product/create.jsp").forward(request, response);
 
         } else if (view.equals("delete")) {
+            // Hiển thị xác nhận xoá sản phẩm
             int id = Integer.parseInt(request.getParameter("id"));
-            Product product = dao.getById(id);
-            request.setAttribute("pro", product);
+            request.setAttribute("pro", productDAO.getById(id));
             request.getRequestDispatcher("/WEB-INF/product/delete.jsp").forward(request, response);
 
         } else if (view.equals("edit")) {
+            // Hiển thị form chỉnh sửa sản phẩm
             int id = Integer.parseInt(request.getParameter("id"));
-            Product pr = dao.getById(id);
-            request.setAttribute("pro", pr);
-
+            request.setAttribute("pro", productDAO.getById(id));
             CategoryDAO cateDAO = new CategoryDAO();
-            List<Category> cate = cateDAO.getAll();
-            request.setAttribute("cate", cate);
-
+            List<Category> categories = cateDAO.getAll();
+            request.setAttribute("cate", categories);
             request.getRequestDispatcher("/WEB-INF/product/edit.jsp").forward(request, response);
         }
-
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String action = request.getParameter("action");
         ProductDAO productDAO = new ProductDAO();
-        ProductValidation pr = new ProductValidation();
-         List<Product> list = productDAO.getAll();
+        ProductValidation productValidation = new ProductValidation();
+        List<Product> listProduct = productDAO.getAll();
+
+        // Lấy dữ liệu từ form
+        String productCode = request.getParameter("productCore");
+        String productName = request.getParameter("productName");
+        String quantityStr = request.getParameter("quantity");
+        String priceStr = request.getParameter("price");
+        String categoryStr = request.getParameter("categogy");
+
+        // Xử lý tạo mới sản phẩm
         if (action.equals("create")) {
-            List<String> errorMessage = new ArrayList<>();
 
-            String Code = request.getParameter("productCore");
-            String Name = request.getParameter("productName");
-            String Quantity = request.getParameter("quantity");
-            String Price = request.getParameter("price");
-            String Cate = request.getParameter("categogy");
+            List<String> errors = new ArrayList<>();
+            errors.addAll(productValidation.checkProductCode(productCode, listProduct));
+            errors.addAll(productValidation.checkProductName(productName));
+            errors.addAll(productValidation.checkQuantity(quantityStr));
+            errors.addAll(productValidation.checkPrice(priceStr));
+            errors.addAll(productValidation.checkCategoryID(categoryStr));
 
-            List<Product> allProducts = productDAO.getAll();
-            errorMessage.addAll(pr.checkProductCode(Code, allProducts));
-
-            errorMessage.addAll(pr.checkProductName(Name));
-
-            errorMessage.addAll(pr.checkQuantity(Quantity));
-
-            errorMessage.addAll(pr.checkPrice(Price));
-
-            errorMessage.addAll(pr.checkCategoryID(Cate));
-
-            if (!errorMessage.isEmpty()) {
+            if (!errors.isEmpty()) {
+                // Nếu có lỗi thì giữ lại dữ liệu form và trả về trang create
                 CategoryDAO cateDAO = new CategoryDAO();
                 request.setAttribute("cate", cateDAO.getAll());
-                request.setAttribute("errorMessage", errorMessage);
-
-                request.setAttribute("PCode", Code);
-                request.setAttribute("PName", Name);
-                request.setAttribute("PQuantity", Quantity);
-                request.setAttribute("PPrice", Price);
-                request.setAttribute("PCate", Cate);
-
+                request.setAttribute("errorMessage", errors);
+                request.setAttribute("PCode", productCode);
+                request.setAttribute("PName", productName);
+                request.setAttribute("PQuantity", quantityStr);
+                request.setAttribute("PPrice", priceStr);
+                request.setAttribute("PCate", categoryStr);
                 request.getRequestDispatcher("/WEB-INF/product/create.jsp").forward(request, response);
                 return;
             }
 
-            productDAO.create(Code, Name, Integer.parseInt(Quantity), Double.parseDouble(Price), Integer.parseInt(Cate));
+            // Nếu hợp lệ thì thêm vào database
+            productDAO.create(productCode, productName, Integer.parseInt(quantityStr), Double.parseDouble(priceStr), Integer.parseInt(categoryStr));
             response.sendRedirect(request.getContextPath() + "/product?view=list");
-        } else if (action.equals(
-                "delete")) {
+
+            // Xử lý xoá sản phẩm
+        } else if (action.equals("delete")) {
+
             int id = Integer.parseInt(request.getParameter("id"));
             productDAO.delete(id);
             response.sendRedirect(request.getContextPath() + "/product?view=list");
+            // Xử lý chỉnh sửa sản phẩm
         } else if (action.equals("edit")) {
+
             int id = Integer.parseInt(request.getParameter("id"));
+            List<String> errors = new ArrayList<>();
+            errors.addAll(productValidation.checkProductCodeEdit(productCode, id, listProduct));
+            errors.addAll(productValidation.checkProductName(productName));
+            errors.addAll(productValidation.checkQuantity(quantityStr));
+            errors.addAll(productValidation.checkPrice(priceStr));
+            errors.addAll(productValidation.checkCategoryID(categoryStr));
 
-            String Code = request.getParameter("productCore");
-            String Name = request.getParameter("productName");
-            String Quantity = request.getParameter("quantity");
-            String Price = request.getParameter("price");
-            String Cate = request.getParameter("categogy");
-
-            List<String> errorMessage = new ArrayList<>();
-            errorMessage.addAll(pr.checkProductCodeEdit(Code, id, list));
-
-            errorMessage.addAll(pr.checkProductName(Name));
-            errorMessage.addAll(pr.checkQuantity(Quantity));
-
-            errorMessage.addAll(pr.checkPrice(Price));
-
-            errorMessage.addAll(pr.checkCategoryID(Cate));
-
-            if (!errorMessage.isEmpty()) {
-
+            if (!errors.isEmpty()) {
+                // Nếu có lỗi thì giữ lại dữ liệu form và trả về trang edit
                 CategoryDAO cateDAO = new CategoryDAO();
                 request.setAttribute("cate", cateDAO.getAll());
-
-                request.setAttribute("errorMessage", errorMessage);
-
-                request.setAttribute("oldCode", Code);
-                request.setAttribute("oldName", Name);
-                request.setAttribute("oldQuantity", Quantity);
-                request.setAttribute("oldPrice", Price);
-                request.setAttribute("oldCate", Cate);
+                request.setAttribute("errorMessage", errors);
+                request.setAttribute("oldCode", productCode);
+                request.setAttribute("oldName", productName);
+                request.setAttribute("oldQuantity", quantityStr);
+                request.setAttribute("oldPrice", priceStr);
+                request.setAttribute("oldCate", categoryStr);
                 request.setAttribute("pro", productDAO.getById(id));
-
                 request.getRequestDispatcher("/WEB-INF/product/edit.jsp").forward(request, response);
                 return;
             }
 
-            productDAO.edit(id, Code, Name, Integer.parseInt(Quantity), Double.parseDouble(Price), Integer.parseInt(Cate));
+            // Nếu hợp lệ thì cập nhật database
+            productDAO.edit(id, productCode, productName, Integer.parseInt(quantityStr), Double.parseDouble(priceStr), Integer.parseInt(categoryStr));
             response.sendRedirect(request.getContextPath() + "/product?view=list");
         }
-
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fP>
-
+        return "ProductServlet handles product-related actions including create, edit, delete, and display.";
+    }
 }
