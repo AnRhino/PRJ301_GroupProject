@@ -294,6 +294,42 @@ public class ProductDAO extends dbconnect.DBContext {
     }
 
     /**
+     * Lấy sản phẩm khả thi hiện tại từ cơ sở dữ liệu.
+     *
+     * @param productID là id sản phẩm.
+     *
+     * @return 1 sản phẩm từ cơ sở dữ liệu. Null nếu ko có sản phẩm nào khớp với
+     * id tìm hoặc sản phẩm không khả thi (isHidden = 0).
+     */
+    public Product getAvailableProductById(int productID) {
+
+        Product prod = null;
+
+        try {
+
+            String query = "SELECT p.ProductID, p.ProductCode, p.ProductName, p.Quantity, p.Price, p.IsHidden, c.CategoryID, c.CategoryName, c.IsHidden\n"
+                    + "FROM [dbo].[Products] p\n"
+                    + "JOIN [dbo].[Categories] c \n"
+                    + "ON p.CategoryID = c.CategoryID\n"
+                    + "WHERE p.ProductID = 1\n"
+                    + "AND p.IsHidden = 0;";
+            Object[] params = {productID};
+
+            ResultSet rs = execSelectQuery(query, params);
+
+            if (rs.next()) {
+                return new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), new Category(rs.getInt(7), rs.getString(8), rs.getBoolean(9)));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+
+        return prod;
+    }
+
+    /**
      * Xóa mềm một sản phẩm (ẩn khỏi danh sách hiển thị).
      *
      * @param productId là mã sản phẩm cần xóa.

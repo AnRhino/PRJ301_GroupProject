@@ -169,7 +169,7 @@ public class UserProductServlet extends HttpServlet {
      * @param productID là id của sản phẩm.
      */
     private void getProductInfo(HttpServletRequest request, int productID) {
-        request.setAttribute("product", productDao.getById(productID));
+        request.setAttribute("product", productDao.getAvailableProductById(productID));
         request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(productID).getCategoryID()));
         request.setAttribute("rateScore", productDao.getRateScore(productID));
         request.setAttribute("reviewList", reviewDao.getByProductID(productID));
