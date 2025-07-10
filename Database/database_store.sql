@@ -92,10 +92,11 @@ CREATE TABLE Orders (
     UserID INT FOREIGN KEY REFERENCES Users(UserID) NOT NULL,
     OrderDate DATE NOT NULL DEFAULT CAST(GETDATE() AS DATE),
 	DeliveryDate DATE,
-    StatusID INT FOREIGN KEY REFERENCES StatusType(StatusID),
+    StatusID INT FOREIGN KEY REFERENCES StatusType(StatusID) DEFAULT 1,
     DiscountCodeID INT FOREIGN KEY REFERENCES DiscountCodes(DiscountCodeID),
 	PhoneNumber VARCHAR(15),
-	[Address] VARCHAR(255)
+	[Address] VARCHAR(255),
+	Constraint CK_DeliveryDate CHECK(DeliveryDate >= OrderDate)
 );
 
 -- OrderDetails table
