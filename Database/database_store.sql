@@ -99,7 +99,7 @@ CREATE TABLE Orders (
 	Constraint CK_DeliveryDate CHECK(DeliveryDate >= OrderDate)
 );
 
--- OrderDetails table
+-- OrderItems table
 CREATE TABLE OrderItems (
     OrderItemID INT PRIMARY KEY IDENTITY(1,1),
     OrderID INT FOREIGN KEY REFERENCES Orders(OrderID),
