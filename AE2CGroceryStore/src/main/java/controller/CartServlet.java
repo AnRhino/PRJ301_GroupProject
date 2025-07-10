@@ -165,15 +165,14 @@ public class CartServlet extends HttpServlet {
             User user = (User) request.getSession().getAttribute("loggedUser");
             List<Cart> listCanBuy = cartDao.getCanBuy(user.getId());
             List<Cart> wantedCartList = new ArrayList<>();
-            List<Integer> selectedCheckedBox = new ArrayList<>();
             for (Cart cart : listCanBuy) {
                 String autoCheckBox = "isBuy" + cart.getCartItemID();
                 if (request.getParameter(autoCheckBox) != null) {
                     wantedCartList.add(cart);
-                    selectedCheckedBox.add(cart.getCartItemID());
+                 
                 }
             }
-            request.getSession().setAttribute("checkBox", selectedCheckedBox);
+           
             request.getSession().setAttribute("wantedCartList", wantedCartList);
 
             response.sendRedirect(request.getContextPath() + "/cart?view=order");
