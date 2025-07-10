@@ -311,7 +311,7 @@ public class ProductDAO extends dbconnect.DBContext {
                     + "FROM [dbo].[Products] p\n"
                     + "JOIN [dbo].[Categories] c \n"
                     + "ON p.CategoryID = c.CategoryID\n"
-                    + "WHERE p.ProductID = 1\n"
+                    + "WHERE p.ProductID = ?\n"
                     + "AND p.IsHidden = 0;";
             Object[] params = {productID};
 
