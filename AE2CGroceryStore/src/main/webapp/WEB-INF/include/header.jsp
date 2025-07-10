@@ -9,11 +9,6 @@
 <!DOCTYPE html>
 <header>
 
-    <%
-        User loggedUser = (User) session.getAttribute("loggedUser");
-        boolean loggedIn = loggedUser != null;
-    %>
-
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
@@ -73,28 +68,31 @@
                 </div>
                 <div class="flex align-content-end ms-auto">
                     <form class="d-flex">   
-                        <% if (loggedIn) { %>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle  text-center text-light fs-4" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; bottom: 10px;">
-                                <i class="bi bi-person-circle"></i>                              
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a href="#" class="text-dark text-decoration-none m-4">Hi, ${loggedUser.username}</a>
-                                <a href="user-profile" class="text-dark text-decoration-none m-4">Account details</a>
-                                <a href="#" class="text-dark text-decoration-none m-4">Settings</a>
-                                <a href="logout" class="text-danger text-decoration-none m-4">Logout</a>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a href="cart" class="btn btn-outline-light" style="position: relative; top: 20px;"><i class="bi bi-cart2"> Cart</i></a>
-                        </li>
-                        <% } else { %>
-                        <a href="login" class="btn btn-outline-success m-2" style="width: 73px; height: 38px; position: relative; top: 0px;">Login</a>
-                        <li class="nav-item dropdown">
-                            <a href="cart" class="btn btn-outline-light" style="position: relative; top: 8px;"><i class="bi bi-cart2"> Cart</i></a>
-                        </li>
-                        <% }%>
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.loggedUser}">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle  text-center text-light fs-4" href="#" id="navbarDropdown" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; bottom: 10px;">
+                                        <i class="bi bi-person-circle"></i>                              
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a href="#" class="text-dark text-decoration-none m-4">Hi, ${loggedUser.username}</a>
+                                        <a href="user-profile" class="text-dark text-decoration-none m-4">Account details</a>
+                                        <a href="#" class="text-dark text-decoration-none m-4">Settings</a>
+                                        <a href="logout" class="text-danger text-decoration-none m-4">Logout</a>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="cart" class="btn btn-outline-light" style="position: relative; top: 20px;"><i class="bi bi-cart2"> Cart</i></a>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="login" class="btn btn-outline-success m-2" style="width: 73px; height: 38px; position: relative; top: 0px;">Login</a>
+                                <li class="nav-item dropdown">
+                                    <a href="cart" class="btn btn-outline-light" style="position: relative; top: 8px;"><i class="bi bi-cart2"> Cart</i></a>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
                     </form>
                 </div>
             </div>
