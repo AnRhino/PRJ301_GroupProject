@@ -8,9 +8,9 @@ GO
 
 -- Xóa data cũ nếu tồn tại.
 -- Reset lại id tự tăng của identity.
-IF EXISTS (SELECT 1 FROM OrderDetails)
-	DBCC CHECKIDENT (OrderDetails, RESEED, 0);
-    DELETE FROM OrderDetails;
+IF EXISTS (SELECT 1 FROM OrderItems)
+	DBCC CHECKIDENT (OrderItems, RESEED, 0);
+    DELETE FROM OrderItems;
 
 IF EXISTS (SELECT 1 FROM Orders)
 DBCC CHECKIDENT (Orders, RESEED, 0);
@@ -362,8 +362,8 @@ VALUES
 (5, '2025-06-19', 4, NULL),
 (7, '2025-06-20', 2, NULL);
 
--- OrderDetails chưa dùng dc(chưa fix)
-INSERT INTO OrderDetails (OrderID, ProductID, Quantity, UnitPrice)
+-- OrderItems chưa dùng dc(chưa fix)
+INSERT INTO OrderItems (OrderID, ProductID, Quantity, UnitPrice)
 VALUES
 (1, 1, 2, 15000),
 (1, 5, 1, 30000),

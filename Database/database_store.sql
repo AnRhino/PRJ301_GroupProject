@@ -100,8 +100,8 @@ CREATE TABLE Orders (
 );
 
 -- OrderDetails table
-CREATE TABLE OrderDetails (
-    OrderDetailID INT PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE OrderItems (
+    OrderItemID INT PRIMARY KEY IDENTITY(1,1),
     OrderID INT FOREIGN KEY REFERENCES Orders(OrderID),
     ProductID INT FOREIGN KEY REFERENCES Products(ProductID),
     Quantity INT,
