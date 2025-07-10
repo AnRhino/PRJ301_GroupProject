@@ -81,21 +81,30 @@
                                                     <c:otherwise>
 
                                                         <c:forEach var="prod" items="${requestScope.productList}">
-                                                            <div class="col-3 d-flex justify-content-center my-3 border border-secondary">
+                                                            <div class="col-3 d-flex justify-content-center my-3">
                                                                 <form action="${pageContext.request.contextPath}/user-product" method="get">
                                                                     <input type="hidden" name="view" value="product">
                                                                     <input type="hidden" name="productID" value="${prod.productID}">
-                                                                    <button class="btn-secondary border-secondary">
-                                                                        <div class="row">
+                                                                    <button class="btn btn-secondary border border-secondary">
+                                                                        <div class="row p-2">
                                                                             <div class="col-12 d-flex justify-content-center">
                                                                                 <img src="assets/images/placeHolder.jpg" alt="placeholder">
                                                                             </div>
                                                                             <div class="col-12 d-flex justify-content-center">
+                                                                                <p class="fw-bold">Product code:</p>&nbsp;
+                                                                                ${prod.productCode}
+                                                                            </div>
+                                                                            <div class="col-12 d-flex justify-content-center">
+                                                                                <p class="fw-bold">Name:</p>&nbsp;
                                                                                 ${prod.productName}
                                                                             </div>
                                                                             <div class="col-12 d-flex justify-content-center">
-                                                                                Price: 
+                                                                                <p class="fw-bold">Price:</p>&nbsp;
                                                                                 <fmt:formatNumber value="${prod.price}" type="number" groupingUsed="true" /> VND
+                                                                            </div>
+                                                                            <div class="col-12 d-flex justify-content-center">
+                                                                                <p class="fw-bold">Stock:</p>&nbsp;
+                                                                                ${prod.quantity}
                                                                             </div>
                                                                         </div>
                                                                     </button>
