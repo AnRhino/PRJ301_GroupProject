@@ -278,9 +278,9 @@ VALUES
 
 INSERT INTO DiscountTypes (DiscountTypeID, TypeName)
 VALUES
-(0, N'Phần trăm (%)'),
-(1, N'Giảm cố định (VND)'),
-(2, N'Miễn phí vận chuyển');
+(0, 'Percentage Discount (%)'),
+(1, 'Fixed Amount Discount (VND)'),
+(2, 'Delivery Free');
 
 INSERT INTO DiscountCodes (Code, DiscountValue, DiscountTypeID, QuantityAvailable, ExpiryDate, MinOrderValue)
 VALUES
