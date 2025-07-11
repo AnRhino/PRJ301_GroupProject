@@ -196,6 +196,13 @@ public class CartDAO extends dbconnect.DBContext {
         return 0;
     }
 
+    /**
+     * Delete rows of table Carts in database by UserId and ProductId
+     * 
+     * @param userId
+     * @param productId
+     * @return the number of rows are deleted
+     */
     public int deleteByUserIdAndProductId(int userId, int productId) {
         String query = "delete from Carts\n"
                 + "where UserID = ? AND ProductID = ?";
