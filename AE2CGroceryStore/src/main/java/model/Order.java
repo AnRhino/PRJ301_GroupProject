@@ -17,25 +17,25 @@ public class Order {
     private User user;
     private LocalDateTime orderDate;
     private LocalDateTime deliveryDate;
-    private List<OrderItem> items;
-    private DiscountCode discount;
     private OrderStatus status;
+    private DiscountCode discount;
     private String phoneNumber;
     private String address;
+    private List<OrderItem> items;
 
     public Order() {
     }
 
-    public Order(int id, User user, LocalDateTime orderDate, LocalDateTime deliveryDate, List<OrderItem> items, DiscountCode discount, OrderStatus status, String phoneNumber, String address) {
+    public Order(int id, User user, LocalDateTime orderDate, LocalDateTime deliveryDate, OrderStatus status, DiscountCode discount, String phoneNumber, String address, List<OrderItem> items) {
         this.id = id;
         this.user = user;
         this.orderDate = orderDate;
         this.deliveryDate = deliveryDate;
-        this.items = items;
-        this.discount = discount;
         this.status = status;
+        this.discount = discount;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.items = items;
     }
 
     public int getId() {
