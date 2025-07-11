@@ -50,6 +50,32 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
+    /**
+     * Lấy tất cả id sản phẩm trong cơ sở dữ liệu.
+     *
+     * @return danh sách các id sản phẩm trong cơ sở dữ liệu.
+     */
+    public List<Product> getAllProductID() {
+
+        List<Product> list = new ArrayList<>();
+
+        try {
+            String query = "SELECT p.ProductID\n"
+                    + "FROM [dbo].[Products] p;";
+
+            ResultSet rs = execSelectQuery(query);
+
+            while (rs.next()) {
+                list.add(new Product(rs.getInt(1)));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
+    }
+
     // Hàm này dùng để phân trang, show ra số lượng sản phẩm nhất định.
     public List<Product> getProductForEachPage(int page) {
         List<Product> list = new ArrayList<>();
@@ -498,6 +524,32 @@ public class ProductDAO extends dbconnect.DBContext {
             while (rs.next()) {
                 return rs.getInt(1);
             }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return 0;
+    }
+
+    /**
+     * Đặt đường dẫn của ảnh sản phẩm trong cơ sở dữ liệu.
+     *
+     * @param productID là id của sản phẩm.
+     * @param url là đường dẫn của ảnh.
+     *
+     * @return 0 nếu đặt đường dẫn thất bại. Khác 0 nếu thành công.
+     */
+    public int setImgUrl(int productID, String url) {
+
+        try {
+
+            String query = "UPDATE [dbo].[Products]\n"
+                    + "SET ImagePath = ?\n"
+                    + "WHERE ProductID = ?;";
+            Object[] params = {url, productID};
+
+            return execQuery(query, params);
 
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);

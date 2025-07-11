@@ -42,10 +42,10 @@ public class CategoryDAO extends dbconnect.DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return list;
     }
-    
+
     /**
      * Lấy tất cả danh mục khả thi trong cơ sở dữ liệu.
      *
@@ -68,7 +68,33 @@ public class CategoryDAO extends dbconnect.DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+        return list;
+    }
+
+    /**
+     * Lấy tất cả id danh mục trong cơ sở dữ liệu.
+     *
+     * @return danh sách các id danh mục trong cơ sở dữ liệu.
+     */
+    public List<Category> getAllCategoryID() {
+
+        List<Category> list = new ArrayList<>();
+
+        try {
+            String query = "SELECT c.CategoryID\n"
+                    + "FROM [dbo].[Categories] c;";
+
+            ResultSet rs = execSelectQuery(query);
+
+            while (rs.next()) {
+                list.add(new Category(rs.getInt(1)));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return list;
     }
 
@@ -102,7 +128,7 @@ public class CategoryDAO extends dbconnect.DBContext {
 
         return category;
     }
-    
+
     /**
      * Lấy danh mục khả thi dựa trên id được cho.
      *
@@ -270,4 +296,29 @@ public class CategoryDAO extends dbconnect.DBContext {
         return -1;
     }
 
+    /**
+     * Đặt đường dẫn của ảnh danh mục trong cơ sở dữ liệu.
+     *
+     * @param categoryID là id của sản phẩm.
+     * @param url là đường dẫn của ảnh.
+     *
+     * @return 0 nếu đặt đường dẫn thất bại. Khác 0 nếu thành công.
+     */
+    public int setImgUrl(int categoryID, String url) {
+
+        try {
+
+            String query = "UPDATE [dbo].[Categories]\n"
+                    + "SET ImagePath = ?\n"
+                    + "WHERE CategoryID = ?;";
+            Object[] params = {url, categoryID};
+
+            return execQuery(query, params);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return 0;
+    }
 }
