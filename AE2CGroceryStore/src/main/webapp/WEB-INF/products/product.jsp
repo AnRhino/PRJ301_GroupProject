@@ -71,7 +71,14 @@
                                             <div class="">
                                                 <div class="row border border-secondary bg-white border-dark">   
                                                     <div class="col-6 d-flex justify-content-start p-0">
-                                                        <img src="assets/images/placeHolder.jpg" alt="placeholder" style=" height: 500px; object-fit: cover; width: 100%;">
+                                                        <c:choose>
+                                                            <c:when test="${empty requestScope.product.coverImg}">
+                                                                <img src="assets/images/placeHolder.jpg" alt="placeholder" style=" height: 500px; object-fit: cover; width: 100%;">
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <img src="<c:url value="/get-image/${requestScope.product.coverImg}"/>" alt="${requestScope.product.productName}" style=" height: 500px; object-fit: cover; width: 100%;">
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </div>
                                                     <div class="col-6 py-3">
                                                         <h3>Information:</h3>

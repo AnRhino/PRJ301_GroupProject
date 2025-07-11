@@ -37,7 +37,14 @@
                                         <button class="btn btn-secondary border border-secondary">
                                             <div class="row gap-1">
                                                 <div class="col-12 d-flex justify-content-center">
-                                                    <img src="assets/images/placeHolder.jpg" alt="placeholder">
+                                                    <c:choose>
+                                                        <c:when test="${empty prod.coverImg}">
+                                                            <img src="assets/images/placeHolder.jpg" alt="placeholder">
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <img src="<c:url value="/get-image/${prod.coverImg}"/>" alt="${prod.productName}">
+                                                        </c:otherwise>
+                                                    </c:choose>      
                                                 </div>
                                                 <div class="col-12 d-flex justify-content-center">
                                                     <p class="fw-bold">Product code:</p>&nbsp;

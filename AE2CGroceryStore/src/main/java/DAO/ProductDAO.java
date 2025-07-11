@@ -116,7 +116,7 @@ public class ProductDAO extends dbconnect.DBContext {
 
         try {
 
-            String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden\n"
+            String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden, p.ImagePath\n"
                     + "FROM [dbo].[Products] p\n"
                     + "JOIN [dbo].[Categories] c ON p.CategoryID = c.CategoryID\n"
                     + "WHERE p.IsHidden = 0\n"
@@ -129,7 +129,7 @@ public class ProductDAO extends dbconnect.DBContext {
 
             while (rs.next()) {
                 Category Category = new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8));
-                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
+                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category, rs.getString(9), true);
                 list.add(pro);
             }
 
@@ -143,7 +143,7 @@ public class ProductDAO extends dbconnect.DBContext {
     // Dùng để phân trang cho categories.
     public List<Product> getAvailableProductsByCategoryPage(int categoryID, int page) {
         List<Product> list = new ArrayList<>();
-        String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden\n"
+        String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden, p.ImagePath\n"
                 + "FROM Products p\n"
                 + "JOIN Categories c ON p.CategoryID = c.CategoryID\n"
                 + "WHERE c.CategoryID = ? AND c.IsHidden = 0\n"
@@ -170,7 +170,9 @@ public class ProductDAO extends dbconnect.DBContext {
                                 rs.getInt("CategoryID"),
                                 rs.getString("CategoryName"),
                                 rs.getBoolean("IsHidden")
-                        )
+                        ),
+                        rs.getString(9),
+                        true
                 );
                 list.add(pro);
             }
@@ -333,7 +335,7 @@ public class ProductDAO extends dbconnect.DBContext {
 
         try {
 
-            String query = "SELECT p.ProductID, p.ProductCode, p.ProductName, p.Quantity, p.Price, p.IsHidden, c.CategoryID, c.CategoryName, c.IsHidden\n"
+            String query = "SELECT p.ProductID, p.ProductCode, p.ProductName, p.Quantity, p.Price, p.IsHidden, c.CategoryID, c.CategoryName, c.IsHidden, p.ImagePath\n"
                     + "FROM [dbo].[Products] p\n"
                     + "JOIN [dbo].[Categories] c \n"
                     + "ON p.CategoryID = c.CategoryID\n"
@@ -344,7 +346,7 @@ public class ProductDAO extends dbconnect.DBContext {
             ResultSet rs = execSelectQuery(query, params);
 
             if (rs.next()) {
-                return new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), new Category(rs.getInt(7), rs.getString(8), rs.getBoolean(9)));
+                return new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), new Category(rs.getInt(7), rs.getString(8), rs.getBoolean(9)), rs.getString(10), true);
             }
 
         } catch (SQLException ex) {
