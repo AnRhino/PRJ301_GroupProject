@@ -21,12 +21,14 @@ public class Order {
     private DiscountCode discount;
     private String phoneNumber;
     private String address;
-    private List<OrderItem> items;
+    private List<OrderItem> orderItems;
 
     public Order() {
     }
 
-    public Order(int id, User user, LocalDateTime orderDate, LocalDateTime deliveryDate, OrderStatus status, DiscountCode discount, String phoneNumber, String address, List<OrderItem> items) {
+    public Order(int id, User user, LocalDateTime orderDate, LocalDateTime 
+            deliveryDate, OrderStatus status, DiscountCode discount, 
+            String phoneNumber, String address, List<OrderItem> orderItems) {
         this.id = id;
         this.user = user;
         this.orderDate = orderDate;
@@ -35,7 +37,7 @@ public class Order {
         this.discount = discount;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.items = items;
+        this.orderItems = orderItems;
     }
 
     public int getId() {
@@ -94,12 +96,12 @@ public class Order {
         this.discount = discount;
     }
 
-    public List<OrderItem> getItems() {
-        return items;
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setItems(List<OrderItem> items) {
-        this.items = items;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public OrderStatus getStatus() {
@@ -108,6 +110,14 @@ public class Order {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+    
+    public int getTotalAmount() {
+        int totalAmount = 0;
+        for(OrderItem item : this.orderItems) {
+            totalAmount += item.getTotalAmount();
+        }
+        return totalAmount;
     }
 
 }

@@ -13,16 +13,21 @@ public class OrderItem {
     private Order order;
     private Product product;
     private int quantity;
-    private int price;
+    private int unitPrice;
 
     public OrderItem() {
     }
 
-    public OrderItem(Order order, Product product, int quantity, int price) {
+    public OrderItem(Order order, Product product, int quantity) {
         this.order = order;
         this.product = product;
         this.quantity = quantity;
-        this.price = price;
+        this.unitPrice = this.product.getPrice();
+    }
+
+    public OrderItem(Order order, Product product, int quantity, int unitPrice) {
+        this(order, product, quantity);
+        this.unitPrice = unitPrice;
     }
 
     public Order getOrder() {
@@ -49,12 +54,16 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public int getPrice() {
-        return price;
+    public int getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setUnitPrice(int unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public int getTotalAmount() {
+        return this.quantity * this.unitPrice;
     }
 
 }
