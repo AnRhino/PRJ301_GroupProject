@@ -74,7 +74,7 @@ public class NewOrderServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/order/create.jsp").forward(request, response);
-
+        
     }
 
     /**
@@ -104,7 +104,7 @@ public class NewOrderServlet extends HttpServlet {
         String strDiscountCodeId = request.getParameter("discount-code-id");
         String strPhoneNumber = request.getParameter("phone-number");
         String strAddress = request.getParameter("address");
-
+        
         try {
             int userId = loggedUser.getId();
             // Parse to right datatype
@@ -156,9 +156,12 @@ public class NewOrderServlet extends HttpServlet {
                 cartDAO.delete(cart.getCartItemID());
             }
 
+            // Clear list items in session
+            session.removeAttribute("wantedCartList");
+
             // Redirect to list order
             response.sendRedirect(request.getContextPath() + "/order");
-
+            
         } catch (DateTimeParseException dtpe) {
             errorMessage.setMessage(MessageConstants.INVALID_DATE);
         } catch (Exception e) {
