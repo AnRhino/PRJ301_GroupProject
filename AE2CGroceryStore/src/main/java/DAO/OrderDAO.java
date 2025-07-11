@@ -60,7 +60,7 @@ public class OrderDAO extends DBContext {
      */
     public Order getLastestOrderByUser(User user) {
         String query = "select top 1 OrderID, OrderDate, DeliveryDate, \n"
-                + "StatusID, DiscountCodeID, PhoneNumber, [Address]\n"
+                + "StatusID, DiscountCodeID, PhoneNumber, [Address], DeliveryFee\n"
                 + "from Orders\n"
                 + "where UserID = ?\n"
                 + "order by OrderID desc";
@@ -76,7 +76,8 @@ public class OrderDAO extends DBContext {
                         new DiscountCode(rs.getInt(5), null, 0, 0, 0, null, 0),
                         rs.getString(6),
                         rs.getString(7),
-                        null
+                        null,
+                        rs.getInt(8)
                 );
             }
         } catch (SQLException ex) {

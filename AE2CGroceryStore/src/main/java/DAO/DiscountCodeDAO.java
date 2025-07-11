@@ -30,11 +30,11 @@ public class DiscountCodeDAO extends DBContext {
                 list.add(new DiscountCode(
                         rs.getInt(1),
                         rs.getString(2),
-                        rs.getDouble(3),
+                        rs.getInt(3),
                         rs.getInt(4),
                         rs.getInt(5),
                         rs.getDate(6),
-                        rs.getDouble(7)));
+                        rs.getInt(7)));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
