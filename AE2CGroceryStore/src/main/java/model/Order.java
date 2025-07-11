@@ -121,16 +121,55 @@ public class Order {
         this.status = status;
     }
 
+    /**
+     * Return the total value of all items in an order before any discounts or
+     * delivery fees are applied.
+     *
+     * @return the total value of all items
+     */
     public int getSubtotal() {
         int subtotal = 0;
         for (OrderItem item : this.orderItems) {
             subtotal += item.getTotalAmount();
         }
-        return subtotal + this.deliveryFee;
+        return subtotal;
     }
-    
+
+    /**
+     * Return the total cost of all items in an order after discounts have been
+     * applied, but before adding delivery fees.
+     *
+     * @return the total cost of all items after discounts
+     */
     public int getDiscountedSubtotal() {
-        
+        int subtotal = this.getSubtotal();
+        if (this.discount == null || this.discount.getMinOrderValue() > subtotal) {
+            return subtotal;
+        }
+        switch (this.discount.getType()) {
+            case 0:
+                return (int) Math.ceil((double) subtotal * (100 - this.discount.getValue()) / 100);
+            case 1:
+                return subtotal - this.discount.getValue();
+            default:
+                return subtotal;
+        }
+    }
+
+    /**
+     * Return the final amount a customer needs to pay for an order after all
+     * calculations are applied.
+     *
+     * @return the total payment
+     */
+    public int getTotalPayment() {
+        int discountedSubtotal = this.getDiscountedSubtotal();
+        if (this.discount != null
+                && this.discount.getType() == 2
+                && this.discount.getMinOrderValue() <= discountedSubtotal) {
+            return discountedSubtotal;
+        }
+        return discountedSubtotal + this.deliveryFee;
     }
 
 }
