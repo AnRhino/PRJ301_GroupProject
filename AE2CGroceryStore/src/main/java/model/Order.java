@@ -22,13 +22,21 @@ public class Order {
     private String phoneNumber;
     private String address;
     private List<OrderItem> orderItems;
+    private int deliveryFee;
 
     public Order() {
     }
 
-    public Order(int id, User user, LocalDateTime orderDate, LocalDateTime 
-            deliveryDate, OrderStatus status, DiscountCode discount, 
-            String phoneNumber, String address, List<OrderItem> orderItems) {
+    public Order(int id, User user, LocalDateTime orderDate, LocalDateTime deliveryDate,
+            OrderStatus status, DiscountCode discount, String phoneNumber, String address,
+            List<OrderItem> orderItems) {
+        this(id, user, orderDate, deliveryDate, status, discount, phoneNumber,
+                address, orderItems, 0);
+    }
+
+    public Order(int id, User user, LocalDateTime orderDate, LocalDateTime deliveryDate,
+            OrderStatus status, DiscountCode discount, String phoneNumber, String address,
+            List<OrderItem> orderItems, int deliveryFee) {
         this.id = id;
         this.user = user;
         this.orderDate = orderDate;
@@ -38,6 +46,7 @@ public class Order {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.orderItems = orderItems;
+        this.deliveryFee = deliveryFee;
     }
 
     public int getId() {
@@ -111,13 +120,17 @@ public class Order {
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
-    
-    public int getTotalAmount() {
-        int totalAmount = 0;
-        for(OrderItem item : this.orderItems) {
-            totalAmount += item.getTotalAmount();
+
+    public int getSubtotal() {
+        int subtotal = 0;
+        for (OrderItem item : this.orderItems) {
+            subtotal += item.getTotalAmount();
         }
-        return totalAmount;
+        return subtotal + this.deliveryFee;
+    }
+    
+    public int getDiscountedSubtotal() {
+        
     }
 
 }

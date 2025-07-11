@@ -72,11 +72,11 @@ CREATE TABLE DiscountTypes (
 CREATE TABLE DiscountCodes (
     DiscountCodeID INT PRIMARY KEY IDENTITY(1,1),
     Code NVARCHAR(50) UNIQUE NOT NULL,
-    DiscountValue DECIMAL(10,2) DEFAULT 0,
+    DiscountValue INT DEFAULT 0,
     DiscountTypeID INT FOREIGN KEY REFERENCES DiscountTypes(DiscountTypeID) NOT NULL,
     QuantityAvailable INT,
     ExpiryDate DATE,
-    MinOrderValue DECIMAL(10,2) DEFAULT 0,
+    MinOrderValue INT DEFAULT 0,
 	IsHidden BIT DEFAULT 0
 );
 

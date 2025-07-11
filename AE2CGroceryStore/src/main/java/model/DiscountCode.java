@@ -14,16 +14,16 @@ public class DiscountCode {
 
     private int id;
     private String code;
-    private double value;
+    private int value;
     private int type;
     private int quantity;
     private Date expiryDate;
-    private double minOrderValue;
+    private int minOrderValue;
 
     public DiscountCode() {
     }
 
-    public DiscountCode(int id, String code, double value, int type, int quantity, Date expiryDate, double minOrderValue) {
+    public DiscountCode(int id, String code, int value, int type, int quantity, Date expiryDate, int minOrderValue) {
         this.id = id;
         this.code = code;
         this.value = value;
@@ -49,11 +49,11 @@ public class DiscountCode {
         this.code = code;
     }
 
-    public double getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
@@ -81,11 +81,11 @@ public class DiscountCode {
         this.expiryDate = expiryDate;
     }
 
-    public double getMinOrderValue() {
+    public int getMinOrderValue() {
         return minOrderValue;
     }
 
-    public void setMinOrderValue(double minOrderValue) {
+    public void setMinOrderValue(int minOrderValue) {
         this.minOrderValue = minOrderValue;
     }
 
