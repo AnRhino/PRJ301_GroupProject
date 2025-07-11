@@ -42,13 +42,13 @@ public class OrderDAO extends DBContext {
             phoneNumber,
             address
         };
-        
+
         try {
             return execQuery(query, params);
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return 0;
     }
 
@@ -84,5 +84,23 @@ public class OrderDAO extends DBContext {
         }
         return null;
     }
-    
+
+    /**
+     * Delete a row of table Orders in database by OrderID
+     *
+     * @param orderId
+     * @return the number of rows are deleted
+     */
+    public int deleteOrderById(int orderId) {
+        String query = "delete from Orders\n"
+                + "where OrderID = ?";
+        Object[] params = {orderId};
+
+        try {
+            return execQuery(query, params);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 }

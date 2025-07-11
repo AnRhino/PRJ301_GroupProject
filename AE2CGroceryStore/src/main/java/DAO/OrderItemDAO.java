@@ -72,4 +72,23 @@ public class OrderItemDAO extends DBContext {
         }
         return numberOfNewRow;
     }
+
+    /**
+     * Delete a row of table OrderItems in database by OrderID
+     *
+     * @param orderId
+     * @return the number of rows are deleted
+     */
+    public int deleteOrderItemsByOrderId(int orderId) {
+        String query = "delete from OrderItems\n"
+                + "where OrderID = ?";
+        Object[] params = {orderId};
+
+        try {
+            return execQuery(query, params);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 }
