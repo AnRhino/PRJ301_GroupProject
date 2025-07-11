@@ -196,4 +196,17 @@ public class CartDAO extends dbconnect.DBContext {
         return 0;
     }
 
+    public int deleteByUserIdAndProductId(int userId, int productId) {
+        String query = "delete from Carts\n"
+                + "where UserID = ? AND ProductID = ?";
+        Object[] params = {userId, productId};
+        
+        try {
+            return execQuery(query, params);
+        } catch (SQLException ex) {
+            Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
 }
