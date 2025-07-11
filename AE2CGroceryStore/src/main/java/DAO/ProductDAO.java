@@ -80,7 +80,7 @@ public class ProductDAO extends dbconnect.DBContext {
     public List<Product> getProductForEachPage(int page) {
         List<Product> list = new ArrayList<>();
         try {
-            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden\n"
+            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden, p.ImagePath\n"
                     + "from Products p \n"
                     + "join  Categories c on p.CategoryID = c.CategoryID\n"
                     + "where p.IsHidden = 0\n"
@@ -91,7 +91,7 @@ public class ProductDAO extends dbconnect.DBContext {
             while (rs.next()) {
 
                 Category Category = new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8));
-                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
+                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category, rs.getString(9), true);
                 list.add(pro);
             }
 

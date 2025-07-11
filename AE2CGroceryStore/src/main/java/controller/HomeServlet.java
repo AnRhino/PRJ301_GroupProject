@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import utils.ImagePathInitializer;
 import utils.PaginationUtil;
 
 /**
@@ -67,6 +68,11 @@ public class HomeServlet extends HttpServlet {
 
         String view = request.getParameter("view");
 
+        // Kiểm tra nếu ảnh chưa có đường dẫn thì tạo đường dẫn nó trong database.
+        if (!ImagePathInitializer.LOAD_IMG_STATUS) {
+            ImagePathInitializer.initialize();
+        }
+        
         if (view == null || view.isBlank()) {
             getDataIndex(request);
             request.getRequestDispatcher("index.jsp").forward(request, response);

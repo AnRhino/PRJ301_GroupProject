@@ -79,10 +79,20 @@
                                         <input type="hidden" name="categoryID" value="${cate.categoryID}">
                                         <button class="btn p-0 border-0 bg-transparent w-100">
                                             <div class="d-flex flex-column align-items-center">
-                                                <img src="assets/images/category/${cate.categoryID}.png"
-                                                     alt="placeholder"
-                                                     class="img-fluid"
-                                                     style="width: 150px; height: 100px; object-fit: cover;"> <% // ảnh tự thu nhỏ vừa khung.%>
+                                                <c:choose>
+                                                    <c:when test="${empty cate.coverImg}">
+                                                        <img src="assets/images/placeHolder.jpg"
+                                                             alt="placeholder"
+                                                             class="img-fluid"
+                                                             style="width: 150px; height: 100px; object-fit: cover;"> <% // ảnh tự thu nhỏ vừa khung.%>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <img src="<c:url value="/get-image/${cate.coverImg}"/>" 
+                                                             alt="${cate.categoryName}"
+                                                             class="img-fluid"
+                                                             style="width: 150px; height: 100px; object-fit: cover;">
+                                                    </c:otherwise>
+                                                </c:choose>
                                                 <div class="fw-bold text-uppercase text-center mt-2" style="font-size: 0.9rem;">
                                                     ${cate.categoryName}
                                                 </div>
@@ -119,9 +129,18 @@
                                             <input type="hidden" name="productID" value="${pro.productID}">
                                             <button class="btn">
                                                 <div class="row d-flex justify-content-center">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <img src="assets/images/placeHolder.jpg" id="img" alt="placeholder">
-                                                    </div>  
+                                                    <c:choose>
+                                                        <c:when test="${empty pro.coverImg}">         
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <img src="assets/images/placeHolder.jpg" id="img" alt="placeholder">
+                                                            </div>  
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <img src="<c:url value="/get-image/${pro.coverImg}"/>" id="img" alt="${pro.productName}">
+                                                            </div> 
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                     <div id="productInfo" class="p-2">
                                                         <div class="col-12 d-flex justify-content-center">
                                                             <p class="fw-bold">Product code:</p>&nbsp;
