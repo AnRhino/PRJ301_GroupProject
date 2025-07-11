@@ -37,6 +37,10 @@ public class Category {
         this.coverImg = coverImg;
     }
 
+    public Category(int categoryID) {
+        this.categoryID = categoryID;
+    }
+
     public int getCategoryID() {
         return categoryID;
     }
