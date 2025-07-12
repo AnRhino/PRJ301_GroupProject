@@ -129,9 +129,8 @@ public class CartServlet extends HttpServlet {
                     wantedCartList.add(cart);
                 }
             }
-
             request.getSession().setAttribute("wantedCartList", wantedCartList);
-            response.sendRedirect(request.getContextPath() + "/new-order");
+            response.sendRedirect(request.getContextPath() + "/cart?view=order");
             return;
 
         } else if ("cart".equals(action)) {
