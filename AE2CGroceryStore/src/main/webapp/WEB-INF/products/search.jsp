@@ -39,10 +39,10 @@
                                                 <div class="col-12 d-flex justify-content-center">
                                                     <c:choose>
                                                         <c:when test="${empty prod.coverImg}">
-                                                            <img src="assets/images/placeHolder.jpg" alt="placeholder">
+                                                            <img src="assets/images/placeHolder.jpg" alt="placeholder" id="img">
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <img src="<c:url value="/get-image/${prod.coverImg}"/>" alt="${prod.productName}">
+                                                            <img src="<c:url value="/get-image/${prod.coverImg}"/>" alt="${prod.productName}" id="img">
                                                         </c:otherwise>
                                                     </c:choose>      
                                                 </div>

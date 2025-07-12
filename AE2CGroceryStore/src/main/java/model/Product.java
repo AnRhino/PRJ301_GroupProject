@@ -15,6 +15,7 @@ public class Product {
     private String productName;
     private int quantity;
     private int price;
+    private int sumQuality;
     private Category category;
     private String coverImg;
     private boolean isHidden;
@@ -45,6 +46,13 @@ public class Product {
 
     public Product(int productID) {
         this.productID = productID;
+    }
+
+    public Product(int productID, String productName, String coverImg, int sumQuality) {
+        this.productID = productID;
+        this.sumQuality = sumQuality;
+        this.coverImg = coverImg;
+        this.productName = productName;
     }
 
     public int getProductID() {

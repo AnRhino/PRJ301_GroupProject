@@ -125,7 +125,8 @@ public class HomeServlet extends HttpServlet {
                 page = PaginationUtil.MIN_NUMBER_PAGE;
             }
         }
-
+        
+        request.setAttribute("carouselList", productDao.carouselProduct());
         request.setAttribute("categoryList", categoryDao.getAll());
         request.setAttribute("productList", productDao.getProductForEachPage(page));
     }

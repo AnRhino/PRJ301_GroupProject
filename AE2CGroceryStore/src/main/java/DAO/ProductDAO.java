@@ -102,6 +102,26 @@ public class ProductDAO extends dbconnect.DBContext {
         return list;
     }
 
+    public List<Product> carouselProduct() {
+        List<Product> list = new ArrayList<>();
+        try {
+            String query = "select top 5 p.ProductID, p.ProductName,p.ImagePath, SUM(od.Quantity) sumQuantity\n"
+                    + "from Products p\n"
+                    + "join OrderDetails od\n"
+                    + "on p.ProductID = od.ProductID\n"
+                    + "where p.Quantity > 0\n"
+                    + "group by p.ProductID, p.ProductName, p.ImagePath, p.Quantity\n"
+                    + "order by sumQuantity desc, p.Quantity desc";
+            ResultSet rs = execSelectQuery(query, null);
+            while (rs.next()) {
+                list.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
     /**
      * Lấy từng trang sản phẩm mà người dùng tìm kiếm.
      *

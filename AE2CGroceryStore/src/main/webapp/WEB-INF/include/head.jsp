@@ -40,6 +40,7 @@
 
             #img{
                 width: 300px;
+                height: 250px;
             }
 
             #navbarCollapse{

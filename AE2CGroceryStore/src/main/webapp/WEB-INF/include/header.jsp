@@ -31,22 +31,22 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-3">
-                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/user-product?view=category&id=1">Beverages</a></li>
-                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/user-product?view=category&id=2">Snacks</a></li>
-                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/user-product?view=category&id=3">Fruits</a></li>
+                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=1">Beverages</a></li>
+                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=2">Snacks</a></li>
+                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=3">Fruits</a></li>
                                         </div>
                                         <div class="col-3">
-                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/user-product?view=category&id=4">Vegetables</a></li>
-                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/user-product?view=category&id=5">Diary</a></li>
-                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/user-product?view=category&id=6">Bakery</a></li>
+                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=4">Vegetables</a></li>
+                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=5">Diary</a></li>
+                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=6">Bakery</a></li>
                                         </div>
                                         <div class="col-3">
-                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/user-product?view=category&id=7">Meats</a></li>
-                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/user-product?view=category&id=8">Seafood</a></li>
-                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/user-product?view=category&id=9">Canned Goods</a></li>
+                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=7">Meats</a></li>
+                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=8">Seafood</a></li>
+                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=9">Canned Goods</a></li>
                                         </div>
                                         <div class="col-3">
-                                            <li><a class="dropdown-item" href="<%= request.getContextPath()%>/user-product?view=category&id=10">Frozen Foods</a></li>
+                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=10">Frozen Foods</a></li>
                                         </div>
                                     </div>
                                 </div>
