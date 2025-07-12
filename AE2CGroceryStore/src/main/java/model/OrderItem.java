@@ -62,7 +62,7 @@ public class OrderItem {
         this.unitPrice = unitPrice;
     }
 
-    public int getTotalAmount() {
+    public int getTotalPrice() {
         return this.quantity * this.unitPrice;
     }
 

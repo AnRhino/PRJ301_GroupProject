@@ -130,7 +130,7 @@ public class Order {
     public int getSubtotal() {
         int subtotal = 0;
         for (OrderItem item : this.orderItems) {
-            subtotal += item.getTotalAmount();
+            subtotal += item.getTotalPrice();
         }
         return subtotal;
     }
