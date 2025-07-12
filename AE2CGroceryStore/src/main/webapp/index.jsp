@@ -38,10 +38,16 @@
                                      id="carousel-img">
                             </c:when>
                             <c:otherwise>
-                                <img src="<c:url value='/get-image/${product.coverImg}'/>" 
-                                     alt="${product.productName}"
-                                     class="d-block w-50 mx-auto"
-                                     id="carousel-img">
+                                <a href="
+                                   <c:url value="/user-product">
+                                       <c:param name="view" value="product"/>
+                                       <c:param name="productID" value="${product.productID}"/>
+                                   </c:url>
+                                   "> <img src="<c:url value='/get-image/${product.coverImg}'/>" 
+                                        alt="${product.productName}"
+                                        class="d-block w-auto mx-auto"
+                                        id="carousel-img">
+                                </a> 
                             </c:otherwise>
                         </c:choose>      
                     </div>
