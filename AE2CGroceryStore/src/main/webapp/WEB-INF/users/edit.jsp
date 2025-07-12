@@ -1,25 +1,26 @@
 <%-- 
-    Document   : cart
+    Document   : edit
     Created on : Jun 28, 2025, 10:19:44 PM
-    Author     : Vu Minh Khang - CE191371
+    Author     : Phan Duc Tho - CE191246
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
-    <%@include file="../include/head.jsp" %>
+    <%@ include file="../include/head.jsp" %>
     <body>
-        <%@include file="../include/header.jsp" %>
+        <%@ include file="../include/header.jsp" %>
 
         <div class="container p-5">
-            <h3>Edit Cart </h3>
+            <h3>Edit Cart</h3>
+
             <c:if test="${not empty checkQuantity}">
                 <div class="alert alert-danger">
                     <ul>
-                        <c:forEach var="ErrorMessage" items="${checkQuantity}">
-                            <li>${ErrorMessage}</li>
+                        <c:forEach var="error" items="${checkQuantity}">
+                            <li>${error}</li>
                             </c:forEach>
                     </ul>
                 </div>
@@ -27,15 +28,12 @@
 
             <form method="post" action="${pageContext.request.contextPath}/cart">
                 <input type="hidden" name="cartId" value="${cart.cartItemID}"/>
-                <input type="hidden" name="action" value="edit"/> 
-
+                <input type="hidden" name="action" value="edit"/>
 
                 <table class="table">
                     <tr>
                         <th>Image</th>
-                        <td>
-                            <img src="${pageContext.request.contextPath}/assets/images/lonely.png" style="width: 100px; height: auto;" />
-                        </td>
+                        <td><img src="${pageContext.request.contextPath}/assets/images/lonely.png" style="width: 100px;" /></td>
                     </tr>
                     <tr>
                         <th>Product</th>
@@ -47,9 +45,7 @@
                     </tr>
                     <tr>
                         <th>Quantity</th>
-                        <td>
-                            <input type="number" name="quantity" min="1" value="${cart.quantity}" required/>
-                        </td>
+                        <td><input type="number" name="quantity" min="1" value="${cart.quantity}" required/></td>
                     </tr>
                 </table>
 
@@ -58,7 +54,6 @@
             </form>
         </div>
 
-        <%@include file="../include/footer.jsp" %>
+        <%@ include file="../include/footer.jsp" %>
     </body>
 </html>
-
