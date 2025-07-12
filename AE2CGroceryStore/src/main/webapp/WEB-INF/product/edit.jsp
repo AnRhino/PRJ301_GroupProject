@@ -1,7 +1,14 @@
-<%@page import="model.Category"%>
-<%@page import="model.Product"%>
-<%@page import="java.util.List"%>
+<%-- 
+    Document   : create
+    Created on : Jun 16, 2025, 4:04:35 PM
+    Author     : Phan Duc Tho - CE191246
+--%>
+
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Product"%>
+<%@page import="model.Category"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
     <%@include file="../include/head.jsp" %>
@@ -27,36 +34,35 @@
 
                 <%
                     Product pro = (Product) request.getAttribute("pro");
-                    String pCode = (String) (request.getAttribute("pCode") != null ? request.getAttribute("pCode") : (pro != null ? pro.getProductCode() : ""));
-                    String pName = (String) (request.getAttribute("pName") != null ? request.getAttribute("pName") : (pro != null ? pro.getProductName() : ""));
-                    String pQuantity = (String) (request.getAttribute("pQuantity") != null ? request.getAttribute("pQuantity") : (pro != null ? String.valueOf(pro.getQuantity()) : ""));
-                    String pPrice = (String) (request.getAttribute("pPrice") != null ? request.getAttribute("pPrice") : (pro != null ? String.valueOf(pro.getPrice()) : ""));
-                    String pCate = (String) (request.getAttribute("pCate") != null ? request.getAttribute("pCate") : (pro != null ? String.valueOf(pro.getCategory().getCategoryID()) : ""));
+                    String pCode = request.getAttribute("oldCode") != null ? (String) request.getAttribute("oldCode") : pro.getProductCode();
+                    String pName = request.getAttribute("oldName") != null ? (String) request.getAttribute("oldName") : pro.getProductName();
+                    String pQuantity = request.getAttribute("oldQuantity") != null ? (String) request.getAttribute("oldQuantity") : String.valueOf(pro.getQuantity());
+                    String pPrice = request.getAttribute("oldPrice") != null ? (String) request.getAttribute("oldPrice") : String.valueOf(pro.getPrice());
+                    String pCate = request.getAttribute("oldCate") != null ? (String) request.getAttribute("oldCate") : String.valueOf(pro.getCategory().getCategoryID());
                 %>
 
-                <form class="form" method="post" action="<%= request.getContextPath()%>/product">
+                <form method="post" action="<%= request.getContextPath()%>/product">
                     <input type="hidden" name="action" value="edit" />
-                    <input type="hidden" name="id" value="<%= pro != null ? pro.getProductID() : ""%>" />
-
+                    <input type="hidden" name="id" value="<%= pro.getProductID()%>" />
 
                     <p>
-                        <label for="productCore">Product Code</label>
-                        <input class="form-control" type="text" id="productCore" name="productCore" value="<%= pCode%>" required >
+                        <label for="productCode">Product Code</label>
+                        <input class="form-control" type="text" id="productCode" name="productCore" value="<%= pCode%>" required />
                     </p>
 
                     <p>
                         <label for="productName">Product Name</label>
-                        <input class="form-control" type="text" id="productName" name="productName" value="<%= pName%>" required>
+                        <input class="form-control" type="text" id="productName" name="productName" value="<%= pName%>" required />
                     </p>
 
                     <p>
                         <label for="quantity">Quantity</label>
-                        <input class="form-control" type="text" id="quantity" name="quantity" value="<%= pQuantity%>" required>
+                        <input class="form-control" type="text" id="quantity" name="quantity" value="<%= pQuantity%>" required />
                     </p>
 
                     <p>
                         <label for="price">Price</label>
-                        <input class="form-control" type="text" id="price" name="price" value="<%= pPrice%>" required >
+                        <input class="form-control" type="text" id="price" name="price" value="<%= pPrice%>" required />
                     </p>
 
                     <%
@@ -64,8 +70,8 @@
                         if (categories != null && !categories.isEmpty()) {
                     %>
                     <p>
-                        <label for="categogy">Category</label>
-                        <select class="form-select" name="categogy" id="categogy">
+                        <label for="category">Category</label>
+                        <select class="form-select" name="categogy" id="category">
                             <% for (Category cate : categories) {%>
                             <option value="<%= cate.getCategoryID()%>" <%= String.valueOf(cate.getCategoryID()).equals(pCate) ? "selected" : ""%>>
                                 <%= cate.getCategoryName()%>
@@ -74,7 +80,7 @@
                         </select>
                     </p>
                     <% } else { %>
-                    <p class="text-danger">No categories found!</p>
+                    <p class="text-danger">No categories available</p>
                     <% }%>
 
                     <p>

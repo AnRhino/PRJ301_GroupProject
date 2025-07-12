@@ -1,43 +1,32 @@
 <%-- 
-    Document   : create
+    Document   : delete
     Created on : Jun 16, 2025, 4:04:35 PM
     Author     : Phan Duc Tho - CE191246
 --%>
 
-<%@page import="model.Category"%>
-<%@page import="model.Product"%>
-<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <%@include file="../include/head.jsp" %>
     <body>
-
         <%@include file="/WEB-INF/include/header.jsp" %>
+
         <main class="flex-shrink-0">
             <div class="container">
-                <h1 class="mt-5">Delete product</h1>
-                 Are you sure about that ?
-                <form class="form" method="post" action="product">
-                    <p>
+                <h1 class="mt-5">Delete Product</h1>
+                <p>Are you sure you want to delete this product?</p>
 
-                        <input  type="hidden" id="id" name="id" readonly
-                                value="<%= request.getParameter("id")%>">
-
-                    </p>
+                <form method="post" action="product">
+                    <input type="hidden" name="id" value="<%= request.getParameter("id")%>" />
 
                     <p>
-                        <button class="btn btn-success" type="submit"  name="action" value="delete">delete</button>
-                        <button type="clear" class="btn btn-secondary">Clear</button>
-
+                        <button class="btn btn-danger" type="submit" name="action" value="delete">Delete</button>
+                        <a href="product?view=list" class="btn btn-secondary">Cancel</a>
                     </p>
-
-
-
                 </form>
-
-
+            </div>
         </main>
+
         <%@include file="/WEB-INF/include/footer.jsp" %>
     </body>
 </html>

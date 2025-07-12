@@ -4,82 +4,75 @@
     Author     : Phan Duc Tho - CE191246
 --%>
 
-<%@page import="model.Category"%>
-<%@page import="model.Product"%>
-<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Category"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
-
 <html>
     <%@include file="../include/head.jsp" %>
     <body>
         <%@include file="/WEB-INF/include/header.jsp" %>
         <main class="flex-shrink-0">
             <div class="container">
-                <h1 class="mt-5">Create product</h1>
+                <h1 class="mt-5">Create Product</h1>
 
-              
                 <%
-                    List<String> errorMessage = (List<String>) request.getAttribute("errorMessage");
-                    String message = "";
-                    Object msg = request.getAttribute("msg");
-                    if (msg != null) {
-                        message = msg.toString();
-                    }
-
-                    if (errorMessage != null && !errorMessage.isEmpty()) {
+                    List<String> errorMessages = (List<String>) request.getAttribute("errorMessage");
+                    String message = (String) request.getAttribute("msg");
                 %>
+
+                <% if (errorMessages != null && !errorMessages.isEmpty()) { %>
                 <div class="alert alert-danger">
                     <ul>
-                        <% for (String err : errorMessage) {%>
+                        <% for (String err : errorMessages) {%>
                         <li><%= err%></li>
                             <% } %>
                     </ul>
                 </div>
-                <% } else if (!message.isEmpty()) {%>
+                <% } else if (message != null && !message.isEmpty()) {%>
                 <div class="alert alert-danger"><%= message%></div>
                 <a class="btn btn-success" href="product?view=create">Retry</a>
                 <a class="btn btn-primary" href="product?view=list">Home</a>
                 <% }%>
 
-              
-                <form class="form" method="post" action="<%= request.getContextPath()%>/product">
+                <form method="post" action="<%= request.getContextPath()%>/product">
                     <input type="hidden" name="action" value="create" />
 
                     <p>
-                        <label for="name">Product code</label>
-                        <input class="form-control" type="text" id="productCore" name="productCore"
-                               value="<%= request.getAttribute("PCode") != null ? request.getAttribute("PCode") : ""%>" required >
+                        <label for="productCode">Product Code</label>
+                        <input class="form-control" type="text" id="productCode" name="productCore"
+                               value="<%= request.getAttribute("PCode") != null ? request.getAttribute("PCode") : ""%>" required />
                     </p>
                     <p>
-                        <label for="name">Product Name</label>
+                        <label for="productName">Product Name</label>
                         <input class="form-control" type="text" id="productName" name="productName"
-                               value="<%= request.getAttribute("PName") != null ? request.getAttribute("PName") : ""%>" required>
+                               value="<%= request.getAttribute("PName") != null ? request.getAttribute("PName") : ""%>" required />
                     </p>
                     <p>
-                        <label for="name">Quantity</label>
-                        <input class="form-control" type="text" min="0" id="quantity" name="quantity"
-                               value="<%= request.getAttribute("PQuantity") != null ? request.getAttribute("PQuantity") : ""%>" required>
+                        <label for="quantity">Quantity</label>
+                        <input class="form-control" type="text" id="quantity" name="quantity"
+                               value="<%= request.getAttribute("PQuantity") != null ? request.getAttribute("PQuantity") : ""%>" required />
                     </p>
                     <p>
-                        <label for="name">Price</label>
-                        <input class="form-control" type="text" min="0" id="price" name="price"
-                               value="<%= request.getAttribute("PPrice") != null ? request.getAttribute("PPrice") : ""%>" required>
+                        <label for="price">Price</label>
+                        <input class="form-control" type="text" id="price" name="price"
+                               value="<%= request.getAttribute("PPrice") != null ? request.getAttribute("PPrice") : ""%>" required />
                     </p>
 
-                    <% List<Category> categogy = (List) request.getAttribute("cate");
-                        if (categogy != null) {
+                    <%
+                        List<Category> categories = (List<Category>) request.getAttribute("cate");
+                        if (categories != null && !categories.isEmpty()) {
                     %>
                     <p>
-                        <label for="artist">Category</label>
-                        <select class="form-select" name="categogy" id="categogy">
-                            <% for (Category cate : categogy) {%>
+                        <label for="category">Category</label>
+                        <select class="form-select" name="categogy" id="category">
+                            <% for (Category cate : categories) {%>
                             <option value="<%= cate.getCategoryID()%>"><%= cate.getCategoryName()%></option>
                             <% } %>
                         </select>
                     </p>
                     <% } else { %>
-                    <p class="text-danger">list is empty</p>
+                    <p class="text-danger">Category list is empty!</p>
                     <% }%>
 
                     <p>

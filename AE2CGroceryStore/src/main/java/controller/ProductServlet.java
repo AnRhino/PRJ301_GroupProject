@@ -80,8 +80,7 @@ public class ProductServlet extends HttpServlet {
         String categoryStr = request.getParameter("categogy");
 
         // Xử lý tạo mới sản phẩm
-        if (action.equals("create")) {
-
+        if ("create".equals(action)) {
             List<String> errors = new ArrayList<>();
             errors.addAll(productValidation.checkProductCode(productCode, listProduct));
             errors.addAll(productValidation.checkProductName(productName));
@@ -90,24 +89,16 @@ public class ProductServlet extends HttpServlet {
             errors.addAll(productValidation.checkCategoryID(categoryStr));
 
             if (!errors.isEmpty()) {
-                // Nếu có lỗi thì giữ lại dữ liệu form và trả về trang create
-                CategoryDAO cateDAO = new CategoryDAO();
-                request.setAttribute("cate", cateDAO.getAll());
-                request.setAttribute("errorMessage", errors);
-                request.setAttribute("PCode", productCode);
-                request.setAttribute("PName", productName);
-                request.setAttribute("PQuantity", quantityStr);
-                request.setAttribute("PPrice", priceStr);
-                request.setAttribute("PCate", categoryStr);
+                // Đổ dữ liệu lại khi có lỗi
+                setFormAttributes(request, productCode, productName, quantityStr, priceStr, categoryStr, errors);
                 request.getRequestDispatcher("/WEB-INF/product/create.jsp").forward(request, response);
                 return;
             }
 
-            // Nếu hợp lệ thì thêm vào database
-            productDAO.create(productCode, productName, Integer.parseInt(quantityStr), Double.parseDouble(priceStr), Integer.parseInt(categoryStr));
+            // Thêm sản phẩm
+            productDAO.create(productCode, productName, Integer.parseInt(quantityStr),
+                    Double.parseDouble(priceStr), Integer.parseInt(categoryStr));
             response.sendRedirect(request.getContextPath() + "/product?view=list");
-
-            // Xử lý xoá sản phẩm
         } else if (action.equals("delete")) {
 
             int id = Integer.parseInt(request.getParameter("id"));
@@ -125,16 +116,8 @@ public class ProductServlet extends HttpServlet {
             errors.addAll(productValidation.checkCategoryID(categoryStr));
 
             if (!errors.isEmpty()) {
-                // Nếu có lỗi thì giữ lại dữ liệu form và trả về trang edit
-                CategoryDAO cateDAO = new CategoryDAO();
-                request.setAttribute("cate", cateDAO.getAll());
-                request.setAttribute("errorMessage", errors);
-                request.setAttribute("oldCode", productCode);
-                request.setAttribute("oldName", productName);
-                request.setAttribute("oldQuantity", quantityStr);
-                request.setAttribute("oldPrice", priceStr);
-                request.setAttribute("oldCate", categoryStr);
-                request.setAttribute("pro", productDAO.getById(id));
+                // Đổ dữ liệu lại khi có lỗi
+                setFormAttributes(request, productCode, productName, quantityStr, priceStr, categoryStr, errors);
                 request.getRequestDispatcher("/WEB-INF/product/edit.jsp").forward(request, response);
                 return;
             }
@@ -143,6 +126,18 @@ public class ProductServlet extends HttpServlet {
             productDAO.edit(id, productCode, productName, Integer.parseInt(quantityStr), Double.parseDouble(priceStr), Integer.parseInt(categoryStr));
             response.sendRedirect(request.getContextPath() + "/product?view=list");
         }
+    }
+
+    private void setFormAttributes(HttpServletRequest request, String code, String name,
+            String quantity, String price, String cate, List<String> errors) {
+        request.setAttribute("PCode", code);
+        request.setAttribute("PName", name);
+        request.setAttribute("PQuantity", quantity);
+        request.setAttribute("PPrice", price);
+        request.setAttribute("PCate", cate);
+        request.setAttribute("errorMessage", errors);
+        CategoryDAO cateDAO = new CategoryDAO();
+        request.setAttribute("cate", cateDAO.getAll());
     }
 
     @Override
