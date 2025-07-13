@@ -107,7 +107,7 @@ public class ProductDAO extends dbconnect.DBContext {
         try {
             String query = "select top 5 p.ProductID, p.ProductName,p.ImagePath, SUM(od.Quantity) sumQuantity\n"
                     + "from Products p\n"
-                    + "join OrderDetails od\n"
+                    + "join OrderItems od\n"
                     + "on p.ProductID = od.ProductID\n"
                     + "where p.Quantity > 0\n"
                     + "group by p.ProductID, p.ProductName, p.ImagePath, p.Quantity\n"
