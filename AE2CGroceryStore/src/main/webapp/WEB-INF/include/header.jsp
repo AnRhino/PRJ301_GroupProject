@@ -83,7 +83,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="cart" class="btn btn-outline-light" style="position: relative; top: 20px;"><i class="bi bi-cart2"> Cart</i></a>
+                                    <a href="<c:url value="/cart"/>" class="btn btn-outline-light" style="position: relative; top: 20px;"><i class="bi bi-cart2"> Cart</i></a>
                                 </li>
                             </c:when>
                             <c:otherwise>
