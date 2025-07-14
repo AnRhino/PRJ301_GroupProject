@@ -56,8 +56,8 @@
                         <label class="form-check-label" for="isHidden">Hide Category On Creation</label>
                     </div>
                     <p>
-                        <button type="create" name="action" value="create" class="btn btn-success">Add</button>
-                        <button type="clear" class="btn btn-secondary">Clear</button>
+                        <button type="submit" name="action" value="create" class="btn btn-success">Add</button>
+                        <button type="reset" class="btn btn-secondary">Clear</button>
                     </p>
                 </form>
             </div>
