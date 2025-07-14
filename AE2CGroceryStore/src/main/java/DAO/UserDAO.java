@@ -88,7 +88,7 @@ public class UserDAO extends dbconnect.DBContext {
                 Object[] createParams = {username, hashPwd, fullName, email, 0};
                 execQuery(createQuery, createParams);
                 // return new user
-                return new User(username, null, 0);
+                return new User(username, null, 0, fullName, email); // Mr.Phuc register rồi mà không return fullName với email người dùng vào thì ko có fullname với email 🤡 phải relogin lại mới có lmao.
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
