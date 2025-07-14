@@ -14,7 +14,7 @@
     </filter>
     <filter-mapping>
         <filter-name>HomeFilter</filter-name>
-        <url-pattern>/index.jsp</url-pattern>
+        <url-pattern>*.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
