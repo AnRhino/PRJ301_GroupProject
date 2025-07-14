@@ -31,22 +31,22 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-3">
-                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=1">Beverages</a></li>
-                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=2">Snacks</a></li>
-                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=3">Fruits</a></li>
+                                            <li><a class="dropdown-item" href="<c:url value="/user-category?view=category&categoryID=1"/>">Beverages</a></li>
+                                            <li><a class="dropdown-item" href="<c:url value="/user-category?view=category&categoryID=2"/>">Snacks</a></li>
+                                            <li><a class="dropdown-item" href="<c:url value="/user-category?view=category&categoryID=3"/>">Fruits</a></li>
                                         </div>
                                         <div class="col-3">
-                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=4">Vegetables</a></li>
-                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=5">Diary</a></li>
-                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=6">Bakery</a></li>
+                                            <li><a class="dropdown-item" href="<c:url value="/user-category?view=category&categoryID=4"/>">Vegetables</a></li>
+                                            <li><a class="dropdown-item" href="<c:url value="/user-category?view=category&categoryID=5"/>">Diary</a></li>
+                                            <li><a class="dropdown-item" href="<c:url value="/user-category?view=category&categoryID=6"/>">Bakery</a></li>
                                         </div>
                                         <div class="col-3">
-                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=7">Meats</a></li>
-                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=8">Seafood</a></li>
-                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=9">Canned Goods</a></li>
+                                            <li><a class="dropdown-item" href="<c:url value="/user-category?view=category&categoryID=7"/>">Meats</a></li>
+                                            <li><a class="dropdown-item" href="<c:url value="/user-category?view=category&categoryID=8"/>">Seafood</a></li>
+                                            <li><a class="dropdown-item" href="<c:url value="/user-category?view=category&categoryID=9"/>">Canned Goods</a></li>
                                         </div>
                                         <div class="col-3">
-                                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user-category?view=category&categoryID=10">Frozen Foods</a></li>
+                                            <li><a class="dropdown-item" href="<c:url value="/user-category?view=category&categoryID=10"/>">Frozen Foods</a></li>
                                         </div>
                                     </div>
                                 </div>
@@ -55,13 +55,13 @@
 
                         <c:if test="${loggedUser.roleId == 1}">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="admin">Manager</a>
+                                <a class="nav-link active" aria-current="page" href="<c:url value="/admin"/>">Manager</a>
                             </li>
                         </c:if>
                     </ul>
                 </div>
                 <div class="ms-auto">
-                    <form action="${pageContext.request.contextPath}/user-search" method="get">
+                    <form action="<c:url value="/user-search"/>" method="get">
                         <input class="search border-2" required id="Search-bar" type="search" placeholder="Search" aria-label="Search" name="key">
                         <button class="btn btn-outline-success m-2" type="submit">Search</button>
                     </form>
@@ -77,19 +77,19 @@
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <a href="#" class="text-dark text-decoration-none m-4">Hi, ${loggedUser.username}</a>
-                                        <a href="user-profile" class="text-dark text-decoration-none m-4">Account details</a>
+                                        <a href="<c:url value="/user-profile"/>" class="text-dark text-decoration-none m-4">Account details</a>
                                         <a href="#" class="text-dark text-decoration-none m-4">Settings</a>
-                                        <a href="logout" class="text-danger text-decoration-none m-4">Logout</a>
+                                        <a href="<c:url value="/logout"/>" class="text-danger text-decoration-none m-4">Logout</a>
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="cart" class="btn btn-outline-light" style="position: relative; top: 20px;"><i class="bi bi-cart2"> Cart</i></a>
+                                    <a href="<c:url value="/cart"/>" class="btn btn-outline-light" style="position: relative; top: 20px;"><i class="bi bi-cart2"> Cart</i></a>
                                 </li>
                             </c:when>
                             <c:otherwise>
-                                <a href="login" class="btn btn-outline-success m-2" style="width: 73px; height: 38px; position: relative; top: 0px;">Login</a>
+                                <a href="<c:url value="/login"/>" class="btn btn-outline-success m-2" style="width: 73px; height: 38px; position: relative; top: 0px;">Login</a>
                                 <li class="nav-item dropdown">
-                                    <a href="cart" class="btn btn-outline-light" style="position: relative; top: 8px;"><i class="bi bi-cart2"> Cart</i></a>
+                                    <a href="<c:url value="/cart"/>" class="btn btn-outline-light" style="position: relative; top: 8px;"><i class="bi bi-cart2"> Cart</i></a>
                                 </li>
                             </c:otherwise>
                         </c:choose>
