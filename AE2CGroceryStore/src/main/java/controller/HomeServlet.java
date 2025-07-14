@@ -127,7 +127,7 @@ public class HomeServlet extends HttpServlet {
         }
         
         request.setAttribute("carouselList", productDao.carouselProduct());
-        request.setAttribute("categoryList", categoryDao.getAll());
+        request.setAttribute("categoryList", categoryDao.getAllCategoryAvailable());
         request.setAttribute("productList", productDao.getProductForEachPage(page));
     }
 
