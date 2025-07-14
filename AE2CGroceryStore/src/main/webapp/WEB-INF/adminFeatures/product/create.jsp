@@ -9,7 +9,7 @@
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
-    <%@include file="../include/head.jsp" %>
+     <%@include file="/WEB-INF/include/head.jsp" %>
     <body>
         <%@include file="/WEB-INF/include/header.jsp" %>
         <main class="flex-shrink-0">
@@ -35,7 +35,7 @@
                 <a class="btn btn-primary" href="product?view=list">Home</a>
                 <% }%>
 
-                <form method="post" action="<%= request.getContextPath()%>/product">
+                <form method="post" action="<%= request.getContextPath()%>/admin/product">
                     <input type="hidden" name="action" value="create" />
 
                     <p>

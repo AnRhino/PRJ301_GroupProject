@@ -23,7 +23,7 @@ Not done
                 <a href="<c:url value="/admin/categories"/>" class="btn btn-primary">Categories</a>
             </div>
             <div class="container">
-                <a href="<c:url value="/product"/>" class="btn btn-primary">Products</a>
+                <a href="<c:url value="/admin/product"/>" class="btn btn-primary">Products</a>
             </div>
             <div class="container">
                 <a href="<c:url value="/admin/statistic"/>" class="btn btn-primary">Statistics</a>

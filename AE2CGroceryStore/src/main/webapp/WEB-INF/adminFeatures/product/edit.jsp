@@ -11,7 +11,7 @@
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
-    <%@include file="../include/head.jsp" %>
+    <%@include file="/WEB-INF/include/head.jsp" %>
     <body>
         <%@include file="/WEB-INF/include/header.jsp" %>
 
@@ -41,7 +41,7 @@
                     String pCate = request.getAttribute("oldCate") != null ? (String) request.getAttribute("oldCate") : String.valueOf(pro.getCategory().getCategoryID());
                 %>
 
-                <form method="post" action="<%= request.getContextPath()%>/product">
+                <form method="post" action="<%= request.getContextPath()%>/admin/product">
                     <input type="hidden" name="action" value="edit" />
                     <input type="hidden" name="id" value="<%= pro.getProductID()%>" />
 

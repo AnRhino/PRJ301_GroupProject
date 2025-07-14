@@ -37,7 +37,7 @@
                 <c:forEach var="item" items="${listCanBuy}">
                     <tr>
                         <th scope="row"><%= index++ %></th>
-                        <td><img src="${pageContext.request.contextPath}/assets/images/lonely.png" style="width: 80px;" /></td>
+                        <td><img src="${pageContext.request.contextPath}/assets/images/${item.product.coverImg}" style="width: 80px;" /></td>
                         <td>${item.product.productName}</td>
                         <td>${item.quantity}</td>
                         <td>${item.product.price * item.quantity}</td>

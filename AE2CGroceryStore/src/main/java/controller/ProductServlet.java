@@ -24,42 +24,53 @@ import java.util.List;
  *
  * @author Phan Duc Tho
  */
-@WebServlet(name = "ProductServlet", urlPatterns = {"/product"})
+@WebServlet(name = "ProductServlet", urlPatterns = {"/admin/product"})
 public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        ProductValidation validation = new ProductValidation();
         String view = request.getParameter("view");
         ProductDAO productDAO = new ProductDAO();
 
         if (view == null || view.isBlank() || view.equals("list")) {
             // Hiển thị danh sách sản phẩm
             request.setAttribute("list", productDAO.getAll());
-            request.getRequestDispatcher("/WEB-INF/product/list.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/adminFeatures/product/list.jsp").forward(request, response);
 
         } else if (view.equals("create")) {
             // Hiển thị form tạo sản phẩm
             CategoryDAO cateDAO = new CategoryDAO();
             List<Category> categories = cateDAO.getAll();
             request.setAttribute("cate", categories);
-            request.getRequestDispatcher("/WEB-INF/product/create.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/adminFeatures/product/create.jsp").forward(request, response);
 
         } else if (view.equals("delete")) {
             // Hiển thị xác nhận xoá sản phẩm
-            int id = Integer.parseInt(request.getParameter("id"));
-            request.setAttribute("pro", productDAO.getById(id));
-            request.getRequestDispatcher("/WEB-INF/product/delete.jsp").forward(request, response);
 
+            boolean checkId = validation.checkProductId(request.getParameter("id"), productDAO.getAll());
+            if (!checkId) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                request.setAttribute("pro", productDAO.getById(id));
+                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/delete.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+            }
         } else if (view.equals("edit")) {
             // Hiển thị form chỉnh sửa sản phẩm
-            int id = Integer.parseInt(request.getParameter("id"));
-            request.setAttribute("pro", productDAO.getById(id));
-            CategoryDAO cateDAO = new CategoryDAO();
-            List<Category> categories = cateDAO.getAll();
-            request.setAttribute("cate", categories);
-            request.getRequestDispatcher("/WEB-INF/product/edit.jsp").forward(request, response);
+
+            boolean checkId = validation.checkProductId(request.getParameter("id"), productDAO.getAll());
+            if (!checkId) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                request.setAttribute("pro", productDAO.getById(id));
+                CategoryDAO cateDAO = new CategoryDAO();
+                List<Category> categories = cateDAO.getAll();
+                request.setAttribute("cate", categories);
+                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/edit.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+            }
         }
     }
 
@@ -91,19 +102,19 @@ public class ProductServlet extends HttpServlet {
             if (!errors.isEmpty()) {
                 // Đổ dữ liệu lại khi có lỗi
                 setFormAttributes(request, productCode, productName, quantityStr, priceStr, categoryStr, errors);
-                request.getRequestDispatcher("/WEB-INF/product/create.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/create.jsp").forward(request, response);
                 return;
             }
 
             // Thêm sản phẩm
             productDAO.create(productCode, productName, Integer.parseInt(quantityStr),
                     Double.parseDouble(priceStr), Integer.parseInt(categoryStr));
-            response.sendRedirect(request.getContextPath() + "/product?view=list");
+            response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
         } else if (action.equals("delete")) {
 
             int id = Integer.parseInt(request.getParameter("id"));
             productDAO.delete(id);
-            response.sendRedirect(request.getContextPath() + "/product?view=list");
+            response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
             // Xử lý chỉnh sửa sản phẩm
         } else if (action.equals("edit")) {
 
@@ -118,13 +129,13 @@ public class ProductServlet extends HttpServlet {
             if (!errors.isEmpty()) {
                 // Đổ dữ liệu lại khi có lỗi
                 setFormAttributes(request, productCode, productName, quantityStr, priceStr, categoryStr, errors);
-                request.getRequestDispatcher("/WEB-INF/product/edit.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/edit.jsp").forward(request, response);
                 return;
             }
 
             // Nếu hợp lệ thì cập nhật database
             productDAO.edit(id, productCode, productName, Integer.parseInt(quantityStr), Double.parseDouble(priceStr), Integer.parseInt(categoryStr));
-            response.sendRedirect(request.getContextPath() + "/product?view=list");
+            response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
         }
     }
 

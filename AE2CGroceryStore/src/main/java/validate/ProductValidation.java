@@ -20,7 +20,6 @@ import model.Product;
  *
  * @author Phan Duc Tho - CE191246
  */
-
 public class ProductValidation {
 
     public List<String> checkProductCode(String input, List<Product> products) {
@@ -47,6 +46,27 @@ public class ProductValidation {
         }
 
         return msg;
+    }
+
+    public boolean checkProductId(String input, List<Product> products) {
+
+        int digitInpput = 0;
+
+        for (int i = 0; i < input.length(); i++) {
+            if (!((input.charAt(i) >= '0' && input.charAt(i) <= '9'))) {
+
+                return false;
+            }
+        }
+        digitInpput = Integer.parseInt(input);
+        for (Product p : products) {
+            if (digitInpput == p.getProductID()) {
+
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public List<String> checkProductName(String input) {

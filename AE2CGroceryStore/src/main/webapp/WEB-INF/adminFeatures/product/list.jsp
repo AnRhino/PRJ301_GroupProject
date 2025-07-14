@@ -9,7 +9,7 @@
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
-    <%@include file="../include/head.jsp" %>
+    <%@include file="/WEB-INF/include/head.jsp" %>
     <body>
         <%@include file="/WEB-INF/include/header.jsp" %>
 
@@ -28,6 +28,7 @@
                     <thead>
                         <tr>
                             <th>Product Code</th>
+                            <th>Product Image</th>
                             <th>Product Name</th>
                             <th>Quantity</th>
                             <th>Price</th>
@@ -39,13 +40,14 @@
                         <% for (Product pr : productList) {%>
                         <tr>
                             <td><%= pr.getProductCode()%></td>
+                            <td></td>
                             <td><%= pr.getProductName()%></td>
                             <td><%= pr.getQuantity()%></td>
                             <td><%= pr.getPrice()%></td>
                             <td><%= pr.getCategory().getCategoryName()%></td>
                             <td>
-                                <a href="<%= request.getContextPath()%>/product?view=edit&id=<%= pr.getProductID()%>" class="btn btn-primary btn-sm">Edit</a>
-                                <a href="<%= request.getContextPath()%>/product?view=delete&id=<%= pr.getProductID()%>" class="btn btn-danger btn-sm">Delete</a>
+                                <a href="<%= request.getContextPath()%>/admin/product?view=edit&id=<%= pr.getProductID()%>" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="<%= request.getContextPath()%>/admin/product?view=delete&id=<%= pr.getProductID()%>" class="btn btn-danger btn-sm">Delete</a>
                             </td>
                         </tr>
                         <% } %>
