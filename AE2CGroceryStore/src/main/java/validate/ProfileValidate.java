@@ -12,10 +12,10 @@ public class ProfileValidate {
 
     public static final int MIN_LENGTH_FULL_NAME = 1;
 
-    public static final int MAX_LENGTH_FULL_NAME = 50;
+    public static final int MAX_LENGTH_FULL_NAME = 50; 
 
     public static final String FULLNAME_VALIDATE = "^"
-            + "[A-Za-zÀ-ÿ'\\- ]"
+            + "[A-Za-zÀ-ỹぁ-ゖ'\\- ]" // Cho phép nhập bản chữ cái tiếng anh và tiếng việt.
             + "{2,50}"
             + "$";
 
@@ -26,6 +26,12 @@ public class ProfileValidate {
             + "\\.[A-Za-z]{2,}"
             + "$";
 
+    
+    /**
+     * 
+     * @param input độ dài không được quá 50 và nhỏ hơn 1.
+     * @return 
+     */
     public static boolean maxAndMinFullNameLength(String input) {
         try {
             if (input.length() <= MIN_LENGTH_FULL_NAME || input.length() > MAX_LENGTH_FULL_NAME) {
@@ -38,6 +44,11 @@ public class ProfileValidate {
         }
     }
 
+    /**
+     * 
+     * @param input nếu người dùng nhập nhiều " " hơn 1 lần thì tự động biến thành 1 " "
+     * @return trả về 1 chuổi hoàn chỉnh bỏ khoảng cách 2 đầu và chỉ có 1 " " ở giữa những ký tự.
+     */
     public static String checkSpacing(String input){
         try{
             String output = input.replaceAll("\\s+", " ");
@@ -47,6 +58,11 @@ public class ProfileValidate {
         }           
     }
     
+    /**
+     * 
+     * @param input kiểm tra người dùng có bỏ trống không cho cả fullname và email.
+     * @return trả về false nếu không nhập gì.
+     */
     public static boolean checkEmptyInput(String input) {
         try {
 
@@ -61,6 +77,12 @@ public class ProfileValidate {
         }
     }
 
+    
+    /**
+     * 
+     * @param input người dùng nhập tên vào
+     * @return nếu tên không đúng với FULLNAME_VALIDATE thì trả về false và ngược lại
+     */
     public static boolean fullNameValidate(String input) {
         try {
             if (!input.matches(FULLNAME_VALIDATE)) {
@@ -72,6 +94,12 @@ public class ProfileValidate {
         }
     }
 
+    
+    /**
+     * 
+     * @param input những gì người dùng nhập vào
+     * @return nếu khác với EMAIL_REGEX cho phép thì false còn ngược lại là true
+     */
     public static boolean emailValidate(String input) {
         try {
             if (!input.matches(EMAIL_REGEX)) {

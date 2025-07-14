@@ -20,7 +20,7 @@ public class UserCredsValidate {
             + "\\.[A-Za-z]{2,}"
             + "$";
     private static final String FULL_NAME_REGEX = "^"
-            + "[A-Za-zÀ-ÿ'\\- ]" // Allowed characters: English letters, accented letters (like é, ñ), apostrophes ('), hyphens (-), and spaces
+            + "[A-Za-zÀ-ỹ'\\- ]" // Allowed characters: English letters, accented letters (like é, ñ), apostrophes ('), hyphens (-), and spaces
             + "{2,50}"// Length must be between 2 - 50 characters
             + "$";
     private static final String USERNAME_REGEX = "^"
