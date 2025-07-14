@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.ErrorMessage;
 import utils.FileIOUtil;
+import utils.MessageConstants;
 
 /**
  *
@@ -97,7 +98,7 @@ public class CategoriesCreateServlet extends HttpServlet {
         // Validate category name
         if (categoryName == null || categoryName.trim().isEmpty()) {
             hasErrors = true;
-            errorMessage = "Category name cannot be empty.";
+            errorMessage = MessageConstants.EMPTY_CATEGORY_NAME_MESSAGE;
         }
 
         // Process image upload if no errors
@@ -127,7 +128,7 @@ public class CategoriesCreateServlet extends HttpServlet {
 
             } catch (Exception e) {
                 hasErrors = true;
-                errorMessage = "Error processing image upload: " + e.getMessage();
+                errorMessage = MessageConstants.ERROR_IMAGE_UPLOAD_MESSAGE + e.getMessage();
                 Logger.getLogger(CategoriesCreateServlet.class.getName())
                         .log(Level.SEVERE, "Error in image upload", e);
             }
@@ -152,24 +153,24 @@ public class CategoriesCreateServlet extends HttpServlet {
 
             // Create directory if it doesn't exist
             if (!folder.exists() && !folder.mkdirs()) {
-                return "Failed to create upload directory.";
+                return MessageConstants.UNEXIST_DIRECTORY_MESSAGE;
             }
 
             // Validate file name
             String submittedFileName = coverImgPart.getSubmittedFileName();
             if (submittedFileName == null || submittedFileName.isBlank()) {
-                return "Uploaded file has no name.";
+                return MessageConstants.NO_NAME_FILE_MESSAGE;
             }
 
             // Validate file extension
             int dotIndex = submittedFileName.lastIndexOf(".");
             if (dotIndex <= 0) {
-                return "Invalid file name: " + submittedFileName;
+                return MessageConstants.INVALID_FILE_NAME_MESSAGE + submittedFileName;
             }
 
             String fileExtension = submittedFileName.substring(dotIndex).toLowerCase();
             if (!Arrays.asList(allowedExtensions).contains(fileExtension)) {
-                return "Only " + Arrays.toString(allowedExtensions) + " files are allowed.";
+                return MessageConstants.PREFIX_UNALLOWED_EXTENSION_MESSAGE + Arrays.toString(allowedExtensions) + MessageConstants.POSTFIX_UNALLOWED_EXTENSION_MESSAGE;
             }
 
             // Process file upload
@@ -178,7 +179,7 @@ public class CategoriesCreateServlet extends HttpServlet {
 
             // Delete existing file if it exists
             if (newFile.exists() && !newFile.delete()) {
-                return "Failed to replace existing image.";
+                return MessageConstants.FAILED_DELETE_FILE_MESSAGE;
             }
 
             // Save new file
@@ -189,7 +190,7 @@ public class CategoriesCreateServlet extends HttpServlet {
         } catch (Exception e) {
             Logger.getLogger(CategoriesCreateServlet.class.getName())
                     .log(Level.SEVERE, "Error processing image upload", e);
-            return "Error processing image: " + e.getMessage();
+            return MessageConstants.UNKNOWN_FILE_ERROR_MESSAGE + e.getMessage();
         }
     }
 
