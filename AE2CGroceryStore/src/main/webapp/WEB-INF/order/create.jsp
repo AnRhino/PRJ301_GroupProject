@@ -17,6 +17,7 @@
     <body>
         <%@include file="../include/header.jsp" %>
         <main>
+          
             <div class="container p-5">
                 <h1>New Order</h1>
                 <c:set var="items" value="${sessionScope.wantedCartList}"/>
@@ -39,18 +40,30 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <c:set var="totalPrice" value="0" />
                                 <c:forEach items="${items}" var="item">
                                     <tr>
                                         <td><img src="${pageContext.request.contextPath}/assets/images/lonely.png" style="width: 80px;" /></td>
                                         <td>${item.product.productName}</td>
-                                        <td>${item.product.price}</td>
+                                        <td>
+                                            <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND" />
+                                        </td>
                                         <td>${item.quantity}</td>
-                                        <td>${item.product.price * item.quantity}</td>
+                                        <td>
+                                            <fmt:formatNumber value="${item.product.price * item.quantity}" type="currency" currencySymbol="VND" />
+                                        </td>
                                     </tr>
+                                    <c:set var="totalPrice" value="${totalPrice + (item.product.price * item.quantity)}" />
                                 </c:forEach>
                             </tbody>
-                            
                         </table>
+
+                       
+                        <div class="text-end fs-5 fw-bold mb-4">
+                            Total Price: <fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND" />
+                        </div>
+
+                       
                         <form method="post" action="${pageContext.request.contextPath}/new-order">
                             <div class="mb-3">
                                 <label for="delivery-date" class="form-label">Delivery Date:</label>
@@ -68,7 +81,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="address" class="form-label">safe</label>
+                                <label for="safe" class="form-label">Safe:</label>
                                 <input type="text" name="safe" class="form-control" required />
                             </div>
 
