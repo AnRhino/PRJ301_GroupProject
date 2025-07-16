@@ -7,6 +7,7 @@ package controller;
 import DAO.CartDAO;
 import DAO.OrderDAO;
 import DAO.OrderItemDAO;
+import DAO.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -91,6 +92,7 @@ public class NewOrderServlet extends HttpServlet {
         OrderDAO orderDAO = new OrderDAO();
         CartDAO cartDAO = new CartDAO();
         OrderItemDAO orderItemDAO = new OrderItemDAO();
+        ProductDAO productDAO = new ProductDAO();
         HttpSession session = request.getSession();
         ErrorMessage errorMessage = new ErrorMessage(MessageConstants.UNKNOWN_ERROR_MESSAGE);
         int numberOfNewRows = 0;
@@ -155,6 +157,9 @@ public class NewOrderServlet extends HttpServlet {
             for (Cart cart : cartItems) {
                 cartDAO.delete(cart.getCartItemID());
             }
+            
+            // Reduce quantity in stock
+            productDAO.reduceQuantity(lastestOrder);
 
             // Clear list items in session
             session.removeAttribute("wantedCartList");

@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Category;
+import model.Order;
+import model.OrderItem;
 import model.Product;
 import utils.PaginationUtil;
 
@@ -33,14 +35,14 @@ public class ProductDAO extends dbconnect.DBContext {
             String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, p.IsHidden, p.ImagePath\n"
                     + "from Products p\n"
                     + "join  Categories c on p.CategoryID = c.CategoryID\n";
-                    
+
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 
                 Category Category = new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8));
                 Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
-                pro.setIsHidden(rs.getBoolean(8));             
+                pro.setIsHidden(rs.getBoolean(8));
                 pro.setCoverImg(rs.getString(9));
                 list.add(pro);
             }
@@ -400,6 +402,7 @@ public class ProductDAO extends dbconnect.DBContext {
         return 0;
 
     }
+
     public int hidden(int productId) {
         String query = "update Products\n"
                 + "set IsHidden = 0\n"
@@ -594,6 +597,31 @@ public class ProductDAO extends dbconnect.DBContext {
         }
 
         return 0;
+    }
+
+    public int reduceQuantity(int id, int reducedNum) {
+        String query = "update Products\n"
+                + "set Quantity = Quantity - ?\n"
+                + "where ProductID = ?";
+
+        Object[] params = {reducedNum, id};
+
+        try {
+            return execQuery(query, params);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return 0;
+    }
+
+    public int reduceQuantity(Order order) {
+        int numOfUpdatedRows = 0;
+        for (OrderItem item : order.getOrderItems()) {
+            numOfUpdatedRows += ProductDAO.this.reduceQuantity(item.getProduct().getProductID(), item.getQuantity());
+        }
+
+        return numOfUpdatedRows;
     }
 
 }
