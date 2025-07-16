@@ -8,7 +8,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <head>
-    <title>Start Page</title>
+    <title>AE2C Store</title>
     <link rel="icon" type="image/png" href="/ae2c/assets/images/logo.png">
     <link href="/ae2c/assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
