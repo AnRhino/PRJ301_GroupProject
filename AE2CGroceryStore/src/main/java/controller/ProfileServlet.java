@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.ErrorMessage;
 import model.User;
+import utils.MessageConstants;
 import validate.ProfileValidate;
 import validate.UserCredsValidate;
 
@@ -67,21 +68,8 @@ public class ProfileServlet extends HttpServlet {
         String view = request.getParameter("view");
 
         if (view == null || view.isBlank()) {
-
-        } else if (view.equals("editFullName")) {
-            boolean editFullName = true;
-            request.setAttribute("editFullName", editFullName);
-
-        } else if (view.equals("editEmail")) {
-            boolean editEmail = true;
-            request.setAttribute("editEmail", editEmail);
-
-        } else {
-            request.getSession().removeAttribute("fullNameError");
-            request.getSession().removeAttribute("emailError");
+            request.getRequestDispatcher("WEB-INF/users/profile.jsp").forward(request, response);
         }
-        request.getRequestDispatcher("WEB-INF/users/profile.jsp").forward(request, response);
-
     }
 
     /**
@@ -97,46 +85,69 @@ public class ProfileServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
+        // lấy thông tin người dùng
         User userProfile = (User) request.getSession().getAttribute("loggedUser");
 
+        // set giá trị
         String fullName = ProfileValidate.checkSpacing(request.getParameter("fullname"));
         String email = request.getParameter("email");
-        
-        boolean whoError = (fullName == null);
+        String password = request.getParameter("password");
+        String oldPassword = request.getParameter("oldPassword");
+
+        // Dùng để lọc xem cái nào cập nhật empty
+        boolean firstFillter = (fullName == null);
+        boolean secondFillter = (email == null);
+
         UserDAO dao = new UserDAO();
 
-        if (ProfileValidate.checkEmptyInput(email) && ProfileValidate.checkEmptyInput(fullName)) {
+        if (ProfileValidate.checkEmptyInput(email) && ProfileValidate.checkEmptyInput(fullName) && ProfileValidate.checkEmptyInput(password)) {
             // If empty save old name
-            dao.updateFullName(userProfile.getFullName(), userProfile.getEmail(), userProfile.getUsername()); // Update DAO
+
             request.getSession().setAttribute("loggedUser", dao.getUserByUsername(userProfile.getUsername())); // Set Attribute
-            if (whoError) {
-                request.getSession().setAttribute("emailError", new ErrorMessage("Email cannot be empty."));
+            if (firstFillter) {
+
+                // check xem cái nào null
+                if (secondFillter) {
+                    request.getSession().setAttribute("passwordError", MessageConstants.EMPTY_PASSWORD);
+                } else {
+                    request.getSession().setAttribute("emailError", MessageConstants.EMPTY_EMAIL);
+                }
             } else {
-                request.getSession().setAttribute("fullNameError", new ErrorMessage("Full name cannot be empty."));
+                request.getSession().setAttribute("fullNameError", MessageConstants.EMPTY_FULLNAME);
             }
 
-        } else if (email == null) {
+        } else if (email == null && password == null) { // change name
             if (ProfileValidate.maxAndMinFullNameLength(fullName)) { // Check length
-                request.getSession().setAttribute("fullNameError", new ErrorMessage("FullName lenght can't be lower than 1 and upper than 50."));
+                request.getSession().setAttribute("fullNameError", MessageConstants.INVALID_FULLNAME_LENGHT);
 
             } else if (ProfileValidate.fullNameValidate(fullName)) { // Check validate 
-                request.getSession().setAttribute("fullNameError", new ErrorMessage("This name cannot be used."));
+                request.getSession().setAttribute("fullNameError", MessageConstants.INVALID_FULLNAME);
 
             } else {
                 // change Name
-                dao.updateFullName(fullName, userProfile.getEmail(), userProfile.getUsername());
+                dao.updateProfile(fullName, userProfile.getEmail(), userProfile.getUsername());
                 request.getSession().setAttribute("loggedUser", dao.getUserByUsername(userProfile.getUsername()));
 
             }
-        } else if (fullName == null) { // Change email
+        } else if (fullName == null && password == null) { // Change email
             if (ProfileValidate.emailValidate(email)) { // Check email validate
-                request.getSession().setAttribute("emailError", new ErrorMessage("The email address you entered is invalid."));
+                request.getSession().setAttribute("emailError", MessageConstants.INVALID_EMAIL);
 
             } else {
                 // Thay đổi Email
-                dao.updateFullName(userProfile.getFullName(), email, userProfile.getUsername());
+                dao.updateProfile(userProfile.getFullName(), email, userProfile.getUsername());
                 request.getSession().setAttribute("loggedUser", dao.getUserByUsername(userProfile.getUsername()));
 
+            }
+        } else {
+            if (!dao.hashMd5(oldPassword).equals(userProfile.getPassword())) { // check old password
+                request.getSession().setAttribute("passwordError", MessageConstants.WRONG_OLD_PASSWORD);
+            } else if (ProfileValidate.passwordValidate(password)) { // Check password validate
+                request.getSession().setAttribute("passwordError", MessageConstants.INVALID_PASSWORD);
+            } else {
+                // Thay đổi Password
+                dao.updatePassword(userProfile.getUsername(), password);
+                request.getSession().setAttribute("loggedUser", dao.getUserByUsername(userProfile.getUsername()));
             }
         }
         response.sendRedirect(request.getContextPath() + "/user-profile");

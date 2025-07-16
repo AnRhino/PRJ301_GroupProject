@@ -19,11 +19,11 @@ import model.User;
  * @author Dinh Cong Phuc - CE190770
  */
 public class UserDAO extends dbconnect.DBContext {
-    
+
     public boolean authenticate(String username, String password) {
         try {
             String hashPwd = hashMd5(password);
-            
+
             String query = "select Username, Password, RoleID\n"
                     + "from users\n"
                     + "where Username = ?\n"
@@ -36,16 +36,23 @@ public class UserDAO extends dbconnect.DBContext {
             return false;
         }
     }
-    
+
+    /**
+     * Nhận vào Username để lấy ra thông tin người dùng
+     *
+     * @param username
+     * @return
+     */
     public User getUserByUsername(String username) {
         try {
-            String query = "select UserID, Username, FullName, Email, RoleID\n"
+            String query = "select UserID, Username, FullName, Email, RoleID, Password\n"
                     + "from users\n"
                     + "where Username = ?";
             Object[] params = {username};
             ResultSet rs = execSelectQuery(query, params);
             if (rs.next()) {
-                return new User(rs.getInt("UserID"), rs.getString("Username"), rs.getString("FullName"), rs.getString("Email"), rs.getInt("RoleID"));
+                return new User(rs.getInt("UserID"), rs.getString("Username"), rs.getString("FullName"),
+                        rs.getString("Email"), rs.getInt("RoleID"), rs.getString("Password"));
             } else {
                 return null;
             }
@@ -54,9 +61,16 @@ public class UserDAO extends dbconnect.DBContext {
         }
         return null;
     }
-    
-    
-    public int updateFullName(String fullName, String email, String username){
+
+    /**
+     * Nhận vào fullname, email, username để cập nhật email hoặc fullname
+     *
+     * @param fullName
+     * @param email
+     * @param username
+     * @return
+     */
+    public int updateProfile(String fullName, String email, String username) {
         try {
             String query = "update Users set FullName = ?, email = ? where Username = ?";
             Object[] params = {fullName, email, username};
@@ -66,11 +80,31 @@ public class UserDAO extends dbconnect.DBContext {
         }
         return 0;
     }
-    
+
+    /**
+     * Cập nhật password
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    public int updatePassword(String username, String password) {
+        try {
+            String hashPwd = hashMd5(password);
+
+            String query = "update Users set Password = ? where Username = ?";
+            Object[] params = {hashPwd, username};
+            return execQuery(query, params);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
     public User register(String username, String password, String fullName, String email) {
         try {
             String hashPwd = hashMd5(password);
-            
+
             String query = "select UserID, Username, Password, RoleID, Email\n"
                     + "from Users\n"
                     + "where Username = ?\n"
@@ -88,7 +122,7 @@ public class UserDAO extends dbconnect.DBContext {
                 Object[] createParams = {username, hashPwd, fullName, email, 0};
                 execQuery(createQuery, createParams);
                 // return new user
-                return new User(username, null, 0, fullName, email); // Mr.Phuc register rồi mà không return fullName với email người dùng vào thì ko có fullname với email 🤡 phải relogin lại mới có lmao.
+                return new User(username, password, 0, fullName, email);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,16 +131,16 @@ public class UserDAO extends dbconnect.DBContext {
     }
 
     // method ma hoa pwd -> md5
-    private String hashMd5(String raw) {
+    public String hashMd5(String raw) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] mess = md.digest(raw.getBytes());
-            
+
             StringBuilder sb = new StringBuilder();
             for (byte b : mess) {
                 sb.append(String.format("%02x", b));
             }
-            
+
             return sb.toString();
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);

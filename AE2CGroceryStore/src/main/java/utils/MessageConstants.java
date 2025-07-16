@@ -63,4 +63,14 @@ public class MessageConstants {
     public final static String POSTFIX_UNALLOWED_EXTENSION_MESSAGE = " files are allowed.";
     public final static String FAILED_DELETE_FILE_MESSAGE = "Failed to replace existing image.";
     public final static String UNKNOWN_FILE_ERROR_MESSAGE = "Error processing image: ";
+    
+    // Error message for profile.
+    public final static String EMPTY_PASSWORD = "Password cannot be empty.";
+    public final static String EMPTY_EMAIL = "Email cannot be empty.";
+    public final static String EMPTY_FULLNAME = "Full name cannot be empty.";
+    public final static String INVALID_FULLNAME_LENGHT = "FullName lenght can't be lower than 1 and upper than 50.";
+    public final static String INVALID_FULLNAME = "This name cannot be used.";
+    public final static String INVALID_EMAIL = "The email address you entered is invalid.";
+    public final static String INVALID_PASSWORD = "The password you entered is invalid.";
+    public final static String WRONG_OLD_PASSWORD = "The old password not correct.";
 }
