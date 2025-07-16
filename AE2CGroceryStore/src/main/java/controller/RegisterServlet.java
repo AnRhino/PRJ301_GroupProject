@@ -114,7 +114,7 @@ public class RegisterServlet extends HttpServlet {
 
             } else { // if user valid (register success)
                 HttpSession session = request.getSession(); // get new session
-                session.setAttribute("loggedUser", registerUser);
+                session.setAttribute("loggedUser", dao.getUserByUsername(username));
 
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // redirect to homepage
                 return;
