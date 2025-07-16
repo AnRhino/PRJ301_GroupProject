@@ -71,6 +71,17 @@ public class ProductServlet extends HttpServlet {
             } else {
                 request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
             }
+        } else if (view.equals("hidden")) {
+            // Hiển thị xác nhận xoá sản phẩm
+
+            boolean checkId = validation.checkProductId(request.getParameter("id"), productDAO.getAll());
+            if (!checkId) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                request.setAttribute("pro", productDAO.getById(id));
+                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/hidden.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+            }
         }
     }
 
@@ -136,6 +147,12 @@ public class ProductServlet extends HttpServlet {
             // Nếu hợp lệ thì cập nhật database
             productDAO.edit(id, productCode, productName, Integer.parseInt(quantityStr), Double.parseDouble(priceStr), Integer.parseInt(categoryStr));
             response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
+        } else if (action.equals("hidden")) {
+
+            int id = Integer.parseInt(request.getParameter("id"));
+            productDAO.hidden(id);
+            response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
+            // Xử lý chỉnh sửa sản phẩm
         }
     }
 

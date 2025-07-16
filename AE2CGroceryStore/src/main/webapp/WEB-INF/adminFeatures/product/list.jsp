@@ -33,6 +33,8 @@
                             <th>Quantity</th>
                             <th>Price</th>
                             <th>Category</th>
+                       
+                            
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -45,9 +47,17 @@
                             <td><%= pr.getQuantity()%></td>
                             <td><%= pr.getPrice()%></td>
                             <td><%= pr.getCategory().getCategoryName()%></td>
+                            
+                            
                             <td>
+                                
                                 <a href="<%= request.getContextPath()%>/admin/product?view=edit&id=<%= pr.getProductID()%>" class="btn btn-primary btn-sm">Edit</a>
-                                <a href="<%= request.getContextPath()%>/admin/product?view=delete&id=<%= pr.getProductID()%>" class="btn btn-danger btn-sm">Delete</a>
+                                
+                                <% if(pr.isIsHidden()==false){ %>
+                                 <a href="<%= request.getContextPath()%>/admin/product?view=delete&id=<%= pr.getProductID()%>" class="btn btn-danger btn-sm">isHidden</a>
+                                 <%   } else {%>
+                                <a href="<%= request.getContextPath()%>/admin/product?view=hidden&id=<%= pr.getProductID()%>" class="btn btn-primary btn-sm">Hidden</a>
+                                <% } %>
                             </td>
                         </tr>
                         <% } %>

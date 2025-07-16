@@ -61,9 +61,7 @@
                        
                         <div class="text-end fs-5 fw-bold mb-4">
                             Total Price: <fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND" />
-                        </div>
-
-                       
+                        </div>                     
                         <form method="post" action="${pageContext.request.contextPath}/new-order">
                             <div class="mb-3">
                                 <label for="delivery-date" class="form-label">Delivery Date:</label>

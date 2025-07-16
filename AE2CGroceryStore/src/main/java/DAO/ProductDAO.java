@@ -30,16 +30,17 @@ public class ProductDAO extends dbconnect.DBContext {
     public List<Product> getAll() {
         List<Product> list = new ArrayList<>();
         try {
-            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden, p.ImagePath\n"
+            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, p.IsHidden, p.ImagePath\n"
                     + "from Products p\n"
-                    + "join  Categories c on p.CategoryID = c.CategoryID\n"
-                    + "where p.IsHidden = 0";
+                    + "join  Categories c on p.CategoryID = c.CategoryID\n";
+                    
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 
                 Category Category = new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8));
                 Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
+                pro.setIsHidden(rs.getBoolean(8));             
                 pro.setCoverImg(rs.getString(9));
                 list.add(pro);
             }
@@ -388,6 +389,20 @@ public class ProductDAO extends dbconnect.DBContext {
     public int delete(int productId) {
         String query = "update Products\n"
                 + "set IsHidden = 1\n"
+                + "where ProductID = ?";
+        try {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setObject(1, productId);
+            return ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+
+    }
+    public int hidden(int productId) {
+        String query = "update Products\n"
+                + "set IsHidden = 0\n"
                 + "where ProductID = ?";
         try {
             PreparedStatement ps = this.getConnection().prepareStatement(query);
