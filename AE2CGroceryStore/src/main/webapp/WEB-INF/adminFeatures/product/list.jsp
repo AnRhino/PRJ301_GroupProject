@@ -33,8 +33,8 @@
                             <th>Quantity</th>
                             <th>Price</th>
                             <th>Category</th>
-                       
-                            
+
+
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -42,20 +42,23 @@
                         <% for (Product pr : productList) {%>
                         <tr>
                             <td><%= pr.getProductCode()%></td>
-                            <td><img width="100" src="/ae2c/assets/images/<%= pr.getCategory().getCoverImg()%>"/>  </td>                         
+                            <td>
+                                <img width="100"
+                                     src="<%= request.getContextPath() + "/get-image/" + pr.getCoverImg()%>" />
+                            </td>   
                             <td><%= pr.getProductName()%></td>
                             <td><%= pr.getQuantity()%></td>
                             <td><%= pr.getPrice()%></td>
                             <td><%= pr.getCategory().getCategoryName()%></td>
-                            
-                            
+
+
                             <td>
-                                
+
                                 <a href="<%= request.getContextPath()%>/admin/product?view=edit&id=<%= pr.getProductID()%>" class="btn btn-primary btn-sm">Edit</a>
-                                
-                                <% if(pr.isIsHidden()==false){ %>
-                                 <a href="<%= request.getContextPath()%>/admin/product?view=delete&id=<%= pr.getProductID()%>" class="btn btn-danger btn-sm">UnHidden</a>
-                                 <%   } else {%>
+
+                                <% if (pr.isIsHidden() == false) {%>
+                                <a href="<%= request.getContextPath()%>/admin/product?view=delete&id=<%= pr.getProductID()%>" class="btn btn-danger btn-sm">UnHidden</a>
+                                <%   } else {%>
                                 <a href="<%= request.getContextPath()%>/admin/product?view=hidden&id=<%= pr.getProductID()%>" class="btn btn-primary btn-sm">Hidden</a>
                                 <% } %>
                             </td>

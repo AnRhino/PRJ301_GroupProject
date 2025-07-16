@@ -17,7 +17,7 @@
     <body>
         <%@include file="../include/header.jsp" %>
         <main>
-          
+
             <div class="container p-5">
                 <h1>New Order</h1>
                 <c:set var="items" value="${sessionScope.wantedCartList}"/>
@@ -43,22 +43,23 @@
                                 <c:set var="totalPrice" value="0" />
                                 <c:forEach items="${items}" var="item">
                                     <tr>
-                                        <td><img src="${pageContext.request.contextPath}/assets/images/${item.product.coverImg}" style="width: 80px;" /></td>
-                                        <td>${item.product.productName}</td>
-                                        <td>
-                                            <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND" />
-                                        </td>
-                                        <td>${item.quantity}</td>
-                                        <td>
-                                            <fmt:formatNumber value="${item.product.price * item.quantity}" type="currency" currencySymbol="VND" />
-                                        </td>
-                                    </tr>
-                                    <c:set var="totalPrice" value="${totalPrice + (item.product.price * item.quantity)}" />
-                                </c:forEach>
+                                <img src="${pageContext.request.contextPath}/get-image/${item.product.coverImg}" style="width: 80px;" />
+
+                                <td>${item.product.productName}</td>
+                                <td>
+                                    <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND" />
+                                </td>
+                                <td>${item.quantity}</td>
+                                <td>
+                                    <fmt:formatNumber value="${item.product.price * item.quantity}" type="currency" currencySymbol="VND" />
+                                </td>
+                                </tr>
+                                <c:set var="totalPrice" value="${totalPrice + (item.product.price * item.quantity)}" />
+                            </c:forEach>
                             </tbody>
                         </table>
 
-                       
+
                         <div class="text-end fs-5 fw-bold mb-4">
                             Total Price: <fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND" />
                         </div>                     
