@@ -162,7 +162,7 @@
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <div>
                                                                     <p class="d-inline fw-bold text-white">Rate:</p>
-                                                                    <c:forEach begin="0" end="${rv.rating}" step="1">⭐</c:forEach>
+                                                                    <c:forEach begin="1" end="${rv.rating}" step="1">⭐</c:forEach>
                                                                     </div>
                                                                     <div class="d-inline text-end">
                                                                     ${rv.date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))}
