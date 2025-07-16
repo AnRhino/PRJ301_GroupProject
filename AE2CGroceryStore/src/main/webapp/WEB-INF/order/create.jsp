@@ -43,7 +43,7 @@
                                 <c:set var="totalPrice" value="0" />
                                 <c:forEach items="${items}" var="item">
                                     <tr>
-                                        <td><img src="${pageContext.request.contextPath}/assets/images/lonely.png" style="width: 80px;" /></td>
+                                        <td><img src="${pageContext.request.contextPath}/assets/images/${item.product.coverImg}" style="width: 80px;" /></td>
                                         <td>${item.product.productName}</td>
                                         <td>
                                             <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND" />

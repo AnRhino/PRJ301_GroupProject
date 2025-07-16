@@ -20,7 +20,7 @@
                     <input type="hidden" name="id" value="<%= request.getParameter("id")%>" />
 
                     <p>
-                        <button class="btn btn-danger" type="submit" name="action" value="delete">IsHidden</button>
+                        <button class="btn btn-danger" type="submit" name="action" value="delete">Hidden</button>
                         <a href="product?view=list" class="btn btn-secondary">Cancel</a>
                     </p>
                 </form>

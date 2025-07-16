@@ -9,13 +9,27 @@
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
-     <%@include file="/WEB-INF/include/head.jsp" %>
+    <%@include file="/WEB-INF/include/head.jsp" %>
     <body>
         <%@include file="/WEB-INF/include/header.jsp" %>
         <main class="flex-shrink-0">
             <div class="container">
                 <h1 class="mt-5">Create Product</h1>
+                <script>
+                    function previewImage(event) {
+                        const reader = new FileReader();
+                        const imagePreview = document.getElementById('imagePreview');
+                        const file = event.target.files[0];
 
+                        if (file) {
+                            reader.onload = function (e) {
+                                imagePreview.src = e.target.result;
+                                imagePreview.style.display = "block";
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    }
+                </script>
                 <%
                     List<String> errorMessages = (List<String>) request.getAttribute("errorMessage");
                     String message = (String) request.getAttribute("msg");
@@ -50,12 +64,12 @@
                     </p>
                     <p>
                         <label for="quantity">Quantity</label>
-                        <input class="form-control" type="text" id="quantity" name="quantity"
+                        <input class="form-control" type="number" id="quantity" name="quantity"
                                value="<%= request.getAttribute("PQuantity") != null ? request.getAttribute("PQuantity") : ""%>" required />
                     </p>
                     <p>
                         <label for="price">Price</label>
-                        <input class="form-control" type="text" id="price" name="price"
+                        <input class="form-control" type="number" id="price" name="price"
                                value="<%= request.getAttribute("PPrice") != null ? request.getAttribute("PPrice") : ""%>" required />
                     </p>
 
@@ -74,6 +88,15 @@
                     <% } else { %>
                     <p class="text-danger">Category list is empty!</p>
                     <% }%>
+
+                    <input type="file"
+                           name="coverImg"
+                           accept="image/*"
+                           class="form-control"
+                           id="coverImg"
+                           onchange="previewImage(event)"
+                           />
+                    <img id="imagePreview" src="#" alt="Image Preview" style="display: none; max-width: 200px; margin-top: 10px;" />
 
                     <p>
                         <button class="btn btn-success" type="submit">Add</button>

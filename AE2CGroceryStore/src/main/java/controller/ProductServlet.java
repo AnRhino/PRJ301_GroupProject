@@ -139,7 +139,21 @@ public class ProductServlet extends HttpServlet {
 
             if (!errors.isEmpty()) {
                 // Đổ dữ liệu lại khi có lỗi
-                setFormAttributes(request, productCode, productName, quantityStr, priceStr, categoryStr, errors);
+                request.setAttribute("oldCode", productCode);
+                request.setAttribute("oldName", productName);
+                request.setAttribute("oldQuantity", quantityStr);
+                request.setAttribute("oldPrice", priceStr);
+                request.setAttribute("oldCate", categoryStr);
+                request.setAttribute("errorMessage", errors);
+
+                // Phải gán lại đối tượng Product cũ để JSP hiển thị dữ liệu fallback
+                request.setAttribute("pro", productDAO.getById(id));
+
+                // Gán lại danh sách category
+                CategoryDAO cateDAO = new CategoryDAO();
+                request.setAttribute("cate", cateDAO.getAll());
+
+                // Quay lại trang edit
                 request.getRequestDispatcher("/WEB-INF/adminFeatures/product/edit.jsp").forward(request, response);
                 return;
             }

@@ -32,7 +32,7 @@ public class ProductDAO extends dbconnect.DBContext {
     public List<Product> getAll() {
         List<Product> list = new ArrayList<>();
         try {
-            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, p.IsHidden, p.ImagePath\n"
+            String query = "select ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, p.IsHidden, p.ImagePath, c.ImagePath\n"
                     + "from Products p\n"
                     + "join  Categories c on p.CategoryID = c.CategoryID\n";
 
@@ -40,8 +40,9 @@ public class ProductDAO extends dbconnect.DBContext {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 
-                Category Category = new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8));
-                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), Category);
+//                Category Category = new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8));
+                Category cat = new Category(rs.getInt(6), rs.getString(7), rs.getString(10), rs.getBoolean(8));
+                Product pro = new Product(rs.getInt("ProductID"), rs.getString(2), rs.getString(3), rs.getInt("Quantity"), rs.getInt("Price"), cat);
                 pro.setIsHidden(rs.getBoolean(8));
                 pro.setCoverImg(rs.getString(9));
                 list.add(pro);

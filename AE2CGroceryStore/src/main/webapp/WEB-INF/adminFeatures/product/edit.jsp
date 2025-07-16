@@ -57,12 +57,12 @@
 
                     <p>
                         <label for="quantity">Quantity</label>
-                        <input class="form-control" type="text" id="quantity" name="quantity" value="<%= pQuantity%>" required />
+                        <input class="form-control" type="number" id="quantity" name="quantity" value="<%= pQuantity%>" required />
                     </p>
 
                     <p>
                         <label for="price">Price</label>
-                        <input class="form-control" type="text" id="price" name="price" value="<%= pPrice%>" required />
+                        <input class="form-control" type="number" id="price" name="price" value="<%= pPrice%>" required />
                     </p>
 
                     <%
