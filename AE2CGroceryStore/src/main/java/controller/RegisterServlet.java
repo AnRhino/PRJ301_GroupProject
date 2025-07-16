@@ -105,7 +105,9 @@ public class RegisterServlet extends HttpServlet {
             // All validations passed, proceed with registration
             UserDAO dao = new UserDAO();
             // Reg new user
-            User registerUser = dao.register(username, password, fullName, email);
+            dao.register(username, password, fullName, email);
+            
+            User registerUser = dao.getUserByUsername(username); // Facing shit fuc ko lấy id user.
 
             if (registerUser == null) { // If user null because of information already exist, invalid character,...
                 request.setAttribute("registerError", "Registration failed, Username or Email already exists");
