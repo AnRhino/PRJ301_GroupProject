@@ -21,13 +21,9 @@ Not done
             </div>
             <div class="container">
                 <a href="<c:url value="/admin/categories"/>" class="btn btn-primary">Categories</a>
-            </div>
-            <div class="container">
                 <a href="<c:url value="/admin/product"/>" class="btn btn-primary">Products</a>
-            </div>
-            <div class="container">
                 <a href="<c:url value="/admin/statistic"/>" class="btn btn-primary">Statistics</a>
-            </div>
+                <a href="<c:url value="/admin/discount-code"/>" class="btn btn-primary">Discount Codes</a>
         </main>
 
         <%@include file="../include/footer.jsp" %>

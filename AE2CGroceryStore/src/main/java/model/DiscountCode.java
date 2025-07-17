@@ -19,7 +19,7 @@ public class DiscountCode {
     private int quantity;
     private Date expiryDate;
     private int minOrderValue;
-
+    private int isHidden;
     public DiscountCode() {
     }
 
@@ -31,6 +31,17 @@ public class DiscountCode {
         this.quantity = quantity;
         this.expiryDate = expiryDate;
         this.minOrderValue = minOrderValue;
+    }
+
+    public DiscountCode(int id, String code, int value, int type, int quantity, Date expiryDate, int minOrderValue, int isHidden) {
+        this.id = id;
+        this.code = code;
+        this.value = value;
+        this.type = type;
+        this.quantity = quantity;
+        this.expiryDate = expiryDate;
+        this.minOrderValue = minOrderValue;
+        this.isHidden = isHidden;
     }
 
     public int getId() {
@@ -89,4 +100,12 @@ public class DiscountCode {
         this.minOrderValue = minOrderValue;
     }
 
+    public int getIsHidden() {
+        return isHidden;
+    }
+
+    public void setIsHidden(int isHidden) {
+        this.isHidden = isHidden;
+    }
+    
 }
