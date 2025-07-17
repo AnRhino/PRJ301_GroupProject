@@ -8,22 +8,24 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <%@include file="../include/head.jsp" %>
+    <%@include file="/WEB-INF/include/head.jsp" %>
     <body>
-        <%@include file="../include/header.jsp" %>
+        <%@include file="/WEB-INF/include/header.jsp" %>
         <main>
             <div class="container">
                 <div class="row">
-                    <h1>Discount Code</h1>
+                    <h1>Discount Code Management</h1>
                 </div>
             </div>
             <div class="container">
+                <a class="btn btn-success float-end mb-2" href="<c:url value="/admin/discount-code/create"/>">Create</a>
                 <table class="table table-striped mb-5">
                     <thead>
                     <th>Code</th>
                     <th>Description</th>
                     <th>Quantity</th>
                     <th>Expiry Date</th>
+                    <th>Operations</th>
                     </thead>
                     <div class="fs-3">Free Shipping Codes</div>
                     <c:if test="${empty listShippingCode}">
@@ -35,16 +37,30 @@
                             <td>Free Shipping 100%</td>
                             <td>${shippingCode.quantity}</td>
                             <td>${shippingCode.expiryDate}</td>
+                            <td>
+                                <a class="btn btn-primary" href="<c:url value="/admin/discount-code/edit">
+                                       <c:param name="id" value="${shippingCode.id}"></c:param>
+                                   </c:url>">Edit
+                                </a>
+                                
+                                
+                                
+                                <a class="btn btn-danger" href="<c:url value="/admin/discount-code/delete">
+                                       <c:param name="id" value="${shippingCode.id}"></c:param>
+                                   </c:url>">Delete
+                                </a>
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>
-                
+
                 <table class="table table-striped mb-5">
                     <thead>
                     <th>Code</th>
                     <th>Description</th>
                     <th>Quantity</th>
                     <th>Expiry Date</th>
+                    <th>Operations</th>
                     </thead>
                     <div class="fs-3">Discount Codes</div>
                     <c:if test="${empty listPriceCode}">
@@ -66,11 +82,15 @@
                             </td>
                             <td>${priceCode.quantity}</td>
                             <td>${priceCode.expiryDate}</td>
+                            <td>
+                                <a class="btn btn-primary" href="artist?view=edit&id=">Edit</a>
+                                <a class="btn btn-danger" href="artist?view=delete&id=">Delete</a>
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>
             </div>
         </main>
-        <%@include file="../include/footer.jsp" %>
+        <%@include file="/WEB-INF/include/footer.jsp" %>
     </body>
 </html>
