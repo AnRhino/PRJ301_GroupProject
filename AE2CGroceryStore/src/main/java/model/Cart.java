@@ -57,4 +57,8 @@ public class Cart {
         this.quantity = quantity;
     }
     
+    public int getTotalPrice() {
+        return this.quantity * this.product.getPrice();
+    }
+    
 }

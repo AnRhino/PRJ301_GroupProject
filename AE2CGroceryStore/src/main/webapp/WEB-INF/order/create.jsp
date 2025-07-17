@@ -40,28 +40,29 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:set var="totalPrice" value="0" />
+                                <c:set var="subtotal" value="0" />
                                 <c:forEach items="${items}" var="item">
                                     <tr>
-                                <img src="${pageContext.request.contextPath}/get-image/${item.product.coverImg}" style="width: 80px;" />
-
-                                <td>${item.product.productName}</td>
-                                <td>
-                                    <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND" />
-                                </td>
-                                <td>${item.quantity}</td>
-                                <td>
-                                    <fmt:formatNumber value="${item.product.price * item.quantity}" type="currency" currencySymbol="VND" />
-                                </td>
-                                </tr>
-                                <c:set var="totalPrice" value="${totalPrice + (item.product.price * item.quantity)}" />
-                            </c:forEach>
+                                        <td>
+                                            <img src="${pageContext.request.contextPath}/get-image/${item.product.coverImg}" style="width: 80px;" />
+                                        </td>
+                                        <td>${item.product.productName}</td>
+                                        <td>
+                                            <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND" />
+                                        </td>
+                                        <td>${item.quantity}</td>
+                                        <td>
+                                            <fmt:formatNumber value="${item.totalPrice}" type="currency" currencySymbol="VND" />
+                                        </td>
+                                    </tr>
+                                    <c:set var="subtotal" value="${subtotal + (item.totalPrice)}" />
+                                </c:forEach>
                             </tbody>
                         </table>
 
 
                         <div class="text-end fs-5 fw-bold mb-4">
-                            Total Price: <fmt:formatNumber value="${totalPrice}" type="currency" currencySymbol="VND" />
+                            Total Price: <fmt:formatNumber value="${subtotal}" type="currency" currencySymbol="VND" />
                         </div>                     
                         <form method="post" action="${pageContext.request.contextPath}/new-order">
                             <div class="mb-3">
@@ -80,8 +81,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="safe" class="form-label">Safe:</label>
-                                <input type="text" name="safe" class="form-control" required />
+                                <label for="discount-code-id" class="form-label">Discount Code:</label>
+                                <input type="text" name="discount-code-id" class="form-control" required />
                             </div>
 
                             <div class="text-end">
