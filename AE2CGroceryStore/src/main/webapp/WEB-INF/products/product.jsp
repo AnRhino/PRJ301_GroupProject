@@ -110,7 +110,7 @@
                                                                 <div class="d-flex align-items-center gap-2">
                                                                     <input type="hidden" name="productID" value="${requestScope.product.productID}">
                                                                     <div class="fw-bold d-inline">Add to cart:</div>
-                                                                    <input type="number" class="text-end border-dark w-100 d-inline" name="quantity" placeholder="1" min="1" max="${requestScope.product.quantity}">
+                                                                    <input required type="number" class="text-end border-dark w-100 d-inline" name="quantity" value="1" placeholder="1" min="1" max="${requestScope.product.quantity}">
                                                                 </div>
                                                                 <div class="d-flex align-items-center gap-2">
                                                                     <c:choose>
@@ -215,7 +215,7 @@
                                                                             <h4 class="modal-title">Edit</h4>
                                                                         </div>
                                                                         <div class="modal-body">
-                                                                            <input type="text" name="newComment" placeholder="${rv.comment}" class="w-100 border border-dark rounded-3">
+                                                                            <input required type="text" name="newComment" placeholder="${rv.comment}" class="w-100 border border-dark rounded-3">
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <input type="hidden" name="view" value="editComment">
@@ -237,7 +237,7 @@
                                             <form action="${pageContext.request.contextPath}/review" method="post" class="d-flex gap-2">
                                                 <input type="hidden" name="view" value="comment">
                                                 <input type="hidden" name="productID" value="${requestScope.product.productID}">
-                                                <input type="text" class="form-control" name="comment" placeholder="Enter your comment here.">
+                                                <input required type="text" class="form-control" name="comment" placeholder="Enter your comment here.">
                                                 <select name="rating" id="rating" required>
                                                     <option value="1">1 ⭐</option>
                                                     <option value="2">2 ⭐⭐</option>
