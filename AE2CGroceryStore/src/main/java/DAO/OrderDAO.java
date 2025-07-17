@@ -8,11 +8,15 @@ import dbconnect.DBContext;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.DiscountCode;
 import model.Order;
+import model.OrderItem;
 import model.OrderStatus;
+import model.Product;
 import model.User;
 
 /**
@@ -103,5 +107,60 @@ public class OrderDAO extends DBContext {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
+    }
+
+    /**
+     * Lấy tất cả từng order với 1 order gắn liền với orderitem.
+     *
+     * @return danh sách order trong db.
+     */
+    public List<Order> getAllOrderData() {
+
+        List<Order> list = new ArrayList<>();
+
+        try {
+
+            String query = "SELECT o.OrderID, o.OrderDate, o.DeliveryDate, p.ProductID, p.ProductCode, p.ProductName, s.StatusID, s.StatusDescription, ot.Quantity, ot.UnitPrice, ot.UnitPrice * ot.Quantity AS TotalPrice\n"
+                    + "FROM [dbo].[Orders] o\n"
+                    + "JOIN [dbo].[OrderItems] ot\n"
+                    + "ON ot.OrderID = o.OrderID\n"
+                    + "JOIN [dbo].[Products] p\n"
+                    + "ON p.ProductID = ot.ProductID\n"
+                    + "JOIN [dbo].[StatusType] s\n"
+                    + "ON s.StatusID = o.StatusID;";
+
+            ResultSet rs = execSelectQuery(query);
+
+            while (rs.next()) {
+
+                List<OrderItem> listOrderItem = new ArrayList();
+                listOrderItem.add(new OrderItem(
+                        null,
+                        new Product(rs.getInt(5),
+                                rs.getString(6),
+                                rs.getString(7)),
+                        rs.getInt(9),
+                        rs.getInt(10)));
+
+                list.add(
+                        new Order(
+                                rs.getInt(1),
+                                null,
+                                rs.getObject(2, LocalDateTime.class),
+                                rs.getObject(3, LocalDateTime.class),
+                                new OrderStatus(rs.getInt(7),
+                                        rs.getString(8)),
+                                null,
+                                null,
+                                null,
+                                listOrderItem
+                        ));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
     }
 }

@@ -54,6 +54,12 @@ public class Product {
         this.coverImg = coverImg;
         this.productName = productName;
     }
+    
+    public Product(int productID, String productCode, String productName) {
+        this.productID = productID;
+        this.productCode = productCode;
+        this.productName = productName;
+    }
 
     public int getProductID() {
         return productID;
