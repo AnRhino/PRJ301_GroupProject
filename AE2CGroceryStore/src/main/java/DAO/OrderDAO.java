@@ -120,7 +120,7 @@ public class OrderDAO extends DBContext {
 
         try {
 
-            String query = "SELECT o.OrderID, o.OrderDate, o.DeliveryDate, p.ProductID, p.ProductCode, p.ProductName, s.StatusID, s.StatusDescription, ot.Quantity, ot.UnitPrice, ot.UnitPrice * ot.Quantity AS TotalPrice\n"
+            String query = "SELECT o.OrderID, o.OrderDate, o.DeliveryDate, p.ProductID, p.ProductCode, p.ProductName, s.StatusID, s.StatusDescription, ot.Quantity, ot.UnitPrice\n"
                     + "FROM [dbo].[Orders] o\n"
                     + "JOIN [dbo].[OrderItems] ot\n"
                     + "ON ot.OrderID = o.OrderID\n"
