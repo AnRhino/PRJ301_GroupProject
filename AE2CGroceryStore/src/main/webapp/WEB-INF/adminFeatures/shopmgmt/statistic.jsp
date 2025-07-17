@@ -34,29 +34,57 @@
 
                 <c:otherwise>
                     <div class="mx-5 my-1">
-                        <table class="table table-striped table-hover table-bordered">
+                        <table class="table table-striped table-hover table-bordered border-dark">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="col-1">No</th>
                                     <th scope="col" class="col-1">OrderID</th>
-                                    <th scope="col" class="col-1">Order Date</th>
+                                    <th scope="col">OrderDate</th>
+                                    <th scope="col">DeliveryDate</th>
                                     <th scope="col">Product Name</th>
-                                    <th scope="col">Product Code</th>
+                                    <th scope="col">StatusDescription</th>
                                     <th scope="col">Quantity</th>
-                                    <th scope="col">Price</th>
+                                    <th scope="col">UnitPrice</th>
+                                    <th scope="col">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <c:forEach var="order" items="${requestScope.orderList}">
 
                                     <tr>
-                                        <th scope="row">1</th>
-                                        <th>OrderID</th>
-                                        <th>Order Date</th>
-                                        <th>Product Name</th>
-                                        <th>Product Code</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
+                                        <th class="d-flex justify-content-center">${order.id}</th>
+                                        <th>${order.orderDate.toLocalDate()}</th>
+                                        <th>${order.deliveryDate.toLocalDate()}</th>
+
+                                        <c:forEach var="orderItem" items="${order.orderItems}">
+                                            <th>
+                                                <a class="text-decoration-none text-dark" href="
+                                                   <c:url value="/user-product">
+                                                       <c:param name="view" value="product"/>
+                                                       <c:param name="productID" value="${orderItem.product.productID}"/>
+                                                   </c:url>">
+                                                    ${orderItem.product.productName}</a>
+                                            </th>
+                                            <c:choose>
+                                                <c:when test="${order.status.id == 4}">              
+                                                    <th class="text-success">${order.status.description}</th>
+                                                    </c:when>
+                                                    <c:when test="${order.status.id == 3}">              
+                                                    <th class="text-primary">${order.status.description}</th>
+                                                    </c:when>
+                                                    <c:when test="${order.status.id == 2}">              
+                                                    <th class="text-secondary">${order.status.description}</th>
+                                                    </c:when>
+                                                    <c:when test="${order.status.id == 1}">              
+                                                    <th class="text-warning">${order.status.description}</th>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                    <th class="text-danger">${order.status.description}</th>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            <th>${orderItem.quantity}</th>
+                                            <th><fmt:formatNumber value="${orderItem.unitPrice}"/> VND</th>
+                                            <th><fmt:formatNumber value="${orderItem.totalPrice}"/> VND</th>
+                                            </c:forEach>
                                     </tr>
 
                                 </c:forEach>
