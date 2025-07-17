@@ -55,8 +55,15 @@ public class StatisticServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
-    } 
+//        processRequest(request, response);
+
+        getData(request);
+        request.getRequestDispatcher("/WEB-INF/adminFeatures/shopmgmt/dashboard.jsp").forward(request, response);
+    }
+    
+    private void getData(HttpServletRequest request) {
+        
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -68,7 +75,9 @@ public class StatisticServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+
+        doGet(request, response);
     }
 
     /** 
