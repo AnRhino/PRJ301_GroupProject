@@ -68,8 +68,20 @@ public class ProfileServlet extends HttpServlet {
         String view = request.getParameter("view");
 
         if (view == null || view.isBlank()) {
-            request.getRequestDispatcher("WEB-INF/users/profile.jsp").forward(request, response);
+        } else if (view.equals("editFullName")) {
+            boolean editFullName = true;
+            request.setAttribute("editFullName", editFullName);
+
+        } else if (view.equals("editEmail")) {
+            boolean editEmail = true;
+            request.setAttribute("editEmail", editEmail);
+
+        } else {
+            request.getSession().removeAttribute("fullNameError");
+            request.getSession().removeAttribute("emailError");
+
         }
+        request.getRequestDispatcher("WEB-INF/users/profile.jsp").forward(request, response);
     }
 
     /**
@@ -108,20 +120,20 @@ public class ProfileServlet extends HttpServlet {
 
                 // check xem cái nào null
                 if (secondFillter) {
-                    request.getSession().setAttribute("passwordError", MessageConstants.EMPTY_PASSWORD);
+                    request.getSession().setAttribute("passwordError", new ErrorMessage(MessageConstants.EMPTY_PASSWORD));
                 } else {
-                    request.getSession().setAttribute("emailError", MessageConstants.EMPTY_EMAIL);
+                    request.getSession().setAttribute("emailError", new ErrorMessage(MessageConstants.EMPTY_EMAIL));
                 }
             } else {
-                request.getSession().setAttribute("fullNameError", MessageConstants.EMPTY_FULLNAME);
+                request.getSession().setAttribute("fullNameError", new ErrorMessage(MessageConstants.EMPTY_FULLNAME));
             }
 
         } else if (email == null && password == null) { // change name
             if (ProfileValidate.maxAndMinFullNameLength(fullName)) { // Check length
-                request.getSession().setAttribute("fullNameError", MessageConstants.INVALID_FULLNAME_LENGHT);
+                request.getSession().setAttribute("fullNameError", new ErrorMessage(MessageConstants.INVALID_FULLNAME_LENGHT));
 
             } else if (ProfileValidate.fullNameValidate(fullName)) { // Check validate 
-                request.getSession().setAttribute("fullNameError", MessageConstants.INVALID_FULLNAME);
+                request.getSession().setAttribute("fullNameError", new ErrorMessage(MessageConstants.INVALID_FULLNAME));
 
             } else {
                 // change Name
@@ -131,7 +143,7 @@ public class ProfileServlet extends HttpServlet {
             }
         } else if (fullName == null && password == null) { // Change email
             if (ProfileValidate.emailValidate(email)) { // Check email validate
-                request.getSession().setAttribute("emailError", MessageConstants.INVALID_EMAIL);
+                request.getSession().setAttribute("emailError", new ErrorMessage(MessageConstants.INVALID_EMAIL));
 
             } else {
                 // Thay đổi Email
@@ -141,9 +153,9 @@ public class ProfileServlet extends HttpServlet {
             }
         } else {
             if (!dao.hashMd5(oldPassword).equals(userProfile.getPassword())) { // check old password
-                request.getSession().setAttribute("passwordError", MessageConstants.WRONG_OLD_PASSWORD);
+                request.getSession().setAttribute("passwordError", new ErrorMessage(MessageConstants.WRONG_OLD_PASSWORD));
             } else if (ProfileValidate.passwordValidate(password)) { // Check password validate
-                request.getSession().setAttribute("passwordError", MessageConstants.INVALID_PASSWORD);
+                request.getSession().setAttribute("passwordError", new ErrorMessage(MessageConstants.INVALID_PASSWORD));
             } else {
                 // Thay đổi Password
                 dao.updatePassword(userProfile.getUsername(), password);
