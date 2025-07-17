@@ -5,6 +5,7 @@
 
 package adminController;
 
+import DAO.OrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @WebServlet(name="StatisticServlet", urlPatterns={"/admin/statistic"})
 public class StatisticServlet extends HttpServlet {
+    
+    private OrderDAO orderDao;
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -56,13 +59,14 @@ public class StatisticServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
 //        processRequest(request, response);
-
+        
+        orderDao = new OrderDAO();
         getData(request);
-        request.getRequestDispatcher("/WEB-INF/adminFeatures/shopmgmt/dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/adminFeatures/shopmgmt/statistic.jsp").forward(request, response);
     }
     
     private void getData(HttpServletRequest request) {
-        
+        request.setAttribute("orderList", orderDao.getAllOrderData());
     }
 
     /** 

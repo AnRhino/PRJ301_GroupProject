@@ -136,9 +136,9 @@ public class OrderDAO extends DBContext {
                 List<OrderItem> listOrderItem = new ArrayList();
                 listOrderItem.add(new OrderItem(
                         null,
-                        new Product(rs.getInt(5),
-                                rs.getString(6),
-                                rs.getString(7)),
+                        new Product(rs.getInt(4),
+                                rs.getString(5),
+                                rs.getString(6)),
                         rs.getInt(9),
                         rs.getInt(10)));
 
