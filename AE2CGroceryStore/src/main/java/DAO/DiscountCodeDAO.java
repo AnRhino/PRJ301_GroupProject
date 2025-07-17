@@ -7,6 +7,7 @@ package DAO;
 import dbconnect.DBContext;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,7 @@ import model.DiscountCodeType;
 public class DiscountCodeDAO extends DBContext {
 
     //Create
-    public int create(String code, int value, int type, int quantity, Date expiryDate, int minOrderValue, int isHidden) {
+    public int create(String code, int value, int type, int quantity, LocalDate expiryDate, int minOrderValue, int isHidden) {
         try {
             String query = "INSERT INTO [dbo].[DiscountCodes]\n"
                     + "           ([Code]\n"
@@ -61,7 +62,7 @@ public class DiscountCodeDAO extends DBContext {
                         rs.getInt(3),
                         rs.getInt(4),
                         rs.getInt(5),
-                        rs.getDate(6),
+                        rs.getDate(6).toLocalDate(),
                         rs.getInt(7)));
             }
         } catch (SQLException ex) {
@@ -83,7 +84,7 @@ public class DiscountCodeDAO extends DBContext {
                         rs.getInt(3),
                         rs.getInt(4),
                         rs.getInt(5),
-                        rs.getDate(6),
+                        rs.getDate(6).toLocalDate(),
                         rs.getInt(7)));
             }
         } catch (SQLException ex) {
@@ -105,13 +106,34 @@ public class DiscountCodeDAO extends DBContext {
                         rs.getInt(3),
                         rs.getInt(4),
                         rs.getInt(5),
-                        rs.getDate(6),
+                        rs.getDate(6).toLocalDate(),
                         rs.getInt(7)));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listPriceCode;
+    }
+
+    /**
+     * This function check if code is already exists in database
+     *
+     * @param code to be checked
+     * @return 1 for exists, 0 otherwise
+     */
+    public boolean exists(String code) {
+        String query = "SELECT Code\n"
+                + "FROM DiscountCodes\n"
+                + "WHERE Code = ?";
+        Object[] params = {code};
+        try(ResultSet rs = execSelectQuery(query, params)){
+            if (rs.next()){
+               return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     /**
@@ -143,7 +165,7 @@ public class DiscountCodeDAO extends DBContext {
                         rs.getInt(3),
                         rs.getInt(4),
                         rs.getInt(5),
-                        rs.getDate(6),
+                        rs.getDate(6).toLocalDate(),
                         rs.getInt(7)));
             }
         } catch (SQLException ex) {
@@ -175,7 +197,7 @@ public class DiscountCodeDAO extends DBContext {
                         rs.getInt(3),
                         rs.getInt(4),
                         rs.getInt(5),
-                        rs.getDate(6),
+                        rs.getDate(6).toLocalDate(),
                         rs.getInt(7)));
             }
         } catch (SQLException ex) {

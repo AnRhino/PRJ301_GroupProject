@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -17,13 +18,13 @@ public class DiscountCode {
     private int value;
     private int type;
     private int quantity;
-    private Date expiryDate;
+    private LocalDate expiryDate;
     private int minOrderValue;
     private int isHidden;
     public DiscountCode() {
     }
 
-    public DiscountCode(int id, String code, int value, int type, int quantity, Date expiryDate, int minOrderValue) {
+    public DiscountCode(int id, String code, int value, int type, int quantity, LocalDate expiryDate, int minOrderValue) {
         this.id = id;
         this.code = code;
         this.value = value;
@@ -33,7 +34,7 @@ public class DiscountCode {
         this.minOrderValue = minOrderValue;
     }
 
-    public DiscountCode(int id, String code, int value, int type, int quantity, Date expiryDate, int minOrderValue, int isHidden) {
+    public DiscountCode(int id, String code, int value, int type, int quantity, LocalDate expiryDate, int minOrderValue, int isHidden) {
         this.id = id;
         this.code = code;
         this.value = value;
@@ -84,11 +85,11 @@ public class DiscountCode {
         this.quantity = quantity;
     }
 
-    public Date getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) {
         this.expiryDate = expiryDate;
     }
 
