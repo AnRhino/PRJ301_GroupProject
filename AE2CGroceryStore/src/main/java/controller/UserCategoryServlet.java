@@ -23,8 +23,8 @@ import validate.InputValidate;
 @WebServlet(name = "UserCategoryServlet", urlPatterns = {"/user-category"})
 public class UserCategoryServlet extends HttpServlet {
 
-    private final ProductDAO productDao = new ProductDAO();
-    private final CategoryDAO categoryDao = new CategoryDAO();
+    private ProductDAO productDao;
+    private CategoryDAO categoryDao;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -68,6 +68,7 @@ public class UserCategoryServlet extends HttpServlet {
 
         String view = request.getParameter("view");
         String categoryIDParam = request.getParameter("categoryID");
+        String productIDParam = request.getParameter("productID");
 
         // Nếu view null hoặc rỗng.
         if (view == null || view.isBlank()) {
@@ -75,22 +76,32 @@ public class UserCategoryServlet extends HttpServlet {
 
             // Nếu view có gì đó.
         } else {
-
-            // Xử lí nếu id danh mục không hợp lệ.
-            if (!checkValidCategoryID(categoryIDParam)) {
+            
+            // Nếu id của sản phẩm và id của danh mục đều không hợp lệ.
+            if (checkEmptyID(categoryIDParam, productIDParam)) {
                 handleErrorWhenExcute(request, response);
                 return;
             }
+            
+            // Tạo DAO.
+            productDao = new ProductDAO();
+            categoryDao = new CategoryDAO();
 
             // Xử lí theo yêu cầu người dùng.
             switch (view) {
 
                 case "category": // Nếu người dùng chọn 1 danh mục.
+                    // Check id danh mục có hợp lệ hay không.
+                    if (!checkValidCategoryID(categoryIDParam)) {
+                        handleErrorWhenExcute(request, response);
+                        return;
+                    }
+                    // Hiện ra danh mục nếu hợp lệ.
                     showCategory(request, response, Integer.parseInt(categoryIDParam));
                     break;
 
                 case "product": // Nếu người dùng chọn 1 sản phẩm.
-                    response.sendRedirect(request.getContextPath() + "/user-product?productID=" + request.getParameter("productID"));
+                    response.sendRedirect(request.getContextPath() + "/user-product?productID=" + productIDParam);
                     break;
 
                 default: // Nếu view rỗng.
@@ -98,6 +109,18 @@ public class UserCategoryServlet extends HttpServlet {
                     break;
             }
         }
+    }
+
+    /**
+     * Kiểm tra id của product và category có null không.
+     *
+     * @param productIDParam là id của sản phẩm.
+     * @param categoryIDParam là id của danh mục.
+     *
+     * @return True nếu id cả 2 null. False nếu không.
+     */
+    private boolean checkEmptyID(String productIDParam, String categoryIDParam) {
+        return (productIDParam == null && categoryIDParam == null);
     }
 
     /**

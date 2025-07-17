@@ -98,10 +98,6 @@
                                                                                 </c:choose>
                                                                             </div>
                                                                             <div class="col-12 d-flex justify-content-center">
-                                                                                <p class="fw-bold">Product code:</p>&nbsp;
-                                                                                ${prod.productCode}
-                                                                            </div>
-                                                                            <div class="col-12 d-flex justify-content-center">
                                                                                 <p class="fw-bold">Name:</p>&nbsp;
                                                                                 ${prod.productName}
                                                                             </div>

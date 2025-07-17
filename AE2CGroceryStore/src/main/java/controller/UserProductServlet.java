@@ -4,7 +4,6 @@
  */
 package controller;
 
-import DAO.CartDAO;
 import DAO.ProductDAO;
 import DAO.CategoryDAO;
 import DAO.ReviewDAO;
@@ -15,10 +14,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import model.ErrorMessage;
-import model.User;
-import utils.MessageConstants;
 import validate.InputValidate;
 
 /**
@@ -28,9 +23,9 @@ import validate.InputValidate;
 @WebServlet(name = "UserProductServlet", urlPatterns = {"/user-product"})
 public class UserProductServlet extends HttpServlet {
 
-    private final ProductDAO productDao = new ProductDAO();
-    private final CategoryDAO categoryDao = new CategoryDAO();
-    private final ReviewDAO reviewDao = new ReviewDAO();
+    private ProductDAO productDao;
+    private CategoryDAO categoryDao;
+    private ReviewDAO reviewDao;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -74,7 +69,8 @@ public class UserProductServlet extends HttpServlet {
 
         String view = request.getParameter("view");
         String productIDParam = request.getParameter("productID");
-
+        String categoryIDParam = request.getParameter("categoryID");
+        
         // Nếu view null hoặc rỗng.
         if (view == null || view.isBlank()) {
             handleErrorWhenExcute(request, response);
@@ -82,20 +78,32 @@ public class UserProductServlet extends HttpServlet {
             // Nếu người dùng có yêu cầu từ view.
         } else {
 
-            // Nếu id sản phẩm không hợp lệ.
-            if (!checkValidProductID(productIDParam)) {
+            // Nếu id của sản phẩm và id của danh mục đều không hợp lệ.
+            if (checkEmptyID(productIDParam, categoryIDParam)) {
                 handleErrorWhenExcute(request, response);
                 return;
             }
+
+            // Tạo DAO.
+            productDao = new ProductDAO();
+            categoryDao = new CategoryDAO();
+            reviewDao = new ReviewDAO();
 
             // Xử lí yêu càu của người dùng.
             switch (view) {
 
                 case "category": // Hiện ra 1 danh mục.
-                    response.sendRedirect(request.getContextPath() + "/user-category?id=" + request.getParameter("categoryID"));
+                    // Chuyển hướng đến CategoryServlet.
+                    response.sendRedirect(request.getContextPath() + "/user-category?id=" + categoryIDParam);
                     break;
 
                 case "product": // Hiện ra 1 sản phẩm.
+                    // Check id của sản phẩm có hợp lệ không.
+                    if (!checkValidProductID(productIDParam)) {
+                        handleErrorWhenExcute(request, response);
+                        return;
+                    }
+                    // Hiện ra sản phẩm nếu danh mục hợp lệ.
                     showProduct(request, response, Integer.parseInt(productIDParam));
                     break;
 
@@ -104,6 +112,18 @@ public class UserProductServlet extends HttpServlet {
                     break;
             }
         }
+    }
+
+    /**
+     * Kiểm tra id của product và category có null không.
+     *
+     * @param productIDParam là id của sản phẩm.
+     * @param categoryIDParam là id của danh mục.
+     *
+     * @return True nếu id cả 2 null. False nếu không.
+     */
+    private boolean checkEmptyID(String productIDParam, String categoryIDParam) {
+        return (productIDParam == null && categoryIDParam == null);
     }
 
     /**
@@ -156,7 +176,7 @@ public class UserProductServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private void handleErrorWhenExcute (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void handleErrorWhenExcute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // Chuyển hướng người dùng đến nơi muốn hiện lỗi.
         response.sendRedirect(request.getContextPath() + "/error-page");
@@ -290,7 +310,7 @@ public class UserProductServlet extends HttpServlet {
 
             // Xử lí theo view của người dùng.
         } else {
-            
+
             // Nếu id sản phẩm không hợp lệ.
             if (!checkValidProductID(productIDParam)) {
                 handleErrorWhenExcute(request, response);
@@ -301,7 +321,7 @@ public class UserProductServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/user-product?view=product&productID=" + productIDParam);
         }
     }
-    
+
     /**
      * Returns a short description of the servlet.
      *
