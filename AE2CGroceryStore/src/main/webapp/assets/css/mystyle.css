@@ -57,10 +57,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         justify-content: center;
         align-content: center;
         width: 300px;
-        background-color: honeydew;
+    }
+
+
+    #overflow{
+        height: 145px;
     }
 }
 
+#product-press:hover{
+    background-color: #C6C6C6;
+    transition: 1s;
+}
 
 
 @media (max-width: 1434px){
@@ -71,7 +79,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         justify-content: center;
         align-content: center;
         width: 240px;
-        background-color: honeydew;
     }
 
     #img{
@@ -81,7 +88,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 }
 
 @media (max-width: 1126px){
-
     #cate-img{
         width: 180px;
         height: 110px;
@@ -93,7 +99,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         flex-wrap: inherit;
         justify-content: center;
         align-content: center;
-        background-color: honeydew;
         width: 200px;
     }
 
@@ -135,11 +140,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         justify-content: center;
         align-content: center;
         width: 160px;
-        background-color: honeydew;
+        height: 138px;
+
     }
 
     #img{
         width: 160px;
+        height: 160px;
     }
 
 }
@@ -152,7 +159,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         justify-content: center;
         align-content: center;
         width: 130px;
-        background-color: honeydew;
+        height: 154px;
+        font-size: 13px;
     }
 
     #img{
@@ -167,19 +175,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         justify-content: center;
         align-content: center;
         width:85px;
-        background-color: honeydew;
         height: 110px;
+        font-size: 8px;
     }
 
     #img{
         width: 85px;
+        height: 85px;
     }
 
     #cate-img{
         width: 80px;
         height: 65px;
     }
+
+
+
 }
+
 
 #profile{
     -webkit-touch-callout:none;

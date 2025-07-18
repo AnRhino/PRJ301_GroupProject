@@ -25,7 +25,7 @@ public class User {
         this.password = password;
         this.roleId = roleId;
     }
-    
+
     public User(String username, String password, int roleId, String fullName, String email) {
         this.username = username;
         this.password = password;
@@ -55,14 +55,18 @@ public class User {
         this.email = email;
         this.roleId = roleId;
     }
-    
-     public User(int id, String userName, String fullName, String email, int roleId, String password) {
+
+    public User(int id, String userName, String fullName, String email, int roleId, String password) {
         this.id = id;
         this.username = userName;
         this.fullName = fullName;
         this.email = email;
         this.roleId = roleId;
         this.password = password;
+    }
+
+    public User(int id) {
+        this.id = id;
     }
 
     public int getId() {

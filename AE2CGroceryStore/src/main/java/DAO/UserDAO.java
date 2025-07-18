@@ -147,4 +147,55 @@ public class UserDAO extends dbconnect.DBContext {
             return "";
         }
     }
+
+    /**
+     * Lấy tất cả id của user từ cơ sở dữ liệu.
+     *
+     * @return danh sách chứa tất cả id của người dùng trong cơ sở dữ liệu.
+     */
+    public List<User> getAllUserID() {
+
+        List<User> list = new ArrayList<>();
+
+        try {
+            String query = "SELECT u.UserID\n"
+                    + "FROM [dbo].[Users] u;";
+
+            ResultSet rs = execSelectQuery(query);
+
+            while (rs.next()) {
+                list.add(new User(rs.getInt(1)));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
+    }
+
+    /**
+     * Đặt đường dẫn của ảnh người dùng trong cơ sở dữ liệu.
+     *
+     * @param userID là id của người dùng.
+     * @param url là đường dẫn của ảnh.
+     *
+     * @return 0 nếu đặt đường dẫn thất bại. Khác 0 nếu thành công.
+     */
+    public int setImgUrl(int userID, String url) {
+
+        try {
+            String query = "UPDATE [dbo].[Users]\n"
+                    + "SET ImagePath = ?\n"
+                    + "WHERE UserID= ?";
+            Object[] params = {url, userID};
+
+            return execQuery(query, params);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return 0;
+    }
 }
