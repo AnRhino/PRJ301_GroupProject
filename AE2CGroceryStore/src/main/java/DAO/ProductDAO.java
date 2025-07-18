@@ -276,8 +276,8 @@ public class ProductDAO extends dbconnect.DBContext {
     public int create(String productCore, String productName, int quantity, double price, int categoryId) {
         int check = 0;
         try {
-            String sql = "insert into Products (ProductCode,ProductName,Quantity,Price,CategoryID)\n"
-                    + "values(?,?,?,?,?)";
+            String sql = "insert into Products (ProductCode,ProductName,Quantity,Price,CategoryID, ImagePath)\n"
+                    + "values(?,?,?,?,?, 'products/0.png')";
             PreparedStatement ps = this.getConnection().prepareStatement(sql);
             ps.setObject(1, productCore);
             ps.setObject(2, productName);

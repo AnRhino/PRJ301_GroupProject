@@ -117,8 +117,8 @@ public class UserDAO extends dbconnect.DBContext {
             } else {
                 // create
                 // SQL add new user with ID, username, pwd, email, fullname, RoleID
-                String createQuery = "insert into Users (Username, Password, FullName, Email, RoleID) \n"
-                        + "values (?, ?, ?, ?, ?)";
+                String createQuery = "insert into Users (Username, Password, FullName, Email, RoleID, ImagePath) \n"
+                        + "values (?, ?, ?, ?, ?, 'users/0.png')";
                 Object[] createParams = {username, hashPwd, fullName, email, 0};
                 execQuery(createQuery, createParams);
                 // return new user
