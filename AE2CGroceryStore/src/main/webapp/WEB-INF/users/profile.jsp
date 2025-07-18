@@ -60,7 +60,7 @@
 
                 <!-- image --> 
                 <p class="ms-4" id="profile">
-                    <strong>Image: </strong> <img src="assets/images/placeHolder.jpg" alt="User image" width="100" height="128">
+                    <strong>Image: </strong> <img src="<c:url value="/get-image/${loggedUser.coverImg}"/>" alt="User image" width="100" height="128">
                 </p>
 
                 <!-- Email --> 

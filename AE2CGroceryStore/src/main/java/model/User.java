@@ -16,6 +16,7 @@ public class User {
     private String fullName;
     private String email;
     private int roleId;
+    private String coverImg;
 
     public User() {
     }
@@ -63,6 +64,16 @@ public class User {
         this.email = email;
         this.roleId = roleId;
         this.password = password;
+    }
+    
+    public User(int id, String userName, String fullName, String email, int roleId, String password, String coverImg) {
+        this.id = id;
+        this.username = userName;
+        this.fullName = fullName;
+        this.email = email;
+        this.roleId = roleId;
+        this.password = password;
+        this.coverImg = coverImg;
     }
 
     public User(int id) {
@@ -115,6 +126,14 @@ public class User {
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
+    }
+
+    public String getCoverImg() {
+        return coverImg;
+    }
+
+    public void setCoverImg(String coverImg) {
+        this.coverImg = coverImg;
     }
 
 }
