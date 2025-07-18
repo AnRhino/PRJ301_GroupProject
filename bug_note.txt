@@ -1,0 +1,63 @@
+0/ Chưa lọc được những đường dẫn lạ.
+
+1/ Index.jsp, mở inspect và vào tag div class là carousel-inner trong đó có tag div class
+ là carousel-item mở ra và sẽ có 1 tag a có href bị lỗi nhấn vào sẽ bị lỗi luôn.
+
+2/ Index.jsp, đổi method của product từ get thành post nhấn vào báo lỗi (maxID bị null). 
+
+3/ Index.jsp, tương tự đổi method của category từ get thành post nhấn vào báo lỗi 
+(maxID bị null).
+
+4/ credentials/login, trong form đổi method từ post thành get thì ko login vào được mặc 
+dù nhập đúng thay vì đó hiện username và password trên url.
+
+5/ !!!important user có thể chỉnh bất kì url trong form thành /admin để truy cập vào 
+admin mặc dù không có quyền hạn. (cần fix sớm - đưa vào filter hay gì đó).
+
+6/ /admin Servlet chứa url này chưa xử lí doPost.
+
+7/ users/cart.jsp, buy checkbox nếu xóa đi type thì sẽ tự động add vào order. (không bt
+tính là lỗi ko)
+
+8/ users/cart.jsp, chỉnh id của nút edit thành id ko tồn tại như 1000 sẽ lỗi. (chưa 
+validate cho id trong servlet)
+
+9/ users/cart.jsp, chỉnh giá trị view của nút edit thành thứ khác sẽ lỗi. (chưa validate
+ cho id trong servlet)
+
+10/ users/cart.jsp, chỉnh id của nút delete thành id ko tồn tại như 1000 sẽ lỗi. (chưa 
+validate cho id trong servlet)
+
+11/ users/cart.jsp, chỉnh giá trị view của nút delete thành id ko tồn tại như 1000 sẽ lỗi. 
+(chưa validate cho id trong servlet)
+
+12/ users/cart.jsp, chỉnh method trong form thành get thì hiện thông tin trên url. (ko
+bt có tính là sai không, cần hỏi lại)
+
+13/ /order Servler chứa url này chưa xử lí doGet.
+
+14/ /admin/categories/edit Servlet chứa url này nếu ném id = chữ vào sẽ lỗi. (chưa validate)
+
+15/ /admin/categories/create chỉnh method của form từ post thành get sẽ hiện thông tin 
+trên url. (ko bt hợp lí không)
+
+16/ /admin/categories/create xóa giá trị trong enctype thì sẽ quăng lỗi.
+
+17/ /admin/categories/delete Servlet chứa url này nếu ném id = chữ vào sẽ lỗi. (chưa validate)
+
+18/ /admin/categories/create có form tạo category mới nếu trong tag input nhập tên cate
+mà xóa đi value name (xóa categoryName) thì sẽ báo lỗi.
+
+19/ /admin/categories/create có form tạo category mới nếu xóa đi value của name trong
+phần submit ảnh (name="coverImg") thì sẽ ko load được ảnh. (nên để default ko có thì set
+ảnh default trong database, cần hỏi lại)
+
+20/ /admin/categories/create nhập tên category toàn là space thì lỗi. (chưa validate)
+
+21/ /admin/categories/create đổi định dạng của input file từ file thành text xong ghi
+gì đó vào và submit thì báo lỗi. (chưa validate)
+
+21/ /admin/categories/create đổi định dạng của accept input file từ image/* thành * xong
+ném file gì đó vào và submit thì báo lỗi. (chưa validate)
+
+22/ 
