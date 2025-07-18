@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Category;
 import model.DiscountCode;
 import model.Order;
 import model.OrderItem;
@@ -120,14 +121,16 @@ public class OrderDAO extends DBContext {
 
         try {
 
-            String query = "SELECT o.OrderID, o.OrderDate, o.DeliveryDate, p.ProductID, p.ProductCode, p.ProductName, s.StatusID, s.StatusDescription, ot.Quantity, ot.UnitPrice\n"
+            String query = "SELECT o.OrderID, o.OrderDate, o.DeliveryDate, p.ProductID, p.ProductCode, p.ProductName, s.StatusID, s.StatusDescription, ot.Quantity, ot.UnitPrice, c.CategoryID, c.CategoryName\n"
                     + "FROM [dbo].[Orders] o\n"
                     + "JOIN [dbo].[OrderItems] ot\n"
                     + "ON ot.OrderID = o.OrderID\n"
                     + "JOIN [dbo].[Products] p\n"
                     + "ON p.ProductID = ot.ProductID\n"
                     + "JOIN [dbo].[StatusType] s\n"
-                    + "ON s.StatusID = o.StatusID;";
+                    + "ON s.StatusID = o.StatusID\n"
+                    + "JOIN [dbo].[Categories] c\n"
+                    + "ON c.CategoryID = p.CategoryID;";
 
             ResultSet rs = execSelectQuery(query);
 
@@ -138,7 +141,9 @@ public class OrderDAO extends DBContext {
                         null,
                         new Product(rs.getInt(4),
                                 rs.getString(5),
-                                rs.getString(6)),
+                                rs.getString(6),
+                                new Category(rs.getInt(11),
+                                        rs.getString(12))),
                         rs.getInt(9),
                         rs.getInt(10)));
 

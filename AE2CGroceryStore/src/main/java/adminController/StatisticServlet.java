@@ -18,6 +18,7 @@ import java.util.List;
 import model.Order;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -140,10 +141,10 @@ public class StatisticServlet extends HttpServlet {
         createTableHeader(sheet, getHeaderCellStyle(workbook));
 
         // Thêm data và từng cột.
-        addDataToSheet(sheet, orderData, getCenterCellStyle(workbook));
+        addDataToSheet(sheet, orderData, getCenterCellStyle(workbook), getPriceFormatCellStyle(workbook));
 
         // Tự động điều chỉnh độ rộng cho tất cả cột
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 12; i++) {
             sheet.autoSizeColumn(i);
         }
 
@@ -170,7 +171,7 @@ public class StatisticServlet extends HttpServlet {
 
         // Đặt cột đầu tiên trong sheet là header và set giá trị cho từng cột.
         Row headerRow = sheet.createRow(0);
-        String[] header = {"OrderID", "Order Date", "Delivery Date", "ProductID",
+        String[] header = {"OrderID", "Order Date", "Delivery Date", "CategoryID", "Category Name", "ProductID",
             "Product Code", "Product Name", "Status", "Quantity",
             "UnitPrice", "Total"};
 
@@ -206,7 +207,7 @@ public class StatisticServlet extends HttpServlet {
      *
      * @param workbook là file excel.
      *
-     * @return CellStyle danh cho các cell.
+     * @return CellStyle dành cho các cell cần canh giữa.
      */
     private CellStyle getCenterCellStyle(Workbook workbook) {
         CellStyle cellStyle = workbook.createCellStyle();
@@ -217,12 +218,27 @@ public class StatisticServlet extends HttpServlet {
     }
 
     /**
+     * Lấy ra style format cho tiền tệ.
+     * 
+     * @param workbook ka2 file excel.
+     * 
+     * @return CellStyle dành cho các cell cần format theo VND.
+     */
+    private CellStyle getPriceFormatCellStyle(Workbook workbook) {
+        CellStyle currencyStyle = workbook.createCellStyle();
+        DataFormat format = workbook.createDataFormat();
+        currencyStyle.setDataFormat(format.getFormat("###,### \"VND\""));
+        
+        return currencyStyle;
+    }
+
+    /**
      * Thêm dữ liệu vào sheet.
      *
      * @param sheet là sheet cần thêm data.
      * @param orderData là data lấy từ cơ sở dữ liệu
      */
-    private void addDataToSheet(Sheet sheet, List<Order> orderData, CellStyle centerCS) {
+    private void addDataToSheet(Sheet sheet, List<Order> orderData, CellStyle centerCS, CellStyle currencyStyle) {
 
         for (int i = 1; i <= orderData.size(); i++) {
 
@@ -230,7 +246,7 @@ public class StatisticServlet extends HttpServlet {
             Row row = sheet.createRow(i);
 
             // Thêm data vào từng hàng.
-            addDataToEachRow(row, orderData.get(i - 1), centerCS);
+            addDataToEachRow(row, orderData.get(i - 1), centerCS, currencyStyle);
         }
 
     }
@@ -241,8 +257,9 @@ public class StatisticServlet extends HttpServlet {
      * @param row là hàng cần thêm data.
      * @param order là 1 record tương ứng với 1 hàng.
      */
-    private void addDataToEachRow(Row row, Order order, CellStyle centerCS) {
+    private void addDataToEachRow(Row row, Order order, CellStyle centerCS, CellStyle currencyStyle) {
 
+        // Tạo các cell trong 1 roll.
         Cell[] allCell = {row.createCell(0),
             row.createCell(1),
             row.createCell(2),
@@ -252,24 +269,36 @@ public class StatisticServlet extends HttpServlet {
             row.createCell(6),
             row.createCell(7),
             row.createCell(8),
-            row.createCell(9)};
+            row.createCell(9),
+            row.createCell(10),
+            row.createCell(11)};
 
         // Thêm giá trị vào các cell.     
         allCell[0].setCellValue(order.getId());
-        allCell[1].setCellValue(order.getOrderDate() != null ? order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) : "Unknown day");
-        allCell[2].setCellValue(order.getDeliveryDate() != null ? order.getDeliveryDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) : "Unknown day");
-        allCell[3].setCellValue(order.getOrderItems().get(0).getProduct().getProductID());
-        allCell[4].setCellValue(order.getOrderItems().get(0).getProduct().getProductCode());
-        allCell[5].setCellValue(order.getOrderItems().get(0).getProduct().getProductName());
-        allCell[6].setCellValue(order.getStatus().getDescription());
-        allCell[7].setCellValue(order.getOrderItems().get(0).getQuantity());
-        allCell[8].setCellValue(order.getOrderItems().get(0).getUnitPrice());
-        allCell[9].setCellValue(order.getOrderItems().get(0).getTotalPrice());
+        allCell[1].setCellValue(order.getOrderDate() != null 
+                ? order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) 
+                : "Unknown day");
+        allCell[2].setCellValue(order.getDeliveryDate() != null 
+                ? order.getDeliveryDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) 
+                : "Unknown day");
+        allCell[3].setCellValue(order.getOrderItems().get(0).getProduct().getCategory().getCategoryID());
+        allCell[4].setCellValue(order.getOrderItems().get(0).getProduct().getCategory().getCategoryName());
+        allCell[5].setCellValue(order.getOrderItems().get(0).getProduct().getProductID());
+        allCell[6].setCellValue(order.getOrderItems().get(0).getProduct().getProductCode());
+        allCell[7].setCellValue(order.getOrderItems().get(0).getProduct().getProductName());
+        allCell[8].setCellValue(order.getStatus().getDescription());
+        allCell[9].setCellValue(order.getOrderItems().get(0).getQuantity());
+        allCell[10].setCellValue(order.getOrderItems().get(0).getUnitPrice());
+        allCell[11].setCellValue(order.getOrderItems().get(0).getTotalPrice());
 
         // Canh giữa.
-        for (int i = 0 ; i < 3 ; i++) {
+        for (int i = 0; i < 3; i++) {
             allCell[i].setCellStyle(centerCS);
         }
+        
+        // Format tiền.
+        allCell[10].setCellStyle(currencyStyle);
+        allCell[11].setCellStyle(currencyStyle);
     }
 
     /**

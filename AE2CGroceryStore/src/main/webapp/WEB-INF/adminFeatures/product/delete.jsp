@@ -17,7 +17,7 @@
                 <p>Are you sure you want to hide this product?</p>
 
                 <form method="post" action="product">
-                    <input type="hidden" name="id" value="<%= request.getParameter("id")%>" />
+                    <input type="hidden" name="ProductID" value="<%= request.getParameter("id")%>" />
 
                     <p>
                         <button class="btn btn-danger" type="submit" name="action" value="delete">hide</button>

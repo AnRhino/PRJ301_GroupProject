@@ -123,13 +123,22 @@ public class ProductServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
         } else if (action.equals("delete")) {
 
-            int id = Integer.parseInt(request.getParameter("id"));
+            int id = Integer.parseInt(request.getParameter("ProductID"));
             productDAO.delete(id);
             response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
             // Xử lý chỉnh sửa sản phẩm
         } else if (action.equals("edit")) {
+            String idStr = request.getParameter("ProductID");
 
-            int id = Integer.parseInt(request.getParameter("id"));
+            if (idStr == null || idStr.isEmpty()) {
+                request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+            }
+             if(productValidation.checkProductID(idStr, listProduct)){
+                  request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+             }
+            
+            int id = Integer.parseInt(idStr);
+
             List<String> errors = new ArrayList<>();
             errors.addAll(productValidation.checkProductCodeEdit(productCode, id, listProduct));
             errors.addAll(productValidation.checkProductName(productName));

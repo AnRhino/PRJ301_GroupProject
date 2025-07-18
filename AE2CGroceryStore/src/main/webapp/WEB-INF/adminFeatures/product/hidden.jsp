@@ -17,7 +17,7 @@
                 <p>Are you sure you want to Unhide this product?</p>
 
                 <form method="post" action="product">
-                    <input type="hidden" name="id" value="<%= request.getParameter("id")%>" />
+                    <input type="hidden" name="ProductID" value="<%= request.getParameter("id")%>" />
 
                     <p>
                         <button class="btn btn-primary" type="submit" name="action" value="hidden">Unhide</button>

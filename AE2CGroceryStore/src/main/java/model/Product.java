@@ -55,10 +55,11 @@ public class Product {
         this.productName = productName;
     }
     
-    public Product(int productID, String productCode, String productName) {
+    public Product(int productID, String productCode, String productName, Category category) {
         this.productID = productID;
         this.productCode = productCode;
         this.productName = productName;
+        this.category = category;
     }
 
     public int getProductID() {
