@@ -126,9 +126,9 @@ public class DiscountCodeDAO extends DBContext {
                 + "FROM DiscountCodes\n"
                 + "WHERE Code = ?";
         Object[] params = {code};
-        try(ResultSet rs = execSelectQuery(query, params)){
-            if (rs.next()){
-               return true;
+        try ( ResultSet rs = execSelectQuery(query, params)) {
+            if (rs.next()) {
+                return true;
             }
         } catch (SQLException ex) {
             Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -238,6 +238,24 @@ public class DiscountCodeDAO extends DBContext {
             Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
+    }
+
+    public int reduceById(int id) {
+        return reduceById(id, 1);
+    }
+
+    public int reduceById(int id, int quantity) {
+        String query = "update DiscountCodes\n"
+                + "set QuantityAvailable = QuantityAvailable - ?\n"
+                + "where DiscountCodeID = ?";
+        Object[] params = {quantity, id};
+
+        try {
+            return execQuery(query, params);
+        } catch (SQLException ex) {
+            Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
     //Delete
 }
