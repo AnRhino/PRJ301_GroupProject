@@ -175,7 +175,7 @@ public class DiscountCodeDAO extends DBContext {
      *
      * @return
      */
-    public List<DiscountCode> getAllUsableShippingCode(int UserID) {
+    public List<DiscountCode> getAllUsableShippingCode(int userID) {
         List<DiscountCode> listUsableShippingCode = new ArrayList<>();
         String query = "SELECT DiscountCodeID, Code, DiscountValue, DiscountTypeID, QuantityAvailable, ExpiryDate, MinOrderValue\n"
                 + "FROM DiscountCodes\n"
@@ -189,7 +189,7 @@ public class DiscountCodeDAO extends DBContext {
                 + "AND DiscountCodeID IS NOT NULL\n"
                 + ")\n"
                 + "AND QuantityAvailable > 0";
-        Object[] params = {UserID};
+        Object[] params = {userID};
         try ( ResultSet rs = execSelectQuery(query, params)) {
             while (rs.next()) {
                 listUsableShippingCode.add(new DiscountCode(
@@ -207,7 +207,7 @@ public class DiscountCodeDAO extends DBContext {
         return listUsableShippingCode;
     }
 
-    public List<DiscountCode> getAllUsablePriceCode(int UserID) {
+    public List<DiscountCode> getAllUsablePriceCode(int userID) {
         List<DiscountCode> listUsablePriceCode = new ArrayList<>();
         String query = "SELECT DiscountCodeID, Code, DiscountValue, DiscountTypeID, QuantityAvailable, ExpiryDate, MinOrderValue\n"
                 + "FROM DiscountCodes\n"
@@ -221,7 +221,7 @@ public class DiscountCodeDAO extends DBContext {
                 + "AND DiscountCodeID IS NOT NULL\n"
                 + ")\n"
                 + "AND QuantityAvailable > 1";
-        Object[] params = {UserID};
+        Object[] params = {userID};
         try ( ResultSet rs = execSelectQuery(query, params)) {
             while (rs.next()) {
                 listUsablePriceCode.add(new DiscountCode(
@@ -237,6 +237,13 @@ public class DiscountCodeDAO extends DBContext {
             Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listUsablePriceCode;
+    }
+    
+    public List<DiscountCode> getAllUsableCode(int userID) {
+        List<DiscountCode> discountCodes = getAllPriceCode();
+        discountCodes.addAll(getAllShippingCode());
+        
+        return discountCodes;
     }
 
     public List<DiscountCodeType> getAllDiscountType() {

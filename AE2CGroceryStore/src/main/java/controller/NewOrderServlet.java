@@ -5,6 +5,7 @@
 package controller;
 
 import DAO.CartDAO;
+import DAO.DiscountCodeDAO;
 import DAO.OrderDAO;
 import DAO.OrderItemDAO;
 import DAO.ProductDAO;
@@ -23,6 +24,7 @@ import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
 import java.util.List;
 import model.Cart;
+import model.DiscountCode;
 import model.ErrorMessage;
 import model.Order;
 import model.OrderItem;
@@ -74,6 +76,12 @@ public class NewOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        DiscountCodeDAO dao = new DiscountCodeDAO();
+        User loggedUser = (User) request.getSession().getAttribute("loggedUser");
+        
+        List<DiscountCode> discountCodes = dao.getAllUsableCode(loggedUser.getId());
+        request.setAttribute("discountCodes", discountCodes);
+        
         request.getRequestDispatcher("/WEB-INF/order/create.jsp").forward(request, response);
         
     }
