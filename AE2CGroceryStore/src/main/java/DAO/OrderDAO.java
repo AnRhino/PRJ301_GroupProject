@@ -105,8 +105,10 @@ public class OrderDAO extends DBContext {
                 + "order by OrderDate desc";
         Object[] params = {user.getId()};
         try ( ResultSet rs = execSelectQuery(query, params)) {
+            OrderItemDAO orderItemDAO = new OrderItemDAO();
             List<Order> orders = new LinkedList<>();
             while (rs.next()) {
+                List<OrderItem> orderItems = orderItemDAO.getAllByOrderId(rs.getInt(1));
                 orders.add(new Order(
                         rs.getInt(1),
                         user,
@@ -116,7 +118,7 @@ public class OrderDAO extends DBContext {
                         new DiscountCode(rs.getInt(6), rs.getInt(7), rs.getInt(8)),
                         rs.getString(9),
                         rs.getString(10),
-                        null
+                        orderItems
                 ));
                 return orders;
             }
