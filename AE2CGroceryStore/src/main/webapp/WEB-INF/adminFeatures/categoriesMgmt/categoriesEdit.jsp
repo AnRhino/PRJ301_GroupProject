@@ -45,8 +45,8 @@ List all sp - line 50
                         <p>Category with ID = ${param.categoryID} was not found</p>
                     </c:when>
                     <c:otherwise>
-                    <strong>${errorMessage}</strong>
-                        <form class="form" method="post" action="<c:url value="/admin/categories/edit"/>" enctype="multipart/form-data">
+                        <strong>${errorMessage}</strong>
+                        <form id="form-edit" class="form" method="post" action="<c:url value="/admin/categories/edit"/>" enctype="multipart/form-data">
                             <p>
                                 <label class="form-label" for="categoryID">ID</label>
                                 <input class="form-control" type="text" id="categoryID" name="categoryID" value="${category.categoryID}" readonly>
@@ -70,18 +70,37 @@ List all sp - line 50
                             </div>
                             <div class="form-check form-switch">
                                 <input type="checkbox" name="isHidden" id="isHidden" role="switch" value="true" class="form-check-input"  <c:if test="${category.checkIsHidden()}">checked</c:if> />
-                                <label class="form-check-label" for="isHidden">Hide Category</label>
-                            </div>
-                            <p>
-                                <button class="btn btn-primary" type="apply" name="action" value="apply">Apply</button>
-                                <button class="btn btn-secondary" type="reset">Clear</button> // not working
-                            </p>
-                        </form>
+                                    <label class="form-check-label" for="isHidden">Hide Category</label>
+                                </div>
+                                <p>
+                                    <button class="btn btn-primary" type="apply" name="action" value="apply">Apply</button>
+                                    <button class="btn btn-secondary" type="reset">Reset</button>
+                                </p>
+                            </form>
                     </c:otherwise>
                 </c:choose>
             </div>
         </main>
 
         <%@include file="/WEB-INF/include/footer.jsp" %>
+        <script>
+            $("#form-edit").validate({
+                rules: {
+                    categoryID: {
+                        digits: true,
+                        min: $("#categoryID").val(),
+                        max: $("#categoryID").val()
+                    },
+                    categoryName: {
+                        required: true
+                    }
+                }, 
+                messages: {
+                    categoryName: {
+                        required: "Please enter category name"
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
