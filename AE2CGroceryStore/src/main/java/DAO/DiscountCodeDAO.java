@@ -136,6 +136,39 @@ public class DiscountCodeDAO extends DBContext {
         return false;
     }
 
+    public DiscountCode getUsableDiscountCodeById(int id, int userId) {
+        String query = "SELECT DiscountCodeID, Code, DiscountValue, DiscountTypeID, QuantityAvailable, ExpiryDate, MinOrderValue\n"
+                + "FROM DiscountCodes\n"
+                + "WHERE DiscountCodeID = ?\n"
+                + "AND IsHidden = 0\n"
+                + "AND ExpiryDate >= GETDATE()\n"
+                + "AND DiscountCodeID NOT IN (\n"
+                + "SELECT DiscountCodeID\n"
+                + "FROM Orders\n"
+                + "WHERE UserID = ?\n"
+                + "AND DiscountCodeID IS NOT NULL\n"
+                + ")\n"
+                + "AND QuantityAvailable > 0";
+        Object[] params = {id, userId};
+        try ( ResultSet rs = execSelectQuery(query, params)) {
+            if (rs.next()) {
+
+                return new DiscountCode(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getInt(3),
+                        rs.getInt(4),
+                        rs.getInt(5),
+                        rs.getDate(6).toLocalDate(),
+                        rs.getInt(7)
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     /**
      * This function query valid code for current user (not hidden, hasn't
      * expired, haven't used in past order, quantity > 0)
@@ -155,7 +188,7 @@ public class DiscountCodeDAO extends DBContext {
                 + "WHERE UserID = ?\n"
                 + "AND DiscountCodeID IS NOT NULL\n"
                 + ")\n"
-                + "AND QuantityAvailable > 1";
+                + "AND QuantityAvailable > 0";
         Object[] params = {UserID};
         try ( ResultSet rs = execSelectQuery(query, params)) {
             while (rs.next()) {
