@@ -21,6 +21,7 @@ public class DiscountCode {
     private LocalDate expiryDate;
     private int minOrderValue;
     private int isHidden;
+
     public DiscountCode() {
     }
 
@@ -108,5 +109,5 @@ public class DiscountCode {
     public void setIsHidden(int isHidden) {
         this.isHidden = isHidden;
     }
-    
+
 }
