@@ -17,7 +17,7 @@
     <body>
         <%@include file="/WEB-INF/include/header.jsp" %>
 
-        <div id="carouselExampleIndicators" class="carousel slide bg-light" data-bs-ride="carousel">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -84,14 +84,14 @@
                 </div>
                 <div class="container-fluid">
                     <div class="ms-5 me-5">
-                        <div class="d-flex overflow-auto"> <% // cái này overflow dùng để scrollable %>
+                        <div class="d-flex overflow-auto" id="overflow"> <% // cái này overflow dùng để scrollable %>
                             <c:forEach var="cate" items="${categoryList}">
                                 <div class="flex-shrink-0 me-3" style="width: 180px;"> <% // ngăn item tự thu nhỏ khi ko đủ chổ %>
                                     <form action="${pageContext.request.contextPath}/user-category" method="get">
                                         <input type="hidden" name="view" value="category">
                                         <input type="hidden" name="categoryID" value="${cate.categoryID}">
                                         <button class="btn p-0 border-0 bg-transparent w-100">
-                                            <div class="d-flex flex-column align-items-center">
+                                            <div class="d-flex flex-column align-items-center" id="product-press">
                                                 <c:choose>
                                                     <c:when test="${empty cate.coverImg}">
                                                         <img src="assets/images/placeHolder.jpg"
@@ -140,7 +140,7 @@
                                         <form action="${pageContext.request.contextPath}/user-product" method="get">
                                             <input type="hidden" name="view" value="product">
                                             <input type="hidden" name="productID" value="${pro.productID}">
-                                            <button class="btn">
+                                            <button class="btn" id="product-press">
                                                 <div class="row d-flex justify-content-center">
                                                     <c:choose>
                                                         <c:when test="${empty pro.coverImg}">         
@@ -154,17 +154,17 @@
                                                             </div> 
                                                         </c:otherwise>
                                                     </c:choose>
-                                                    <div id="productInfo" class="p-2">
+                                                    <div id="productInfo" class="p-2  bg-light shadow">
                                                         <div class="col-12 d-flex justify-content-center">
-                                                            <p class="fw-bold">Name:</p>&nbsp;
+                                                            <p class="fw-bold text-black">Name:</p>&nbsp;
                                                             ${pro.productName}
                                                         </div>
                                                         <div class="col-12 d-flex justify-content-center">
-                                                            <p class="fw-bold">Price:</p>&nbsp;
+                                                            <p class="fw-bold text-success">Price:</p>&nbsp;
                                                             <fmt:formatNumber value="${pro.price}" type="number" groupingUsed="true" /> VND
                                                         </div>
                                                         <div class="col-12 d-flex justify-content-center">
-                                                            <p class="fw-bold">Stock:</p>&nbsp;
+                                                            <p class="fw-bold text-primary">Stock:</p>&nbsp;
                                                             ${pro.quantity}
                                                         </div>
                                                     </div>
