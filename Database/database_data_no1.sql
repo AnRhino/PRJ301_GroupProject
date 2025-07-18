@@ -4,7 +4,7 @@ GO
 -- Chạy được nhiều lần.
 -- Password của tất cả là người dung là Demo@123 (dùng md5 để mã hóa).
 -- Tên username là tên + họ tên đệm viết tắt (VD: Nguyen Van Nam ==> NamNV). 
--- Password của từng thành viên là CE + MSSV + @.
+-- Password của từng thành viên là Ce + MSSV + @.
 
 -- Xóa data cũ nếu tồn tại.
 -- Reset lại id tự tăng của identity.
@@ -201,22 +201,22 @@ VALUES
 -- Giả sử RoleID = 0 là Customer, 1 là Admin
 -- Password của tất cả là người dùng là Demo@123 (dùng md5 để mã hóa).
 -- Tên username là tên + họ tên đệm viết tắt (VD: Nguyen Van Nam ==> NamNV). 
--- Password của từng thành viên là CE + MSSV + @.
+-- Password của từng thành viên là Ce + MSSV + @.
 INSERT INTO Users (Username, Password, FullName, Email, RoleID)
-VALUES 
-('user1', 'e14c05f0dc27e6be1fc127abaf474a59', N'Nguyen Van A', 'user1@gmail.com', 0),
-('user2', 'e14c05f0dc27e6be1fc127abaf474a59', N'Le Thi B', 'user2@example.com', 0),
-('user3', 'e14c05f0dc27e6be1fc127abaf474a59', N'Tran Van C', 'user3@example.com', 0),
-('user4', 'e14c05f0dc27e6be1fc127abaf474a59', N'Pham Thi D', 'user4@example.com', 0),
-('user5', 'e14c05f0dc27e6be1fc127abaf474a59', N'Ngo Van E', 'user5@example.com', 0),
-('user6', 'e14c05f0dc27e6be1fc127abaf474a59', N'Huynh Thi F', 'user6@example.com', 0),
-('user7', 'e14c05f0dc27e6be1fc127abaf474a59', N'Dang Van G', 'user7@example.com', 0),
+VALUES
 ('admin', 'e14c05f0dc27e6be1fc127abaf474a59', N'Quan Trị Vien', 'admin@gmail.com', 1),
 ('AnNHP', 'a61acd6c759f831eb8e2aa92098bf5cf', N'Nguyen Ho Phuoc An', 'AnNHPCE190747@example.com', 1),
 ('PhucDC', '7d6f97a810a93b6d5091d0bf81ac38a2', N'Dinh Cong Phuc', 'PhucDCCE190770@gmail.com', 1),
 ('ThoPD', '4fc5da50d877670f36d0081e18b95361', N'Phan Duc Tho', 'ThoPDCE191246@example.com', 1),
 ('TriLT', '9c766d74d3539593e0256781c23c40c0', N'Le Thien Tri', 'TriLTCE190149@gmail.com', 1),
-('KhangVM', '40b2d50c63a3516fba5789a5a13d63d6', N'Vu Minh Khang', 'KhangVMCE191371@example.com', 1);
+('KhangVM', '40b2d50c63a3516fba5789a5a13d63d6', N'Vu Minh Khang', 'KhangVMCE191371@example.com', 1),
+('Mentor', 'e14c05f0dc27e6be1fc127abaf474a59', N'Vo The Vinh', 'VinhVT@gmail.com', 0),
+('Vergil', 'e14c05f0dc27e6be1fc127abaf474a59', N'Vergil Sparda', 'vergil@gmail.com', 0),
+('Dante', 'e14c05f0dc27e6be1fc127abaf474a59', N'Dante Sparda', 'dante@gmail.com', 0),
+('Nero', 'e14c05f0dc27e6be1fc127abaf474a59', N'Nero', 'nero@gmail.com', 0),
+('Peter', 'e14c05f0dc27e6be1fc127abaf474a59', N'Peter Griffin', 'peter@gmail.com', 0),
+('Osama', 'e14c05f0dc27e6be1fc127abaf474a59', N'Osama bin Laden', 'osama@gmail.com', 0),
+('MrBeast', 'e14c05f0dc27e6be1fc127abaf474a59', N'Jimmy Donaldson', 'mrbeast@egmail.com', 0);
 
 -- Thêm sản phẩm vào giỏ hàng cho các User.
 INSERT INTO Carts (UserID, ProductID, Quantity)
@@ -362,7 +362,7 @@ VALUES
 (5, '2025-06-19', 4, NULL),
 (7, '2025-06-20', 2, NULL);
 
--- OrderItems chưa dùng dc(chưa fix)
+-- OrderItems
 INSERT INTO OrderItems (OrderID, ProductID, Quantity, UnitPrice)
 VALUES
 (1, 1, 2, 15000),
