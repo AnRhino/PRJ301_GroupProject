@@ -22,7 +22,7 @@ public class Order {
     private String phoneNumber;
     private String address;
     private List<OrderItem> orderItems;
-    private int deliveryFee;
+    public static final int DELIVERY_FEE_PERCENT = 10;
 
     public Order() {
     }
@@ -30,13 +30,6 @@ public class Order {
     public Order(int id, User user, LocalDateTime orderDate, LocalDateTime deliveryDate,
             OrderStatus status, DiscountCode discount, String phoneNumber, String address,
             List<OrderItem> orderItems) {
-        this(id, user, orderDate, deliveryDate, status, discount, phoneNumber,
-                address, orderItems, 0);
-    }
-
-    public Order(int id, User user, LocalDateTime orderDate, LocalDateTime deliveryDate,
-            OrderStatus status, DiscountCode discount, String phoneNumber, String address,
-            List<OrderItem> orderItems, int deliveryFee) {
         this.id = id;
         this.user = user;
         this.orderDate = orderDate;
@@ -46,7 +39,6 @@ public class Order {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.orderItems = orderItems;
-        this.deliveryFee = deliveryFee;
     }
 
     public int getId() {
@@ -135,24 +127,22 @@ public class Order {
         return subtotal;
     }
 
-    /**
-     * Return the total cost of all items in an order after discounts have been
-     * applied, but before adding delivery fees.
-     *
-     * @return the total cost of all items after discounts
-     */
-    public int getDiscountedSubtotal() {
+    public int getDeliveryFee() {
+        return this.getSubtotal() * DELIVERY_FEE_PERCENT / 100;
+    }
+
+    public int getDiscountValue() {
         int subtotal = this.getSubtotal();
         if (this.discount == null || this.discount.getMinOrderValue() > subtotal) {
-            return subtotal;
+            return 0;
         }
         switch (this.discount.getType()) {
             case 0:
-                return (int) Math.ceil((double) subtotal * (100 - this.discount.getValue()) / 100);
+                return subtotal * this.discount.getValue() / 100;
             case 1:
-                return subtotal - this.discount.getValue();
+                return Math.min(subtotal, this.discount.getValue());
             default:
-                return subtotal;
+                return this.getDeliveryFee();
         }
     }
 
@@ -163,13 +153,7 @@ public class Order {
      * @return the total payment
      */
     public int getTotalPayment() {
-        int discountedSubtotal = this.getDiscountedSubtotal();
-        if (this.discount != null
-                && this.discount.getType() == 2
-                && this.discount.getMinOrderValue() <= discountedSubtotal) {
-            return discountedSubtotal;
-        }
-        return discountedSubtotal + this.deliveryFee;
+        return this.getSubtotal() * (100 + DELIVERY_FEE_PERCENT) / 100 - this.getDiscountValue();
     }
 
 }

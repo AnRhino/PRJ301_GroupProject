@@ -18,6 +18,12 @@ public class OrderItem {
     public OrderItem() {
     }
 
+    public OrderItem(Product product, int quantity, int unitPrice) {
+        this.product = product;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
+
     public OrderItem(Order order, Product product, int quantity) {
         this.order = order;
         this.product = product;

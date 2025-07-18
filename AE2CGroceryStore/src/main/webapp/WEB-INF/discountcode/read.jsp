@@ -36,7 +36,7 @@
                             <td>Free Shipping 100%</td>
                             <td>${shippingCode.quantity}</td>
                             <td>${shippingCode.expiryDate}</td>
-                            <td><a class="btn btn-success" href="<c:url value="${pageContext.request.contextPath}/discount-code/use">
+                            <td><a class="btn btn-success" href="<c:url value="/discount-code/use">
                                        <c:param name="id" value="${shippingCode.id}"/>
                                    </c:url>">Use</a></td>
                         </tr> 
@@ -71,7 +71,7 @@
                             </td>
                             <td>${priceCode.quantity}</td>
                             <td>${priceCode.expiryDate}</td>
-                            <td><a class="btn btn-success" href="<c:url value="${pageContext.request.contextPath}/discount-code/use">
+                            <td><a class="btn btn-success" href="<c:url value="/discount-code/use">
                                        <c:param name="id" value="${priceCode.id}"/>
                                    </c:url>">Use</a></td>
                         </tr>

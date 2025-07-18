@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,7 +66,7 @@ public class OrderDAO extends DBContext {
      */
     public Order getLastestOrderByUser(User user) {
         String query = "select top 1 OrderID, OrderDate, DeliveryDate, \n"
-                + "StatusID, DiscountCodeID, PhoneNumber, [Address], DeliveryFee\n"
+                + "StatusID, DiscountCodeID, PhoneNumber, [Address]\n"
                 + "from Orders\n"
                 + "where UserID = ?\n"
                 + "order by OrderID desc";
@@ -81,9 +82,43 @@ public class OrderDAO extends DBContext {
                         new DiscountCode(rs.getInt(5), null, 0, 0, 0, null, 0),
                         rs.getString(6),
                         rs.getString(7),
-                        null,
-                        rs.getInt(8)
+                        null
                 );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public List<Order> getAllOrdersByUser(User user) {
+        String query = "select OrderID, OrderDate, DeliveryDate, \n"
+                + "st.StatusID, st.StatusDescription, \n"
+                + "dc.DiscountCodeID, dc.DiscountValue, dc.DiscountTypeID,\n"
+                + "PhoneNumber, [Address]\n"
+                + "from Orders o\n"
+                + "join DiscountCodes dc\n"
+                + "on o.DiscountCodeID = dc.DiscountCodeID\n"
+                + "join StatusType st\n"
+                + "on o.StatusID = st.StatusID\n"
+                + "where UserID = ?\n"
+                + "order by OrderDate desc";
+        Object[] params = {user.getId()};
+        try ( ResultSet rs = execSelectQuery(query, params)) {
+            List<Order> orders = new LinkedList<>();
+            while (rs.next()) {
+                orders.add(new Order(
+                        rs.getInt(1),
+                        user,
+                        rs.getDate(2).toLocalDate().atStartOfDay(),
+                        rs.getDate(3).toLocalDate().atStartOfDay(),
+                        new OrderStatus(rs.getInt(4), rs.getString(5)),
+                        new DiscountCode(rs.getInt(6), rs.getInt(7), rs.getInt(8)),
+                        rs.getString(9),
+                        rs.getString(10),
+                        null
+                ));
+                return orders;
             }
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);

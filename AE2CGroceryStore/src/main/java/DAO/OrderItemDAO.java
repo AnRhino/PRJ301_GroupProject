@@ -5,11 +5,14 @@
 package DAO;
 
 import dbconnect.DBContext;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.OrderItem;
+import model.Product;
 
 /**
  *
@@ -71,6 +74,30 @@ public class OrderItemDAO extends DBContext {
             numberOfNewRow += createOrderItem(orderItem);
         }
         return numberOfNewRow;
+    }
+
+    public List<OrderItem> getAllByOrderId(int orderId) {
+        String query = "select p.ProductID, p.ProductName, oi.Quantity, UnitPrice \n"
+                + "from OrderItems oi\n"
+                + "join Products p\n"
+                + "on oi.ProductID = p.ProductID\n"
+                + "where OrderID = ?";
+        Object[] params = {orderId};
+
+        try ( ResultSet rs = execSelectQuery(query, params)) {
+            List<OrderItem> orderItems = new LinkedList<>();
+            while (rs.next()) {
+                orderItems.add(new OrderItem(
+                        new Product(rs.getInt(1), rs.getString(2)),
+                        rs.getInt(3),
+                        rs.getInt(4)
+                ));
+            }
+            return orderItems;
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /**

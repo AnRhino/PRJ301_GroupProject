@@ -5,7 +5,6 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  *
@@ -23,6 +22,12 @@ public class DiscountCode {
     private int isHidden;
 
     public DiscountCode() {
+    }
+
+    public DiscountCode(int id, int value, int type) {
+        this.id = id;
+        this.value = value;
+        this.type = type;
     }
 
     public DiscountCode(int id, String code, int value, int type, int quantity, LocalDate expiryDate, int minOrderValue) {

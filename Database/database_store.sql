@@ -96,7 +96,6 @@ CREATE TABLE Orders (
     DiscountCodeID INT FOREIGN KEY REFERENCES DiscountCodes(DiscountCodeID),
 	PhoneNumber VARCHAR(15),
 	[Address] VARCHAR(255),
-	DeliveryFee INT DEFAULT 0,
 	Constraint CK_DeliveryDate CHECK(DeliveryDate >= OrderDate)
 );
 

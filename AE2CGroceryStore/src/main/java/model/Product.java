@@ -48,13 +48,18 @@ public class Product {
         this.productID = productID;
     }
 
+    public Product(int productID, String productName) {
+        this.productID = productID;
+        this.productName = productName;
+    }
+
     public Product(int productID, String productName, String coverImg, int sumQuality) {
         this.productID = productID;
         this.sumQuality = sumQuality;
         this.coverImg = coverImg;
         this.productName = productName;
     }
-    
+
     public Product(int productID, String productCode, String productName, Category category) {
         this.productID = productID;
         this.productCode = productCode;

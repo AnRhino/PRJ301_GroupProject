@@ -121,17 +121,17 @@ public class NewOrderServlet extends HttpServlet {
             // Format: yyyy-mm-dd
             LocalDateTime deliveryDate = LocalDate.parse(strDeliveryDate,
                     DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay();
+            // If Delivery Date before today, auto set it is today
+            if (deliveryDate.isBefore(LocalDate.now().atStartOfDay())) {
+                deliveryDate = LocalDate.now().atStartOfDay();
+            }
+            
             // If cannot parse the discount code id, set it null
             Integer discountCodeId;
             try {
                 discountCodeId = Integer.valueOf(strDiscountCodeId);
             } catch (NumberFormatException nfe) {
                 discountCodeId = null;
-            }
-
-            // Check business rule for Delivery Date
-            if (deliveryDate.isBefore(LocalDate.now().atStartOfDay())) {
-                throw new Exception(MessageConstants.DELIVERY_DATE_BEFORE_TODAY_MESSAGE);
             }
 
             // Create new order, save it into database

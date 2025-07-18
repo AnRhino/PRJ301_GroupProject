@@ -71,12 +71,12 @@ public class UseDiscountCodeServlet extends HttpServlet {
             int id = Integer.parseInt(strId);
             DiscountCode discountCode = dao.getUsableDiscountCodeById(id, loggedUser.getId());
             if (discountCode == null) {
-                session.removeAttribute("discountCode");
+                session.removeAttribute("chosenDiscountCode");
             } else {
-                session.setAttribute("discountCode", discountCode);
+                session.setAttribute("chosenDiscountCode", discountCode);
             }
         } catch (NumberFormatException nfe) {
-            session.removeAttribute("discountCode");
+            session.removeAttribute("chosenDiscountCode");
         }
 
         response.sendRedirect(request.getContextPath() + "/new-order");
