@@ -88,8 +88,7 @@ List all sp - line 50
                 rules: {
                     categoryID: {
                         digits: true,
-                        min: $("#categoryID").val(),
-                        max: $("#categoryID").val()
+                        range: [$("#categoryID").val(), $("#categoryID").val()]
                     },
                     categoryName: {
                         required: true
