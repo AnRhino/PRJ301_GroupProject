@@ -29,12 +29,12 @@
             <c:choose>
 
                 <c:when test="${empty requestScope.orderList}">
-                    <p class="mx-5 my-1">There are curently no order to show.</p>
+                    <p class="m-5">There are curently no order to show.</p>
                 </c:when>
 
                 <c:otherwise>
-                    <div class="mx-5 my-1">
-                        <table class="table table-striped table-hover table-bordered border-dark">
+                    <div class="m-5">
+                        <table class="table table-striped table-hover table-bordered border-dark table-light">
                             <thead>
                                 <tr>
                                     <th scope="col" class="col-1">OrderID</th>

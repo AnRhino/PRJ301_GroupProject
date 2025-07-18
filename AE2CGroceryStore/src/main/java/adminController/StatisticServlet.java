@@ -12,17 +12,20 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.OutputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import model.Order;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import utils.FileIOUtil;
 
 /**
  *
@@ -85,7 +88,7 @@ public class StatisticServlet extends HttpServlet {
 
     /**
      * Lấy dữ liệu từ database.
-     * 
+     *
      * @param request là yêu cầu người dùng.
      */
     private void getData(HttpServletRequest request) {
@@ -115,6 +118,13 @@ public class StatisticServlet extends HttpServlet {
         response.sendRedirect("/admin/statistic");
     }
 
+    /**
+     * Xuất ra file excel thống kê sản phẩm mua hàng cho quản trị viên.
+     *
+     * @param response là phản hồi của server.
+     *
+     * @throws IOException nếu có lỗi xuất file ra.
+     */
     private void exportToExcelFile(HttpServletResponse response) throws IOException {
 
         // Lấy data.
@@ -122,14 +132,20 @@ public class StatisticServlet extends HttpServlet {
 
         // Tạo excel file.
         Workbook workbook = new XSSFWorkbook();
+
         // Tạo sheet 1 cho the excel file.
         Sheet sheet = workbook.createSheet("Sheet1");
 
         // Tạo cột header cho sheet.
-        createTableHeader(sheet);
+        createTableHeader(sheet, getHeaderCellStyle(workbook));
 
         // Thêm data và từng cột.
-        addDataToSheet(sheet, orderData);
+        addDataToSheet(sheet, orderData, getCenterCellStyle(workbook));
+
+        // Tự động điều chỉnh độ rộng cho tất cả cột
+        for (int i = 0; i < 10; i++) {
+            sheet.autoSizeColumn(i);
+        }
 
         // Thiết lập header HTTP để buộc tải về.
         // Thiết lập là dạng file excel. Tên file là report.xlsx.
@@ -140,38 +156,73 @@ public class StatisticServlet extends HttpServlet {
         try ( OutputStream os = response.getOutputStream()) {
             workbook.write(os);
         }
-        
+
         // Đóng cổng truyền data sau khi đã ghi vào response.
         workbook.close();
     }
 
     /**
      * Tạo header cho sheet.
-     * 
+     *
      * @param sheet là sheet trong file cần ghi header.
      */
-    private void createTableHeader(Sheet sheet) {
-        
+    private void createTableHeader(Sheet sheet, CellStyle style) {
+
         // Đặt cột đầu tiên trong sheet là header và set giá trị cho từng cột.
         Row headerRow = sheet.createRow(0);
         String[] header = {"OrderID", "Order Date", "Delivery Date", "ProductID",
             "Product Code", "Product Name", "Status", "Quantity",
             "UnitPrice", "Total"};
-        
+
         // Đặt tên cho từng header.
         for (int i = 0; i < header.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(header[i]);
+            cell.setCellStyle(style);
         }
     }
 
     /**
+     * Lấy ra style nền xanh và canh giữa cho header cell.
+     *
+     * @param workbook là file excel.
+     *
+     * @return CellStyle cho header cell.
+     */
+    private CellStyle getHeaderCellStyle(Workbook workbook) {
+
+        // Tạo cell cellStyle mới và set màu cho nó là PALE_BLUE.
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        return cellStyle;
+    }
+
+    /**
+     * Lấy ra style canh giữa ngang và dọc cho cell.
+     *
+     * @param workbook là file excel.
+     *
+     * @return CellStyle danh cho các cell.
+     */
+    private CellStyle getCenterCellStyle(Workbook workbook) {
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        return cellStyle;
+    }
+
+    /**
      * Thêm dữ liệu vào sheet.
-     * 
+     *
      * @param sheet là sheet cần thêm data.
      * @param orderData là data lấy từ cơ sở dữ liệu
      */
-    private void addDataToSheet(Sheet sheet, List<Order> orderData) {
+    private void addDataToSheet(Sheet sheet, List<Order> orderData, CellStyle centerCS) {
 
         for (int i = 1; i <= orderData.size(); i++) {
 
@@ -179,30 +230,46 @@ public class StatisticServlet extends HttpServlet {
             Row row = sheet.createRow(i);
 
             // Thêm data vào từng hàng.
-            addDataToEachRow(row, orderData.get(i - 1));
+            addDataToEachRow(row, orderData.get(i - 1), centerCS);
         }
 
     }
 
     /**
      * Thêm data cho từng cell trong từng hàng.
-     * 
+     *
      * @param row là hàng cần thêm data.
      * @param order là 1 record tương ứng với 1 hàng.
      */
-    private void addDataToEachRow(Row row, Order order) {
+    private void addDataToEachRow(Row row, Order order, CellStyle centerCS) {
 
-        // Thêm vào id của order.     
-        row.createCell(0).setCellValue(order.getId());
-        row.createCell(1).setCellValue(order.getOrderDate() != null ? order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) : "Unknown day");
-        row.createCell(2).setCellValue(order.getDeliveryDate() != null ? order.getDeliveryDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) : "Unknown day");
-        row.createCell(3).setCellValue(order.getOrderItems().get(0).getProduct().getProductID());
-        row.createCell(4).setCellValue(order.getOrderItems().get(0).getProduct().getProductCode());
-        row.createCell(5).setCellValue(order.getOrderItems().get(0).getProduct().getProductName());
-        row.createCell(6).setCellValue(order.getStatus().getDescription());
-        row.createCell(7).setCellValue(order.getOrderItems().get(0).getQuantity());
-        row.createCell(8).setCellValue(order.getOrderItems().get(0).getUnitPrice());
-        row.createCell(9).setCellValue(order.getOrderItems().get(0).getTotalPrice());
+        Cell[] allCell = {row.createCell(0),
+            row.createCell(1),
+            row.createCell(2),
+            row.createCell(3),
+            row.createCell(4),
+            row.createCell(5),
+            row.createCell(6),
+            row.createCell(7),
+            row.createCell(8),
+            row.createCell(9)};
+
+        // Thêm giá trị vào các cell.     
+        allCell[0].setCellValue(order.getId());
+        allCell[1].setCellValue(order.getOrderDate() != null ? order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) : "Unknown day");
+        allCell[2].setCellValue(order.getDeliveryDate() != null ? order.getDeliveryDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) : "Unknown day");
+        allCell[3].setCellValue(order.getOrderItems().get(0).getProduct().getProductID());
+        allCell[4].setCellValue(order.getOrderItems().get(0).getProduct().getProductCode());
+        allCell[5].setCellValue(order.getOrderItems().get(0).getProduct().getProductName());
+        allCell[6].setCellValue(order.getStatus().getDescription());
+        allCell[7].setCellValue(order.getOrderItems().get(0).getQuantity());
+        allCell[8].setCellValue(order.getOrderItems().get(0).getUnitPrice());
+        allCell[9].setCellValue(order.getOrderItems().get(0).getTotalPrice());
+
+        // Canh giữa.
+        for (int i = 0 ; i < 3 ; i++) {
+            allCell[i].setCellStyle(centerCS);
+        }
     }
 
     /**

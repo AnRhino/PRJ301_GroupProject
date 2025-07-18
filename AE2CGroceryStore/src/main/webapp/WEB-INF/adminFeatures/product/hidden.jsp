@@ -13,14 +13,14 @@
 
         <main class="flex-shrink-0">
             <div class="container">
-                <h1 class="mt-5">Hidden Product</h1>
-                <p>Are you sure you want to delete this product?</p>
+                <h1 class="mt-5">Unhide Product</h1>
+                <p>Are you sure you want to Unhide this product?</p>
 
                 <form method="post" action="product">
                     <input type="hidden" name="id" value="<%= request.getParameter("id")%>" />
 
                     <p>
-                        <button class="btn btn-primary" type="submit" name="action" value="hidden">UnHidden</button>
+                        <button class="btn btn-primary" type="submit" name="action" value="hidden">Unhide</button>
                         <a href="product?view=list" class="btn btn-secondary">Cancel</a>
                     </p>
                 </form>
