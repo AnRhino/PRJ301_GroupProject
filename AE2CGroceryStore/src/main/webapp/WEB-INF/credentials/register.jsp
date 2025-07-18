@@ -17,45 +17,81 @@
     <body>
         <%@include file="../include/header.jsp" %>
 
-        
-            
-        
+
+
+
         <div class="container-sm">
-        <%-- Show error msg if they exists --%>
-        <c:if test="${not empty emailMsg}"><p class="text-danger">${emailMsg.getMessage()}</p></c:if>
-        <c:if test="${not empty fullNameMsg}"><p class="text-danger">${fullNameMsg.getMessage()}</p></c:if>
-        <c:if test="${not empty usernameMsg}"><p class="text-danger">${usernameMsg.getMessage()}</p></c:if>
-        <c:if test="${not empty passwordMsg}"><p class="text-danger">${passwordMsg.getMessage()}</p></c:if>
-        <c:if test="${not empty registerError}"><p class="text-danger">${registerError}</p></c:if>
+            <%-- Show error msg if they exists --%>
+            <c:if test="${not empty emailMsg}"><p class="text-danger">${emailMsg.getMessage()}</p></c:if>
+            <c:if test="${not empty fullNameMsg}"><p class="text-danger">${fullNameMsg.getMessage()}</p></c:if>
+            <c:if test="${not empty usernameMsg}"><p class="text-danger">${usernameMsg.getMessage()}</p></c:if>
+            <c:if test="${not empty passwordMsg}"><p class="text-danger">${passwordMsg.getMessage()}</p></c:if>
+            <c:if test="${not empty registerError}"><p class="text-danger">${registerError}</p></c:if>
 
-            <main class="form-signin">
-                <form method="post" action="<c:url value="/register"/>">
-                      <h1 class="h3 mb-3 fw-normal">Register</h1>
+                <main class="form-signin">
+                    <form id="form-register" method="post" action="<c:url value="/register"/>">
+                    <h1 class="h3 mb-3 fw-normal">Register</h1>
 
                     <div class="form-floating">
-                        <input type="email" class="form-control" name="email" id="floatingInput" placeholder="Email" value="${param.email}">
-                        <label for="floatingInput">Email</label>
+                        <input type="email" class="form-control" name="email" id="floatingEmail" placeholder="Email" value="${param.email}">
+                        <label for="floatingEmail">Email</label>
                     </div>
                     <div class="form-floating">
-                        <input type="text" class="form-control" name="fullName" id="floatingPassword" placeholder="Full Name" value="${param.fullName}">
-                        <label for="floatingPassword">Name</label>
+                        <input type="text" class="form-control" name="fullName" id="floatingName" placeholder="Full Name" value="${param.fullName}">
+                        <label for="floatingName">Name</label>
                     </div>
                     <div class="form-floating">
-                        <input type="text" class="form-control" name="username" id="floatingInput" placeholder="Username" value="${param.username}">
-                        <label for="floatingInput">Username</label>
+                        <input type="text" class="form-control" name="username" id="floatingUsername" placeholder="Username" value="${param.username}">
+                        <label for="floatingUsername">Username</label>
                     </div>
                     <div class="form-floating">
                         <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password" value="${param.password}">
                         <label for="floatingPassword">Password</label>
                     </div>
-                      
+
 
                     <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
                 </form>
-                      <a href="login">Login</a>
+                <a href="login">Login</a>
             </main>
         </div>
 
         <%@include file="../include/footer.jsp" %>
+        <script>
+            $("#form-register").validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    fullName: {
+                        required: true,
+                        rangelength: [2, 50]
+                    },
+                    username: {
+                        required: true,
+                        rangelength: [3, 20]
+                    },
+                    password: {
+                        required: true,
+                        minlength: 8
+                    }
+                },
+                messages: {
+                    email: {
+                        required: "Please enter email"
+                    },
+                    fullName: {
+                        required: "Please enter name"
+                    },
+                    username: {
+                        required: "Please enter username"
+                    },
+                    password: {
+                        required: "Please enter password"
+                    }
+                }
+            });
+        </script>
     </body>
 </html>

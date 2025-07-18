@@ -18,29 +18,49 @@
         <%@include file="../include/header.jsp" %>
 
         <div class="container-sm">
-        <%-- Show error msg if they exists --%>
-        <c:if test="${not empty usernameMsg}"><p class="text-danger">${usernameMsg.getMessage()}</p></c:if>
-        <c:if test="${not empty passwordMsg}"><p class="text-danger">${passwordMsg.getMessage()}</p></c:if>
-        <c:if test="${not empty loginError}"><p class="text-danger">${loginError}</p></c:if>
-            <main class="form-signin">
-                <form method="post" action="<c:url value="/login"/>">
+            <%-- Show error msg if they exists --%>
+            <c:if test="${not empty usernameMsg}"><p class="text-danger">${usernameMsg.getMessage()}</p></c:if>
+            <c:if test="${not empty passwordMsg}"><p class="text-danger">${passwordMsg.getMessage()}</p></c:if>
+            <c:if test="${not empty loginError}"><p class="text-danger">${loginError}</p></c:if>
+                <main class="form-signin">
+                    <form id="form-login" method="post" action="<c:url value="/login"/>">
                     <h1 class="h3 mb-3 fw-normal">Log In</h1>
 
                     <div class="form-floating">
                         <input type="text" class="form-control" name="username" id="floatingInput" placeholder="Username" value="${param.username}">
-                        <label for="floatingInput" value="${param.username}">Username</label>
+                        <label for="floatingInput">Username</label>
                     </div>
                     <div class="form-floating">
                         <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
-                        <label for="floatingPassword"">Password</label>
+                        <label for="floatingPassword">Password</label>
                     </div>
 
                     <button class="w-100 btn btn-lg btn-primary" type="submit">Log In</button>
                 </form>
-                    <a href="register">Register</a>
+                <a href="register">Register</a>
             </main>
         </div>
 
         <%@include file="../include/footer.jsp" %>
+        <script>
+            $("#form-login").validate({
+                rules: {
+                    username: {
+                        required: true
+                    },
+                    password: {
+                        required: true
+                    }
+                },
+                messages: {
+                    username: {
+                        required: "Please enter username"
+                    },
+                    password: {
+                        required: "Please enter password"
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
