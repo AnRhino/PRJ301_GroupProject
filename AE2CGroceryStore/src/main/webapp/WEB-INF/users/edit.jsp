@@ -26,9 +26,9 @@
                 </div>
             </c:if>
 
-            <form method="post" action="${pageContext.request.contextPath}/cart">
-                <input type="hidden" name="cartId" value="${cart.cartItemID}"/>
-                <input type="hidden" name="action" value="edit"/>
+            <form id="form-edit" method="post" action="${pageContext.request.contextPath}/cart">
+                <input type="hidden" id="cartId" name="cartId" value="${cart.cartItemID}"/>
+                <input type="hidden" id="action" name="action" value="edit"/>
 
                 <table class="table">
                     <tr>
@@ -45,15 +45,36 @@
                     </tr>
                     <tr>
                         <th>Quantity</th>
-                        <td><input type="number" name="quantity" min="1" value="${cart.quantity}" required/></td>
+                        <td><input id="quantity" name="quantity" value="${cart.quantity}" required/></td>
                     </tr>
                 </table>
 
-                <button type="submit" class="btn btn-success">Update</button>
-                <button type="reset" class="btn btn-secondary">Clear</button>
+                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
             </form>
         </div>
 
         <%@ include file="../include/footer.jsp" %>
+        <script>
+            $("#form-edit").validate({
+               rules: {
+                   cartId: {
+                       required: true,
+                       digits: true,
+                       range: [$("#cartId").val(), $("#cartId").val()]
+                   },
+                   quantity: {
+                       required: true,
+                       digits: true,
+                       min: 1
+                   }
+               },
+               messages: {
+                   quantity: {
+                       required: "Please enter quantity"
+                   }
+               }
+            });
+        </script>
     </body>
 </html>

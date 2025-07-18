@@ -15,8 +15,8 @@
         <div class="container p-5">
             <h3>Delete Cart</h3>
 
-            <form method="post" action="${pageContext.request.contextPath}/cart">
-                <input type="hidden" name="cartId" value="${cart.cartItemID}"/>
+            <form id="form-delete" method="post" action="${pageContext.request.contextPath}/cart">
+                <input type="hidden" id="cartId" name="cartId" value="${cart.cartItemID}"/>
                 <input type="hidden" name="action" value="delete"/>
 
                 <table class="table">
@@ -26,11 +26,21 @@
                     <tr><th>Quantity</th><td>${cart.product.quantity}</td></tr>
                 </table>
 
-                <button type="submit" class="btn btn-success">Delete</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
                 <a href="${pageContext.request.contextPath}/cart" class="btn btn-secondary">Back</a>
             </form>
         </div>
 
         <%@ include file="../include/footer.jsp" %>
+        <script>
+            $("#form-delete").validate({
+                rules: {
+                    cartId: {
+                        required: true,
+                        range: [$("#cartId").val(), $("#cartId").val()]
+                    }
+                }
+            })
+        </script>
     </body>
 </html>

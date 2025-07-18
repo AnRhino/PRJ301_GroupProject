@@ -49,7 +49,10 @@
                                     <tr>
                                         <th scope="row"><%= index++%></th>
                                         <td><img src="${pageContext.request.contextPath}/get-image/${item.product.coverImg}" style="width: 80px;" /></td>
-                                        <td>${item.product.productName}</td>
+                                        <td><a href="<c:url value="user-product">
+                                                   <c:param name="view" value="product"/>
+                                                   <c:param name="productID" value="${item.product.productID}"/>
+                                        </c:url>">${item.product.productName}</a></td>
                                         <td>${item.quantity}</td>
                                         <td>${item.product.price * item.quantity}</td>
                                         <td>
