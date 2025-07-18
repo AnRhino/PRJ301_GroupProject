@@ -29,18 +29,19 @@ public class ImagePathInitializer {
     public final static String JFIF_IMAGE_FILE_FORMAT = ".jfif";
     public final static String SVG_IMAGE_FILE_FORMAT = ".svg";
     public final static String GIF_IMAGE_FILE_FORMAT = ".gif";
+    public final static int DEFAULT_IMAGE = 1;
     public static boolean status = false;
 
     /**
      * Set url của ảnh trong database.
      */
     public static void initialize() {
-        
+
         // Nếu đã chạy rồi thì không chạy nữa
         if (status) {
             return;
         }
-        
+
         // Check thử có tồn tại thư mục dự án ko
         File projectFolder = new File(FileIOUtil.getRootPath());
         if (projectFolder.exists() && projectFolder.isDirectory()) {
@@ -148,6 +149,10 @@ public class ImagePathInitializer {
             // Nếu có tồn tại ảnh thì set đường dẫn của nó trong database.
             if (checkExistUserImgPath(userImgFolder, user.getId())) {
                 userDao.setImgUrl(user.getId(), USER_IMAGE_FOLDER + "/" + user.getId() + PNG_IMAGE_FILE_FORMAT);
+
+                // Nếu không có thì set ảnh mặc định.
+            } else {
+                userDao.setImgUrl(user.getId(), USER_IMAGE_FOLDER + "/" + DEFAULT_IMAGE + PNG_IMAGE_FILE_FORMAT);
             }
         }
     }
@@ -170,6 +175,10 @@ public class ImagePathInitializer {
             // Nếu có tồn tại ảnh thì set đường dẫn của nó trong database.
             if (checkExistCategoryImgPath(categoryImgFolder, category.getCategoryID())) {
                 categoryDao.setImgUrl(category.getCategoryID(), CATEGORY_IMAGE_FOLDER + "/" + category.getCategoryID() + PNG_IMAGE_FILE_FORMAT);
+
+                // Nếu không có thì set ảnh mặc định.
+            } else {
+                categoryDao.setImgUrl(category.getCategoryID(), CATEGORY_IMAGE_FOLDER + "/" + DEFAULT_IMAGE + PNG_IMAGE_FILE_FORMAT);
             }
         }
     }
@@ -192,10 +201,14 @@ public class ImagePathInitializer {
             // Nếu có tồn tại ảnh thì set đường dẫn của nó trong database.
             if (checkExistProductImgPath(productImgFolder, product.getProductID())) {
                 productDao.setImgUrl(product.getProductID(), PRODUCT_IMAGE_FOLDER + "/" + product.getProductID() + PNG_IMAGE_FILE_FORMAT);
+
+                // Nếu không có thì set ảnh mặc định.
+            } else {
+                productDao.setImgUrl(product.getProductID(), PRODUCT_IMAGE_FOLDER + "/" + DEFAULT_IMAGE + PNG_IMAGE_FILE_FORMAT);
             }
         }
     }
-    
+
     /**
      * Kiểm tra ảnh có trong thư mục ảnh của người dùng hay không.
      *
