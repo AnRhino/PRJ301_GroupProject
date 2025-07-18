@@ -24,6 +24,7 @@
                     <th>Description</th>
                     <th>Quantity</th>
                     <th>Expiry Date</th>
+                    <th></th>
                     </thead>
                     <div class="fs-3">Free Shipping Codes</div>
                     <c:if test="${empty listShippingCode}">
@@ -35,16 +36,20 @@
                             <td>Free Shipping 100%</td>
                             <td>${shippingCode.quantity}</td>
                             <td>${shippingCode.expiryDate}</td>
-                        </tr>
+                            <td><a class="btn btn-success" href="<c:url value="${pageContext.request.contextPath}/discount-code/use">
+                                       <c:param name="id" value="${shippingCode.id}"/>
+                                   </c:url>">Use</a></td>
+                        </tr> 
                     </c:forEach>
                 </table>
-                
+
                 <table class="table table-striped mb-5">
                     <thead>
                     <th>Code</th>
                     <th>Description</th>
                     <th>Quantity</th>
                     <th>Expiry Date</th>
+                    <th></th>
                     </thead>
                     <div class="fs-3">Discount Codes</div>
                     <c:if test="${empty listPriceCode}">
@@ -66,6 +71,9 @@
                             </td>
                             <td>${priceCode.quantity}</td>
                             <td>${priceCode.expiryDate}</td>
+                            <td><a class="btn btn-success" href="<c:url value="${pageContext.request.contextPath}/discount-code/use">
+                                       <c:param name="id" value="${priceCode.id}"/>
+                                   </c:url>">Use</a></td>
                         </tr>
                     </c:forEach>
                 </table>
