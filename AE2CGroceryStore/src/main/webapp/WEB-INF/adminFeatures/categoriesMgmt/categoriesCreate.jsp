@@ -33,7 +33,7 @@
                     <h1>Create New Category</h1>
                 </div>
                 <strong>${errorMessage}</strong>
-                <form class="form" method="post" action="<c:url value='/admin/categories/create'/>" enctype="multipart/form-data">
+                <form id="form-create" class="form" method="post" action="<c:url value='/admin/categories/create'/>" enctype="multipart/form-data">
                     <p>
                         <label class="form-label" for="categoryName">Name</label>
                         <input class="form-control" type="text" id="categoryName" name="categoryName" />
@@ -64,6 +64,20 @@
         </main>
 
         <%@include file="/WEB-INF/include/footer.jsp" %>
+        <script>
+            $("#form-create").validate({
+                rules: {
+                    categoryName: {
+                        required: true
+                    }
+                },
+                messages: {
+                    categoryName: {
+                        required: "Please enter category name"
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
 
