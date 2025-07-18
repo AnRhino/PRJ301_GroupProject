@@ -41,13 +41,13 @@
                     String pCate = request.getAttribute("oldCate") != null ? (String) request.getAttribute("oldCate") : String.valueOf(pro.getCategory().getCategoryID());
                 %>
 
-                <form method="post" action="<%= request.getContextPath()%>/admin/product">
+                <form id="form-edit" method="post" action="<%= request.getContextPath()%>/admin/product">
                     <input type="hidden" name="action" value="edit" />
-                    <input type="hidden" name="id" value="<%= pro.getProductID()%>" />
+                    <input type="hidden" id="id" name="id" value="<%= pro.getProductID()%>" />
 
                     <p>
                         <label for="productCode">Product Code</label>
-                        <input class="form-control" type="text" id="productCode" name="productCore" value="<%= pCode%>" required />
+                        <input class="form-control" type="text" id="productCode" name="productCode" value="<%= pCode%>" required />
                     </p>
 
                     <p>
@@ -57,12 +57,12 @@
 
                     <p>
                         <label for="quantity">Quantity</label>
-                        <input class="form-control" type="number" id="quantity" name="quantity" value="<%= pQuantity%>" required />
+                        <input class="form-control" id="quantity" name="quantity" value="<%= pQuantity%>" required />
                     </p>
 
                     <p>
                         <label for="price">Price</label>
-                        <input class="form-control" type="number" id="price" name="price" value="<%= pPrice%>" required />
+                        <input class="form-control" id="price" name="price" value="<%= pPrice%>" required />
                     </p>
 
                     <%
@@ -71,7 +71,7 @@
                     %>
                     <p>
                         <label for="category">Category</label>
-                        <select class="form-select" name="categogy" id="category">
+                        <select class="form-select" name="category" id="category">
                             <% for (Category cate : categories) {%>
                             <option value="<%= cate.getCategoryID()%>" <%= String.valueOf(cate.getCategoryID()).equals(pCate) ? "selected" : ""%>>
                                 <%= cate.getCategoryName()%>
@@ -92,5 +92,45 @@
         </main>
 
         <%@include file="/WEB-INF/include/footer.jsp" %>
+        <script>
+            $("#form-edit").validate({
+                rules: {
+                    id: {
+                        required: true,
+                        range: [$("#id").val(), $("#id").val()]
+                    },
+                    productCode: {
+                        required: true
+                    },
+                    productName: {
+                        required: true
+                    },
+                    quantity: {
+                        required: true,
+                        digits: true,
+                        min: 1
+                    },
+                    price: {
+                        required: true,
+                        digits: true,
+                        min: 1000
+                    }
+                },
+                messages: {
+                    productCode: {
+                        required: "Please enter product code"
+                    },
+                    productName: {
+                        required: "Please enter product name"
+                    },
+                    quantity: {
+                        required: "Please enter quantity"
+                    },
+                    price: {
+                        required: "Please enter price"
+                    }
+                }
+            });
+        </script>
     </body>
 </html>

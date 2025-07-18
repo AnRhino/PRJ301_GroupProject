@@ -49,28 +49,24 @@
                 <a class="btn btn-primary" href="product?view=list">Home</a>
                 <% }%>
 
-                <form method="post" action="<%= request.getContextPath()%>/admin/product">
+                <form id="form-create" method="post" action="<%= request.getContextPath()%>/admin/product">
                     <input type="hidden" name="action" value="create" />
 
                     <p>
                         <label for="productCode">Product Code</label>
-                        <input class="form-control" type="text" id="productCode" name="productCore"
-                               value="<%= request.getAttribute("PCode") != null ? request.getAttribute("PCode") : ""%>" required />
+                        <input class="form-control" type="text" id="productCode" name="productCode" required />
                     </p>
                     <p>
                         <label for="productName">Product Name</label>
-                        <input class="form-control" type="text" id="productName" name="productName"
-                               value="<%= request.getAttribute("PName") != null ? request.getAttribute("PName") : ""%>" required />
+                        <input class="form-control" type="text" id="productName" name="productName" required />
                     </p>
                     <p>
                         <label for="quantity">Quantity</label>
-                        <input class="form-control" type="number" id="quantity" name="quantity"
-                               value="<%= request.getAttribute("PQuantity") != null ? request.getAttribute("PQuantity") : ""%>" required />
+                        <input class="form-control" type="number" id="quantity" name="quantity" required />
                     </p>
                     <p>
                         <label for="price">Price</label>
-                        <input class="form-control" type="number" id="price" name="price"
-                               value="<%= request.getAttribute("PPrice") != null ? request.getAttribute("PPrice") : ""%>" required />
+                        <input class="form-control" type="number" id="price" name="price" required />
                     </p>
 
                     <%
@@ -79,7 +75,7 @@
                     %>
                     <p>
                         <label for="category">Category</label>
-                        <select class="form-select" name="categogy" id="category">
+                        <select class="form-select" name="category" id="category">
                             <% for (Category cate : categories) {%>
                             <option value="<%= cate.getCategoryID()%>"><%= cate.getCategoryName()%></option>
                             <% } %>
@@ -106,5 +102,41 @@
             </div>
         </main>
         <%@include file="/WEB-INF/include/footer.jsp" %>
+        <script>
+            $("#form-create").validate({
+                rules: {
+                    productCode: {
+                        required: true
+                    },
+                    productName: {
+                        required: true
+                    },
+                    quantity: {
+                        required: true,
+                        digits: true,
+                        min: 1
+                    },
+                    price: {
+                        required: true,
+                        digits: true,
+                        min: 1000
+                    }
+                },
+                messages: {
+                    productCode: {
+                        required: "Please enter product code"
+                    },
+                    productName: {
+                        required: "Please enter product name"
+                    },
+                    quantity: {
+                        required: "Please enter quantity"
+                    },
+                    price: {
+                        required: "Please enter price"
+                    }
+                }
+            });
+        </script>
     </body>
 </html>

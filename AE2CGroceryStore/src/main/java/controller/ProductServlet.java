@@ -95,11 +95,11 @@ public class ProductServlet extends HttpServlet {
         List<Product> listProduct = productDAO.getAll();
 
         // Lấy dữ liệu từ form
-        String productCode = request.getParameter("productCore");
+        String productCode = request.getParameter("productCode");
         String productName = request.getParameter("productName");
         String quantityStr = request.getParameter("quantity");
         String priceStr = request.getParameter("price");
-        String categoryStr = request.getParameter("categogy");
+        String categoryStr = request.getParameter("category");
 
         // Xử lý tạo mới sản phẩm
         if ("create".equals(action)) {
