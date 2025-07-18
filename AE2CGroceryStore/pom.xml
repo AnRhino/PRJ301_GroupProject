@@ -52,6 +52,11 @@
             <artifactId>hibernate-core</artifactId>
             <version>6.2.7.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.2.5</version> <!-- Use the latest stable version -->
+        </dependency>
     </dependencies>
 
     <build>
