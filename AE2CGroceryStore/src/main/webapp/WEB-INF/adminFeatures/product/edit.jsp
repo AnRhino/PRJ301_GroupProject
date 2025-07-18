@@ -43,7 +43,7 @@
 
                 <form id="form-edit" method="post" action="<%= request.getContextPath()%>/admin/product">
                     <input type="hidden" name="action" value="edit" />
-                    <input type="hidden" id="id" name="id" value="<%= pro.getProductID()%>" />
+                    <input type="hidden" id="id" name="ProductID" value="<%= pro.getProductID()%>" />
 
                     <p>
                         <label for="productCode">Product Code</label>

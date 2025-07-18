@@ -178,4 +178,21 @@ public class ProductValidation {
         return msg;
     }
 
+    public boolean checkProductID(String idStr, List<Product> productList) {
+    try {
+        int id = Integer.parseInt(idStr);
+
+        for (Product p : productList) {
+            if (p.getProductID() == id) {
+                return false; // ID tồn tại trong danh sách
+            }
+        }
+    } catch (NumberFormatException e) {
+        // Nếu không phải số thì coi như không hợp lệ
+    }
+
+    return true; // ID không tồn tại hoặc không hợp lệ
+}
+
+
 }
