@@ -23,12 +23,7 @@ public class ImagePathInitializer {
     public final static String CATEGORY_IMAGE_FOLDER = "category";
     public final static String PRODUCT_IMAGE_FOLDER = "products";
     public final static String USER_IMAGE_FOLDER = "users";
-    public final static String PNG_IMAGE_FILE_FORMAT = ".png";
-    public final static String JPG_IMAGE_FILE_FORMAT = ".jpg";
-    public final static String JPEG_IMAGE_FILE_FORMAT = ".jpeg";
-    public final static String JFIF_IMAGE_FILE_FORMAT = ".jfif";
-    public final static String SVG_IMAGE_FILE_FORMAT = ".svg";
-    public final static String GIF_IMAGE_FILE_FORMAT = ".gif";
+    public final static String[] IMAGE_FILE_FORMAT = {".png", ".jpg", ".jpeg", ".jfif", ".svg", ".gif"};
     public final static int DEFAULT_IMAGE = 1;
     public static boolean status = false;
 
@@ -147,12 +142,12 @@ public class ImagePathInitializer {
         for (User user : userList) {
 
             // Nếu có tồn tại ảnh thì set đường dẫn của nó trong database.
-            if (checkExistUserImgPath(userImgFolder, user.getId())) {
-                userDao.setImgUrl(user.getId(), USER_IMAGE_FOLDER + "/" + user.getId() + PNG_IMAGE_FILE_FORMAT);
+            if (getUserImgPath(userImgFolder, user.getId()) != null) {
+                userDao.setImgUrl(user.getId(), getUserImgPath(userImgFolder, user.getId()));
 
                 // Nếu không có thì set ảnh mặc định.
             } else {
-                userDao.setImgUrl(user.getId(), USER_IMAGE_FOLDER + "/" + DEFAULT_IMAGE + PNG_IMAGE_FILE_FORMAT);
+                userDao.setImgUrl(user.getId(), USER_IMAGE_FOLDER + "/" + DEFAULT_IMAGE + IMAGE_FILE_FORMAT[0]);
             }
         }
     }
@@ -173,12 +168,12 @@ public class ImagePathInitializer {
         for (Category category : categoryList) {
 
             // Nếu có tồn tại ảnh thì set đường dẫn của nó trong database.
-            if (checkExistCategoryImgPath(categoryImgFolder, category.getCategoryID())) {
-                categoryDao.setImgUrl(category.getCategoryID(), CATEGORY_IMAGE_FOLDER + "/" + category.getCategoryID() + PNG_IMAGE_FILE_FORMAT);
+            if (getCategoryImgPath(categoryImgFolder, category.getCategoryID()) != null) {
+                categoryDao.setImgUrl(category.getCategoryID(), getCategoryImgPath(categoryImgFolder, category.getCategoryID()));
 
                 // Nếu không có thì set ảnh mặc định.
             } else {
-                categoryDao.setImgUrl(category.getCategoryID(), CATEGORY_IMAGE_FOLDER + "/" + DEFAULT_IMAGE + PNG_IMAGE_FILE_FORMAT);
+                categoryDao.setImgUrl(category.getCategoryID(), CATEGORY_IMAGE_FOLDER + "/" + DEFAULT_IMAGE + IMAGE_FILE_FORMAT[0]);
             }
         }
     }
@@ -199,52 +194,79 @@ public class ImagePathInitializer {
         for (Product product : productList) {
 
             // Nếu có tồn tại ảnh thì set đường dẫn của nó trong database.
-            if (checkExistProductImgPath(productImgFolder, product.getProductID())) {
-                productDao.setImgUrl(product.getProductID(), PRODUCT_IMAGE_FOLDER + "/" + product.getProductID() + PNG_IMAGE_FILE_FORMAT);
+            if (getProductImgPath(productImgFolder, product.getProductID()) != null) {
+                productDao.setImgUrl(product.getProductID(), getProductImgPath(productImgFolder, product.getProductID()));
 
                 // Nếu không có thì set ảnh mặc định.
             } else {
-                productDao.setImgUrl(product.getProductID(), PRODUCT_IMAGE_FOLDER + "/" + DEFAULT_IMAGE + PNG_IMAGE_FILE_FORMAT);
+                productDao.setImgUrl(product.getProductID(), PRODUCT_IMAGE_FOLDER + "/" + DEFAULT_IMAGE + IMAGE_FILE_FORMAT[0]);
             }
         }
     }
 
     /**
-     * Kiểm tra ảnh có trong thư mục ảnh của người dùng hay không.
+     * Lấy ảnh có trong thư mục ảnh của người dùng.
      *
      * @param userImgFolder là thư mục chứa ảnh.
      * @param userID là id của người dùng.
      *
-     * @return True nếu có chứa ảnh trong thư mục chứa ảnh. False nếu không có
+     * @return Đường dẫn nếu có chứa ảnh trong thư mục chứa ảnh. Null nếu không có
      * tồn tại ảnh.
      */
-    private static boolean checkExistUserImgPath(File userImgFolder, int userID) {
-        return new File(userImgFolder, userID + PNG_IMAGE_FILE_FORMAT).exists();
+    private static String getUserImgPath(File userImgFolder, int userID) {
+
+        // Kiểm tra với từng loại extension ảnh.
+        for (String iff : IMAGE_FILE_FORMAT) {
+            if (new File(userImgFolder, userID + iff).exists()) {
+                return USER_IMAGE_FOLDER + "/" + userID + iff;
+            }
+        }
+
+        // Không có thì return null.
+        return null;
     }
 
     /**
-     * Kiểm tra ảnh có trong thư mục ảnh của danh mục hay không.
+     * Lấy ảnh có trong thư mục ảnh của danh mục.
      *
      * @param categoryImgFolder là thư mục chứa ảnh.
      * @param categoryID là id của danh mục.
      *
-     * @return True nếu có chứa ảnh trong thư mục chứa ảnh. False nếu không có
+     * @return Đường dẫn nếu có chứa ảnh trong thư mục chứa ảnh. Null nếu không có
      * tồn tại ảnh.
      */
-    private static boolean checkExistCategoryImgPath(File categoryImgFolder, int categoryID) {
-        return new File(categoryImgFolder, categoryID + PNG_IMAGE_FILE_FORMAT).exists();
+    private static String getCategoryImgPath(File categoryImgFolder, int categoryID) {
+
+        // Kiểm tra với từng loại extension ảnh.
+        for (String iff : IMAGE_FILE_FORMAT) {
+            if (new File(categoryImgFolder, categoryID + iff).exists()) {
+                return CATEGORY_IMAGE_FOLDER + "/" + categoryID + iff;
+            }
+        }
+
+        // Không có thì return null.
+        return null;
     }
 
     /**
-     * Kiểm tra ảnh có trong thư mục ảnh của sản phẩm hay không.
+     * Lấy ảnh có trong thư mục ảnh của sản phẩm.
      *
      * @param productImgFolder là thư mục chứa ảnh.
      * @param productID là id của sản phẩm.
      *
-     * @return True nếu có chứa ảnh trong thư mục chứa ảnh. False nếu không có
-     * tồn tại ảnh.
+     * @return Đường dẫn nếu có chứa ảnh trong thư mục chứa ảnh. Null nếu không
+     * có tồn tại ảnh.
      */
-    private static boolean checkExistProductImgPath(File productImgFolder, int productID) {
-        return new File(productImgFolder, productID + PNG_IMAGE_FILE_FORMAT).exists();
+    private static String getProductImgPath(File productImgFolder, int productID) {
+
+        // Kiểm tra với từng loại extension ảnh.
+        for (String iff : IMAGE_FILE_FORMAT) {
+            if (new File(productImgFolder, productID + iff).exists()) {
+                return PRODUCT_IMAGE_FOLDER + "/" + productID + iff;
+            }
+        }
+
+        // Không có ảnh thì return null.
+        return null;
     }
 }
