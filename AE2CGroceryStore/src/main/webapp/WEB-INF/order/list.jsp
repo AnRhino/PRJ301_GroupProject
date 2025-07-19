@@ -38,7 +38,7 @@
                                     <c:when test="${(order.status.id eq 0) or (order.status.id eq 4)}">
                                         <input type="hidden" name="action" value="hide" disabled>
                                         <a class="btn btn-primary" href="<c:url value="re-order">
-                                               <c:param name="id" value="${order.id}"/>
+                                               <c:param name="orderId" value="${order.id}"/>
                                         </c:url>">Re-order</a>
                                         <button class="btn btn-danger" type="submit">Delete</button>
                                     </c:when>

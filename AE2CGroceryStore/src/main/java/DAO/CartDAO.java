@@ -162,6 +162,29 @@ public class CartDAO extends dbconnect.DBContext {
         }
         return null;
     }
+    
+    public Cart getLastedCartByUserID(int userId) {
+        String query = "SELECT TOP(1) c.CartItemID, u.UserID, u.Username, p.ProductID, p.ProductName, p.Price, c.Quantity "
+                + "FROM Carts c "
+                + "JOIN Users u ON u.UserID = c.UserID "
+                + "JOIN Products p ON p.ProductID = c.ProductID "
+                + "WHERE u.UserID = ? "
+                + "ORDER BY c.CartItemID DESC";
+        Object[] params = {userId};
+        try (ResultSet rs = execSelectQuery(query, params)){
+            if (rs.next()) {
+                User user = new User(rs.getInt("UserID"), rs.getString("Username"));
+                Product product = new Product(rs.getInt("ProductID"));
+                product.setProductName(rs.getString("ProductName"));
+                product.setPrice(rs.getInt("Price"));
+                product.setQuantity(rs.getInt("Quantity"));
+                return new Cart(rs.getInt("CartItemID"), user, product, rs.getInt("Quantity"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Cập nhật số lượng sản phẩm trong cart.
