@@ -100,7 +100,8 @@ public class OrderDAO extends DBContext {
                 + "join Users u\n"
                 + "on o.UserID = u.UserID\n"
                 + "join StatusType st\n"
-                + "on o.StatusID = st.StatusID";
+                + "on o.StatusID = st.StatusID\n"
+                + "order by DeliveryDate desc";
         try ( ResultSet rs = execSelectQuery(query)) {
             List<Order> orders = new LinkedList<>();
             while (rs.next()) {

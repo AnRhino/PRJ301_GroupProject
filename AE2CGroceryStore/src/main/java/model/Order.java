@@ -149,8 +149,14 @@ public class Order {
     public String toString() {
         return "Order{" + "id=" + id + ", user=" + user + ", orderDate=" + orderDate + ", deliveryDate=" + deliveryDate + ", status=" + status + ", discount=" + discount + ", phoneNumber=" + phoneNumber + ", address=" + address + ", orderItems=" + orderItems + ", isHidden=" + isHidden + '}';
     }
+
+    public boolean isCompleted() {
+        return this.status.getId() == 4;
+    }
     
-    
+    public boolean isCancelled() {
+        return this.status.getId() == 0;
+    }
 
     /**
      * Return the total value of all items in an order before any discounts or

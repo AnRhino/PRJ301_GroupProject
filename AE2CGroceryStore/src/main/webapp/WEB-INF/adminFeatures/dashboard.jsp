@@ -19,11 +19,12 @@ Not done
             <div class="container g-3">
                 <h1>Admin Management Dashboard</h1>
             </div>
-            <div class="container">
+            <div class="container d-flex justify-content-evenly flex-wrap gap-3">
                 <a href="<c:url value="/admin/categories"/>" class="btn btn-primary">Categories</a>
                 <a href="<c:url value="/admin/product"/>" class="btn btn-primary">Products</a>
-                <a href="<c:url value="/admin/statistic"/>" class="btn btn-primary">Statistics</a>
                 <a href="<c:url value="/admin/discount-code"/>" class="btn btn-primary">Discount Codes</a>
+                <a href="<c:url value="/admin/order"/>" class="btn btn-primary">Order</a>
+                <a href="<c:url value="/admin/statistic"/>" class="btn btn-primary">Statistics</a>
         </main>
 
         <%@include file="../include/footer.jsp" %>
