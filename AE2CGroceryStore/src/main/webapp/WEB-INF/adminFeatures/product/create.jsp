@@ -31,9 +31,18 @@
                     }
                 </script>
                 <%
-                    List<String> errorMessages = (List<String>) request.getAttribute("errorMessage");
+                    List<String> errorMessages = (List<String>) request.getAttribute("errorMessages");
+
+                    model.ErrorMessage imageError = null;
+                    Object imageErrorAttr = request.getAttribute("imageError");
+                    if (imageErrorAttr instanceof model.ErrorMessage) {
+                        imageError = (model.ErrorMessage) imageErrorAttr;
+                    }
+
                     String message = (String) request.getAttribute("msg");
                 %>
+
+
 
                 <% if (errorMessages != null && !errorMessages.isEmpty()) { %>
                 <div class="alert alert-danger">
@@ -92,6 +101,11 @@
                            id="coverImg"
                            onchange="previewImage(event)"
                            />
+                    <% if (imageError != null) {%>
+                    <div class="text-danger mt-2"><%= imageError.getMessage()%></div>
+                    <% }%>
+
+
                     <img id="imagePreview" src="#" alt="Image Preview" style="display: none; max-width: 200px; margin-top: 10px;" />
 
                     <p>

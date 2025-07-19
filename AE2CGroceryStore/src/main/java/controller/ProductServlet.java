@@ -122,6 +122,8 @@ public class ProductServlet extends HttpServlet {
             String errorMessage = null;
             String imagePath = "";
             List<String> errors = new ArrayList<>();
+
+            // Validate form input
             errors.addAll(productValidation.checkProductCode(productCode, listProduct));
             errors.addAll(productValidation.checkProductName(productName));
             errors.addAll(productValidation.checkQuantity(quantityStr));
@@ -134,46 +136,50 @@ public class ProductServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/adminFeatures/product/create.jsp").forward(request, response);
                 return;
             }
-            if (!hasErrors) {
-                try {
-                    Part coverImgPart = request.getPart("coverImg");
 
-                    // Check if an image was uploaded
-                    if (coverImgPart != null && coverImgPart.getSize() > 0) {
-                        // Get next available category ID
-                        int nextCategoryID = productDAO.getMaxId() + 1;
+            // Tiếp tục xử lý nếu không có lỗi validate form
+            try {
+                Part coverImgPart = request.getPart("coverImg");
 
-                        // Process the image upload
-                        String result = processImageUpload(coverImgPart, nextCategoryID);
-                        if (result != null) {
-                            // If there was an error processing the image
-                            hasErrors = true;
-                            errorMessage = result;
-                        } else {
-                            // Set the image path for the new category
-                            imagePath = "products/" + nextCategoryID
-                                    + coverImgPart.getSubmittedFileName()
-                                            .substring(coverImgPart.getSubmittedFileName().lastIndexOf("."))
-                                            .toLowerCase();
-                        }
-                    }
-
-                } catch (Exception e) {
+                if (coverImgPart == null || coverImgPart.getSize() == 0) {
                     hasErrors = true;
-                    errorMessage = MessageConstants.ERROR_IMAGE_UPLOAD_MESSAGE + e.getMessage();
-                    Logger.getLogger(CategoriesCreateServlet.class.getName())
-                            .log(Level.SEVERE, "Error in image upload", e);
-                }
-            }
-            if (hasErrors) {
-                request.setAttribute("errorMessage", new ErrorMessage(errorMessage));
-                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/create.jsp").forward(request, response);
+                    errorMessage = "Please choose Image for upload";
+                } else {
+                    int nextProductID = productDAO.getMaxId() + 1;
 
+                    String result = processImageUpload(coverImgPart, nextProductID);
+                    if (result != null) {
+                        hasErrors = true;
+                        errorMessage = result;
+                    } else {
+                        imagePath = "products/" + nextProductID
+                                + coverImgPart.getSubmittedFileName()
+                                        .substring(coverImgPart.getSubmittedFileName().lastIndexOf("."))
+                                        .toLowerCase();
+                    }
+                }
+
+            } catch (Exception e) {
+                hasErrors = true;
+                errorMessage = MessageConstants.ERROR_IMAGE_UPLOAD_MESSAGE + e.getMessage();
+                Logger.getLogger(CategoriesCreateServlet.class.getName())
+                        .log(Level.SEVERE, "Error in image upload", e);
+            }
+
+            // Nếu có lỗi ảnh
+            if (hasErrors) {
+                if (errorMessage != null) {
+                    request.setAttribute("imageError", new ErrorMessage(errorMessage));
+                }
+                setFormAttributes(request, productCode, productName, quantityStr, priceStr, categoryStr, errors);
+                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/create.jsp").forward(request, response);
                 return;
             }
-            // Thêm sản phẩm
+
+            // Nếu không có lỗi thi tạo sản phẩm
             productDAO.create(productCode, productName, Integer.parseInt(quantityStr),
                     Double.parseDouble(priceStr), Integer.parseInt(categoryStr), imagePath);
+
             response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
         } else if (action.equals("delete")) {
 
@@ -240,7 +246,7 @@ public class ProductServlet extends HttpServlet {
         request.setAttribute("PQuantity", quantity);
         request.setAttribute("PPrice", price);
         request.setAttribute("PCate", cate);
-        request.setAttribute("errorMessage", errors);
+        request.setAttribute("errorMessages", errors);
         CategoryDAO cateDAO = new CategoryDAO();
         request.setAttribute("cate", cateDAO.getAll());
     }
