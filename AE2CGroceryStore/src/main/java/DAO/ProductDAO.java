@@ -616,15 +616,6 @@ public class ProductDAO extends dbconnect.DBContext {
         return 0;
     }
 
-    public int reduceQuantity(Order order) {
-        int numOfUpdatedRows = 0;
-        for (OrderItem item : order.getOrderItems()) {
-            numOfUpdatedRows += ProductDAO.this.reduceQuantity(item.getProduct().getProductID(), item.getQuantity());
-        }
-
-        return numOfUpdatedRows;
-    }
-
     public int increaseQuantity(int productId, int increasedNum) {
         String query = "update Products\n"
                 + "set Quantity = Quantity + ?\n"

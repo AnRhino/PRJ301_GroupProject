@@ -145,6 +145,13 @@ public class Order {
         this.isHidden = isHidden;
     }
 
+    @Override
+    public String toString() {
+        return "Order{" + "id=" + id + ", user=" + user + ", orderDate=" + orderDate + ", deliveryDate=" + deliveryDate + ", status=" + status + ", discount=" + discount + ", phoneNumber=" + phoneNumber + ", address=" + address + ", orderItems=" + orderItems + ", isHidden=" + isHidden + '}';
+    }
+    
+    
+
     /**
      * Return the total value of all items in an order before any discounts or
      * delivery fees are applied.

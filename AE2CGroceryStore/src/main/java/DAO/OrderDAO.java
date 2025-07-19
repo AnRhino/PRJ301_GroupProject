@@ -97,7 +97,7 @@ public class OrderDAO extends DBContext {
                 + "dc.DiscountCodeID, dc.DiscountValue, dc.DiscountTypeID,\n"
                 + "PhoneNumber, [Address]\n"
                 + "from Orders o\n"
-                + "join DiscountCodes dc\n"
+                + "left join DiscountCodes dc\n"
                 + "on o.DiscountCodeID = dc.DiscountCodeID\n"
                 + "join StatusType st\n"
                 + "on o.StatusID = st.StatusID\n"
@@ -115,13 +115,13 @@ public class OrderDAO extends DBContext {
                         rs.getDate(2).toLocalDate().atStartOfDay(),
                         rs.getDate(3).toLocalDate().atStartOfDay(),
                         new OrderStatus(rs.getInt(4), rs.getString(5)),
-                        new DiscountCode(rs.getInt(6), rs.getInt(7), rs.getInt(8)),
+                        (rs.getInt(6) == 0) ? null : new DiscountCode(rs.getInt(6), rs.getInt(7), rs.getInt(8)),
                         rs.getString(9),
                         rs.getString(10),
                         orderItems
                 ));
-                return orders;
             }
+            return orders;
         } catch (SQLException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -177,7 +177,7 @@ public class OrderDAO extends DBContext {
         }
         return 0;
     }
-    
+
     public int hideOrder(int orderId, int userId) {
         String query = "update Orders\n"
                 + "set isHidden = 1\n"
@@ -270,5 +270,13 @@ public class OrderDAO extends DBContext {
         }
 
         return list;
+    }
+
+    public static void main(String[] args) {
+        OrderDAO dao = new OrderDAO();
+        for (Order order : dao.getAllOrdersByUser(new User(1))) {
+            System.out.println(order.toString());
+            System.out.println(order.getDiscount().getId());
+        }
     }
 }
