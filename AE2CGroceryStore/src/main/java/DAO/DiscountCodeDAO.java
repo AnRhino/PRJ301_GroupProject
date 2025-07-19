@@ -5,6 +5,7 @@
 package DAO;
 
 import dbconnect.DBContext;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -52,7 +53,7 @@ public class DiscountCodeDAO extends DBContext {
     //Read
     public List<DiscountCode> getAll() {
         List<DiscountCode> list = new ArrayList<>();
-        String query = "select DiscountCodeID, Code, DiscountValue, DiscountTypeID, QuantityAvailable, ExpiryDate, MinOrderValue\n"
+        String query = "select DiscountCodeID, Code, DiscountValue, DiscountTypeID, QuantityAvailable, ExpiryDate, MinOrderValue, IsHidden\n"
                 + "from DiscountCodes";
         try ( ResultSet rs = execSelectQuery(query)) {
             while (rs.next()) {
@@ -63,7 +64,9 @@ public class DiscountCodeDAO extends DBContext {
                         rs.getInt(4),
                         rs.getInt(5),
                         rs.getDate(6).toLocalDate(),
-                        rs.getInt(7)));
+                        rs.getInt(7),
+                        rs.getInt(8)
+                ));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,7 +76,7 @@ public class DiscountCodeDAO extends DBContext {
 
     public List<DiscountCode> getAllShippingCode() {
         List<DiscountCode> listShippingCode = new ArrayList<>();
-        String query = "SELECT DiscountCodeID, Code, DiscountValue, DiscountTypeID, QuantityAvailable, ExpiryDate, MinOrderValue\n"
+        String query = "SELECT DiscountCodeID, Code, DiscountValue, DiscountTypeID, QuantityAvailable, ExpiryDate, MinOrderValue, IsHidden\n"
                 + "FROM DiscountCodes\n"
                 + "WHERE  DiscountTypeID = 2";
         try ( ResultSet rs = execSelectQuery(query)) {
@@ -85,7 +88,9 @@ public class DiscountCodeDAO extends DBContext {
                         rs.getInt(4),
                         rs.getInt(5),
                         rs.getDate(6).toLocalDate(),
-                        rs.getInt(7)));
+                        rs.getInt(7),
+                        rs.getInt(8)
+                ));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,11 +100,12 @@ public class DiscountCodeDAO extends DBContext {
 
     public List<DiscountCode> getAllPriceCode() {
         List<DiscountCode> listPriceCode = new ArrayList<>();
-        String query = "SELECT DiscountCodeID, Code, DiscountValue, DiscountTypeID, QuantityAvailable, ExpiryDate, MinOrderValue\n"
+        String query = "SELECT DiscountCodeID, Code, DiscountValue, DiscountTypeID, QuantityAvailable, ExpiryDate, MinOrderValue, IsHidden\n"
                 + "FROM DiscountCodes\n"
                 + "WHERE NOT (DiscountTypeID = 2)";
         try ( ResultSet rs = execSelectQuery(query)) {
             while (rs.next()) {
+                //int id, String code, int value, int type, int quantity, LocalDate expiryDate, int minOrderValue, int isHidden
                 listPriceCode.add(new DiscountCode(
                         rs.getInt(1),
                         rs.getString(2),
@@ -107,7 +113,9 @@ public class DiscountCodeDAO extends DBContext {
                         rs.getInt(4),
                         rs.getInt(5),
                         rs.getDate(6).toLocalDate(),
-                        rs.getInt(7)));
+                        rs.getInt(7),
+                        rs.getInt(8))
+                );
             }
         } catch (SQLException ex) {
             Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -160,7 +168,8 @@ public class DiscountCodeDAO extends DBContext {
                         rs.getInt(4),
                         rs.getInt(5),
                         rs.getDate(6).toLocalDate(),
-                        rs.getInt(7)
+                        rs.getInt(7),
+                        0
                 );
             }
         } catch (SQLException ex) {
@@ -238,11 +247,11 @@ public class DiscountCodeDAO extends DBContext {
         }
         return listUsablePriceCode;
     }
-    
+
     public List<DiscountCode> getAllUsableCode(int userID) {
         List<DiscountCode> discountCodes = getAllPriceCode();
         discountCodes.addAll(getAllShippingCode());
-        
+
         return discountCodes;
     }
 
@@ -254,6 +263,38 @@ public class DiscountCodeDAO extends DBContext {
                 listDiscountType.add(new DiscountCodeType(rs.getInt(1), rs.getString(2)));
             }
             return listDiscountType;
+        } catch (SQLException ex) {
+            Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public DiscountCode getDiscountCodeById(int id) {
+        try {
+            String query = "SELECT [DiscountCodeID]\n"
+                    + "      ,[Code]\n"
+                    + "      ,[DiscountValue]\n"
+                    + "      ,[DiscountTypeID]\n"
+                    + "      ,[QuantityAvailable]\n"
+                    + "      ,[ExpiryDate]\n"
+                    + "      ,[MinOrderValue]\n"
+                    + "      ,[IsHidden]\n"
+                    + "  FROM [GroceryStore].[dbo].[DiscountCodes]\n"
+                    + "  WHERE [DiscountCodeID] = ?";
+            Object[] params = {id};
+            ResultSet rs = execSelectQuery(query, params);
+            if (rs.next()) {
+                return new DiscountCode(
+                        id,
+                        rs.getString(2),
+                        rs.getInt(3),
+                        rs.getInt(4),
+                        rs.getInt(5),
+                        rs.getDate(6).toLocalDate(),
+                        rs.getInt(7),
+                        rs.getInt(8)
+                );
+            }
         } catch (SQLException ex) {
             Logger.getLogger(DiscountCodeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -297,5 +338,33 @@ public class DiscountCodeDAO extends DBContext {
         }
         return 0;
     }
+
+    public int updateHidden(int id, int isHidden) {
+        try {
+            String updateQuery = "UPDATE DiscountCodes\n"
+                    + "SET IsHidden = ?\n"
+                    + "WHERE DiscountCodeID = ?;";
+            PreparedStatement updatePs = this.getConnection().prepareStatement(updateQuery);
+            updatePs.setObject(1, isHidden);
+            updatePs.setObject(2, id);
+            return updatePs.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
     //Delete
+
+    public int delete(int id) {
+        try {
+            String deleteQuery = "DELETE FROM DiscountCodes WHERE DiscountCodeID = ?";
+            PreparedStatement deletePs = this.getConnection().prepareStatement(deleteQuery);
+            deletePs.setObject(1, id);
+            return deletePs.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
 }
