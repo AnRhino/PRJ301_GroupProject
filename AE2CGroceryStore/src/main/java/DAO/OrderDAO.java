@@ -228,6 +228,21 @@ public class OrderDAO extends DBContext {
         }
         return 0;
     }
+    
+    public int editStatus(int orderId, int statusId) {
+        String query = "update Orders\n"
+                + "set StatusID = ?\n"
+                + "where OrderID = ?\n"
+                + "and StatusID > 0";
+        Object[] params = {statusId, orderId};
+
+        try {
+            return execQuery(query, params);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 
     /**
      * Delete a row of table Orders in database by OrderID

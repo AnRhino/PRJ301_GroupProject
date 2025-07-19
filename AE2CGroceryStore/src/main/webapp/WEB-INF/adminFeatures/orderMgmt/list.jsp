@@ -11,7 +11,7 @@
     <body>
         <%@include file="../../include/header.jsp" %>
         <main class="container">
-            <h1>Manage Order</h1>
+            <h1>Order Management</h1>
             <table class="table table-striped">
                 <thead>
                     <tr>
