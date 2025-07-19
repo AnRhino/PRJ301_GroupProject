@@ -91,13 +91,29 @@ CREATE TABLE Orders (
     OrderID INT PRIMARY KEY IDENTITY(1,1),
     UserID INT FOREIGN KEY REFERENCES Users(UserID) NOT NULL,
     OrderDate DATE NOT NULL DEFAULT CAST(GETDATE() AS DATE),
-	DeliveryDate DATE DEFAULT CAST(GETDATE() AS DATE),
+	DeliveryDate DATE,
     StatusID INT FOREIGN KEY REFERENCES StatusType(StatusID) DEFAULT 1,
     DiscountCodeID INT FOREIGN KEY REFERENCES DiscountCodes(DiscountCodeID),
 	PhoneNumber VARCHAR(15),
 	[Address] VARCHAR(255),
+	isHidden BIT DEFAULT 0,
 	Constraint CK_DeliveryDate CHECK(DeliveryDate >= OrderDate)
 );
+GO
+
+-- Trigger to auto-correct DeliveryDate
+CREATE TRIGGER trg_SetDeliveryDate
+ON Orders
+AFTER INSERT
+AS
+BEGIN
+    UPDATE Orders
+    SET DeliveryDate = i.OrderDate
+    FROM Orders o
+    JOIN inserted i ON o.OrderID = i.OrderID
+    WHERE i.DeliveryDate IS NULL OR i.DeliveryDate < i.OrderDate;
+END;
+GO
 
 -- OrderItems table
 CREATE TABLE OrderItems (
