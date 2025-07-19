@@ -69,7 +69,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <!-- Modal email form --> 
-                                <form method="post" action="${pageContext.request.contextPath}/user-profile">
+                                <form method="post" action="${pageContext.request.contextPath}/image-profile" enctype="multipart/form-data">
                                     <!-- Modal email header --> 
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editEmailModalLabel">Change profile picture</h5>
@@ -79,12 +79,12 @@
                                     <div class="modal-body">
                                         <div class="mb-3">
                                             <label class="form-label" for="email"><strong>Image:</strong></label>
-                                            <img src="<c:url value="/get-image/${loggedUser.coverImg}"/>" alt="User image" width="100" height="128">
+                                            <img src="<c:url value="/get-image/${loggedUser.coverImg}"/>" alt="User image" width="100" height="128" class="my-5">
                                             <input type="file"
                                                    name="coverImg"
                                                    accept="image/*"
                                                    class="form-control"
-                                                   />
+                                                   /> 
                                         </div>
                                     </div>
                                     <!-- Modal button --> 
