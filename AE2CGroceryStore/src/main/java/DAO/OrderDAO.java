@@ -176,15 +176,16 @@ public class OrderDAO extends DBContext {
         Object[] params = {orderId};
         try ( ResultSet rs = execSelectQuery(query, params)) {
             OrderItemDAO orderItemDAO = new OrderItemDAO();
+            UserDAO userDAO = new UserDAO();
             if (rs.next()) {
                 List<OrderItem> orderItems = orderItemDAO.getAllByOrderId(orderId);
                 return new Order(
                         orderId,
-                        new User(rs.getInt(1)),
+                        userDAO.getUserById(rs.getInt(1)),
                         rs.getDate(2).toLocalDate().atStartOfDay(),
                         rs.getDate(3).toLocalDate().atStartOfDay(),
                         new OrderStatus(rs.getInt(4), rs.getString(5)),
-                        new DiscountCode(rs.getInt(6), rs.getInt(7), rs.getInt(8)),
+                        rs.getInt(6) == 0 ? null : new DiscountCode(rs.getInt(6), rs.getInt(7), rs.getInt(8)),
                         rs.getString(9),
                         rs.getString(10),
                         orderItems

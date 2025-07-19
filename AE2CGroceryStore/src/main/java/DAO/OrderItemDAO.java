@@ -77,7 +77,7 @@ public class OrderItemDAO extends DBContext {
     }
 
     public List<OrderItem> getAllByOrderId(int orderId) {
-        String query = "select p.ProductID, p.ProductName, p.ImagePath, oi.Quantity, UnitPrice \n"
+        String query = "select p.ProductID, p.ProductCode, p.ProductName, p.ImagePath, oi.Quantity, UnitPrice \n"
                 + "from OrderItems oi\n"
                 + "join Products p\n"
                 + "on oi.ProductID = p.ProductID\n"
@@ -88,9 +88,9 @@ public class OrderItemDAO extends DBContext {
             List<OrderItem> orderItems = new LinkedList<>();
             while (rs.next()) {
                 orderItems.add(new OrderItem(
-                        new Product(rs.getInt(1), rs.getString(2), rs.getString(3), 0),
-                        rs.getInt(4),
-                        rs.getInt(5)
+                        new Product(rs.getInt(1), rs.getString(2), rs.getString(3), 0, 0, null, rs.getString(4), false),
+                        rs.getInt(5),
+                        rs.getInt(6)
                 ));
             }
             return orderItems;

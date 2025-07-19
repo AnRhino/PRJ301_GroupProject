@@ -61,6 +61,25 @@ public class UserDAO extends dbconnect.DBContext {
         }
         return null;
     }
+    
+    public User getUserById(int userId) {
+        try {
+            String query = "select UserID, Username, FullName, Email, RoleID, Password, ImagePath\n"
+                    + "from users\n"
+                    + "where UserID = ?";
+            Object[] params = {userId};
+            ResultSet rs = execSelectQuery(query, params);
+            if (rs.next()) {
+                return new User(rs.getInt("UserID"), rs.getString("Username"), rs.getString("FullName"),
+                        rs.getString("Email"), rs.getInt("RoleID"), rs.getString("Password"), rs.getString("ImagePath"));
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     /**
      * Nhận vào fullname, email, username để cập nhật email hoặc fullname
