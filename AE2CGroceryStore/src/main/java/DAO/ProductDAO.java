@@ -273,17 +273,18 @@ public class ProductDAO extends dbconnect.DBContext {
      *
      * @return 0 nếu thêm thành công, ngược lại trả về lỗi.
      */
-    public int create(String productCore, String productName, int quantity, double price, int categoryId) {
+    public int create(String productCore, String productName, int quantity, double price, int categoryId, String coverImg) {
         int check = 0;
         try {
             String sql = "insert into Products (ProductCode,ProductName,Quantity,Price,CategoryID, ImagePath)\n"
-                    + "values(?,?,?,?,?, 'products/0.png')";
+                    + "values(?,?,?,?,?,?)";
             PreparedStatement ps = this.getConnection().prepareStatement(sql);
             ps.setObject(1, productCore);
             ps.setObject(2, productName);
             ps.setObject(3, quantity);
             ps.setObject(4, price);
             ps.setObject(5, categoryId);
+            ps.setObject(6, coverImg);
             ps.executeQuery();
 
         } catch (SQLException ex) {
@@ -640,5 +641,17 @@ public class ProductDAO extends dbconnect.DBContext {
 
         return numOfUpdatedRows;
     }
-
+public int getMaxId() {
+        try {
+            String getMaxIdQuery = "SELECT MAX(ProductID) FROM Products";
+            PreparedStatement maxIdPs = this.getConnection().prepareStatement(getMaxIdQuery);
+            ResultSet maxIdRs = maxIdPs.executeQuery();
+            if (maxIdRs.next()) {
+                return maxIdRs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
 }

@@ -49,7 +49,7 @@
                 <a class="btn btn-primary" href="product?view=list">Home</a>
                 <% }%>
 
-                <form id="form-create" method="post" action="<%= request.getContextPath()%>/admin/product">
+                <form id="form-create" method="post" action="<%= request.getContextPath()%>/admin/product" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="create" />
 
                     <p>

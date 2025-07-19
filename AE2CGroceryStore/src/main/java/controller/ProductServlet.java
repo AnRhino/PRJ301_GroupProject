@@ -6,18 +6,28 @@ package controller;
 
 import DAO.CategoryDAO;
 import DAO.ProductDAO;
+import adminController.CategoriesCreateServlet;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
 import model.Category;
 import model.Product;
 import validate.ProductValidation;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.ErrorMessage;
+import utils.FileIOUtil;
+import utils.MessageConstants;
 
 /**
  * Servlet Controller xử lý các hành động liên quan đến sản phẩm.
@@ -25,6 +35,11 @@ import java.util.List;
  * @author Phan Duc Tho
  */
 @WebServlet(name = "ProductServlet", urlPatterns = {"/admin/product"})
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
 public class ProductServlet extends HttpServlet {
 
     @Override
@@ -103,6 +118,9 @@ public class ProductServlet extends HttpServlet {
 
         // Xử lý tạo mới sản phẩm
         if ("create".equals(action)) {
+            boolean hasErrors = false;
+            String errorMessage = null;
+            String imagePath = "";
             List<String> errors = new ArrayList<>();
             errors.addAll(productValidation.checkProductCode(productCode, listProduct));
             errors.addAll(productValidation.checkProductName(productName));
@@ -116,10 +134,46 @@ public class ProductServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/adminFeatures/product/create.jsp").forward(request, response);
                 return;
             }
+            if (!hasErrors) {
+                try {
+                    Part coverImgPart = request.getPart("coverImg");
 
+                    // Check if an image was uploaded
+                    if (coverImgPart != null && coverImgPart.getSize() > 0) {
+                        // Get next available category ID
+                        int nextCategoryID = productDAO.getMaxId() + 1;
+
+                        // Process the image upload
+                        String result = processImageUpload(coverImgPart, nextCategoryID);
+                        if (result != null) {
+                            // If there was an error processing the image
+                            hasErrors = true;
+                            errorMessage = result;
+                        } else {
+                            // Set the image path for the new category
+                            imagePath = "products/" + nextCategoryID
+                                    + coverImgPart.getSubmittedFileName()
+                                            .substring(coverImgPart.getSubmittedFileName().lastIndexOf("."))
+                                            .toLowerCase();
+                        }
+                    }
+
+                } catch (Exception e) {
+                    hasErrors = true;
+                    errorMessage = MessageConstants.ERROR_IMAGE_UPLOAD_MESSAGE + e.getMessage();
+                    Logger.getLogger(CategoriesCreateServlet.class.getName())
+                            .log(Level.SEVERE, "Error in image upload", e);
+                }
+            }
+            if (hasErrors) {
+                request.setAttribute("errorMessage", new ErrorMessage(errorMessage));
+                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/create.jsp").forward(request, response);
+
+                return;
+            }
             // Thêm sản phẩm
             productDAO.create(productCode, productName, Integer.parseInt(quantityStr),
-                    Double.parseDouble(priceStr), Integer.parseInt(categoryStr));
+                    Double.parseDouble(priceStr), Integer.parseInt(categoryStr), imagePath);
             response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
         } else if (action.equals("delete")) {
 
@@ -133,10 +187,10 @@ public class ProductServlet extends HttpServlet {
             if (idStr == null || idStr.isEmpty()) {
                 request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
             }
-             if(productValidation.checkProductID(idStr, listProduct)){
-                  request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
-             }
-            
+            if (productValidation.checkProductID(idStr, listProduct)) {
+                request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+            }
+
             int id = Integer.parseInt(idStr);
 
             List<String> errors = new ArrayList<>();
@@ -189,6 +243,54 @@ public class ProductServlet extends HttpServlet {
         request.setAttribute("errorMessage", errors);
         CategoryDAO cateDAO = new CategoryDAO();
         request.setAttribute("cate", cateDAO.getAll());
+    }
+
+    private String processImageUpload(Part coverImgPart, int categoryID) {
+        try {
+            String[] allowedExtensions = {".jpg", ".png", ".jpeg"};
+            File folder = new File(FileIOUtil.getRootPath() + "images/products");
+
+            // Create directory if it doesn't exist
+            if (!folder.exists() && !folder.mkdirs()) {
+                return MessageConstants.UNEXIST_DIRECTORY_MESSAGE;
+            }
+
+            // Validate file name
+            String submittedFileName = coverImgPart.getSubmittedFileName();
+            if (submittedFileName == null || submittedFileName.isBlank()) {
+                return MessageConstants.NO_NAME_FILE_MESSAGE;
+            }
+
+            // Validate file extension
+            int dotIndex = submittedFileName.lastIndexOf(".");
+            if (dotIndex <= 0) {
+                return MessageConstants.INVALID_FILE_NAME_MESSAGE + submittedFileName;
+            }
+
+            String fileExtension = submittedFileName.substring(dotIndex).toLowerCase();
+            if (!Arrays.asList(allowedExtensions).contains(fileExtension)) {
+                return MessageConstants.PREFIX_UNALLOWED_EXTENSION_MESSAGE + Arrays.toString(allowedExtensions) + MessageConstants.POSTFIX_UNALLOWED_EXTENSION_MESSAGE;
+            }
+
+            // Process file upload
+            String newFilename = categoryID + fileExtension;
+            File newFile = new File(folder, newFilename);
+
+            // Delete existing file if it exists
+            if (newFile.exists() && !newFile.delete()) {
+                return MessageConstants.FAILED_DELETE_FILE_MESSAGE;
+            }
+
+            // Save new file
+            FileIOUtil.fileUploader(coverImgPart, newFile);
+
+            return null; // No error
+
+        } catch (Exception e) {
+            Logger.getLogger(CategoriesCreateServlet.class.getName())
+                    .log(Level.SEVERE, "Error processing image upload", e);
+            return MessageConstants.UNKNOWN_FILE_ERROR_MESSAGE + e.getMessage();
+        }
     }
 
     @Override
