@@ -5,6 +5,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -76,6 +77,10 @@ public class Order {
     public LocalDateTime getOrderDate() {
         return orderDate;
     }
+    
+    public String getOrderDateToString() {
+        return orderDate.format(DateTimeFormatter.ISO_DATE);
+    }
 
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
@@ -83,6 +88,10 @@ public class Order {
 
     public LocalDateTime getDeliveryDate() {
         return deliveryDate;
+    }
+    
+    public String getDeliveryDateToString() {
+        return deliveryDate.format(DateTimeFormatter.ISO_DATE);
     }
 
     public void setDeliveryDate(LocalDateTime deliveryDate) {
@@ -154,6 +163,12 @@ public class Order {
      */
     public int getTotalPayment() {
         return this.getSubtotal() * (100 + DELIVERY_FEE_PERCENT) / 100 - this.getDiscountValue();
+    }
+    
+    public static void main(String[] args) {
+        Order order = new Order(0, null, LocalDateTime.now(), LocalDateTime.now(), null, null, null, null, null);
+        
+        System.out.println(order.getOrderDateToString());
     }
 
 }

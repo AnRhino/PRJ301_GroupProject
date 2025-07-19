@@ -25,6 +25,7 @@
         <url-pattern>/review</url-pattern>
         <url-pattern>/cart</url-pattern>
         <url-pattern>/new-order</url-pattern>
+        <url-pattern>/order</url-pattern>
     </filter-mapping>
     <!--    <filter-mapping>
         <filter-name>AdminFilter</filter-name>

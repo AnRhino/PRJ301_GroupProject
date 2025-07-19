@@ -5,6 +5,7 @@
 
 package controller;
 
+import DAO.OrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,13 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Order;
+import model.User;
 
 /**
  *
  * @author Nguyen Ho Phuoc An - CE190747
  */
 @WebServlet(name="ListOrderServlet", urlPatterns={"/order"})
-public class ListOrderServlet extends HttpServlet {
+public class OrderServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -55,7 +59,13 @@ public class ListOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        OrderDAO dao = new OrderDAO();
+        User loggedUser = (User) request.getSession().getAttribute("loggedUser");
+        
+        List<Order> orders =  dao.getAllOrdersByUser(loggedUser);
+        request.setAttribute("orders", orders);
+        
+        request.getRequestDispatcher("WEB-INF/order/list.jsp").forward(request, response);
     } 
 
     /** 
