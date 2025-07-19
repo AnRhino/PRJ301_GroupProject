@@ -53,6 +53,9 @@
                             </ul>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="<c:url value="/order"/>">Order</a>
+                        </li>
                         <c:if test="${loggedUser.roleId == 1}">
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="<c:url value="/admin"/>">Manager</a>

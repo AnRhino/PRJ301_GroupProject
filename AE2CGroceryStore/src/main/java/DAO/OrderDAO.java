@@ -91,6 +91,38 @@ public class OrderDAO extends DBContext {
         return null;
     }
 
+    public List<Order> getAll() {
+        String query = "select OrderId, u.UserID, u.FullName, u.Email, "
+                + "OrderDate, DeliveryDate, "
+                + "st.StatusID, st.StatusDescription, "
+                + "PhoneNumber, [Address]\n"
+                + "from Orders o\n"
+                + "join Users u\n"
+                + "on o.UserID = u.UserID\n"
+                + "join StatusType st\n"
+                + "on o.StatusID = st.StatusID";
+        try ( ResultSet rs = execSelectQuery(query)) {
+            List<Order> orders = new LinkedList<>();
+            while (rs.next()) {
+                orders.add(new Order(
+                        rs.getInt(1),
+                        new User(rs.getInt(2), rs.getString(3), rs.getString(4)),
+                        rs.getDate(5).toLocalDate().atStartOfDay(),
+                        rs.getDate(6).toLocalDate().atStartOfDay(),
+                        new OrderStatus(rs.getInt(7), rs.getString(8)),
+                        null,
+                        rs.getString(9),
+                        rs.getString(10),
+                        null
+                ));
+            }
+            return orders;
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public List<Order> getAllOrdersByUser(User user) {
         String query = "select OrderID, OrderDate, DeliveryDate, \n"
                 + "st.StatusID, st.StatusDescription, \n"
@@ -102,6 +134,7 @@ public class OrderDAO extends DBContext {
                 + "join StatusType st\n"
                 + "on o.StatusID = st.StatusID\n"
                 + "where UserID = ?\n"
+                + "and o.isHidden = 0\n"
                 + "order by OrderDate desc";
         Object[] params = {user.getId()};
         try ( ResultSet rs = execSelectQuery(query, params)) {
@@ -134,7 +167,7 @@ public class OrderDAO extends DBContext {
                 + "dc.DiscountCodeID, dc.DiscountValue, dc.DiscountTypeID,\n"
                 + "PhoneNumber, [Address]\n"
                 + "from Orders o\n"
-                + "join DiscountCodes dc\n"
+                + "left join DiscountCodes dc\n"
                 + "on o.DiscountCodeID = dc.DiscountCodeID\n"
                 + "join StatusType st\n"
                 + "on o.StatusID = st.StatusID\n"

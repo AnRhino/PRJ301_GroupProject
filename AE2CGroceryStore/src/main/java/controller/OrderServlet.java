@@ -89,18 +89,16 @@ public class OrderServlet extends HttpServlet {
         String strOrderId = request.getParameter("orderId");
         String strAction = request.getParameter("action");
 
+            System.out.println(strOrderId + " " +strAction);
         try {
             int orderId = Integer.parseInt(strOrderId);
-            switch (strAction) {
-                case "cancel":
-                    if(orderDAO.cancelOrder(orderId, loggedUser.getId()) == 1) {
-                        Order order = orderDAO.getOrderById(orderId);
-                        productDAO.increaseQuantity(order);
-                    }
-                    break;
-                case "hide":
-                    orderDAO.hideOrder(orderId, loggedUser.getId());
-                    break;
+            if (strAction.equals("cancel")) {
+                if (orderDAO.cancelOrder(orderId, loggedUser.getId()) == 1) {
+                    Order order = orderDAO.getOrderById(orderId);
+                    productDAO.increaseQuantity(order);
+                }
+            } else if (strAction.equals("hide")) {
+                orderDAO.hideOrder(orderId, loggedUser.getId());
             }
         } catch (NumberFormatException nfe) {
         }
