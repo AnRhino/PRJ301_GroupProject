@@ -78,12 +78,12 @@ public class NewOrderServlet extends HttpServlet {
             throws ServletException, IOException {
         DiscountCodeDAO dao = new DiscountCodeDAO();
         User loggedUser = (User) request.getSession().getAttribute("loggedUser");
-        
+
         List<DiscountCode> discountCodes = dao.getAllUsableCode(loggedUser.getId());
         request.setAttribute("discountCodes", discountCodes);
-        
+
         request.getRequestDispatcher("/WEB-INF/order/create.jsp").forward(request, response);
-        
+
     }
 
     /**
@@ -114,7 +114,7 @@ public class NewOrderServlet extends HttpServlet {
         String strDiscountCodeId = request.getParameter("discount-code-id");
         String strPhoneNumber = request.getParameter("phone-number");
         String strAddress = request.getParameter("address");
-        
+
         try {
             int userId = loggedUser.getId();
             // Parse to right datatype
@@ -125,7 +125,7 @@ public class NewOrderServlet extends HttpServlet {
             if (deliveryDate.isBefore(LocalDate.now().atStartOfDay())) {
                 deliveryDate = LocalDate.now().atStartOfDay();
             }
-            
+
             // If cannot parse the discount code id, set it null
             Integer discountCodeId;
             try {
@@ -135,12 +135,8 @@ public class NewOrderServlet extends HttpServlet {
             }
 
             // Create new order, save it into database
-            numberOfNewRows = 0;
-            numberOfNewRows = orderDAO.createOrder(userId, deliveryDate,
+            orderDAO.createOrder(userId, deliveryDate,
                     discountCodeId, strPhoneNumber, strAddress);
-            if (numberOfNewRows == 0) {
-                throw new Exception(MessageConstants.ERROR_CREATE_NEW_ORDER);
-            }
 
             // Get the lastest order
             Order lastestOrder = orderDAO.getLastestOrderByUser(loggedUser);
@@ -152,34 +148,23 @@ public class NewOrderServlet extends HttpServlet {
             }
 
             // Save order items into database
-            numberOfNewRows = 0;
-            numberOfNewRows = orderItemDAO.createOrderItems(orderItems);
-            if (numberOfNewRows != cartItems.size()) {
-                // Delete data of error order 
-                orderItemDAO.deleteOrderItemsByOrderId(lastestOrder.getId());
-                orderDAO.deleteOrderById(lastestOrder.getId());
-                throw new Exception(MessageConstants.ERROR_ADD_ITEM_INTO_ORDER);
-            }
+            orderItemDAO.createOrderItems(orderItems);
 
-            // Delete items in cart
             for (Cart cart : cartItems) {
+                // Delete item in cart
+                productDAO.reduceQuantity(cart.getProduct().getProductID(), cart.getQuantity());
+                // Reduce quantity in stock
                 cartDAO.delete(cart.getCartItemID());
             }
-            
-            // Reduce quantity in stock
-            productDAO.reduceQuantity(lastestOrder);
 
             // Clear list items in session
             session.removeAttribute("wantedCartList");
 
             // Redirect to list order
             response.sendRedirect(request.getContextPath() + "/order");
-            
+
         } catch (DateTimeParseException dtpe) {
             errorMessage.setMessage(MessageConstants.INVALID_DATE);
-        } catch (Exception e) {
-            errorMessage.setMessage(e.getMessage());
-        } finally {
             request.setAttribute("errorMessage", errorMessage);
             request.getRequestDispatcher("/WEB-INF/order/create.jsp").
                     forward(request, response);
