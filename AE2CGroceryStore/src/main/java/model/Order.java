@@ -23,6 +23,8 @@ public class Order {
     private String phoneNumber;
     private String address;
     private List<OrderItem> orderItems;
+    private boolean isHidden;
+
     public static final int DELIVERY_FEE_PERCENT = 10;
 
     public Order() {
@@ -40,6 +42,19 @@ public class Order {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.orderItems = orderItems;
+    }
+
+    public Order(int id, User user, LocalDateTime orderDate, LocalDateTime deliveryDate, OrderStatus status, DiscountCode discount, String phoneNumber, String address, List<OrderItem> orderItems, boolean isHidden) {
+        this.id = id;
+        this.user = user;
+        this.orderDate = orderDate;
+        this.deliveryDate = deliveryDate;
+        this.status = status;
+        this.discount = discount;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.orderItems = orderItems;
+        this.isHidden = isHidden;
     }
 
     public int getId() {
@@ -77,7 +92,7 @@ public class Order {
     public LocalDateTime getOrderDate() {
         return orderDate;
     }
-    
+
     public String getOrderDateToString() {
         return orderDate.format(DateTimeFormatter.ISO_DATE);
     }
@@ -89,7 +104,7 @@ public class Order {
     public LocalDateTime getDeliveryDate() {
         return deliveryDate;
     }
-    
+
     public String getDeliveryDateToString() {
         return deliveryDate.format(DateTimeFormatter.ISO_DATE);
     }
@@ -120,6 +135,14 @@ public class Order {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public boolean isIsHidden() {
+        return isHidden;
+    }
+
+    public void setIsHidden(boolean isHidden) {
+        this.isHidden = isHidden;
     }
 
     /**
@@ -164,10 +187,10 @@ public class Order {
     public int getTotalPayment() {
         return this.getSubtotal() * (100 + DELIVERY_FEE_PERCENT) / 100 - this.getDiscountValue();
     }
-    
+
     public static void main(String[] args) {
         Order order = new Order(0, null, LocalDateTime.now(), LocalDateTime.now(), null, null, null, null, null);
-        
+
         System.out.println(order.getOrderDateToString());
     }
 

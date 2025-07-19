@@ -128,6 +128,72 @@ public class OrderDAO extends DBContext {
         return null;
     }
 
+    public Order getOrderById(int orderId) {
+        String query = "select UserID, OrderDate, DeliveryDate, \n"
+                + "st.StatusID, st.StatusDescription, \n"
+                + "dc.DiscountCodeID, dc.DiscountValue, dc.DiscountTypeID,\n"
+                + "PhoneNumber, [Address]\n"
+                + "from Orders o\n"
+                + "join DiscountCodes dc\n"
+                + "on o.DiscountCodeID = dc.DiscountCodeID\n"
+                + "join StatusType st\n"
+                + "on o.StatusID = st.StatusID\n"
+                + "where OrderID = ?";
+        Object[] params = {orderId};
+        try ( ResultSet rs = execSelectQuery(query, params)) {
+            OrderItemDAO orderItemDAO = new OrderItemDAO();
+            if (rs.next()) {
+                List<OrderItem> orderItems = orderItemDAO.getAllByOrderId(orderId);
+                return new Order(
+                        orderId,
+                        new User(rs.getInt(1)),
+                        rs.getDate(2).toLocalDate().atStartOfDay(),
+                        rs.getDate(3).toLocalDate().atStartOfDay(),
+                        new OrderStatus(rs.getInt(4), rs.getString(5)),
+                        new DiscountCode(rs.getInt(6), rs.getInt(7), rs.getInt(8)),
+                        rs.getString(9),
+                        rs.getString(10),
+                        orderItems
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public int cancelOrder(int orderId, int userId) {
+        String query = "update Orders\n"
+                + "set StatusID = 0\n"
+                + "where OrderID = ?\n"
+                + "and UserID = ?\n"
+                + "and StatusID in (1, 2)";
+        Object[] params = {orderId, userId};
+
+        try {
+            return execQuery(query, params);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    
+    public int hideOrder(int orderId, int userId) {
+        String query = "update Orders\n"
+                + "set isHidden = 1\n"
+                + "where OrderID = ?\n"
+                + "and UserID = ?\n"
+                + "and StatusID in (0, 4)";
+        Object[] params = {orderId, userId};
+
+        try {
+            return execQuery(query, params);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
     /**
      * Delete a row of table Orders in database by OrderID
      *

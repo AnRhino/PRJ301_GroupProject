@@ -600,12 +600,12 @@ public class ProductDAO extends dbconnect.DBContext {
         return 0;
     }
 
-    public int reduceQuantity(int id, int reducedNum) {
+    public int reduceQuantity(int productId, int reducedNum) {
         String query = "update Products\n"
                 + "set Quantity = Quantity - ?\n"
                 + "where ProductID = ?";
 
-        Object[] params = {reducedNum, id};
+        Object[] params = {reducedNum, productId};
 
         try {
             return execQuery(query, params);
@@ -620,6 +620,31 @@ public class ProductDAO extends dbconnect.DBContext {
         int numOfUpdatedRows = 0;
         for (OrderItem item : order.getOrderItems()) {
             numOfUpdatedRows += ProductDAO.this.reduceQuantity(item.getProduct().getProductID(), item.getQuantity());
+        }
+
+        return numOfUpdatedRows;
+    }
+
+    public int increaseQuantity(int productId, int increasedNum) {
+        String query = "update Products\n"
+                + "set Quantity = Quantity + ?\n"
+                + "where ProductID = ?";
+
+        Object[] params = {increasedNum, productId};
+
+        try {
+            return execQuery(query, params);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return 0;
+    }
+
+    public int increaseQuantity(Order order) {
+        int numOfUpdatedRows = 0;
+        for (OrderItem item : order.getOrderItems()) {
+            numOfUpdatedRows += ProductDAO.this.increaseQuantity(item.getProduct().getProductID(), item.getQuantity());
         }
 
         return numOfUpdatedRows;

@@ -28,7 +28,7 @@
                     <div class="col-3">
                         <div>Status: ${order.status.description}</div>
                         <div>
-                            <form class="form-action" action="order" method="post">
+                            <form action="order" method="post">
                                 <input type="hidden" name="orderId" value="${order.id}" disabled>
                                 <c:choose>
                                     <c:when test="${(order.status.id eq 1) or (order.status.id eq 2)}">
