@@ -23,7 +23,8 @@ Delete - line 43
                 <h1>Categories Management</h1>
             </div>
             <div class="container">
-                <a href="<c:url value="/admin/categories/create"/>" class="btn btn-primary">Create</a>
+                <a class="btn btn-primary" href="<c:url value="/admin"/>">Back to dashboard</a>
+                <a href="<c:url value="/admin/categories/create"/>" class="btn btn-success">Create</a>
             </div>
             <div>
                 <strong>${errorMessage}</strong>

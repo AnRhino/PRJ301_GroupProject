@@ -18,6 +18,7 @@
                 </div>
             </div>
             <div class="container">
+                <a class="btn btn-primary" href="<c:url value="/admin"/>">Back to dashboard</a>
                 <a class="btn btn-success float-end mb-2" href="<c:url value="/admin/discount-code/create"/>">Create</a>
                 <table class="table table-striped mb-5">
                     <thead>

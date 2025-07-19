@@ -17,7 +17,7 @@
 
             <div class="d-flex gap-2">
                 <div class="d-flex justify-content-start align-items-center">
-                    <a href="<c:url value="/admin"/>"><button class="btn btn-primary">Back to dashboard.</button></a>
+                    <a class="btn btn-primary" href="<c:url value="/admin"/>">Back to dashboard</a>
                 </div>
 
                 <div class="d-flex justify-content-end align-items-center">

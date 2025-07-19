@@ -16,6 +16,7 @@
         <main class="flex-shrink-0">
             <div class="container">
                 <h1 class="mt-5">Product List</h1>
+                <a class="btn btn-primary" href="<c:url value="/admin"/>">Back to dashboard</a>
                 <a class="btn btn-success float-end mb-3" href="product?view=create">Create New Product</a>
 
                 <%
