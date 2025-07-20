@@ -181,10 +181,10 @@ public class ProductServlet extends HttpServlet {
                     Double.parseDouble(priceStr), Integer.parseInt(categoryStr), imagePath);
 
             response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
-        } else if (action.equals("delete")) {
+        } else if (action.equals("hide")) {
 
             int id = Integer.parseInt(request.getParameter("ProductID"));
-            productDAO.delete(id);
+            productDAO.hide(id);
             response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
             // Xử lý chỉnh sửa sản phẩm
         } else if (action.equals("edit")) {
@@ -230,10 +230,10 @@ public class ProductServlet extends HttpServlet {
             // Nếu hợp lệ thì cập nhật database
             productDAO.edit(id, productCode, productName, Integer.parseInt(quantityStr), Double.parseDouble(priceStr), Integer.parseInt(categoryStr));
             response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
-        } else if (action.equals("hidden")) {
+        } else if (action.equals("unhide")) {
 
-            int id = Integer.parseInt(request.getParameter("id"));
-            productDAO.hidden(id);
+            int id = Integer.parseInt(request.getParameter("ProductID"));
+            productDAO.unhide(id);
             response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
             // Xử lý chỉnh sửa sản phẩm
         }

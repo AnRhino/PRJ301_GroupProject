@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-        <%@include file="/WEB-INF/include/head.jsp" %>
+    <%@include file="/WEB-INF/include/head.jsp" %>
     <body>
         <%@include file="/WEB-INF/include/header.jsp" %>
 
@@ -16,11 +16,11 @@
                 <h1 class="mt-5">Unhide Product</h1>
                 <p>Are you sure you want to Unhide this product?</p>
 
-                <form method="post" action="product">
-                    <input type="hidden" name="ProductID" value="<%= request.getParameter("id")%>" />
+                <form id="form-unhide" method="post" action="product">
+                    <input type="hidden" id="id" name="ProductID" value="<%= request.getParameter("id")%>" />
 
                     <p>
-                        <button class="btn btn-primary" type="submit" name="action" value="hidden">Unhide</button>
+                        <button class="btn btn-primary" type="submit" name="action" value="unhide">Unhide</button>
                         <a href="product?view=list" class="btn btn-secondary">Cancel</a>
                     </p>
                 </form>
@@ -28,5 +28,16 @@
         </main>
 
         <%@include file="/WEB-INF/include/footer.jsp" %>
+        <script>
+            $("#form-unhide").validate({
+                rules: {
+                    ProductID: {
+                        required: true,
+                        number: true,
+                        range: [$("#id").val(), $("#id").val()]
+                    }
+                }
+            });
+        </script>
     </body>
 </html>

@@ -389,7 +389,7 @@ public class ProductDAO extends dbconnect.DBContext {
      *
      * @return số dòng bị ảnh hưởng (1 nếu thành công).
      */
-    public int delete(int productId) {
+    public int hide(int productId) {
         String query = "update Products\n"
                 + "set IsHidden = 1\n"
                 + "where ProductID = ?";
@@ -404,7 +404,7 @@ public class ProductDAO extends dbconnect.DBContext {
 
     }
 
-    public int hidden(int productId) {
+    public int unhide(int productId) {
         String query = "update Products\n"
                 + "set IsHidden = 0\n"
                 + "where ProductID = ?";
