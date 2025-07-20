@@ -38,9 +38,9 @@
                                     <th>#</th>
                                     <th>Image</th>
                                     <th>Product Name</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
                                     <th>Unit price</th>
+                                    <th>Quantity</th>
+                                    <th>Amount</th>
                                     <th>Action</th>
                                     <th>Buy</th>
                                 </tr>
@@ -51,13 +51,13 @@
                                            
                                         <th scope="row"><%= index++%></th>
                                         <td><img src="${pageContext.request.contextPath}/get-image/${item.product.coverImg}" style="width: 80px;" /></td>
-                                        <td><a href="<c:url value="user-product">
+                                        <td><a class="text-decoration-none link-dark" href="<c:url value="user-product">
                                                    <c:param name="view" value="product"/>
                                                    <c:param name="productID" value="${item.product.productID}"/>
                                         </c:url>">${item.product.productName}</a></td>
+                                        <td> <fmt:formatNumber value="${item.product.price}" type="number" /> VND</td>
                                         <td>${item.quantity}</td>
-                                        <td><fmt:formatNumber value="${item.product.price * item.quantity}" type="currency" currencySymbol="VND" /></td>
-                                        <td> <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="VND" /></td>
+                                        <td><fmt:formatNumber value="${item.product.price * item.quantity}" type="number" /> VND</td>
                                         <td>
                                             <a href="${pageContext.request.contextPath}/cart?view=edit&id=${item.cartItemID}" class="btn btn-primary btn-sm">Edit</a>
                                             <a href="${pageContext.request.contextPath}/cart?view=delete&id=${item.cartItemID}" class="btn btn-danger btn-sm">Delete</a>
