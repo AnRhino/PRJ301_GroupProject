@@ -145,6 +145,10 @@ public class ImageProfileServlet extends HttpServlet {
     
     private void removeOldImage(String imagePath) {
         
+        if (imagePath.equals("users/0.png")) {
+            return;
+        }
+
         File oldImageFile = new File(FileIOUtil.getRootPath() + "images/" + imagePath);
 
         if (oldImageFile.exists()) {
