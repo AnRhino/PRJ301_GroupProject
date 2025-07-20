@@ -239,7 +239,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 }
 
 body {
-    padding-top: 60px;
+    padding-top: 80px;
     background-color: #DDDDDD;
 }
 
@@ -248,4 +248,8 @@ body {
     width: 150px;
     height: 100px;
     object-fit: cover;
+}
+
+#navbarCollapse{
+    height: 40px;
 }

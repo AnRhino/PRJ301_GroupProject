@@ -17,14 +17,14 @@
     <body>
         <%@include file="../include/header.jsp" %>
 
-        <div class="container-sm">
+        <div class="container-sm my-5">
             <%-- Show error msg if they exists --%>
             <c:if test="${not empty usernameMsg}"><p class="text-danger">${usernameMsg.getMessage()}</p></c:if>
             <c:if test="${not empty passwordMsg}"><p class="text-danger">${passwordMsg.getMessage()}</p></c:if>
             <c:if test="${not empty loginError}"><p class="text-danger">${loginError}</p></c:if>
                 <main class="form-signin">
                     <form id="form-login" method="post" action="<c:url value="/login"/>">
-                    <h1 class="h3 mb-3 fw-normal">Log In</h1>
+                    <h1 class="h3 mb-3 fw-normal">Log in</h1>
 
                     <div class="form-floating">
                         <input type="text" class="form-control" name="username" id="floatingInput" placeholder="Username" value="${param.username}">
@@ -35,7 +35,7 @@
                         <label for="floatingPassword">Password</label>
                     </div>
 
-                    <button class="w-100 btn btn-lg btn-primary" type="submit">Log In</button>
+                    <button class="w-100 btn btn-lg btn-primary" type="submit">Log in</button>
                 </form>
                 <a href="register">Register</a>
             </main>
