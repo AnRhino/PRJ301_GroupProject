@@ -41,11 +41,11 @@
                     </tr>
                     <tr>
                         <th>Price</th>
-                        <td>${cart.product.price}</td>
+                        <td><fmt:formatNumber value="${cart.product.price}" type="number" groupingUsed="true"/> VND</td>
                     </tr>
                     <tr>
                         <th>Quantity</th>
-                        <td><input id="quantity" name="quantity" value="${cart.quantity}" required/></td>
+                        <td><input id="quantity" type="number" name="quantity" value="${cart.quantity}" required/></td>
                     </tr>
                 </table>
 
