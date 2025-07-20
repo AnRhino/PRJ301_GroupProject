@@ -12,6 +12,7 @@
         <%@include file="../../include/header.jsp" %>
         <main class="container">
             <h1>Order Management</h1>
+            <a class="btn btn-primary" href="<c:url value="/admin"/>">Back to dashboard</a>
             <table class="table table-striped">
                 <thead>
                     <tr>
