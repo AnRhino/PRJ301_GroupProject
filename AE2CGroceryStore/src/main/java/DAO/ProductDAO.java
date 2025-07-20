@@ -324,19 +324,18 @@ public class ProductDAO extends dbconnect.DBContext {
 
     public Product getById(int ProductID) {
         try {
-            String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden "
+            String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden, p.ImagePath, p.isHidden "
                     + "FROM Products p "
                     + "JOIN Categories c ON p.CategoryID = c.CategoryID "
-                    + "WHERE ProductID = ?";
-
-            PreparedStatement ps = this.getConnection().prepareStatement(query);
-            ps.setInt(1, ProductID);
-            ResultSet rs = ps.executeQuery();
+                    + "WHERE ProductID = ?";  
+            
+            Object[] params = {ProductID};
+            ResultSet rs = execSelectQuery(query, params);
 
             if (rs.next()) {
                 Category cat = new Category(rs.getInt(6), rs.getString(7), rs.getBoolean(8));
                 return new Product(rs.getInt(1), rs.getString(2), rs.getString(3),
-                        rs.getInt(4), rs.getInt(5), cat);
+                        rs.getInt(4), rs.getInt(5), cat, rs.getString(9), rs.getBoolean(10));
             } else {
                 return null;
             }
