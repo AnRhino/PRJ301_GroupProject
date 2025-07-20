@@ -240,7 +240,8 @@ public class DiscountCodeCreateServlet extends HttpServlet {
             List<DiscountCodeType> discountType = dao.getAllDiscountType();
             request.setAttribute("discountType", discountType);
 
-            request.getRequestDispatcher("/WEB-INF/adminFeatures/discountCode/discountCodeCreate.jsp").forward(request, response);
+//            request.getRequestDispatcher("/WEB-INF/adminFeatures/discountCode/discountCodeCreate.jsp").forward(request, response);
+            this.doGet(request, response);
         }
     }
 
