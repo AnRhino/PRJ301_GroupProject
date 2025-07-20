@@ -21,7 +21,7 @@
                     <strong class="text-danger">${errorMessage}</strong>
                 </c:if>
 
-                <form class="form" method="post" action="<c:url value='/admin/discount-code/create'/>">
+                <form id="form-create" class="form" method="post" action="<c:url value='/admin/discount-code/create'/>">
 
                     <label class="form-label" for="type">Discount Type</label>
                     <div class="mb-3">
@@ -47,18 +47,18 @@
                     <div class="mb-3">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">VND</span>
+                                <span class="input-group-text">VND | %</span>
                             </div>
-                            <input class="form-control" type="number" id="value" name="value" value="${value}" />
+                            <input class="form-control" type="number" id="value" name="value"/>
                         </div>
-                            <c:if test = "${not empty valueError}">
-                                <strong class="text-danger">${valueError}</strong>
-                            </c:if>
+                        <c:if test = "${not empty valueError}">
+                            <strong class="text-danger">${valueError}</strong>
+                        </c:if>
                     </div>
 
                     <label class="form-label" for="quantity">Quantity</label>
                     <div class="mb-3">
-                        <input class="form-control" type="number" id="quantity" name="quantity" value="${quantity}" />
+                        <input class="form-control" type="number" id="quantity" name="quantity" <c:if test="${not empty quantity}">value="${quantity}"</c:if> value="1"/>
                         <c:if test = "${not empty quantityError}">
                             <strong class="text-danger">${quantityError}</strong>
                         </c:if>
@@ -74,7 +74,7 @@
 
                     <label class="form-label" for="minOrderValue">Minimum Order Value</label>
                     <div class="mb-3">
-                        <input class="form-control" type="number" id="minOrderValue" name="minOrderValue" value="${minOrderValue}" />
+                        <input class="form-control" type="number" id="minOrderValue" name="minOrderValue" <c:if test="${not empty minOrderValue}">value="${minOrderValue}"</c:if> value="0"/>
                         <c:if test = "${not empty minOrderValueError}">
                             <strong class="text-danger">${minOrderValueError}</strong>
                         </c:if>
@@ -97,5 +97,56 @@
         </main>
 
         <%@include file="/WEB-INF/include/footer.jsp" %>
+        <script>
+            $("#form-create").validate({
+                rules: {
+                    type: {
+                        required: true,
+                        digits: true,
+                        range: [0, 2]
+                    },
+                    code: {
+                        required: true,
+                        rangelength: [5, 15]
+                    },
+                    value: {
+                        required: true,
+                        digits: true,
+                        min: 0
+                    },
+                    quantity: {
+                        required: true,
+                        digits: true,
+                        min: 0
+                    },
+                    expiryDate: {
+                        required: true,
+                        dateISO: true
+                    },
+                    minOrderValue: {
+                        required: true,
+                        digits: true,
+                        range: [0, 50000000]
+                    }
+                },
+                messages: {
+                    code: {
+                        required: "Please enter code"
+                    },
+                    value: {
+                        required: "Please enter value"
+                    },
+                    quantity: {
+                        required: "Please enter quantity"
+                    },
+                    expiryDate: {
+                        required: "Please choose expire date"
+                    },
+                    minOrderValue: {
+                        required: "Please enter minimun order value"
+                    }
+                }
+            });
+        </script>
     </body>
 </html>

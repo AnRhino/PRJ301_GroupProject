@@ -19,7 +19,7 @@
                     <strong class="text-danger">${errorMessage}</strong>
                 </c:if>
 
-                <form class="form" method="post" action="<c:url value='/admin/discount-code/edit'/>">
+                <form id="form-update" class="form" method="post" action="<c:url value='/admin/discount-code/edit'/>">
                     
                     <label class="form-label" for="id">ID</label>
                     <div class="mb-3">
@@ -30,7 +30,9 @@
                     <div class="mb-3">
                         <select class="form-select" name="type" id="type">
                             <c:forEach items="${discountType}" var="discountType">
-                                <option value="${discountType.typeId}">${discountType.typeName}</option>
+                                <option <c:if test="${discountType.typeId eq discountCode.type}">selected</c:if> value="${discountType.typeId}">
+                                    ${discountType.typeName}
+                                </option>
                             </c:forEach>
                         </select>
                         <c:if test = "${not empty typeError}">
@@ -49,7 +51,7 @@
                     <label class="form-label" for="value">Value</label>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">VND</span>
+                            <span class="input-group-text">VND | %</span>
                         </div>
                         <input class="form-control" type="number" id="value" name="value" value="${discountCode.value}" />
                         <c:if test = "${not empty valueError}">
@@ -97,5 +99,61 @@
             </div>
         </main>
         <%@include file="/WEB-INF/include/footer.jsp" %>
+        <script>
+            $("#form-update").validate({
+                rules: {
+                    id: {
+                        required: true,
+                        number: true,
+                        range: [$("#id").val(), $("#id").val()]
+                    },
+                    type: {
+                        required: true,
+                        digits: true,
+                        range: [0, 2]
+                    },
+                    code: {
+                        required: true,
+                        rangelength: [5, 15]
+                    },
+                    value: {
+                        required: true,
+                        digits: true,
+                        min: 0
+                    },
+                    quantity: {
+                        required: true,
+                        digits: true,
+                        min: 0
+                    },
+                    expiryDate: {
+                        required: true,
+                        dateISO: true
+                    },
+                    minOrderValue: {
+                        required: true,
+                        digits: true,
+                        range: [0, 50000000]
+                    }
+                },
+                messages: {
+                    code: {
+                        required: "Please enter code"
+                    },
+                    value: {
+                        required: "Please enter value"
+                    },
+                    quantity: {
+                        required: "Please enter quantity"
+                    },
+                    expiryDate: {
+                        required: "Please choose expire date"
+                    },
+                    minOrderValue: {
+                        required: "Please enter minimun order value"
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
