@@ -58,9 +58,9 @@
                                 <a href="<%= request.getContextPath()%>/admin/product?view=edit&id=<%= pr.getProductID()%>" class="btn btn-primary btn-sm">Edit</a>
 
                                 <% if (pr.isIsHidden() == false) {%>
-                                <a href="<%= request.getContextPath()%>/admin/product?view=delete&id=<%= pr.getProductID()%>" class="btn btn-danger btn-sm">Hide</a>
+                                <a href="<%= request.getContextPath()%>/admin/product?view=hide&id=<%= pr.getProductID()%>" class="btn btn-danger btn-sm">Hide</a>
                                 <%   } else {%>
-                                <a href="<%= request.getContextPath()%>/admin/product?view=hidden&id=<%= pr.getProductID()%>" class="btn btn-primary btn-sm">Unhide</a>
+                                <a href="<%= request.getContextPath()%>/admin/product?view=unhide&id=<%= pr.getProductID()%>" class="btn btn-primary btn-sm">Unhide</a>
                                 <% } %>
                             </td>
                         </tr>

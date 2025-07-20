@@ -61,16 +61,16 @@ public class ProductServlet extends HttpServlet {
             request.setAttribute("cate", categories);
             request.getRequestDispatcher("/WEB-INF/adminFeatures/product/create.jsp").forward(request, response);
 
-        } else if (view.equals("delete")) {
+        } else if (view.equals("hide")) {
             // Hiển thị xác nhận xoá sản phẩm
 
             boolean checkId = validation.checkProductId(request.getParameter("id"), productDAO.getAll());
             if (!checkId) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 request.setAttribute("pro", productDAO.getById(id));
-                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/delete.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/hide.jsp").forward(request, response);
             } else {
-                request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/error-page");
             }
         } else if (view.equals("edit")) {
             // Hiển thị form chỉnh sửa sản phẩm
@@ -84,18 +84,18 @@ public class ProductServlet extends HttpServlet {
                 request.setAttribute("cate", categories);
                 request.getRequestDispatcher("/WEB-INF/adminFeatures/product/edit.jsp").forward(request, response);
             } else {
-                request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/error-page");
             }
-        } else if (view.equals("hidden")) {
+        } else if (view.equals("unhide")) {
             // Hiển thị xác nhận xoá sản phẩm
 
             boolean checkId = validation.checkProductId(request.getParameter("id"), productDAO.getAll());
             if (!checkId) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 request.setAttribute("pro", productDAO.getById(id));
-                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/hidden.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/unhide.jsp").forward(request, response);
             } else {
-                request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/error-page");
             }
         }
     }
