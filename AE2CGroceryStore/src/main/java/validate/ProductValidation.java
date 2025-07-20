@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Cart;
 import model.Category;
 import model.Product;
 
@@ -184,6 +185,21 @@ public class ProductValidation {
 
         for (Product p : productList) {
             if (p.getProductID() == id) {
+                return false; // ID tồn tại trong danh sách
+            }
+        }
+    } catch (NumberFormatException e) {
+        // Nếu không phải số thì coi như không hợp lệ
+    }
+
+    return true; // ID không tồn tại hoặc không hợp lệ
+}
+    public boolean checkCartID(String idStr, List<Cart> CartList) {
+    try {
+        int id = Integer.parseInt(idStr);
+
+        for (Cart p : CartList) {
+            if (p.getCartItemID() == id) {
                 return false; // ID tồn tại trong danh sách
             }
         }

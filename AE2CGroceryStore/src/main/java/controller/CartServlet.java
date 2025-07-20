@@ -36,6 +36,7 @@ public class CartServlet extends HttpServlet {
     private final CartDAO cartDao = new CartDAO();
     private final CategoryDAO categoryDao = new CategoryDAO();
     private final ProductDAO productDao = new ProductDAO();
+    private final ProductValidation Validation = new ProductValidation();
     private String view;
 
     @Override
@@ -62,10 +63,17 @@ public class CartServlet extends HttpServlet {
             return;
             // Hiển thị trang edit số lượng sản phẩm đã thêm vào giỏ hàng
         } else if ("edit".equals(view)) {
-            int cartId = Integer.parseInt(request.getParameter("id"));
-            request.setAttribute("cart", cartDao.getCartByID(cartId));
-            request.getRequestDispatcher("/WEB-INF/users/edit.jsp").forward(request, response);
-            return;
+            String cartIdStr = request.getParameter("id");
+            boolean checkCartID = Validation.checkCartID(cartIdStr, cartDao.getCanBuy(user.getId()));
+            if (!checkCartID) {
+
+                int cartId = Integer.parseInt(request.getParameter("id"));
+                request.setAttribute("cart", cartDao.getCartByID(cartId));
+                request.getRequestDispatcher("/WEB-INF/users/edit.jsp").forward(request, response);
+                return;
+            } else {
+                request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+            }
             // Hiển thị trang delete sản phẩm đã thêm vào giỏ hàng
         } else if ("delete".equals(view)) {
             int cartId = Integer.parseInt(request.getParameter("id"));
