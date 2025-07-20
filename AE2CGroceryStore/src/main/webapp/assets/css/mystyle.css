@@ -27,171 +27,203 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     scroll-behavior: smooth;
 }
 
-@media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-        font-size: 3.5rem;
+/* PC lớn (≥1200px) */
+@media (min-width: 1200px) {
+    #productInfo {
+        width: 300px;
+        height: auto;
     }
 
-    #carousel-img{
-        height: 300px;
-    }
-
-    #Search-bar{
-        border-radius: 5px;
-        width: 400px;
-    }
-
-    #img{
+    #img {
         width: 300px;
         height: 250px;
     }
 
-    #navbarCollapse{
-        max-height: 20px;
-    }
-
-    #productInfo{
+    #product-in-category-infomation {
         display: flex;
         border: 1px solid black;
         flex-wrap: inherit;
         justify-content: center;
         align-content: center;
-        width: 300px;
+        width: 200px;
+        height: 110px;
+        font-size: 8px;
     }
 
-
-    #overflow{
-        height: 145px;
+    #product-in-category-img {
+        width: 200px;
+        height: 200px;
     }
 }
 
+/* Laptop/PC nhỏ (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    #productInfo {
+        width: 240px;
+        height: auto;
+    }
+
+    #img {
+        width: 240px;
+        height: 200px;
+    }
+
+    #product-in-category-infomation {
+        width: 160px;
+        height: 88px;
+        font-size: 7px;
+    }
+
+    #product-in-category-img {
+        width: 160px;
+        height: 160px;
+    }
+}
+
+/* Tablet (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    #productInfo {
+        width: 200px;
+        height: auto;
+    }
+
+    #img {
+        width: 200px;
+        height: 180px;
+    }
+
+    #Search-bar {
+        width: 250px;
+        border-radius: 5px;
+    }
+
+    #carousel-img {
+        height: 300px;
+    }
+
+    .bd-placeholder-img-lg {
+        font-size: 3rem;
+    }
+
+    #product-in-category-infomation {
+        width: 133px;
+        height: 73px;
+        font-size: 6.5px;
+    }
+
+    #product-in-category-img {
+        width: 133px;
+        height: 133px;
+    }
+}
+
+/* Mobile trung bình (576px - 767px) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    #productInfo {
+        width: 160px;
+        height: 138px;
+        font-size: 13px;
+    }
+
+    #img {
+        width: 160px;
+        height: 160px;
+    }
+
+    #Search-bar {
+        width: 190px;
+    }
+
+    #cate-img {
+        width: 100px;
+        height: 80px;
+    }
+
+    #product-in-category-infomation {
+        width: 100px;
+        height: 55px;
+        font-size: 6px;
+    }
+
+    #product-in-category-img {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* Mobile nhỏ (<576px) */
+@media (max-width: 575.98px) {
+    #productInfo {
+        width: 120px;
+        height: 120px;
+        font-size: 10px;
+    }
+
+    #img {
+        width: 120px;
+        height: 120px;
+    }
+
+    #cate-img {
+        width: 80px;
+        height: 60px;
+    }
+
+    #Search-bar {
+        width: 150px;
+    }
+
+    #product-in-category-infomation {
+        width: 80px;
+        height: 44px;
+        font-size: 5.5px;
+    }
+
+    #product-in-category-img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+/* Rất nhỏ (<400px) */
+@media (max-width: 400px) {
+    #product-in-category-infomation {
+        width: 70px;
+        height: 38px;
+        font-size: 5px;
+    }
+
+    #product-in-category-img {
+        width: 70px;
+        height: 70px;
+    }
+
+    #productInfo {
+        width: 100px;
+        height: 100px;
+        font-size: 8px;
+    }
+
+    #img {
+        width: 100px;
+        height: 100px;
+    }
+
+    #cate-img {
+        width: 70px;
+        height: 50px;
+    }
+
+    #Search-bar {
+        width: 120px;
+    }
+}
 #product-press:hover{
     background-color: #C6C6C6;
     transition: 1s;
 }
 
 
-@media (max-width: 1434px){
-    #productInfo{
-        display: flex;
-        border: 1px solid black;
-        flex-wrap: inherit;
-        justify-content: center;
-        align-content: center;
-        width: 240px;
-    }
-
-    #img{
-        width: 240px;
-    }
-
-}
-
-@media (max-width: 1126px){
-    #cate-img{
-        width: 180px;
-        height: 110px;
-    }
-
-    #productInfo{
-        display: flex;
-        border: 1px solid black;
-        flex-wrap: inherit;
-        justify-content: center;
-        align-content: center;
-        width: 200px;
-    }
-
-    #img{
-        width: 200px;
-    }
-
-}
-
-@media (max-width: 995px) {
-    .bd-placeholder-img-lg {
-        font-size: 2.5rem;
-    }
-
-    #carousel-img{
-        height: 300px;
-    }
-
-    #cate-img{
-        width: 125px;
-        height: 90px;
-    }
-
-    #img{
-        width: 200px;
-    }
-
-    #Search-bar{
-        width: 190px;
-    }
-}
-
-
-@media (max-width: 886px){
-    #productInfo{
-        display: flex;
-        border: 1px solid black;
-        flex-wrap: inherit;
-        justify-content: center;
-        align-content: center;
-        width: 160px;
-        height: 138px;
-
-    }
-
-    #img{
-        width: 160px;
-        height: 160px;
-    }
-
-}
-
-@media (max-width: 726px){
-    #productInfo{
-        display: flex;
-        border: 1px solid black;
-        flex-wrap: inherit;
-        justify-content: center;
-        align-content: center;
-        width: 130px;
-        height: 154px;
-        font-size: 13px;
-    }
-
-    #img{
-        width: 130px;
-    }
-}
-@media (max-width: 614px){
-    #productInfo{
-        display: flex;
-        border: 1px solid black;
-        flex-wrap: inherit;
-        justify-content: center;
-        align-content: center;
-        width:85px;
-        height: 110px;
-        font-size: 8px;
-    }
-
-    #img{
-        width: 85px;
-        height: 85px;
-    }
-
-    #cate-img{
-        width: 80px;
-        height: 65px;
-    }
-
-
-
-}
 
 
 #profile{
@@ -209,4 +241,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 body {
     padding-top: 60px;
     background-color: #DDDDDD;
+}
+
+
+.img-fluid{
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
 }

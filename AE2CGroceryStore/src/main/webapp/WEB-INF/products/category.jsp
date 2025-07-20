@@ -81,33 +81,35 @@
                                                     <c:otherwise>
 
                                                         <c:forEach var="prod" items="${requestScope.productList}">
-                                                            <div class="col-3 d-flex justify-content-center my-3">
+                                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
                                                                 <form action="${pageContext.request.contextPath}/user-product" method="get">
                                                                     <input type="hidden" name="view" value="product">
                                                                     <input type="hidden" name="productID" value="${prod.productID}">
-                                                                    <button class="btn btn-secondary border border-secondary">
+                                                                    <button class="btn border border-secondary shadow bg-light">
                                                                         <div class="row p-2">
                                                                             <div class="col-12 d-flex justify-content-center">
                                                                                 <c:choose>
                                                                                     <c:when test="${empty prod.coverImg}">
-                                                                                        <img src="assets/images/placeHolder.jpg" alt="placeholder" width="200" height="250">
+                                                                                        <img src="assets/images/placeHolder.jpg" alt="placeholder" id="product-in-category-img">
                                                                                     </c:when>
                                                                                     <c:otherwise>
-                                                                                        <img src="<c:url value="/get-image/${prod.coverImg}"/>" alt="${prod.productName}" width="200" height="250">
+                                                                                        <img src="<c:url value="/get-image/${prod.coverImg}"/>" alt="${prod.productName}" id="product-in-category-img">
                                                                                     </c:otherwise>
                                                                                 </c:choose>
                                                                             </div>
-                                                                            <div class="col-12 d-flex justify-content-center">
-                                                                                <p class="fw-bold">Name:</p>&nbsp;
-                                                                                ${prod.productName}
-                                                                            </div>
-                                                                            <div class="col-12 d-flex justify-content-center">
-                                                                                <p class="fw-bold">Price:</p>&nbsp;
-                                                                                <fmt:formatNumber value="${prod.price}" type="number" groupingUsed="true" /> VND
-                                                                            </div>
-                                                                            <div class="col-12 d-flex justify-content-center">
-                                                                                <p class="fw-bold">Stock:</p>&nbsp;
-                                                                                ${prod.quantity}
+                                                                            <div id="product-int-category-infomation">
+                                                                                <div class="col-12 d-flex ms-4">
+                                                                                    <p class="fw-bold">Name:</p>&nbsp;
+                                                                                    ${prod.productName}
+                                                                                </div>
+                                                                                <div class="col-12 d-flex ms-4">
+                                                                                    <p class="fw-bold text-success">Price:</p>&nbsp;
+                                                                                    <fmt:formatNumber value="${prod.price}" type="number" groupingUsed="true" /> VND
+                                                                                </div>
+                                                                                <div class="col-12 d-flex ms-4">
+                                                                                    <p class="fw-bold text-primary">Stock:</p>&nbsp;
+                                                                                    ${prod.quantity}
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </button>

@@ -14,6 +14,250 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/mystyle.css"/>
 
+    <style>
+        .error {
+    color: #ff0000
+}
+
+.form-floating label.error {
+    right: 0;
+    left: auto;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+.d-flex.overflow-auto {
+    scroll-behavior: smooth;
+}
+
+/* PC lớn (≥1200px) */
+@media (min-width: 1200px) {
+    #productInfo {
+        width: 300px;
+        height: auto;
+    }
+
+    #img {
+        width: 300px;
+        height: 250px;
+    }
+
+    #product-in-category-infomation {
+        display: flex;
+        border: 1px solid black;
+        flex-wrap: inherit;
+        justify-content: center;
+        align-content: center;
+        width: 200px;
+        height: 110px;
+        font-size: 8px;
+    }
+
+    #product-in-category-img {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* Laptop/PC nhỏ (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    #productInfo {
+        width: 240px;
+        height: auto;
+    }
+
+    #img {
+        width: 240px;
+        height: 200px;
+    }
+
+    #product-in-category-infomation {
+        width: 160px;
+        height: 88px;
+        font-size: 7px;
+    }
+
+    #product-in-category-img {
+        width: 160px;
+        height: 160px;
+    }
+}
+
+/* Tablet (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    #productInfo {
+        width: 200px;
+        height: auto;
+    }
+
+    #img {
+        width: 200px;
+        height: 180px;
+    }
+
+    #Search-bar {
+        width: 250px;
+        border-radius: 5px;
+    }
+
+    #carousel-img {
+        height: 300px;
+    }
+
+    .bd-placeholder-img-lg {
+        font-size: 3rem;
+    }
+
+    #product-in-category-infomation {
+        width: 133px;
+        height: 73px;
+        font-size: 6.5px;
+    }
+
+    #product-in-category-img {
+        width: 133px;
+        height: 133px;
+    }
+}
+
+/* Mobile trung bình (576px - 767px) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    #productInfo {
+        width: 160px;
+        height: 138px;
+        font-size: 13px;
+    }
+
+    #img {
+        width: 160px;
+        height: 160px;
+    }
+
+    #Search-bar {
+        width: 190px;
+    }
+
+    #cate-img {
+        width: 100px;
+        height: 80px;
+    }
+
+    #product-in-category-infomation {
+        width: 100px;
+        height: 55px;
+        font-size: 6px;
+    }
+
+    #product-in-category-img {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* Mobile nhỏ (<576px) */
+@media (max-width: 575.98px) {
+    #productInfo {
+        width: 120px;
+        height: 120px;
+        font-size: 10px;
+    }
+
+    #img {
+        width: 120px;
+        height: 120px;
+    }
+
+    #cate-img {
+        width: 80px;
+        height: 60px;
+    }
+
+    #Search-bar {
+        width: 150px;
+    }
+
+    #product-in-category-infomation {
+        width: 80px;
+        height: 44px;
+        font-size: 5.5px;
+    }
+
+    #product-in-category-img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+/* Rất nhỏ (<400px) */
+@media (max-width: 400px) {
+    #product-in-category-infomation {
+        width: 70px;
+        height: 38px;
+        font-size: 5px;
+    }
+
+    #product-in-category-img {
+        width: 70px;
+        height: 70px;
+    }
+
+    #productInfo {
+        width: 100px;
+        height: 100px;
+        font-size: 8px;
+    }
+
+    #img {
+        width: 100px;
+        height: 100px;
+    }
+
+    #cate-img {
+        width: 70px;
+        height: 50px;
+    }
+
+    #Search-bar {
+        width: 120px;
+    }
+}
+#product-press:hover{
+    background-color: #C6C6C6;
+    transition: 1s;
+}
+
+
+
+
+#profile{
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+
+.navbar-collapse{
+    transition: all .5s;
+}
+
+body {
+    padding-top: 60px;
+    background-color: #DDDDDD;
+}
+
+
+.img-fluid{
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+}
+    </style>
 
     <!-- Custom styles for this template -->
     <link href="${pageContext.request.contextPath}/assets/css/sticky-footer-navbar.css" rel="stylesheet"/>

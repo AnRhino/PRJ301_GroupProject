@@ -70,7 +70,7 @@
                                         <form action="${pageContext.request.contextPath}/cart" method="post">
                                             <div class="">
                                                 <div class="row border border-secondary bg-white border-dark">   
-                                                    <div class="col-6 d-flex justify-content-start p-0">
+                                                    <div class="col-6 d-flex justify-content-start p-0"> 
                                                         <c:choose>
                                                             <c:when test="${empty requestScope.product.coverImg}">
                                                                 <img src="assets/images/placeHolder.jpg" alt="placeholder" style=" height: 500px; object-fit: cover; width: 100%;">
@@ -81,50 +81,50 @@
                                                         </c:choose>
                                                     </div>
                                                     <div class="col-6 py-3">
-                                                        <h3>Information:</h3>
+                                                   <h3 class="fs-3 fs-md-2 fw-bold">Information:</h3>
                                                         <div class="row my-5 mx-3 gy-3">
                                                             <div class="col-12">
-                                                                <div class="fw-bold d-inline">Status:</div>
+                                                                <div class="fw-bold d-inline fs-5 fs-md-4">Status:</div>
                                                                 <c:choose>
                                                                     <c:when test="${requestScope.product.quantity != 0}">
-                                                                        <div class="text-success d-inline">Available.</div>
+                                                                        <div class="text-success d-inline fs-5 fs-md-4">Available.</div>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <div class="text-danger d-inline">Unstock.</div>
+                                                                        <div class="text-danger d-inline fs-5 fs-md-4">Unstock.</div>
                                                                     </c:otherwise>
                                                                 </c:choose>
                                                             </div>
                                                             <div class="col-12">
-                                                                <div class="fw-bold d-inline">Stock:</div>
-                                                                <div class="text-dark d-inline">${requestScope.product.quantity} items left.</div>
+                                                                <div class="fw-bold d-inline fs-5 fs-md-4">Stock:</div>
+                                                                <div class="text-dark d-inline fs-5 fs-md-4">${requestScope.product.quantity} items left.</div>
                                                             </div>
                                                             <div class="col-12">
-                                                                <div class="fw-bold d-inline">Price:</div>
-                                                                <div class="text-dark d-inline"><fmt:formatNumber value="${requestScope.product.price}" type="number" groupingUsed="true" /> VND</div>
+                                                                <div class="fw-bold d-inline fs-5 fs-md-4">Price:</div>
+                                                                <div class="text-dark d-inline fs-5 fs-md-4"><fmt:formatNumber value="${requestScope.product.price}" type="number" groupingUsed="true" /> VND</div>
                                                             </div>
                                                             <div class="col-12">
-                                                                <div class="fw-bold d-inline">Rating:</div>
-                                                                <div class="text-dark d-inline">${requestScope.rateScore}⭐</div>
+                                                                <div class="fw-bold d-inline fs-5 fs-md-4">Rating:</div>
+                                                                <div class="text-dark d-inline fs-5 fs-md-4">${requestScope.rateScore}⭐</div>
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="d-flex align-items-center gap-2">
                                                                     <input type="hidden" name="productID" value="${requestScope.product.productID}">
-                                                                    <div class="fw-bold d-inline">Add to cart:</div>
+                                                                    <div class="fw-bold d-inline fs-5 fs-md-4">Add to cart:</div>
                                                                     <input required type="number" class="text-end border-dark w-100 d-inline" name="quantity" value="1" placeholder="1" min="1" max="${requestScope.product.quantity}">
                                                                 </div>
                                                                 <div class="d-flex align-items-center gap-2">
                                                                     <c:choose>
                                                                         <c:when test="${not empty requestScope.errorCartMsg and empty requestScope.successCartMsg}">
-                                                                            <p class="text-danger">${requestScope.errorCartMsg.message}</p>
+                                                                            <p class="text-danger fs-5 fs-md-4">${requestScope.errorCartMsg.message}</p>
                                                                         </c:when>
                                                                         <c:when test="${empty requestScope.errorCartMsg and not empty requestScope.successCartMsg}">
-                                                                            <p class="text-success">${requestScope.successCartMsg}</p>
+                                                                            <p class="text-success fs-5 fs-md-4">${requestScope.successCartMsg}</p>
                                                                         </c:when>
                                                                     </c:choose>
                                                                 </div>
                                                             </div>
                                                             <div class="col-12 d-flex gap-3">
-                                                                <button type="submit" class="btn px-5 py-3 bg-success border-dark d-flex justify-content-end" name="action" value="cart">
+                                                                <button type="submit" style="font-size: 2vw; width: auto" class="btn px-5 py-3 bg-success border-dark d-flex justify-content-end" name="action" value="cart">
                                                                     <i class="bi bi-basket text-white"></i>
                                                                 </button>
                                                             </div>

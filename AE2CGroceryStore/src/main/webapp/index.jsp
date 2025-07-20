@@ -34,8 +34,9 @@
                             <c:when test="${empty product.coverImg}">
                                 <img src="assets/images/placeHolder.jpg"
                                      alt="placeholder"
-                                     class="d-block w-50 mx-auto"
-                                     id="carousel-img">
+                                     class="d-block mx-auto"
+                                     id="carousel-img"
+                                      style="width: 350px; height: 400px; object-fit: cover;">
                             </c:when>
                             <c:otherwise>
                                 <a href="
@@ -45,8 +46,9 @@
                                    </c:url>
                                    "> <img src="<c:url value='/get-image/${product.coverImg}'/>" 
                                         alt="${product.productName}"
-                                        class="d-block w-auto mx-auto"
-                                        id="carousel-img">
+                                        class="d-block mx-auto"
+                                        id="carousel-img"
+                                         style="width: 350px; height: 400px; object-fit: cover;">
                                 </a> 
                             </c:otherwise>
                         </c:choose>      
@@ -135,8 +137,9 @@
                         </div>
                         <div class="ms-5 me-5">
                             <div class="row">
+
                                 <c:forEach var="pro" items="${productList}">
-                                    <div class="col-3 d-flex justify-content-center">
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
                                         <form action="${pageContext.request.contextPath}/user-product" method="get">
                                             <input type="hidden" name="view" value="product">
                                             <input type="hidden" name="productID" value="${pro.productID}">
