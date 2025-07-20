@@ -323,44 +323,44 @@ VALUES
 ('LASTCHANCE', 15.0, 0, 5, '2025-07-01', 120000),
 ('XMAS50', 50000.0, 1, 20, '2025-12-24', 300000);
 
-INSERT INTO Orders (UserID, OrderDate, StatusID, DiscountCodeID)
+INSERT INTO Orders (UserID, OrderDate, DeliveryDate, StatusID, DiscountCodeID, PhoneNumber, [Address], isHidden)
 VALUES
 -- User 1
-(1, '2025-06-01', 4, 1),
-(1, '2025-06-10', 2, NULL),
+(1, '2025-06-01', '2025-06-05', 4, 1, '0901234567', '123 Le Loi, Quan 1, TP.HCM', 0),
+(1, '2025-06-10', '2025-06-15', 2, NULL, '0901234567', '123 Le Loi, Quan 1, TP.HCM', 0),
 
 -- User 2
-(2, '2025-06-02', 3, 3),
-(2, '2025-06-15', 1, NULL),
+(2, '2025-06-02', '2025-06-07', 3, 3, '0912345678', '45 Nguyen Hue, Quan 1, TP.HCM', 0),
+(2, '2025-06-15', '2025-06-18', 1, NULL, '0912345678', '45 Nguyen Hue, Quan 1, TP.HCM', 0),
 
 -- User 3
-(3, '2025-05-30', 4, 2),
-(3, '2025-06-05', 0, NULL),
+(3, '2025-05-30', '2025-06-04', 4, 2, '0923456789', '78 Hai Ba Trung, Quan 3, TP.HCM', 0),
+(3, '2025-06-05', '2025-06-10', 0, NULL, '0923456789', '78 Hai Ba Trung, Quan 3, TP.HCM', 0),
 
 -- User 4
-(4, '2025-06-03', 4, 5),
+(4, '2025-06-03', '2025-06-07', 4, 5, '0934567890', '56 Dien Bien Phu, Quan Binh Thanh, TP.HCM', 0),
 
 -- User 5
-(5, '2025-06-12', 1, NULL),
+(5, '2025-06-12', '2025-06-16', 1, NULL, '0945678901', '12 Pham Van Dong, Quan Thu Duc, TP.HCM', 0),
 
 -- User 6
-(6, '2025-06-01', 3, 4),
+(6, '2025-06-01', '2025-06-06', 3, 4, '0956789012', '89 Ly Thuong Kiet, Quan 10, TP.HCM', 0),
 
 -- User 7
-(7, '2025-06-07', 2, NULL),
+(7, '2025-06-07', '2025-06-12', 2, NULL, '0967890123', '34 Vo Van Tan, Quan 3, TP.HCM', 0),
 
 -- Admin (UserID 8)
-(8, '2025-06-05', 4, 1),
-(8, '2025-06-13', 3, NULL),
-(8, '2025-06-14', 2, 6),
-(8, '2025-06-11', 1, NULL),
-(8, '2025-06-17', 4, 7),
+(8, '2025-06-05', '2025-06-08', 4, 1, '0978901234', '200 Cach Mang Thang Tam, Quan 10, TP.HCM', 0),
+(8, '2025-06-13', '2025-06-17', 3, NULL, '0978901234', '200 Cach Mang Thang Tam, Quan 10, TP.HCM', 0),
+(8, '2025-06-14', '2025-06-18', 2, 6, '0978901234', '200 Cach Mang Thang Tam, Quan 10, TP.HCM', 0),
+(8, '2025-06-11', '2025-06-15', 1, NULL, '0978901234', '200 Cach Mang Thang Tam, Quan 10, TP.HCM', 0),
+(8, '2025-06-17', '2025-06-21', 4, 7, '0978901234', '200 Cach Mang Thang Tam, Quan 10, TP.HCM', 0),
 
--- Thêm 4 đơn lẻ để tăng số lượng
-(3, '2025-06-18', 1, NULL),
-(4, '2025-06-18', 3, 8),
-(5, '2025-06-19', 4, NULL),
-(7, '2025-06-20', 2, NULL);
+-- Them 4 don le
+(3, '2025-06-18', '2025-06-23', 1, NULL, '0923456789', '78 Hai Ba Trung, Quan 3, TP.HCM', 0),
+(4, '2025-06-18', '2025-06-24', 3, 8, '0934567890', '56 Dien Bien Phu, Quan Binh Thanh, TP.HCM', 0),
+(5, '2025-06-19', '2025-06-23', 4, NULL, '0945678901', '12 Pham Van Dong, Quan Thu Duc, TP.HCM', 0),
+(7, '2025-06-20', '2025-06-25', 2, NULL, '0967890123', '34 Vo Van Tan, Quan 3, TP.HCM', 0);
 
 -- OrderItems
 INSERT INTO OrderItems (OrderID, ProductID, Quantity, UnitPrice)
