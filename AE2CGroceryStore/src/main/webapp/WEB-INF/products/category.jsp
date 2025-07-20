@@ -121,7 +121,8 @@
                                             </div>
                                         </c:otherwise>
                                     </c:choose>
-                                </div>                            
+                                </div>  
+                                <%@include file="../include/category_pagination.jsp" %>
                             </div>
 
                         </div>
@@ -129,7 +130,7 @@
                 </div>
             </c:otherwise>
         </c:choose>
-        <%@include file="../include/category_pagination.jsp" %>
+        
         <jsp:include page="../include/footer.jsp" />
     </body>
 </html>

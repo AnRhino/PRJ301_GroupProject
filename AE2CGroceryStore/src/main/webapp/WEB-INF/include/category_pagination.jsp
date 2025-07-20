@@ -22,7 +22,7 @@
     </c:otherwise>
 </c:choose>
 
-<nav aria-label="Page navigation example" class="d-flex align-content-center justify-content-center">
+<nav aria-label="Page navigation example" class="d-flex align-content-center justify-content-center my-3">
     <ul class="pagination">
 
         <c:choose>
