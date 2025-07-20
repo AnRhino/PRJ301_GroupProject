@@ -10,7 +10,7 @@
 <header>
 
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             <a href="${pageContext.request.contextPath}"><img class="navbar-brand" src="/ae2c/assets/images/logo.png" alt="logo store" width="35" height="45"/> </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,9 +53,12 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="<c:url value="/order"/>">Order</a>
-                        </li>
+
+                        <c:if test="${not empty sessionScope.loggedUser}">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="<c:url value="/order"/>">Order</a>
+                            </li>
+                        </c:if>
                         <c:if test="${loggedUser.roleId == 1}">
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="<c:url value="/admin"/>">Manager</a>
