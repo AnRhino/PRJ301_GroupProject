@@ -28,8 +28,8 @@
                     <div class="col-3">
                         <div><strong>Status:</strong> ${order.status.description}</div>
                         <div>
-                            <form action="order" method="post">
-                                <input type="hidden" name="orderId" value="${order.id}">
+                            <form id="form-unhide" action="order" method="post">
+                                <input type="hidden" id="orderId" name="orderId" value="${order.id}">
                                 <c:choose>
                                     <c:when test="${(order.status.id eq 1) or (order.status.id eq 2)}">
                                         <input type="hidden" name="action" value="cancel">
@@ -39,7 +39,7 @@
                                         <input type="hidden" name="action" value="hide">
                                         <a class="btn btn-primary" href="<c:url value="re-order">
                                                <c:param name="orderId" value="${order.id}"/>
-                                        </c:url>">Re-order</a>
+                                           </c:url>">Re-order</a>
                                         <button class="btn btn-danger" type="submit">Delete</button>
                                     </c:when>
                                 </c:choose>
@@ -84,5 +84,16 @@
             </div>
         </c:forEach>
         <%@include file="../include/footer.jsp" %>
+        <script>
+            $("#form-update").validate({
+                rules: {
+                    orderId: {
+                        required: true,
+                        number: true,
+                        range: [$("#orderId").val(), $("#orderId").val()]
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
