@@ -38,4 +38,12 @@
     <welcome-file-list>
         <welcome-file>home</welcome-file>
     </welcome-file-list>
+    
+    <!-- Move on a servlet base on error code.-->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error-page</location>
+    </error-page>
+
+    
 </web-app>
