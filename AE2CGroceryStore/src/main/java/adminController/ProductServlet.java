@@ -192,12 +192,18 @@ public class ProductServlet extends HttpServlet {
 
             if (idStr == null || idStr.isEmpty()) {
                 request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+                return;
             }
+
             if (productValidation.checkProductID(idStr, listProduct)) {
                 request.getRequestDispatcher("/WEB-INF/errorPage/errorPage.jsp").forward(request, response);
+                return;
             }
 
             int id = Integer.parseInt(idStr);
+            boolean hasErrors = false;
+            String errorMessage = null;
+            String imagePath = "";
 
             List<String> errors = new ArrayList<>();
             errors.addAll(productValidation.checkProductCodeEdit(productCode, id, listProduct));
@@ -207,28 +213,62 @@ public class ProductServlet extends HttpServlet {
             errors.addAll(productValidation.checkCategoryID(categoryStr));
 
             if (!errors.isEmpty()) {
-                // Đổ dữ liệu lại khi có lỗi
                 request.setAttribute("oldCode", productCode);
                 request.setAttribute("oldName", productName);
                 request.setAttribute("oldQuantity", quantityStr);
                 request.setAttribute("oldPrice", priceStr);
                 request.setAttribute("oldCate", categoryStr);
                 request.setAttribute("errorMessage", errors);
-
-                // Phải gán lại đối tượng Product cũ để JSP hiển thị dữ liệu fallback
                 request.setAttribute("pro", productDAO.getById(id));
-
-                // Gán lại danh sách category
                 CategoryDAO cateDAO = new CategoryDAO();
                 request.setAttribute("cate", cateDAO.getAll());
-
-                // Quay lại trang edit
                 request.getRequestDispatcher("/WEB-INF/adminFeatures/product/edit.jsp").forward(request, response);
                 return;
             }
 
-            // Nếu hợp lệ thì cập nhật database
-            productDAO.edit(id, productCode, productName, Integer.parseInt(quantityStr), Double.parseDouble(priceStr), Integer.parseInt(categoryStr));
+            try {
+                Part coverImgPart = request.getPart("coverImg");
+
+                if (coverImgPart != null && coverImgPart.getSize() > 0) {
+                    String result = processImageUpload(coverImgPart, id);
+                    if (result != null) {
+                        hasErrors = true;
+                        errorMessage = result;
+                    } else {
+                        imagePath = "products/" + id
+                                + coverImgPart.getSubmittedFileName()
+                                        .substring(coverImgPart.getSubmittedFileName().lastIndexOf("."))
+                                        .toLowerCase();
+                    }
+                } else {
+                    // Không chọn ảnh mới -> giữ ảnh cũ
+                    Product oldProduct = productDAO.getById(id);
+                    imagePath = oldProduct.getCoverImg();
+                }
+
+            } catch (Exception e) {
+                hasErrors = true;
+                errorMessage = MessageConstants.ERROR_IMAGE_UPLOAD_MESSAGE + e.getMessage();
+                Logger.getLogger(ProductServlet.class.getName())
+                        .log(Level.SEVERE, "Error in image upload", e);
+            }
+
+            if (hasErrors) {
+                if (errorMessage != null) {
+                    request.setAttribute("imageError", new ErrorMessage(errorMessage));
+                }
+                setFormAttributes(request, productCode, productName, quantityStr, priceStr, categoryStr, errors);
+                request.setAttribute("pro", productDAO.getById(id));
+                CategoryDAO cateDAO = new CategoryDAO();
+                request.setAttribute("cate", cateDAO.getAll());
+                request.getRequestDispatcher("/WEB-INF/adminFeatures/product/edit.jsp").forward(request, response);
+                return;
+            }
+
+            productDAO.edit(id, productCode, productName,
+                    Integer.parseInt(quantityStr), Double.parseDouble(priceStr),
+                    Integer.parseInt(categoryStr), imagePath);
+
             response.sendRedirect(request.getContextPath() + "/admin/product?view=list");
         } else if (action.equals("unhide")) {
 

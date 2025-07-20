@@ -299,10 +299,10 @@ public class ProductDAO extends dbconnect.DBContext {
      *
      * @return 0 nếu sửa thành công, ngược lại trả về lỗi.
      */
-    public int edit(int prouductId, String productCode, String productName, int quantity, double price, int cateID) {
+    public int edit(int prouductId, String productCode, String productName, int quantity, double price, int cateID, String coverImg) {
         try {
             String query = "update  Products\n"
-                    + "set ProductCode = ?, ProductName = ?,Quantity = ?,Price= ?, CategoryID = ?\n"
+                    + "set ProductCode = ?, ProductName = ?,Quantity = ?,Price= ?, CategoryID = ?,ImagePath = ?\n"
                     + "where ProductID = ?";
 
             PreparedStatement ps = this.getConnection().prepareStatement(query);
@@ -311,7 +311,9 @@ public class ProductDAO extends dbconnect.DBContext {
             ps.setObject(3, quantity);
             ps.setObject(4, price);
             ps.setObject(5, cateID);
-            ps.setObject(6, prouductId);
+            ps.setObject(6, coverImg);
+            ps.setObject(7, prouductId);
+
             ps.executeUpdate();
 
             return 0;
@@ -327,8 +329,8 @@ public class ProductDAO extends dbconnect.DBContext {
             String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden, p.ImagePath, p.isHidden "
                     + "FROM Products p "
                     + "JOIN Categories c ON p.CategoryID = c.CategoryID "
-                    + "WHERE ProductID = ?";  
-            
+                    + "WHERE ProductID = ?";
+
             Object[] params = {ProductID};
             ResultSet rs = execSelectQuery(query, params);
 
@@ -640,7 +642,8 @@ public class ProductDAO extends dbconnect.DBContext {
 
         return numOfUpdatedRows;
     }
-public int getMaxId() {
+
+    public int getMaxId() {
         try {
             String getMaxIdQuery = "SELECT MAX(ProductID) FROM Products";
             PreparedStatement maxIdPs = this.getConnection().prepareStatement(getMaxIdQuery);
@@ -652,5 +655,21 @@ public int getMaxId() {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
+    }
+
+    public String getImagePathByProductId(int productId) {
+        String imagePath = "";
+        try {
+            String query = "SELECT ImagePath FROM Products WHERE ProductID = ?";
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ps.setInt(1, productId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                imagePath = rs.getString("ImagePath");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return imagePath;
     }
 }

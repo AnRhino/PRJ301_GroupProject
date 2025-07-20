@@ -18,6 +18,21 @@
         <main class="flex-shrink-0">
             <div class="container">
                 <h1 class="mt-5">Edit Product</h1>
+                <script>
+                    function previewImage(event) {
+                        const reader = new FileReader();
+                        const imagePreview = document.getElementById('imagePreview');
+                        const file = event.target.files[0];
+
+                        if (file) {
+                            reader.onload = function (e) {
+                                imagePreview.src = e.target.result;
+                                imagePreview.style.display = "block";
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    }
+                </script>
 
                 <%
                     List<String> errors = (List<String>) request.getAttribute("errorMessage");
@@ -41,9 +56,11 @@
                     String pCate = request.getAttribute("oldCate") != null ? (String) request.getAttribute("oldCate") : String.valueOf(pro.getCategory().getCategoryID());
                 %>
 
-                <form id="form-edit" method="post" action="<%= request.getContextPath()%>/admin/product">
+                <form id="form-edit" method="post" action="<%= request.getContextPath()%>/admin/product" enctype="multipart/form-data">
+              
+
                     <input type="hidden" name="action" value="edit" />
-                    <input type="hidden" id="id" name="ProductID" value="<%= pro.getProductID()%>" />
+                   <input type="hidden" name="ProductID" value="<%= pro.getProductID()%>">
 
                     <p>
                         <label for="productCode">Product Code</label>
@@ -82,7 +99,15 @@
                     <% } else { %>
                     <p class="text-danger">No categories available</p>
                     <% }%>
+                    <input type="file"
+                           name="coverImg"
+                           accept="image/*"
+                           class="form-control"
+                           id="coverImg"
+                           onchange="previewImage(event)"
+                           />
 
+                    <img id="imagePreview" src="#" alt="Image Preview" style="display: none; max-width: 200px; margin-top: 10px;" />
                     <p>
                         <button class="btn btn-primary" type="submit">Update</button>
                         <button type="reset" class="btn btn-secondary">Clear</button>
