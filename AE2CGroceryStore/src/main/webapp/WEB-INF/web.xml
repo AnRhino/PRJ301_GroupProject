@@ -56,4 +56,14 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     
+    <!-- If logged and direct to /login, redirect to index.jsp   -->
+    <filter>
+        <filter-class>filter.LoggedFilter</filter-class>
+        <filter-name>LoggedFilter</filter-name>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoggedFilter</filter-name>
+        <url-pattern>/login</url-pattern>
+    </filter-mapping>
+    
 </web-app>
