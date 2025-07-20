@@ -31,7 +31,7 @@ public class AdminFilter implements Filter {
         } else {
             Integer roleId = (Integer) session.getAttribute("roleId");
             if (roleId == null || roleId != 1) { // If not admin
-                res.sendRedirect(req.getContextPath()); // Redirect to home
+                res.sendRedirect(req.getContextPath() + "/error-page"); // Redirect to home
             } else { // If is admin
                 fc.doFilter(sr, sr1); // Admin access
             }
