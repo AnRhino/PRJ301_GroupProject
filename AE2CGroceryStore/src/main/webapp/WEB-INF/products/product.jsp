@@ -110,8 +110,8 @@
                                                                 <div class="d-flex align-items-center gap-2">
                                                                     <input type="hidden" id="productID" name="productID" value="${requestScope.product.productID}">
                                                                     <div class="fw-bold d-inline fs-5 fs-md-4">Add to cart:</div>
-                                                                    <div>
-                                                                        <input required type="number" id="quantity" class="text-end border-dark w-100 d-inline" name="quantity" value="1" placeholder="1" min="1" max="${requestScope.product.quantity}">
+                                                                    <div class="d-block w-100">
+                                                                        <input required type="number" id="quantity" class="text-end border-dark w-100" name="quantity" value="1" placeholder="1" min="1" max="${requestScope.product.quantity}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-flex align-items-center gap-2">
@@ -173,15 +173,14 @@
                                                         </div>
 
                                                         <c:choose>
-                                                            <c:when test="${sessionScope.roleId == 1}">
+                                                            <c:when test="${rv.user.id == sessionScope.loggedUser.id}">
                                                                 <div class="col-12 d-flex justify-content-end gap-1">
-                                                                    <button type="button" class="btn btn-primary">Do nothing</button>
+                                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditComment${rv.reviewID}">Edit</button>
                                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDeleteComment${rv.reviewID}">Delete</button>
                                                                 </div>
                                                             </c:when>
-                                                            <c:when test="${sessionScope.roleId != 1 and rv.user.id == sessionScope.loggedUser.id}">
+                                                            <c:when test="${sessionScope.roleId == 1}">
                                                                 <div class="col-12 d-flex justify-content-end gap-1">
-                                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditComment${rv.reviewID}">Edit</button>
                                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDeleteComment${rv.reviewID}">Delete</button>
                                                                 </div>
                                                             </c:when>
@@ -211,7 +210,7 @@
 
                                                         <div class="modal fade text-dark" id="modalEditComment${rv.reviewID}" tabindex="-1">
                                                             <div class="modal-dialog">
-                                                                <form action="${pageContext.request.contextPath}/review" method="post">
+                                                                <form id="form-comment-edit" action="${pageContext.request.contextPath}/review" method="post">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
                                                                             <h4 class="modal-title">Edit</h4>
@@ -236,9 +235,9 @@
                                             </c:otherwise>
                                         </c:choose>
                                         <div class="px-5 gap-3 p-2 text-light">
-                                            <form action="${pageContext.request.contextPath}/review" method="post" class="d-flex gap-2">
+                                            <form id="form-comment" action="${pageContext.request.contextPath}/review" method="post" class="d-flex gap-2">
                                                 <input type="hidden" name="view" value="comment">
-                                                <input type="hidden" name="productID" value="${requestScope.product.productID}">
+                                                <input type="hidden" id="productID-comment" name="productID" value="${requestScope.product.productID}">
                                                 <input required type="text" class="form-control" name="comment" placeholder="Enter your comment here.">
                                                 <select name="rating" id="rating" required>
                                                     <option value="1">1 ⭐</option>
@@ -292,6 +291,40 @@
                         range: [1, $("#quantity").attr("max")]
                     }
                 }
+            });
+            $("#form-comment").validate({
+                rules: {
+                    productID: {
+                        required: true,
+                        number: true,
+                        range: [$("#productID-comment").val(), $("#productID-comment").val()]
+                    },
+                    comment: {
+                        required: true
+                    },
+                    rating: {
+                        required: true,
+                        digits: true,
+                        range: [1, 5]
+                    }
+                },
+                messages: {
+                    comment: {
+                        required: "Please enter comment"
+                    }
+                }
+            });
+            $("#form-comment-edit").validate({
+               rules: {
+                   newComment: {
+                       required: true
+                   }
+               },
+               massages: {
+                   newComment: {
+                       required: "Please enter comment"
+                   }
+               } 
             });
         </script>
     </body>
