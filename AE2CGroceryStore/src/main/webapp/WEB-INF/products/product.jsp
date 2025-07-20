@@ -67,8 +67,8 @@
                                         <h1 class="fw-bold text-white">${requestScope.product.productName}</h1>
                                     </div>
                                     <div class="my-2 p-2">
-                                        <form action="${pageContext.request.contextPath}/cart" method="post">
-                                            <div class="">
+                                        <form id="form-cart" action="${pageContext.request.contextPath}/cart" method="post">
+                                            <div>
                                                 <div class="row border border-secondary bg-white border-dark">   
                                                     <div class="col-6 d-flex justify-content-start p-0"> 
                                                         <c:choose>
@@ -81,7 +81,7 @@
                                                         </c:choose>
                                                     </div>
                                                     <div class="col-6 py-3">
-                                                   <h3 class="fs-3 fs-md-2 fw-bold">Information:</h3>
+                                                        <h3 class="fs-3 fs-md-2 fw-bold">Information:</h3>
                                                         <div class="row my-5 mx-3 gy-3">
                                                             <div class="col-12">
                                                                 <div class="fw-bold d-inline fs-5 fs-md-4">Status:</div>
@@ -108,9 +108,11 @@
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="d-flex align-items-center gap-2">
-                                                                    <input type="hidden" name="productID" value="${requestScope.product.productID}">
+                                                                    <input type="hidden" id="productID" name="productID" value="${requestScope.product.productID}">
                                                                     <div class="fw-bold d-inline fs-5 fs-md-4">Add to cart:</div>
-                                                                    <input required type="number" class="text-end border-dark w-100 d-inline" name="quantity" value="1" placeholder="1" min="1" max="${requestScope.product.quantity}">
+                                                                    <div>
+                                                                        <input required type="number" id="quantity" class="text-end border-dark w-100 d-inline" name="quantity" value="1" placeholder="1" min="1" max="${requestScope.product.quantity}">
+                                                                    </div>
                                                                 </div>
                                                                 <div class="d-flex align-items-center gap-2">
                                                                     <c:choose>
@@ -276,5 +278,21 @@
             </c:otherwise>
         </c:choose>
         <jsp:include page="../include/footer.jsp" />
+        <script>
+            $("#form-cart").validate({
+                rules: {
+                    productID: {
+                        required: true,
+                        number: true,
+                        range: [$("#productID").val(), $("#productID").val()]
+                    },
+                    quantity: {
+                        required: true,
+                        digits: true,
+                        range: [1, $("#quantity").attr("max")]
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
