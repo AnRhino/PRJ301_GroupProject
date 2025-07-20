@@ -168,21 +168,16 @@ public class ProductDAO extends dbconnect.DBContext {
     // Nhung gi se duoc hien thi trong phan trang
     public List<Product> getAvailableProductsByCategoryPage(int categoryID, int page) {
         List<Product> list = new ArrayList<>();
-        String query = "SELECT rv.ReviewID, us.UserID, us.UserName, prod.ProductID, rv.Rating , rv.Comment, rv.ReviewTime\n"
-                + "FROM [dbo].[Reviews] rv\n"
-                + "JOIN [dbo].[Products] prod\n"
-                + "ON prod.ProductID = rv.ProductID\n"
-                + "JOIN [dbo].[Users] us\n"
-                + "ON us.UserID = rv.UserID\n"
-                + "WHERE prod.ProductID = ?\n"
-                + "AND prod.IsHidden = 0\n"
-                + "ORDER BY ReviewID ASC\n"
+        String query = "SELECT ProductID, ProductCode, ProductName, Quantity, Price, c.CategoryID, c.CategoryName, c.IsHidden, p.ImagePath\n"
+                + "FROM Products p\n"
+                + "JOIN Categories c ON p.CategoryID = c.CategoryID\n"
+                + "WHERE c.CategoryID = ? AND c.IsHidden = 0\n"
+                + "ORDER BY ProductID ASC\n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         Object[] params = {
             categoryID,
-            (page - 1) * PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE, PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE
-        };
+            (page - 1) * PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE, PaginationUtil.NUMBER_OF_ITEMS_PER_PAGE};
 
         try {
             ResultSet rs = execSelectQuery(query, params);
