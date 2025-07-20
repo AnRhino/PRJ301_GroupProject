@@ -81,7 +81,6 @@
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <a href="#" class="text-dark text-decoration-none m-4">Hi, ${loggedUser.username}</a>
                                         <a href="<c:url value="/user-profile"/>" class="text-dark text-decoration-none m-4">Account details</a>
-                                        <a href="#" class="text-dark text-decoration-none m-4">Settings</a>
                                         <a href="<c:url value="/logout"/>" class="text-danger text-decoration-none m-4">Logout</a>
                                     </ul>
                                 </li>

@@ -68,6 +68,9 @@
                             <div>Delivery Fee: <fmt:formatNumber value="${deliveryFee}" type="number" groupingUsed="true" /> VND</div>
                             <c:if test="${not empty chosenDiscountCode}">
                                 <c:choose>
+                                    <c:when test="${chosenDiscountCode.minOrderValue > subtotal}">
+                                        <c:set var="discountValue" value="0"/>
+                                    </c:when>
                                     <c:when test="${chosenDiscountCode.type eq 0}">
                                         <c:set var="discountValue" value="${subtotal * chosenDiscountCode.value / 100}"/>
                                     </c:when>
@@ -78,7 +81,7 @@
                                         <c:set var="discountValue" value="${deliveryFee}"/>
                                     </c:when>
                                 </c:choose>
-                                <div>Discount: - <fmt:formatNumber value="${discountValue}" type="number" groupingUsed="true" /> VND</div>
+                                <div>Discount: <fmt:formatNumber value="${-discountValue}" type="number" groupingUsed="true" /> VND</div>
                             </c:if>
                             <div class="h4">Total Pay: <fmt:formatNumber value="${subtotal + deliveryFee - discountValue}" type="number" groupingUsed="true" /> VND</div>
                         </div>                     
@@ -86,9 +89,12 @@
                             <div class="mb-3">
                                 <label for="discount-code-id" class="form-label">Discount Code:</label>
                                 <input type="text" name="discount-code-id" value="${chosenDiscountCode.code}" class="form-control" placeholder="None" disabled />
+                                <c:if test="${chosenDiscountCode.minOrderValue > subtotal}">
+                                    <div class="text-danger">The value of order must not be less than <fmt:formatNumber value="${chosenDiscountCode.minOrderValue}" type="number" groupingUsed="true" /> VND. Please choose another code.</div>
+                                </c:if>
                                 <a class="btn btn-warning" href="<c:url value="discount-code"/>">Choose Discount</a>
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label for="delivery-date" class="form-label">Delivery Date:</label>
                                 <input type="date" name="delivery-date" class="form-control" required />
