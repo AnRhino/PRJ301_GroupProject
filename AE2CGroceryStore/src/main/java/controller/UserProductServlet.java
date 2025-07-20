@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import utils.PaginationUtil;
 import validate.InputValidate;
 
 /**
@@ -70,7 +71,7 @@ public class UserProductServlet extends HttpServlet {
         String view = request.getParameter("view");
         String productIDParam = request.getParameter("productID");
         String categoryIDParam = request.getParameter("categoryID");
-        
+
         // Nếu view null hoặc rỗng.
         if (view == null || view.isBlank()) {
             handleErrorWhenExcute(request, response);
@@ -189,10 +190,32 @@ public class UserProductServlet extends HttpServlet {
      * @param productID là id của sản phẩm.
      */
     private void getProductInfo(HttpServletRequest request, int productID) {
+        int countItem = reviewDao.countReviewByProductId(productID);
+        int totalPages = PaginationUtil.getTotalPagesForReviews(countItem);
+        request.setAttribute("totalPages", totalPages); // Set tổng số page
+
+        int page = 1; // Trang mặc định = 1.
+        String pageParam = request.getParameter("page");
+
+        if (pageParam != null && !pageParam.isBlank()) { // check nếu không null thì xử lý logic ở dưới
+            try {
+                page = Integer.parseInt(pageParam);
+
+                if (page < 1) { // check xem nếu page nhỏ hơn min thì page = 1
+                    page = 1;
+                } else if (page > totalPages) { // check nếu page lớn hơn max thì page = max
+                    page = totalPages;
+                }
+
+            } catch (NumberFormatException ex) { // Nếu khác số thì vào đây
+                page = 1;
+            }
+        }
+
         request.setAttribute("product", productDao.getAvailableProductById(productID));
         request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(productID).getCategoryID()));
         request.setAttribute("rateScore", productDao.getRateScore(productID));
-        request.setAttribute("reviewList", reviewDao.getByProductID(productID));
+        request.setAttribute("reviewList", reviewDao.getByProductIDForPagination(productID, page));
 
         // Kiểm tra xem có thông báo lỗi hay thành công nào không.
         getErrorOrSuccessInAddToCartIfExists(request);

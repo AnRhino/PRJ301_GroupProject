@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import model.Product;
 import model.Review;
 import model.User;
+import utils.PaginationUtil;
 
 /**
  *
@@ -37,6 +38,55 @@ public class ReviewDAO extends dbconnect.DBContext {
 
         try {
             ResultSet rs = execSelectQuery(query);
+
+            while (rs.next()) {
+                list.add(new Review(rs.getInt(1), new User(rs.getInt(2), rs.getString(3)), new Product(rs.getInt(4)), rs.getInt(5), rs.getString(6), rs.getObject(7, LocalDateTime.class)));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ReviewDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
+    }
+
+    public int countReviewByProductId(int productID) {
+        try {
+            String query = "SELECT COUNT(ReviewID) \n"
+                    + "FROM [dbo].[Reviews] rv\n"
+                    + "JOIN [dbo].[Products] prod\n"
+                    + "ON prod.ProductID = rv.ProductID\n"
+                    + "JOIN [dbo].[Users] us\n"
+                    + "ON us.UserID = rv.UserID\n"
+                    + "WHERE isHidden = 0 AND prod.ProductID = ?";
+            Object[] params = {productID};
+            ResultSet rs = execSelectQuery(query, params);
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public List<Review> getByProductIDForPagination(int productID, int page) {
+        List<Review> list = new ArrayList<>();
+        String query = "SELECT rv.ReviewID, us.UserID, us.UserName, prod.ProductID, rv.Rating , rv.Comment, rv.ReviewTime\n"
+                + "FROM [dbo].[Reviews] rv\n"
+                + "JOIN [dbo].[Products] prod\n"
+                + "ON prod.ProductID = rv.ProductID\n"
+                + "JOIN [dbo].[Users] us\n"
+                + "ON us.UserID = rv.UserID\n"
+                + "WHERE prod.ProductID = ?\n"
+                + "AND prod.IsHidden = 0\n"
+                + "ORDER BY ReviewID ASC\n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        Object[] params = {productID, (page - 1) * PaginationUtil.NUMBER_OF_REVIEWS_PER_PAGE,
+            PaginationUtil.NUMBER_OF_REVIEWS_PER_PAGE};
+
+        try {
+            ResultSet rs = execSelectQuery(query, params);
 
             while (rs.next()) {
                 list.add(new Review(rs.getInt(1), new User(rs.getInt(2), rs.getString(3)), new Product(rs.getInt(4)), rs.getInt(5), rs.getString(6), rs.getObject(7, LocalDateTime.class)));
@@ -112,9 +162,9 @@ public class ReviewDAO extends dbconnect.DBContext {
 
     /**
      * Delete 1 review nào đó.
-     * 
+     *
      * @param reviewID là id của review cần xóa.
-     * 
+     *
      * @return 0 nếu delete thất bại. Khác 0 nếu delete thành công.
      */
     public int delete(int reviewID) {
@@ -135,10 +185,10 @@ public class ReviewDAO extends dbconnect.DBContext {
 
     /**
      * Update comment cũ thành 1 comment trong 1 review.
-     * 
+     *
      * @param reviewID là id của review.
      * @param comment là comment mới.
-     * 
+     *
      * @return 0 nếu update thất bại. Khác 0 nếu thành công.
      */
     public int edit(int reviewID, String comment) {
