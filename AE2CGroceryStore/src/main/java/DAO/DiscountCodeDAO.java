@@ -302,7 +302,7 @@ public class DiscountCodeDAO extends DBContext {
     }
 
     //Update
-    public int discountCodeEdit(int id, String code, int value, int type, int quantity, Date expiryDate, int minOrderValue, int isHidden) {
+    public int discountCodeEdit(int id, String code, int value, int type, int quantity, LocalDate expiryDate, int minOrderValue, int isHidden) {
         try {
             String query = "UPDATE [dbo].[DiscountCodes]\n"
                     + "   SET [Code] = ?\n"
