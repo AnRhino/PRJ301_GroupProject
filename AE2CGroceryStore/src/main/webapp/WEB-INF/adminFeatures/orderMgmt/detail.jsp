@@ -28,11 +28,11 @@
                     <c:choose>
                         <c:when test="${order.status.id eq 0}">
                             <div><strong>Status: </strong> <span class="text-danger">${order.status.description}</span></div>
-                        </c:when>
-                        <c:otherwise>
+                            </c:when>
+                            <c:otherwise>
                             <div>
-                                <form class="form" action="#" method="post">
-                                    <input type="hidden" name="orderId" value="${order.id}">
+                                <form id="form-update" class="form" action="#" method="post">
+                                    <input type="hidden" id="orderId" name="orderId" value="${order.id}">
                                     <label class="form-label" for="status"><strong>Status: </strong></label>
                                     <select class="form-select-sm" id="status" name="statusId">
                                         <c:forEach items="${statuses}" var="status">
@@ -95,5 +95,21 @@
             </div>
         </main>
         <%@include file="../../include/footer.jsp" %>
+        <script>
+            $("#form-update").validate({
+                rules: {
+                    orderId: {
+                        required: true,
+                        number: true,
+                        range: [$("#orderId").val(), $("#orderId").val()]
+                    },
+                    statusId: {
+                        required: true,
+                        digits: true,
+                        range: [1, 4]
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
