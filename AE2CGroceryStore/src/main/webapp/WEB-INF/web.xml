@@ -45,5 +45,15 @@
         <location>/error-page</location>
     </error-page>
 
+    <!-- Filter for all invalid path -->
+    <filter>
+        <filter-name>InvalidPathFilter</filter-name>
+        <filter-class>filter.InvalidPathServlet</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>InvalidPathFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     
 </web-app>
