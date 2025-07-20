@@ -139,7 +139,7 @@ public class CartDAO extends dbconnect.DBContext {
     }
 
     public Cart getCartByID(int cartItemID) {
-        String query = "SELECT c.CartItemID, u.UserID, u.Username, p.ProductID, p.ProductName, p.Price, c.Quantity "
+        String query = "SELECT c.CartItemID, u.UserID, u.Username, p.ProductID, p.ProductName, p.Price, c.Quantity, p.ImagePath "
                 + "FROM Carts c "
                 + "JOIN Users u ON u.UserID = c.UserID "
                 + "JOIN Products p ON p.ProductID = c.ProductID "
@@ -155,6 +155,7 @@ public class CartDAO extends dbconnect.DBContext {
                 product.setProductName(rs.getString("ProductName"));
                 product.setPrice(rs.getInt("Price"));
                 product.setQuantity(rs.getInt("Quantity"));
+                product.setCoverImg(rs.getString("ImagePath"));
                 return new Cart(rs.getInt("CartItemID"), user, product, rs.getInt("Quantity"));
             }
         } catch (Exception e) {

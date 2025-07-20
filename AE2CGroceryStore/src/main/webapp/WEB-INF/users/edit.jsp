@@ -33,7 +33,7 @@
                 <table class="table">
                     <tr>
                         <th>Image</th>
-                        <td><img src="${pageContext.request.contextPath}/assets/images/lonely.png" style="width: 100px;" /></td>
+                     <td><img src="${pageContext.request.contextPath}/get-image/${cart.product.coverImg}" style="width: 80px;" /></td>
                     </tr>
                     <tr>
                         <th>Product</th>
