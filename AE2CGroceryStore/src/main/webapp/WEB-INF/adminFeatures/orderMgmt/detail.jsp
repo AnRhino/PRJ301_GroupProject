@@ -90,8 +90,8 @@
                 <h3>Customer information</h3>
                 <p><strong>Name:</strong> ${order.user.fullName}</p>
                 <p><strong>Email:</strong> ${order.user.email}</p>
-                <p><strong>Phone number:</strong> ${order.phoneNumber}</p>
-                <p><strong>Address:</strong> ${order.address}</p>
+                <p><strong>Phone number:</strong> <c:out value="${order.phoneNumber}"/></p>
+                <p><strong>Address:</strong> <c:out value="${order.address}"/></p>
             </div>
         </main>
         <%@include file="../../include/footer.jsp" %>
