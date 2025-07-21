@@ -153,11 +153,11 @@
                                                     <div class="row px-5 gap-3 p-2 text-light">
 
                                                         <div class="col-12">
-                                                            <p class="d-inline fw-bold text-dark bg-primary px-2 py-1 rounded-2">${rv.user.username}</p>
+                                                            <p class="d-inline fw-bold text-dark bg-primary px-2 py-1 rounded-2"><c:out value="${rv.user.fullName}" /></p>
                                                         </div>
 
                                                         <div class="col-12 text-dark bg-white px-2 py-1 rounded-2">    
-                                                            <p class="d-inline fw-bold text-wrap">${rv.comment}</p>
+                                                            <p class="d-inline fw-bold text-wrap"><c:out value="${rv.comment}"/></p>
                                                         </div>
 
                                                         <div class="col-12">
