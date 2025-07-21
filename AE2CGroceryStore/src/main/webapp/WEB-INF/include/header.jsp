@@ -66,12 +66,24 @@
                         </c:if>
                     </ul>
                 </div>
-                <div class="ms-auto">
-                    <form action="<c:url value="/user-search"/>" method="get">
-                        <input class="search border-2" required id="Search-bar" type="search" placeholder="Search" aria-label="Search" name="key">
-                        <button class="btn btn-outline-success m-2" type="submit">Search</button>
+
+                <div class="ms-auto position-relative">
+                    <form action="<c:url value="/user-search"/>" method="get" class="position-relative">
+                        <input class="search border-2 w-100" required id="Search-bar" type="search" 
+                               placeholder="Search" aria-label="Search" name="key"
+                               onfocus="document.getElementById('history-list').style.display = 'block';"
+                               onblur="setTimeout(() => document.getElementById('history-list').style.display = 'none', 200);">
+
+                        <ul id="history-list" class="list-group position-absolute" style="top:40px; width:200px; display:none;">
+                            <c:forEach var="item" items="${sessionScope.keySearchList}">
+                                <li class="list-group-item">
+                                    <a class="text-decoration-none text-dark" href="<c:url value='/user-search?key=${item}'/>">${item}</a>
+                                </li>
+                            </c:forEach>
+                        </ul>
                     </form>
                 </div>
+
                 <div class="flex align-content-end ms-auto">
                     <form class="d-flex">   
                         <c:choose>

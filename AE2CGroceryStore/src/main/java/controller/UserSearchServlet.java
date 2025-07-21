@@ -13,6 +13,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import utils.PaginationUtil;
 import validate.InputValidate;
 
@@ -65,7 +68,7 @@ public class UserSearchServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-        String searchInputParam = request.getParameter("key");
+        String searchInputParam = request.getParameter("key").trim();
 
         // Nếu search input của người dùng null hoặc rỗng thì chuyển người dùng đến trang lỗi.
         if (InputValidate.checkEmptyInput(searchInputParam)) {
@@ -73,7 +76,7 @@ public class UserSearchServlet extends HttpServlet {
 
             // Nếu không lỗi thì hiện kết quả cho người dùng.
         } else {
-//            addSearchUserInputToCookie(request, response, searchInputParam);
+            addSearchUserInputToCookie(request, response, searchInputParam);
             handleSearchInputFromUser(request, response, searchInputParam);
         }
     }
@@ -117,10 +120,10 @@ public class UserSearchServlet extends HttpServlet {
 
     /**
      * Lấy trang hợp lệ (số nguyên, không nhỏ hơn 1 và lớn hơn tổng số trang).
-     * 
+     *
      * @param pageParam là trang hiện tại.
      * @param totalPages tổng số trang.
-     * 
+     *
      * @return trang hợp lệ.
      */
     private int getValidPage(String pageParam, int totalPages) {
@@ -204,7 +207,7 @@ public class UserSearchServlet extends HttpServlet {
 
     /**
      * Thêm tìm kiếm vào cookie của người dùng.
-     * 
+     *
      * @param request là yêu cầu của người dùng.
      * @param response là phản hồi của người dùng.
      * @param key là tìm kiếm của người dùng.
@@ -212,50 +215,129 @@ public class UserSearchServlet extends HttpServlet {
     private void addSearchUserInputToCookie(HttpServletRequest request, HttpServletResponse response, String key) {
 
         // Lấy tất cả cookie của 
-        Cookie[] allSearchInputUserCookies = request.getCookies();
+        Cookie[] allCookies = request.getCookies();
+        Cookie keySearchCookie = getKeySearchCookie(allCookies);
 
-        // Thêm tìm kiếm mới của người dùng vào cookie.
-        if (!checkExistCookieValue(allSearchInputUserCookies, key)) {
-            
-            // Tạo cookie mới.
-            Cookie newSearchInputUserCookie = new Cookie("key" + String.valueOf(allSearchInputUserCookies.length), key);
+        if (keySearchCookie == null) {
 
-            // Chỉ cho những cookie này hoạt động trong servlet này.
-            newSearchInputUserCookie.setPath("/user-search");
+            // Nếu chưa có cookie thì tạo mới
+            keySearchCookie = new Cookie("key", key.trim());
 
-            // Set thời gian tồn tại của cookie là 30 ngày.
-            newSearchInputUserCookie.setMaxAge(60 * 60 * 24 * 30);
+        } else {
 
-            // Lưu lại cookie của người dùng.
-            response.addCookie(newSearchInputUserCookie);
+            // Lấy giá trị cũ và thêm từ khóa mới vào cuối
+            String[] keySearch = keySearchCookie.getValue().split("\\|");
+
+            StringBuilder newValue = new StringBuilder();
+
+            if (keySearch.length >= 5) {
+
+                // Bỏ phần tử đầu tiên và thêm phần tử mới cuối
+                for (int i = 1; i < keySearch.length; i++) {
+                    newValue.append(keySearch[i].trim()).append("|");
+                }
+
+                newValue.append(key.trim());
+
+            } else {
+                // Thêm tất cả phần tử cũ + phần tử mới
+                newValue.append(keySearchCookie.getValue()).append("|").append(key.trim());
+            }
+
+            keySearchCookie.setValue(newValue.toString());
         }
+
+        // Set thời gian tồn tại cookie (30 ngày)
+        keySearchCookie.setMaxAge(60 * 60 * 24 * 30);
+        response.addCookie(keySearchCookie);
+
+        // Bỏ vào request/session để sử dụng trong dropdown.
+        addSearchList(request, keySearchCookie);
     }
 
-    /**
-     * Kiểm tra xem tìm kiếm này của người dùng tồn tại hay chưa.
-     *
-     * @param allUserCookies là danh sách các cookie.
-     * @param value là tìm kiếm mới của người dùng.
-     *
-     * @return True nếu tìm kiếm này đã tồn tại rồi. False nếu tìm kiếm này
-     * không tồn tại.
-     */
-    private boolean checkExistCookieValue(Cookie[] allUserCookies, String value) {
+    private void addSearchList(HttpServletRequest request, Cookie searchInputCookie) {
 
-        // Nếu không tồn tại cookie nào thì coi như tìm kiếm này là tìm kiếm mới.
-        if (allUserCookies.length == 0) {
-            return false;
-        }
+        // Lấy tất cả tìm kiếm của người dùng và bỏ vào array.
+        String[] keySearch = searchInputCookie.getValue().split("\\|");
+        List<String> keySearchList = new ArrayList<>();
 
-        // Kiểm tra từng giá trị của cookie coi có khớp với tìm kiếm không.
-        for (Cookie userCookie : allUserCookies) {
-            if (InputValidate.removeSpaceFromString(userCookie.getValue().trim().toLowerCase()).equals(InputValidate.removeSpaceFromString(value.trim().toLowerCase()))) {
-                return true;
+        // Thêm dữ liệu vào danh sách.
+        for (String key : keySearch) {
+            
+            // Kiểm tra giá trị rỗng.
+            if (!key.trim().isEmpty()) {
+                keySearchList.add(key.trim());
             }
         }
 
-        // Nếu chưa từng tồn tại tìm kiếm này thì coi như là tìm kiếm mới và lưu vào cookie.
-        return false;
+        request.getSession().setAttribute("keySearchList", keySearchList);
+    }
+
+    /**
+     * Lấy lịch sử tìm kiếm của người dùng.
+     *
+     * @param allCookies là tất cả cookie hiện có.
+     *
+     * @return Cookie chứa lịch sử tìm kiếm của người dùng. Null nếu lịch sử tìm
+     * kiếm trống.
+     */
+    private Cookie getKeySearchCookie(Cookie[] allCookies) {
+
+        // Kiểm tra nếu không tồn tại cookie nào.
+        if (allCookies == null || allCookies.length == 0) {
+            return null;
+        }
+
+        // Duyệt qua hết tất cả cookie để tìm cookie chứ lịch sử tìm kiếm của người dùng.
+        for (Cookie cookie : allCookies) {
+            if (cookie.getName().equals("key")) {
+
+                // Nếu có tồn tại thì trả về cookie đó.
+                return cookie;
+            }
+        }
+
+        // Không có thì trả về null.
+        return null;
+    }
+
+    /**
+     * Lấy lịch sử tìm kiếm mới của người dùng.
+     *
+     * @param userCooky là cookie chứ lịch sử tìm kiếm của người dùng.
+     * @param key là tìm kiếm mới của người dùng.
+     *
+     * @return Chuỗi chứa tất tìm kiếm của người dùng.
+     */
+    private String getNewKeySearchCookie(Cookie userCooky, String key) {
+
+        // Lấy tất cả tìm kiếm của người dùng và bỏ vào array.
+        String[] keySearch = userCooky.getValue().split("\\|");
+
+        String newKeySearch = null;
+
+        // Nếu số lượng lịch sử tìm kiếm của người dùng quá 5 thì xóa đi cái cũ nhất và thêm cái mới nhất vào cuối cùng.
+        // Cách nhau bởi dấu phẩy.
+        if (keySearch.length == 5) {
+            newKeySearch = keySearch[1] + "|"
+                    + keySearch[2] + "|"
+                    + keySearch[3] + "|"
+                    + keySearch[4] + "|"
+                    + key;
+            // Thêm lịch sử tìm kiếm mới vào cuối.
+        } else {
+
+            newKeySearch = "";
+
+            for (String keySearch1 : keySearch) {
+                newKeySearch += keySearch1 + "|";
+            }
+
+            newKeySearch += key.trim();
+        }
+
+        // Trả về lịch sử tìm kiếm mới của người dùng.
+        return newKeySearch;
     }
 
     /**
