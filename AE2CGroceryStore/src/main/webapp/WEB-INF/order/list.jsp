@@ -22,8 +22,8 @@
                         <div><strong>Delivery Date:</strong> ${order.deliveryDateToString}</div>
                     </div>
                     <div class="col-6">
-                        <div><strong>Phone number:</strong> ${order.phoneNumber}</div>
-                        <div><strong>Address:</strong> ${order.address}</div>
+                        <div><strong>Phone number:</strong> <c:out value="${order.phoneNumber}"/></div>
+                        <div><strong>Address:</strong> <c:out value="${order.address}"/></div>
                     </div>
                     <div class="col-3">
                         <div><strong>Status:</strong> ${order.status.description}</div>
