@@ -16,7 +16,7 @@
             <c:when test="${empty requestScope.productSearchList}">
                 <div class="container-fluid">
                     <div class="m-5">
-                        <h1 class="fw-bold">Search results for keyword '${requestScope.searchValue}'</h1>
+                        <h1 class="fw-bold">Search results for keyword '<c:out value="${requestScope.searchValue}"/>'</h1>
                         <div class="row">
                             <p>There are no product to display. Try search for another product.</p>
                         </div>
@@ -27,7 +27,7 @@
             <c:otherwise>
                 <div class="container-fluid">
                     <div class="m-5">
-                        <h1 class="fw-bold">Search results for keyword '${requestScope.searchValue}'</h1>
+                        <h1 class="fw-bold">Search results for keyword '<c:out value="${requestScope.searchValue}"/>'</h1>
                         <div class="row">
                             <c:forEach var="prod" items="${requestScope.productSearchList}">
                                 <div class="col-3 d-flex justify-content-center my-3">
