@@ -25,9 +25,9 @@ import utils.PaginationUtil;
 public class ProductDAO extends dbconnect.DBContext {
 
     /**
-     * Lấy toàn bộ danh sách sản phẩm đang hoạt động (chưa bị ẩn).
+     * Lấy toàn bộ danh sách sản phẩm.
      *
-     * @return danh sách tất cả sản phẩm có IsHidden = 0.
+     * @return danh sách tất cả sản phẩm.
      */
     public List<Product> getAll() {
         List<Product> list = new ArrayList<>();
@@ -114,7 +114,7 @@ public class ProductDAO extends dbconnect.DBContext {
                     + "from Products p\n"
                     + "join OrderItems od\n"
                     + "on p.ProductID = od.ProductID\n"
-                    + "where p.Quantity > 0\n"
+                    + "where p.Quantity > 0 and isHidden = 0\n"
                     + "group by p.ProductID, p.ProductName, p.ImagePath, p.Quantity\n"
                     + "order by sumQuantity desc, p.Quantity desc";
             ResultSet rs = execSelectQuery(query, null);

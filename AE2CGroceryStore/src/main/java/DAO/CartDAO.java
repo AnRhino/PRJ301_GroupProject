@@ -61,7 +61,7 @@ public class CartDAO extends dbconnect.DBContext {
      */
     public List<Cart> getOutOfStock(int userId) {
         List<Cart> list = new ArrayList<>();
-        String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price "
+        String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price, prod.ImagePath "
                 + "FROM Carts c "
                 + "JOIN Users u ON u.UserID = c.UserID "
                 + "JOIN Products prod ON prod.ProductID = c.ProductID "
@@ -73,6 +73,7 @@ public class CartDAO extends dbconnect.DBContext {
                 Product product = new Product(rs.getInt(4));
                 product.setProductName(rs.getString(6));
                 product.setPrice(rs.getInt(7));
+                product.setCoverImg(rs.getString(8));
                 User user = new User(rs.getInt(2), rs.getString(3));
                 Cart cart = new Cart(rs.getInt(1), user, product, rs.getInt(5));
                 list.add(cart);
@@ -91,7 +92,7 @@ public class CartDAO extends dbconnect.DBContext {
      */
     public List<Cart> getProductIsHidden(int userId) {
         List<Cart> list = new ArrayList<>();
-        String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price "
+        String query = "SELECT c.CartItemID, u.UserID, u.Username, prod.ProductID, c.Quantity, prod.ProductName, prod.Price, prod.ImagePath "
                 + "FROM Carts c "
                 + "JOIN Users u ON u.UserID = c.UserID "
                 + "JOIN Products prod ON prod.ProductID = c.ProductID "
@@ -103,6 +104,7 @@ public class CartDAO extends dbconnect.DBContext {
                 Product product = new Product(rs.getInt(4));
                 product.setProductName(rs.getString(6));
                 product.setPrice(rs.getInt(7));
+                product.setCoverImg(rs.getString(8));
                 User user = new User(rs.getInt(2), rs.getString(3));
                 Cart cart = new Cart(rs.getInt(1), user, product, rs.getInt(5));
                 list.add(cart);

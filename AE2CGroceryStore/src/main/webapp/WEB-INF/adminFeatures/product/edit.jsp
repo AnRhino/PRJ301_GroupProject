@@ -133,12 +133,15 @@
                     quantity: {
                         required: true,
                         digits: true,
-                        min: 1
+                        min: 0
                     },
                     price: {
                         required: true,
                         digits: true,
                         min: 1000
+                    },
+                    coverImg: {
+                        accept: "image/*"
                     }
                 },
                 messages: {

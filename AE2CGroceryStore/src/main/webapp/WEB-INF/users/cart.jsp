@@ -48,13 +48,13 @@
                             <tbody>
                                 <c:forEach var="item" items="${listCanBuy}">
                                     <tr>
-                                           
+
                                         <th scope="row"><%= index++%></th>
                                         <td><img src="${pageContext.request.contextPath}/get-image/${item.product.coverImg}" style="width: 80px;" /></td>
                                         <td><a class="text-decoration-none link-dark" href="<c:url value="user-product">
                                                    <c:param name="view" value="product"/>
                                                    <c:param name="productID" value="${item.product.productID}"/>
-                                        </c:url>">${item.product.productName}</a></td>
+                                               </c:url>">${item.product.productName}</a></td>
                                         <td> <fmt:formatNumber value="${item.product.price}" type="number" /> VND</td>
                                         <td>${item.quantity}</td>
                                         <td><fmt:formatNumber value="${item.product.price * item.quantity}" type="number" /> VND</td>
@@ -72,10 +72,11 @@
                                 <c:forEach var="item" items="${listOutOfStock}">
                                     <tr>
                                         <th scope="row"><%= index++%></th>
-                                        <td><img src="${pageContext.request.contextPath}/assets/images/lonely.png" style="width: 80px;" /></td>
+                                        <td><img src="${pageContext.request.contextPath}/get-image/${item.product.coverImg}" style="width: 80px;" /></td>
                                         <td>${item.product.productName}</td>
+                                        <td> <fmt:formatNumber value="${item.product.price}" type="number" /> VND</td>
                                         <td>${item.quantity}</td>
-                                        <td>${item.product.price * item.quantity}</td>
+                                        <td><fmt:formatNumber value="${item.product.price * item.quantity}" type="number" /> VND</td>
                                         <td>
                                             <a href="${pageContext.request.contextPath}/cart?view=edit&id=${item.cartItemID}" class="btn btn-primary btn-sm">Edit</a>
                                             <a href="${pageContext.request.contextPath}/cart?view=delete&id=${item.cartItemID}" class="btn btn-danger btn-sm">Delete</a>
@@ -87,9 +88,10 @@
                                 <c:forEach var="item" items="${ListProductIsHidden}">
                                     <tr>
                                         <th scope="row"><%= index++%></th>
-                                        <td><img src="${pageContext.request.contextPath}/assets/images/lonely.png" style="width: 80px;" /></td>
-                                        <td>${item.product.productName}</td>
+                                        <td><img src="${pageContext.request.contextPath}/get-image/${item.product.coverImg}" style="width: 80px;" /></td>
+                                        <td> <fmt:formatNumber value="${item.product.price}" type="number" /> VND</td>
                                         <td>${item.quantity}</td>
+                                        <td><fmt:formatNumber value="${item.product.price * item.quantity}" type="number" /> VND</td>
                                         <td>${item.product.price * item.quantity}</td>
                                         <td>
                                             <a href="${pageContext.request.contextPath}/cart?view=edit&id=${item.cartItemID}" class="btn btn-primary btn-sm">Edit</a>
