@@ -68,13 +68,16 @@
                 </div>
 
                 <div class="ms-auto position-relative">
-                    <form action="<c:url value="/user-search"/>" method="get" class="position-relative">
-                        <input class="search border-2 w-100" required id="Search-bar" type="search" 
-                               placeholder="Search" aria-label="Search" name="key"
+                    <form action="<c:url value='/user-search'/>" method="get" class="d-flex position-relative" style="width: 400px;">
+                        <input class="form-control border-2" required id="Search-bar" type="search" 
+                               placeholder="Search products..." aria-label="Search" name="key"
+                               style="height: 45px; font-size: 16px;"
                                onfocus="document.getElementById('history-list').style.display = 'block';"
                                onblur="setTimeout(() => document.getElementById('history-list').style.display = 'none', 200);">
 
-                        <ul id="history-list" class="list-group position-absolute" style="top:40px; width:200px; display:none;">
+                        <button class="btn btn-outline-success ms-2" type="submit" style="height: 45px;">Search</button>
+
+                        <ul id="history-list" class="list-group position-absolute shadow" style="top: 50px; width: 100%; display:none; z-index: 10;">
                             <c:forEach var="item" items="${sessionScope.keySearchList}">
                                 <li class="list-group-item">
                                     <a class="text-decoration-none text-dark" href="<c:url value='/user-search?key=${item}'/>">${item}</a>
