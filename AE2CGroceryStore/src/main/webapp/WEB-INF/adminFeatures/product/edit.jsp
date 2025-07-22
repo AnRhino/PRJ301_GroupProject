@@ -57,10 +57,10 @@
                 %>
 
                 <form id="form-edit" method="post" action="<%= request.getContextPath()%>/admin/product" enctype="multipart/form-data">
-              
+
 
                     <input type="hidden" name="action" value="edit" />
-                   <input type="hidden" name="ProductID" value="<%= pro.getProductID()%>">
+                    <input type="hidden" name="ProductID" value="<%= pro.getProductID()%>">
 
                     <p>
                         <label for="productCode">Product Code</label>
