@@ -38,6 +38,7 @@
                                     <th>Unit price</th>
                                     <th>Quantity</th>
                                     <th>Amount</th>
+                                    <th>Stock</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,6 +55,12 @@
                                         <td>${item.quantity}</td>
                                         <td>
                                             <fmt:formatNumber value="${item.totalPrice}" type="number" groupingUsed="true" /> VND
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${item.product.isHidden}">Not found</c:when>
+                                                <c:otherwise>${item.product.quantity} left</c:otherwise>
+                                            </c:choose>
                                         </td>
                                     </tr>
                                     <c:set var="subtotal" value="${subtotal + (item.totalPrice)}" />

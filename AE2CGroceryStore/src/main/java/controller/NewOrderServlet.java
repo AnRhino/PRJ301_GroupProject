@@ -28,6 +28,7 @@ import model.DiscountCode;
 import model.ErrorMessage;
 import model.Order;
 import model.OrderItem;
+import model.Product;
 import model.User;
 import utils.MessageConstants;
 
@@ -76,10 +77,28 @@ public class NewOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DiscountCodeDAO dao = new DiscountCodeDAO();
-        User loggedUser = (User) request.getSession().getAttribute("loggedUser");
+        DiscountCodeDAO discountCodeDAO = new DiscountCodeDAO();
+        ProductDAO productDAO = new ProductDAO();
+        HttpSession session = request.getSession();
+        User loggedUser = (User) session.getAttribute("loggedUser");
 
-        List<DiscountCode> discountCodes = dao.getAllUsableCode(loggedUser.getId());
+        // Check the quantity in stock
+        List<Cart> cartItems = (List) session.getAttribute("wantedCartList");
+        for (Cart cartItem : cartItems) {
+            Product product = productDAO.getById(cartItem.getProduct().getProductID());
+
+            if (product.isIsHidden()) {
+                cartItem.setQuantity(0);
+            } else {
+                cartItem.setQuantity(Math.min(cartItem.getQuantity(), product.getQuantity()));
+            }
+            
+            cartItem.setProduct(product);
+        }
+        session.setAttribute("wantedCartList", cartItems);
+
+        // Get discount code
+        List<DiscountCode> discountCodes = discountCodeDAO.getAllUsableCode(loggedUser.getId());
         request.setAttribute("discountCodes", discountCodes);
 
         request.getRequestDispatcher("/WEB-INF/order/create.jsp").forward(request, response);
