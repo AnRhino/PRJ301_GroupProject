@@ -23,7 +23,7 @@ public class InvalidPathServlet implements Filter {
 
     // Những đường dẫn hợp lệ.
     private static final List<String> VALID_PATHS = Arrays.asList(
-            "/", "/home", "/products", "/login", "/register", "/admin",
+            "/", "/home", "/products", "/login", "/logout", "/register", "/admin",
             "/admin/categories", "/admin/categories/create", "/admin/categories/delete", "/admin/categories/edit", "/admin/categories/visibility",
             "/admin/discount-code", "/admin/discount-code/create", "/admin/discount-code/delete", "/admin/discount-code/edit", "/admin/discount-code/visibility",
             "/admin/order", "/admin/order/detail",
