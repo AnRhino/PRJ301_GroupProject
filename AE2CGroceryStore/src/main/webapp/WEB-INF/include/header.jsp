@@ -73,7 +73,7 @@
                                placeholder="Search products..." aria-label="Search" name="key"
                                style="height: 45px; font-size: 16px;"
                                onfocus="document.getElementById('history-list').style.display = 'block';"
-                               onblur="setTimeout(() => document.getElementById('history-list').style.display = 'none', 200);">
+                               onblur="setTimeout(() => document.getElementById('history-list').style.display = 'none', 300);">
 
                         <button class="btn btn-outline-success ms-2" type="submit" style="height: 45px;">Search</button>
 

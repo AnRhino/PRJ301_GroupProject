@@ -7,20 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<c:choose>
-    <c:when test="${empty param.page}">
-        <c:set var="currentPage" value="1"/>
-    </c:when>
-    <c:when test="${param.page lt 1}">
-        <c:set var="currentPage" value="1"/>
-    </c:when>
-    <c:when test="${param.page gt requestScope.totalPages}">
-        <c:set var="currentPage" value="${requestScope.totalPages}"/>
-    </c:when>
-    <c:otherwise>
-        <c:set var="currentPage" value="${param.page}"/>
-    </c:otherwise>
-</c:choose>
+<c:set var="currentPage" value="${requestScope.currentPage}" />
 
 <nav aria-label="Page navigation example" class="ms-auto me-auto">
     <ul class="pagination">

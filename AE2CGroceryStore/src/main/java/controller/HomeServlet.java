@@ -123,7 +123,8 @@ public class HomeServlet extends HttpServlet {
                 page = PaginationUtil.MIN_NUMBER_PAGE;
             }
         }
-
+        
+        request.setAttribute("currentPage", page);
         request.setAttribute("carouselList", productDao.carouselProduct());
         request.setAttribute("categoryList", categoryDao.getAllCategoryAvailable());
         request.setAttribute("productList", productDao.getProductForEachPage(page));
