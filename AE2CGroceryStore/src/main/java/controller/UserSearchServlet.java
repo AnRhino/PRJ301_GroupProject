@@ -15,7 +15,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
 import utils.PaginationUtil;
 import validate.InputValidate;
 
@@ -25,7 +28,7 @@ import validate.InputValidate;
  */
 @WebServlet(name = "UserSearchServlet", urlPatterns = {"/user-search"})
 public class UserSearchServlet extends HttpServlet {
-
+    
     private final ProductDAO productDao = new ProductDAO();
 
     /**
@@ -114,7 +117,7 @@ public class UserSearchServlet extends HttpServlet {
 
         // Set tổng số page.
         request.setAttribute("totalPages", totalPages);
-
+        
         return getValidPage(request.getParameter("page"), totalPages);
     }
 
@@ -213,38 +216,62 @@ public class UserSearchServlet extends HttpServlet {
      * @param key là tìm kiếm của người dùng.
      */
     private void addSearchUserInputToCookie(HttpServletRequest request, HttpServletResponse response, String key) {
+        
+        key = key.trim();
+        
+        if (key.length() == 0) {
+            return;
+        }
 
         // Lấy tất cả cookie của 
         Cookie[] allCookies = request.getCookies();
         Cookie keySearchCookie = getKeySearchCookie(allCookies);
-
+        
         if (keySearchCookie == null) {
 
             // Nếu chưa có cookie thì tạo mới
-            keySearchCookie = new Cookie("key", key.trim());
-
+            keySearchCookie = new Cookie("key", key);
+            
         } else {
 
             // Lấy giá trị cũ và thêm từ khóa mới vào cuối
             String[] keySearch = keySearchCookie.getValue().split("\\|");
-
-            StringBuilder newValue = new StringBuilder();
-
-            if (keySearch.length >= 5) {
-
-                // Bỏ phần tử đầu tiên và thêm phần tử mới cuối
-                for (int i = 1; i < keySearch.length; i++) {
-                    newValue.append(keySearch[i].trim()).append("|");
-                }
-
-                newValue.append(key.trim());
-
+            
+            if (checkExistKeySearch(keySearch, key)) {
+                keySearchCookie.setValue(sortKeySearch(keySearch, key));
+                
             } else {
-                // Thêm tất cả phần tử cũ + phần tử mới
-                newValue.append(keySearchCookie.getValue()).append("|").append(key.trim());
-            }
+                
+                StringBuilder newValue = new StringBuilder();
+                Queue q = new LinkedList();
+                
+                for (String s : keySearch) {
+                    q.add(s);
+                }
+                
+                if (q.size() >= 5) {
+                    newValue.append(key).append("|");
 
-            keySearchCookie.setValue(newValue.toString());
+                    // Bỏ phần tử đầu tiên và thêm phần tử mới cuối
+                    for (int i = q.size() ; i > 1 ; i--) {
+                        newValue.append(q.poll()).append("|");
+                    }
+                    
+                    newValue.deleteCharAt(newValue.length()-1);
+                    
+                } else {
+                    newValue.append(key).append("|");
+                    
+                    // Thêm tất cả phần tử cũ + phần tử mới
+                    while (!q.isEmpty()) {
+                        newValue.append(q.poll()).append("|");
+                    }
+                    newValue.deleteCharAt(newValue.length()-1);
+                }
+                
+                keySearchCookie.setValue(newValue.toString());
+                
+            }
         }
 
         // Set thời gian tồn tại cookie (30 ngày)
@@ -254,7 +281,39 @@ public class UserSearchServlet extends HttpServlet {
         // Bỏ vào request/session để sử dụng trong dropdown.
         addSearchList(request, keySearchCookie);
     }
-
+    
+    private String sortKeySearch(String[] keySearch, String key) {
+        
+        Queue q = new LinkedList();
+        StringBuilder newValue = new StringBuilder();
+        
+        for (int i = 0; i < keySearch.length; i++) {       
+            if (!keySearch[i].equals(key)) {
+                q.add(keySearch[i]);
+            } 
+        }
+        
+        newValue.append(key).append("|");
+        
+        while (!q.isEmpty()) {
+            newValue.append(q.poll()).append("|");
+        }
+        newValue.deleteCharAt(newValue.length()-1);
+        
+        return newValue.toString();
+    }
+    
+    private boolean checkExistKeySearch(String[] keySearch, String key) {
+        
+        for (String string : keySearch) {
+            if (string.equals(key)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     private void addSearchList(HttpServletRequest request, Cookie searchInputCookie) {
 
         // Lấy tất cả tìm kiếm của người dùng và bỏ vào array.
@@ -263,13 +322,13 @@ public class UserSearchServlet extends HttpServlet {
 
         // Thêm dữ liệu vào danh sách.
         for (String key : keySearch) {
-            
+
             // Kiểm tra giá trị rỗng.
             if (!key.trim().isEmpty()) {
                 keySearchList.add(key.trim());
             }
         }
-
+        
         request.getSession().setAttribute("keySearchList", keySearchList);
     }
 
@@ -313,7 +372,7 @@ public class UserSearchServlet extends HttpServlet {
 
         // Lấy tất cả tìm kiếm của người dùng và bỏ vào array.
         String[] keySearch = userCooky.getValue().split("\\|");
-
+        
         String newKeySearch = null;
 
         // Nếu số lượng lịch sử tìm kiếm của người dùng quá 5 thì xóa đi cái cũ nhất và thêm cái mới nhất vào cuối cùng.
@@ -326,13 +385,13 @@ public class UserSearchServlet extends HttpServlet {
                     + key;
             // Thêm lịch sử tìm kiếm mới vào cuối.
         } else {
-
+            
             newKeySearch = "";
-
+            
             for (String keySearch1 : keySearch) {
                 newKeySearch += keySearch1 + "|";
             }
-
+            
             newKeySearch += key.trim();
         }
 
