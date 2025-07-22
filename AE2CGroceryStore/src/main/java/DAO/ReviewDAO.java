@@ -72,7 +72,7 @@ public class ReviewDAO extends dbconnect.DBContext {
 
     public List<Review> getByProductIDForPagination(int productID, int page) {
         List<Review> list = new ArrayList<>();
-        String query = "SELECT rv.ReviewID, us.UserID, us.UserName, prod.ProductID, rv.Rating , rv.Comment, rv.ReviewTime\n"
+        String query = "SELECT rv.ReviewID, us.UserID, us.UserName, prod.ProductID, rv.Rating , rv.Comment, rv.ReviewTime, us.FullName\n"
                 + "FROM [dbo].[Reviews] rv\n"
                 + "JOIN [dbo].[Products] prod\n"
                 + "ON prod.ProductID = rv.ProductID\n"
@@ -89,7 +89,7 @@ public class ReviewDAO extends dbconnect.DBContext {
             ResultSet rs = execSelectQuery(query, params);
 
             while (rs.next()) {
-                list.add(new Review(rs.getInt(1), new User(rs.getInt(2), rs.getString(3)), new Product(rs.getInt(4)), rs.getInt(5), rs.getString(6), rs.getObject(7, LocalDateTime.class)));
+                list.add(new Review(rs.getInt(1), new User(rs.getInt(2), rs.getString(3), rs.getString("FullName"), null, 0), new Product(rs.getInt(4)), rs.getInt(5), rs.getString(6), rs.getObject(7, LocalDateTime.class)));
             }
 
         } catch (SQLException ex) {
