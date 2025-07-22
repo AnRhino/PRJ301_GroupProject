@@ -13,7 +13,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import model.Order;
 import org.apache.poi.ss.usermodel.Cell;
@@ -141,7 +144,7 @@ public class StatisticServlet extends HttpServlet {
         createTableHeader(sheet, getHeaderCellStyle(workbook));
 
         // Thêm data và từng cột.
-        addDataToSheet(sheet, orderData, getCenterCellStyle(workbook), getPriceFormatCellStyle(workbook));
+        addDataToSheet(sheet, orderData, getCenterCellStyle(workbook), getDateFormatCellStyle(workbook), getPriceFormatCellStyle(workbook));
 
         // Tự động điều chỉnh độ rộng cho tất cả cột
         for (int i = 0; i < 12; i++) {
@@ -219,17 +222,32 @@ public class StatisticServlet extends HttpServlet {
 
     /**
      * Lấy ra style format cho tiền tệ.
-     * 
+     *
      * @param workbook ka2 file excel.
-     * 
+     *
      * @return CellStyle dành cho các cell cần format theo VND.
      */
     private CellStyle getPriceFormatCellStyle(Workbook workbook) {
         CellStyle currencyStyle = workbook.createCellStyle();
         DataFormat format = workbook.createDataFormat();
         currencyStyle.setDataFormat(format.getFormat("###,### \"VND\""));
-        
+
         return currencyStyle;
+    }
+
+    /**
+     * Lấy ra style format cho ngày.
+     *
+     * @param workbook ka2 file excel.
+     *
+     * @return CellStyle dành cho các cell cần format ngày.
+     */
+    private CellStyle getDateFormatCellStyle(Workbook workbook) {
+        CellStyle dateStyle = workbook.createCellStyle();
+        DataFormat format = workbook.createDataFormat();
+        dateStyle.setDataFormat(format.getFormat("dd/MM/yyyy"));
+
+        return dateStyle;
     }
 
     /**
@@ -238,7 +256,7 @@ public class StatisticServlet extends HttpServlet {
      * @param sheet là sheet cần thêm data.
      * @param orderData là data lấy từ cơ sở dữ liệu
      */
-    private void addDataToSheet(Sheet sheet, List<Order> orderData, CellStyle centerCS, CellStyle currencyStyle) {
+    private void addDataToSheet(Sheet sheet, List<Order> orderData, CellStyle centerCS, CellStyle dateStyle, CellStyle currencyStyle) {
 
         for (int i = 1; i <= orderData.size(); i++) {
 
@@ -246,7 +264,7 @@ public class StatisticServlet extends HttpServlet {
             Row row = sheet.createRow(i);
 
             // Thêm data vào từng hàng.
-            addDataToEachRow(row, orderData.get(i - 1), centerCS, currencyStyle);
+            addDataToEachRow(row, orderData.get(i - 1), centerCS, dateStyle, currencyStyle);
         }
 
     }
@@ -257,7 +275,7 @@ public class StatisticServlet extends HttpServlet {
      * @param row là hàng cần thêm data.
      * @param order là 1 record tương ứng với 1 hàng.
      */
-    private void addDataToEachRow(Row row, Order order, CellStyle centerCS, CellStyle currencyStyle) {
+    private void addDataToEachRow(Row row, Order order, CellStyle centerCS, CellStyle dateStyle, CellStyle currencyStyle) {
 
         // Tạo các cell trong 1 roll.
         Cell[] allCell = {row.createCell(0),
@@ -275,12 +293,12 @@ public class StatisticServlet extends HttpServlet {
 
         // Thêm giá trị vào các cell.     
         allCell[0].setCellValue(order.getId());
-        allCell[1].setCellValue(order.getOrderDate() != null 
-                ? order.getOrderDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) 
-                : "Unknown day");
-        allCell[2].setCellValue(order.getDeliveryDate() != null 
-                ? order.getDeliveryDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) 
-                : "Unknown day");
+        allCell[1].setCellValue(order.getOrderDate() != null
+                ? Date.from(order.getOrderDate().toInstant(ZoneOffset.UTC))
+                : Date.from(Instant.MIN));
+        allCell[2].setCellValue(order.getDeliveryDate() != null
+                ? Date.from(order.getDeliveryDate().toInstant(ZoneOffset.UTC))
+                : Date.from(Instant.MIN));
         allCell[3].setCellValue(order.getOrderItems().get(0).getProduct().getCategory().getCategoryID());
         allCell[4].setCellValue(order.getOrderItems().get(0).getProduct().getCategory().getCategoryName());
         allCell[5].setCellValue(order.getOrderItems().get(0).getProduct().getProductID());
@@ -295,7 +313,11 @@ public class StatisticServlet extends HttpServlet {
         for (int i = 0; i < 3; i++) {
             allCell[i].setCellStyle(centerCS);
         }
-        
+
+        // Format ngày
+        allCell[1].setCellStyle(dateStyle);
+        allCell[2].setCellStyle(dateStyle);
+
         // Format tiền.
         allCell[10].setCellStyle(currencyStyle);
         allCell[11].setCellStyle(currencyStyle);
