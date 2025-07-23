@@ -207,7 +207,7 @@ public class UserCategoryServlet extends HttpServlet {
             }
         }
 
-        request.setAttribute("currentPagw", page);
+        request.setAttribute("currentPage", page);
         request.setAttribute("categoryList", categoryDao.getAllCategoryAvailable());
         request.setAttribute("productList", productDao.getAvailableProductsByCategoryPage(categoryID, page));
         request.setAttribute("categoryType", categoryDao.getAvailableOneByID(categoryID));

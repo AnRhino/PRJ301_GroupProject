@@ -3,257 +3,145 @@
     Created on : Jul 7, 2025, 12:42:22 PM
     Author     : Le Thien Tri - CE191249
 --%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<c:set var="currentPage" value="${requestScope.currentPage}"/>
-<c:choose>
-    <c:when test="${requestScope.totalPages gt 3}">
+<c:set var="currentPage" value="${requestScope.currentPage}" />
 
-        <c:choose>
-            <c:when test="${currentPage == 1}">
-                <c:set var="previousPage" value="2"/>
-            </c:when>
-            <c:when test="${currentPage == 2}">
-                <c:set var="previousPage" value="2"/>
-            </c:when>
-            <c:when test="${currentPage == 3}">
-                <c:set var="previousPage" value="2"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="previousPage" value="${currentPage - 1}"/>
-            </c:otherwise>
-        </c:choose>
+<c:if test="${totalPages > 0}">
 
-        <c:choose>
-            <c:when test="${currentPage == requestScope.totalPages}">
-                <c:set var="nextPage" value="${requestScope.totalPages - 1}"/>
-            </c:when>
-            <c:when test="${currentPage == requestScope.totalPages - 1}">
-                <c:set var="nextPage" value="${requestScope.totalPages - 1}"/>
-            </c:when>
-            <c:when test="${currentPage == requestScope.totalPages - 2}">
-                <c:set var="nextPage" value="${requestScope.totalPages - 1}"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="nextPage" value="${currentPage + 1}"/>
-            </c:otherwise>
-        </c:choose>
+    <c:set var="previousPage" value="${currentPage - 1}"/>
+    <c:set var="nextPage" value="${currentPage + 1}"/>
 
+    <nav aria-label="Page navigation example" class="d-flex align-content-center justify-content-center my-3">
+        <ul class="pagination">
+            <!-- Icon previous page -->
+            <c:choose>
+                <c:when test="${currentPage > 1}">
 
-        <nav aria-label="Page navigation example" class="d-flex align-content-center justify-content-center my-3">
-            <ul class="pagination">
-
-                <c:choose>
-                    <c:when test="${currentPage > 1}">
-                        <c:url var="pageUrlPrev" value="/user-category">
-                            <c:param name="view" value="category"/>
-                            <c:param name="categoryID" value="${param.categoryID}"/>
-                            <c:param name="page" value="${currentPage - 1}"/>
-                        </c:url>
-                        <li class="page-item">
-                            <a class="page-link" href="${pageUrlPrev}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    </c:when>
-                    <c:otherwise>
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    </c:otherwise>
-                </c:choose>
-
-
-                <c:set var="pageZone">
-                    <c:choose>
-                        <c:when test="${empty currentPage}">
-                            1
-                        </c:when>
-                        <c:when test="${currentPage lt 1}">
-                            1
-                        </c:when>
-                        <c:when test="${currentPage gt requestScope.totalPages}">
-                            ${requestScope.totalPages}
-                        </c:when>
-                        <c:otherwise>
-                            ${currentPage}
-                        </c:otherwise>
-                    </c:choose>
-                </c:set>
-
-                <c:url var="pageUrl" value="/user-category">
-                    <c:param name="view" value="category"/>
-                    <c:param name="categoryID" value="${param.categoryID}"/>
-                    <c:param name="page" value="1"/>
-                </c:url>
-                <li class="page-item ${pageZone == 1 ? 'active' : ''}">
-                    <a class="page-link" href="${pageUrl}">   
-                        1
-                    </a>
-                </li>
-
-                <c:if test="${previousPage != 2}">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">   
-                            ...
+                    <li class="page-item">
+                        <a class="page-link" href="<c:url value="/user-category">
+                               <c:param name="view" value="category"/>
+                               <c:param name="categoryID" value="${param.categoryID}"/>
+                               <c:param name="page" value="${currentPage - 1}"/>
+                           </c:url>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                </c:if>
-
-                <c:forEach begin="${previousPage}" end="${nextPage}" var="i">
-                    <c:url var="pageUrl" value="/user-category">
-                        <c:param name="view" value="category"/>
-                        <c:param name="categoryID" value="${param.categoryID}"/>
-                        <c:param name="page" value="${i}"/>
-                    </c:url>
-                    <li class="page-item ${i == currentPage ? 'active' : ''}">
-                        <a class="page-link" href="${pageUrl}">${i}</a>
-                    </li>
-                </c:forEach>
-
-                <c:if test="${nextPage != requestScope.totalPages - 1}">
+                </c:when>
+                <c:otherwise>
                     <li class="page-item disabled">
-                        <a class="page-link" href="#">   
-                            ...
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                </c:if>
+                </c:otherwise>
+            </c:choose>
 
-
-                <c:url var="pageUrl" value="/user-category">
-                    <c:param name="view" value="category"/>
-                    <c:param name="categoryID" value="${param.categoryID}"/>
-                    <c:param name="page" value="${requestScope.totalPages}"/>
-                </c:url>
-                <li class="page-item ${pageZone == requestScope.totalPages ? 'active' : ''}">
-                    <a class="page-link" href="${pageUrl}">   
-                        ${requestScope.totalPages}
+            <!-- Page 1 (First page) -->     
+            <c:if test="${previousPage > 1}">
+                <li class="page-item">
+                    <a class="page-link" href="<c:url value="/user-category">
+                           <c:param name="view" value="category"/>
+                           <c:param name="categoryID" value="${param.categoryID}"/>
+                           <c:param name="page" value="1"/>
+                       </c:url>">
+                        <span aria-hidden="true">1</span>
                     </a>
                 </li>
+            </c:if>
 
-                <c:choose>
-                    <c:when test="${currentPage < requestScope.totalPages}">
-                        <c:url var="pageUrlNext" value="/user-category">
-                            <c:param name="view" value="category"/>
-                            <c:param name="categoryID" value="${param.categoryID}"/>
-                            <c:param name="page" value="${currentPage + 1}"/>
-                        </c:url>
-                        <li class="page-item">
-                            <a class="page-link" href="${pageUrlNext}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </c:when>
-                    <c:otherwise>
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </c:otherwise>
-                </c:choose>
-            </ul>
-        </nav>
-    </c:when>
+            <!-- Icon ... --> 
+            <c:if test="${previousPage > 2}">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">   
+                        ...
+                    </a>
+                </li>
+            </c:if>
 
-    <c:otherwise>
+            <!-- Previous page -->
+            <c:if test="${previousPage > 0}">
+                <li class="page-item">
+                    <a class="page-link" href="<c:url value="/user-category">
+                           <c:param name="view" value="category"/>
+                           <c:param name="categoryID" value="${param.categoryID}"/>
+                           <c:param name="page" value="${previousPage}"/>
+                       </c:url>">
+                        <span aria-hidden="true">${previousPage}</span>
+                    </a>
+                </li>
+            </c:if>
 
-        <c:choose>
-            <c:when test="${currentPage == 1}">
-                <c:set var="previousPage" value="2"/>
-            </c:when>
-            <c:when test="${currentPage == 2}">
-                <c:set var="previousPage" value="2"/>
-            </c:when>
-            <c:when test="${currentPage == 3}">
-                <c:set var="previousPage" value="2"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="previousPage" value="${currentPage - 1}"/>
-            </c:otherwise>
-        </c:choose>
+            <!-- Current page -->
+            <li class="page-item active">
+                <a class="page-link" href="<c:url value="/user-category">
+                       <c:param name="view" value="category"/>
+                       <c:param name="categoryID" value="${param.categoryID}"/>
+                       <c:param name="page" value="${currentPage}"/>
+                   </c:url>">
+                    <span aria-hidden="true">${currentPage}</span>
+                </a>
+            </li>
 
-        <c:choose>
-            <c:when test="${currentPage == requestScope.totalPages}">
-                <c:set var="nextPage" value="${requestScope.totalPages - 1}"/>
-            </c:when>
-            <c:when test="${currentPage == requestScope.totalPages - 1}">
-                <c:set var="nextPage" value="${requestScope.totalPages - 1}"/>
-            </c:when>
-            <c:when test="${currentPage == requestScope.totalPages - 2}">
-                <c:set var="nextPage" value="${requestScope.totalPages - 1}"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="nextPage" value="${currentPage + 1}"/>
-            </c:otherwise>
-        </c:choose>
-        <nav aria-label="Page navigation example" class="d-flex align-content-center justify-content-center my-3">
-            <ul class="pagination">
+            <!-- Next page -->
+            <c:if test="${nextPage <= totalPages}">
+                <li class="page-item">
+                    <a class="page-link" href="<c:url value="/user-category">
+                           <c:param name="view" value="category"/>
+                           <c:param name="categoryID" value="${param.categoryID}"/>
+                           <c:param name="page" value="${nextPage}"/>
+                       </c:url>">
+                        <span aria-hidden="true">${nextPage}</span>
+                    </a>
+                </li>
+            </c:if>
 
-                <c:choose>
-                    <c:when test="${currentPage > 1}">
-                        <c:url var="pageUrlPrev" value="/user-category">
-                            <c:param name="view" value="category"/>
-                            <c:param name="categoryID" value="${param.categoryID}"/>
-                            <c:param name="page" value="${currentPage - 1}"/>
-                        </c:url>
-                        <li class="page-item">
-                            <a class="page-link" href="${pageUrlPrev}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    </c:when>
-                    <c:otherwise>
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    </c:otherwise>
-                </c:choose>
+            <!-- Icon ... --> 
+            <c:if test="${nextPage < totalPages-1}">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">   
+                        ...
+                    </a>
+                </li>
+            </c:if>
 
+            <!-- Last page -->     
+            <c:if test="${nextPage < totalPages}">
+                <li class="page-item">
+                    <a class="page-link" href="<c:url value="/user-category">
+                           <c:param name="view" value="category"/>
+                           <c:param name="categoryID" value="${param.categoryID}"/>
+                           <c:param name="page" value="${totalPages}"/>
+                       </c:url>">
+                        <span aria-hidden="true">${totalPages}</span>
+                    </a>
+                </li>
+            </c:if>
 
-                <c:forEach begin="1" end="${requestScope.totalPages}" var="i">
-                    <c:url var="pageUrl" value="/user-category">
+            <!-- Icon next page -->  
+
+            <c:choose>
+                <c:when test="${currentPage < requestScope.totalPages}">
+                    <c:url var="pageUrlNext" value="/user-category">
                         <c:param name="view" value="category"/>
                         <c:param name="categoryID" value="${param.categoryID}"/>
-                        <c:param name="page" value="${i}"/>
+                        <c:param name="page" value="${currentPage + 1}"/>
                     </c:url>
-                    <li class="page-item ${i == currentPage ? 'active' : ''}">
-                        <a class="page-link" href="${pageUrl}">${i}</a>
+                    <li class="page-item">
+                        <a class="page-link" href="${pageUrlNext}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
                     </li>
-                </c:forEach>
-
-
-
-                <c:choose>
-                    <c:when test="${currentPage < requestScope.totalPages}">
-                        <c:url var="pageUrlNext" value="/user-category">
-                            <c:param name="view" value="category"/>
-                            <c:param name="categoryID" value="${param.categoryID}"/>
-                            <c:param name="page" value="${currentPage + 1}"/>
-                        </c:url>
-                        <li class="page-item">
-                            <a class="page-link" href="${pageUrlNext}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </c:when>
-                    <c:otherwise>
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </c:otherwise>
-                </c:choose>
-            </ul>
-        </nav>
-    </c:otherwise>
-
-
-</c:choose>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </ul>
+    </nav>
+</c:if>
