@@ -23,6 +23,7 @@
                     <th>Code</th>
                     <th>Description</th>
                     <th>Quantity</th>
+                    <th>Min Order Value</th>
                     <th>Expiry Date</th>
                     <th></th>
                     </thead>
@@ -35,6 +36,7 @@
                             <td>${shippingCode.code}</td>
                             <td>Free Shipping 100%</td>
                             <td>${shippingCode.quantity}</td>
+                            <td><fmt:formatNumber type="number" value="${shippingCode.minOrderValue}" groupingUsed="true"></fmt:formatNumber> VND</td>
                             <td>${shippingCode.expiryDate}</td>
                             <td><a class="btn btn-success" href="<c:url value="/discount-code/use">
                                        <c:param name="id" value="${shippingCode.id}"/>
@@ -48,6 +50,7 @@
                     <th>Code</th>
                     <th>Description</th>
                     <th>Quantity</th>
+                    <th>Min Order Value</th>
                     <th>Expiry Date</th>
                     <th></th>
                     </thead>
@@ -70,6 +73,7 @@
                                 </c:choose>
                             </td>
                             <td>${priceCode.quantity}</td>
+                            <td><fmt:formatNumber type="number" value="${priceCode.minOrderValue}" groupingUsed="true"></fmt:formatNumber> VND</td>
                             <td>${priceCode.expiryDate}</td>
                             <td><a class="btn btn-success" href="<c:url value="/discount-code/use">
                                        <c:param name="id" value="${priceCode.id}"/>
