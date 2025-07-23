@@ -89,10 +89,10 @@
                                     <tr>
                                         <th scope="row"><%= index++%></th>
                                         <td><img src="${pageContext.request.contextPath}/get-image/${item.product.coverImg}" style="width: 80px;" /></td>
+                                        <td>${item.product.productName}</td>
                                         <td> <fmt:formatNumber value="${item.product.price}" type="number" /> VND</td>
                                         <td>${item.quantity}</td>
                                         <td><fmt:formatNumber value="${item.product.price * item.quantity}" type="number" /> VND</td>
-                                        <td>${item.product.price * item.quantity}</td>
                                         <td>
                                             <a href="${pageContext.request.contextPath}/cart?view=edit&id=${item.cartItemID}" class="btn btn-primary btn-sm">Edit</a>
                                             <a href="${pageContext.request.contextPath}/cart?view=delete&id=${item.cartItemID}" class="btn btn-danger btn-sm">Delete</a>
