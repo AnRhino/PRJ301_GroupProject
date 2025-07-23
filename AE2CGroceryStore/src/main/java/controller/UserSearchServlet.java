@@ -332,7 +332,7 @@ public class UserSearchServlet extends HttpServlet {
             }
         }
         
-        request.getSession().setAttribute("keySearchList", keySearchList);
+        request.setAttribute("keySearchList", keySearchList);
     }
 
     /**

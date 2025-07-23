@@ -78,7 +78,7 @@
                         <button class="btn btn-outline-success ms-2" type="submit" style="height: 45px;">Search</button>
 
                         <ul id="history-list" class="list-group position-absolute shadow" style="top: 50px; width: 100%; display:none; z-index: 10;">
-                            <c:forEach var="item" items="${sessionScope.keySearchList}">
+                            <c:forEach var="item" items="${requestScope.keySearchList}">
                                 <li class="list-group-item">
                                     <a class="text-decoration-none text-dark" href="<c:url value='/user-search?key=${item}'/>">${item}</a>
                                 </li>
