@@ -20,7 +20,7 @@
                 <input type="hidden" name="action" value="delete"/>
 
                 <table class="table">
-                    <tr><th>Image</th><td><img src="${pageContext.request.contextPath}/assets/images/lonely.png" style="width: 100px;" /></td></tr>
+                    <tr><th>Image</th> <td><img src="${pageContext.request.contextPath}/get-image/${cart.product.coverImg}" style="width: 80px;" /></td></tr>
                     <tr><th>Product</th><td>${cart.product.productName}</td></tr>
                     <tr><th>Price</th><td>${cart.product.price}</td></tr>
                     <tr><th>Quantity</th><td>${cart.product.quantity}</td></tr>
