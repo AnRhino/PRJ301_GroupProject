@@ -76,7 +76,7 @@ public class ReviewServlet extends HttpServlet {
             handleErrorWhenExcute(response);
             return;
         }
-        
+
         redirectToProductPage(request, response);
     }
 
@@ -196,6 +196,8 @@ public class ReviewServlet extends HttpServlet {
     private void handleCommentInput(HttpServletRequest request) {
         String comment = request.getParameter("comment");
         String rating = request.getParameter("rating");
+        User loggedUser = (User) request.getSession().getAttribute("loggedUser");
+        int productId = Integer.parseInt(request.getParameter("productID"));
 
         // Kiểm tra comment rỗng.
         if (InputValidate.checkEmptyInput(comment)) {
@@ -212,10 +214,14 @@ public class ReviewServlet extends HttpServlet {
             // Kiểm tra rating vượt ngoài phạm vi (1-5).
         } else if (InputValidate.checkIntegerNumberInRange(Integer.parseInt(rating), InputValidate.MIN_RATING_VALUE, InputValidate.MAX_RATING_VALUE)) {
             request.getSession().setAttribute("errorComment", new ErrorMessage(MessageConstants.OUT_OF_RANGE_RATING_INPUT_MESSAGE));
-
+            
+            // Kiểm tra được phép comment không
+        } else if (!reviewDao.canReview(loggedUser.getId(), productId)) {
+            return; // Do nothing
+            
             // Nếu không có lỗi thì tạo comment mới.
         } else {
-            reviewDao.add(((User) request.getSession().getAttribute("loggedUser")).getId(), Integer.parseInt(request.getParameter("productID")), Integer.parseInt(rating), comment, LocalDateTime.now());
+            reviewDao.add(loggedUser.getId(), productId, Integer.parseInt(rating), comment, LocalDateTime.now());
         }
     }
 

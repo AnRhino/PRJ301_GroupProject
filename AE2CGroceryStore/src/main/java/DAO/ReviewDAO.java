@@ -134,8 +134,8 @@ public class ReviewDAO extends dbconnect.DBContext {
 
     private boolean hasReviewed(int userId, int productId) {
         String query = "select COUNT(ReviewID) from Reviews\n"
-                + "where UserID = 1\n"
-                + "and ProductID = 1";
+                + "where UserID = ?\n"
+                + "and ProductID = ?";
         Object[] params = {userId, productId};
 
         try ( ResultSet rs = execSelectQuery(query, params)) {

@@ -76,13 +76,21 @@ public class OrderItemDAO extends DBContext {
         return numberOfNewRow;
     }
 
+    /**
+     * Check the user has bought the product (the order must be completed)
+     *
+     * @param userId
+     * @param productId
+     * @return
+     */
     public boolean hasBought(int userId, int productId) {
         String query = "select count(oi.OrderItemID)\n"
                 + "from Orders o\n"
                 + "join OrderItems oi\n"
                 + "on o.OrderID = oi.OrderID\n"
-                + "where o.UserID = 1\n"
-                + "and oi.ProductID = 1";
+                + "where o.UserID = ?\n"
+                + "and oi.ProductID = ?\n"
+                + "and o.StatusID = 4";
         Object[] params = {userId, productId};
 
         try ( ResultSet rs = execSelectQuery(query, params)) {
