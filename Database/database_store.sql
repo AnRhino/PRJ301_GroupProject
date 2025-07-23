@@ -142,5 +142,5 @@ INSERT INTO StatusType VALUES
 (0, 'Cancelled'),
 (1, 'Pending'),
 (2, 'Processing'),
-(3, 'Shipped'),
+(3, 'Shipping'),
 (4, 'Completed');
