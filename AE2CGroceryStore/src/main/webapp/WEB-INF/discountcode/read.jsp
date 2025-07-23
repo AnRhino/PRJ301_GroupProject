@@ -59,13 +59,13 @@
                         <tr>
                             <td>${priceCode.code}</td>
                             <td>
-                                Discount: ${priceCode.value}
+                                Discount: 
                                 <c:choose>
                                     <c:when test="${priceCode.type == 0}">
-                                        %
+                                        ${priceCode.value} %
                                     </c:when>
                                     <c:otherwise>
-                                        VND
+                                        <fmt:formatNumber type="number" value="${priceCode.value}" groupingUsed="true"></fmt:formatNumber> VND
                                     </c:otherwise>
                                 </c:choose>
                             </td>
