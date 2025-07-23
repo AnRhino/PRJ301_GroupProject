@@ -76,6 +76,26 @@ public class OrderItemDAO extends DBContext {
         return numberOfNewRow;
     }
 
+    public boolean hasBought(int userId, int productId) {
+        String query = "select count(oi.OrderItemID)\n"
+                + "from Orders o\n"
+                + "join OrderItems oi\n"
+                + "on o.OrderID = oi.OrderID\n"
+                + "where o.UserID = 1\n"
+                + "and oi.ProductID = 1";
+        Object[] params = {userId, productId};
+
+        try ( ResultSet rs = execSelectQuery(query, params)) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ReviewDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+
     public List<OrderItem> getAllByOrderId(int orderId) {
         String query = "select p.ProductID, p.ProductCode, p.ProductName, p.ImagePath, oi.Quantity, UnitPrice \n"
                 + "from OrderItems oi\n"

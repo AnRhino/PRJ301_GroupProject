@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.User;
 import utils.PaginationUtil;
 import validate.InputValidate;
 
@@ -27,6 +28,7 @@ public class UserProductServlet extends HttpServlet {
     private ProductDAO productDao;
     private CategoryDAO categoryDao;
     private ReviewDAO reviewDao;
+    private User loggedUser;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -190,6 +192,7 @@ public class UserProductServlet extends HttpServlet {
      * @param productID là id của sản phẩm.
      */
     private void getProductInfo(HttpServletRequest request, int productID) {
+        loggedUser = (User) request.getSession().getAttribute("loggedUser");
         int countItem = reviewDao.countReviewByProductId(productID);
         int totalPages = PaginationUtil.getTotalPagesForReviews(countItem);
         request.setAttribute("totalPages", totalPages); // Set tổng số page
@@ -211,11 +214,18 @@ public class UserProductServlet extends HttpServlet {
                 page = 1;
             }
         }
+        
+        // Check người dùng có thể review hay không
+        boolean canReview = false;
+        if(loggedUser != null && reviewDao.canReview(loggedUser.getId(), productID)) {
+            canReview = true;
+        }
 
         request.setAttribute("product", productDao.getAvailableProductById(productID));
         request.setAttribute("productList", productDao.getProductsByCategory(categoryDao.getCategoryByProductID(productID).getCategoryID()));
         request.setAttribute("rateScore", productDao.getRateScore(productID));
         request.setAttribute("reviewList", reviewDao.getByProductIDForPagination(productID, page));
+        request.setAttribute("canReview", canReview);
 
         // Kiểm tra xem có thông báo lỗi hay thành công nào không.
         getErrorOrSuccessInAddToCartIfExists(request);

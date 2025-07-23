@@ -234,43 +234,45 @@
                                                 </c:forEach>
                                             </c:otherwise>
                                         </c:choose>
-                                        <div class="px-5 gap-3 p-2 text-light">
-                                            <form id="form-comment" action="${pageContext.request.contextPath}/review" method="post" class="d-flex gap-2">
-                                                <input type="hidden" name="view" value="comment">
-                                                <input type="hidden" id="productID-comment" name="productID" value="${requestScope.product.productID}">
-                                                <input required type="text" class="form-control" name="comment" placeholder="Enter your comment here.">
-                                                <select name="rating" id="rating" required>
-                                                    <option value="1">1 ⭐</option>
-                                                    <option value="2">2 ⭐⭐</option>
-                                                    <option value="3">3 ⭐⭐⭐</option>
-                                                    <option value="4">4 ⭐⭐⭐⭐</option>
-                                                    <option value="5">5 ⭐⭐⭐⭐⭐</option>
-                                                </select>
-                                                <button type="submit" class="btn btn-primary">Enter</button>                                              
-                                            </form>
-                                            <div class="d-flex justify-content-center align-items-center mx-auto my-auto">
-                                                <%@include file="../include/review_pagination.jsp" %>
-                                            </div>
-                                            <div class="d-flex align-items-center gap-2">
+                                        <c:if test="${canReview}">
+                                            <div class="px-5 gap-3 p-2 text-light">
+                                                <form id="form-comment" action="${pageContext.request.contextPath}/review" method="post" class="d-flex gap-2">
+                                                    <input type="hidden" name="view" value="comment">
+                                                    <input type="hidden" id="productID-comment" name="productID" value="${requestScope.product.productID}">
+                                                    <input required type="text" class="form-control" name="comment" placeholder="Enter your comment here.">
+                                                    <select name="rating" id="rating" required>
+                                                        <option value="1">1 ⭐</option>
+                                                        <option value="2">2 ⭐⭐</option>
+                                                        <option value="3">3 ⭐⭐⭐</option>
+                                                        <option value="4">4 ⭐⭐⭐⭐</option>
+                                                        <option value="5">5 ⭐⭐⭐⭐⭐</option>
+                                                    </select>
+                                                    <button type="submit" class="btn btn-primary">Enter</button>                                              
+                                                </form>
+                                                <div class="d-flex justify-content-center align-items-center mx-auto my-auto">
+                                                    <%@include file="../include/review_pagination.jsp" %>
+                                                </div>
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <c:if test="${not empty errorComment}">
-                                                        <p class="text-danger">${requestScope.errorComment.message}</p>
-                                                    </c:if>
-                                                    <c:if test="${not empty errorDeleteComment}">
-                                                        <p class="text-danger">${requestScope.errorDeleteComment.message}</p>
-                                                    </c:if>
-                                                    <c:if test="${not empty successDeleteComment}">
-                                                        <p class="text-success">${requestScope.successDeleteComment}</p>
-                                                    </c:if>
-                                                    <c:if test="${not empty errorEditComment}">
-                                                        <p class="text-danger">${requestScope.errorEditComment.message}</p>
-                                                    </c:if>
-                                                    <c:if test="${not empty successEditComment}">
-                                                        <p class="text-success">${requestScope.successEditComment}</p>
-                                                    </c:if>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <c:if test="${not empty errorComment}">
+                                                            <p class="text-danger">${requestScope.errorComment.message}</p>
+                                                        </c:if>
+                                                        <c:if test="${not empty errorDeleteComment}">
+                                                            <p class="text-danger">${requestScope.errorDeleteComment.message}</p>
+                                                        </c:if>
+                                                        <c:if test="${not empty successDeleteComment}">
+                                                            <p class="text-success">${requestScope.successDeleteComment}</p>
+                                                        </c:if>
+                                                        <c:if test="${not empty errorEditComment}">
+                                                            <p class="text-danger">${requestScope.errorEditComment.message}</p>
+                                                        </c:if>
+                                                        <c:if test="${not empty successEditComment}">
+                                                            <p class="text-success">${requestScope.successEditComment}</p>
+                                                        </c:if>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </c:if>
                                     </div>
                                 </div>
                             </div>

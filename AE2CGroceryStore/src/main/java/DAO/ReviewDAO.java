@@ -132,6 +132,30 @@ public class ReviewDAO extends dbconnect.DBContext {
         return list;
     }
 
+    private boolean hasReviewed(int userId, int productId) {
+        String query = "select COUNT(ReviewID) from Reviews\n"
+                + "where UserID = 1\n"
+                + "and ProductID = 1";
+        Object[] params = {userId, productId};
+
+        try ( ResultSet rs = execSelectQuery(query, params)) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ReviewDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+
+    public boolean canReview(int userId, int productId) {
+        OrderItemDAO oiDAO = new OrderItemDAO();
+        
+        return oiDAO.hasBought(userId, productId) 
+                && !this.hasReviewed(userId, productId);
+    }
+
     /**
      * Tạo comment mới.
      *
