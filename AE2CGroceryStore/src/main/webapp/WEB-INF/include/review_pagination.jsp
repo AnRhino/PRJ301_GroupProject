@@ -9,7 +9,7 @@
 
 <c:set var="currentPage" value="${requestScope.currentPage}" />
 
-<%--<c:if test="${totalPage > 0}">--%>
+<c:if test="${totalPage > 0}">
 
     <c:set var="previousPage" value="${currentPage - 1}"/>
     <c:set var="nextPage" value="${currentPage + 1}"/>
@@ -86,7 +86,7 @@
             </li>
 
             <!-- Next page -->
-            <c:if test="${nextPage < totalPages}">
+            <c:if test="${nextPage <= totalPages}">
                 <li class="page-item">
                     <a class="page-link" href="<c:url value="/user-product">
                            <c:param name="view" value="product"/>
@@ -145,4 +145,4 @@
             </c:choose>
         </ul>
     </nav>
-<%--</c:if>--%>
+</c:if>
