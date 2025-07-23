@@ -215,6 +215,8 @@ public class UserProductServlet extends HttpServlet {
             }
         }
         
+        request.setAttribute("currentPage", page);
+        
         // Check người dùng có thể review hay không
         boolean canReview = false;
         if(loggedUser != null && reviewDao.canReview(loggedUser.getId(), productID)) {

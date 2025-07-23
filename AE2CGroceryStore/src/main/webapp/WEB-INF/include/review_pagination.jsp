@@ -6,26 +6,13 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<c:set var="currentPage" value="${requestScope.currentPage}" />
 <c:choose>
     <c:when test="${requestScope.totalPages eq 0}">
         
     </c:when>
     <c:when test="${requestScope.totalPages gt 3}">
-
-        <c:choose>
-            <c:when test="${empty param.page}">
-                <c:set var="currentPage" value="1"/>
-            </c:when>
-            <c:when test="${param.page lt 1}">
-                <c:set var="currentPage" value="1"/>
-            </c:when>
-            <c:when test="${param.page gt requestScope.totalPages}">
-                <c:set var="currentPage" value="${requestScope.totalPages}"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="currentPage" value="${param.page}"/>
-            </c:otherwise>
-        </c:choose>
 
         <c:choose>
             <c:when test="${currentPage == 1}">
@@ -86,17 +73,17 @@
 
                 <c:set var="pageZone">
                     <c:choose>
-                        <c:when test="${empty param.page}">
+                        <c:when test="${empty currentPage}">
                             1
                         </c:when>
-                        <c:when test="${param.page lt 1}">
+                        <c:when test="${currentPage lt 1}">
                             1
                         </c:when>
-                        <c:when test="${param.page gt requestScope.totalPages}">
+                        <c:when test="${currentPage gt requestScope.totalPages}">
                             ${requestScope.totalPages}
                         </c:when>
                         <c:otherwise>
-                            ${param.page}
+                            ${currentPage}
                         </c:otherwise>
                     </c:choose>
                 </c:set>
@@ -177,21 +164,6 @@
     </c:when>
 
     <c:otherwise>
-
-        <c:choose>
-            <c:when test="${empty param.page}">
-                <c:set var="currentPage" value="1"/>
-            </c:when>
-            <c:when test="${param.page lt 1}">
-                <c:set var="currentPage" value="1"/>
-            </c:when>
-            <c:when test="${param.page gt requestScope.totalPages}">
-                <c:set var="currentPage" value="${requestScope.totalPages}"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="currentPage" value="${param.page}"/>
-            </c:otherwise>
-        </c:choose>
 
         <c:choose>
             <c:when test="${currentPage == 1}">

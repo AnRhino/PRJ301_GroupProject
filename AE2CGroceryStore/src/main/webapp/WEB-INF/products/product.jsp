@@ -248,10 +248,7 @@
                                                         <option value="5">5 ⭐⭐⭐⭐⭐</option>
                                                     </select>
                                                     <button type="submit" class="btn btn-primary">Enter</button>                                              
-                                                </form>
-                                                <div class="d-flex justify-content-center align-items-center mx-auto my-auto">
-                                                    <%@include file="../include/review_pagination.jsp" %>
-                                                </div>
+                                                </form>                                               
                                                 <div class="d-flex align-items-center gap-2">
                                                     <div class="d-flex align-items-center gap-2">
                                                         <c:if test="${not empty errorComment}">
@@ -273,6 +270,9 @@
                                                 </div>
                                             </div>
                                         </c:if>
+                                        <div class="d-flex justify-content-center align-items-center mx-auto my-auto">
+                                            <%@include file="../include/review_pagination.jsp" %>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
