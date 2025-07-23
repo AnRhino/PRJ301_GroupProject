@@ -31,7 +31,7 @@
                     <div class="modal fade" id="editFullnameModal" tabindex="-1" aria-labelledby="editFullnameModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form method="post" action="${pageContext.request.contextPath}/user-profile">
+                                <form id="form-fullName" method="post" action="${pageContext.request.contextPath}/user-profile">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editFullnameModalLabel">Change FullName</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -68,14 +68,14 @@
                     <div class="modal fade" id="editProfilePicModal" tabindex="-1" aria-labelledby="editProfilePicModal" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <!-- Modal email form --> 
-                                <form method="post" action="${pageContext.request.contextPath}/image-profile" enctype="multipart/form-data">
-                                    <!-- Modal email header --> 
+                                <!-- Modal image form --> 
+                                <form id="form-image" method="post" action="${pageContext.request.contextPath}/image-profile" enctype="multipart/form-data">
+                                    <!-- Modal image header --> 
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editEmailModalLabel">Change profile picture</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <!-- Modal email body --> 
+                                    <!-- Modal image body --> 
                                     <div class="modal-body">
                                         <div class="mb-3">
                                             <label class="form-label" for="email"><strong>Image:</strong></label>
@@ -109,7 +109,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <!-- Modal email form --> 
-                                <form method="post" action="${pageContext.request.contextPath}/user-profile">
+                                <form id="form-email" method="post" action="${pageContext.request.contextPath}/user-profile">
                                     <!-- Modal email header --> 
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editEmailModalLabel">Change Email</h5>
@@ -152,7 +152,7 @@
                             <!-- Modal content -->  
                             <div class="modal-content">
                                 <!-- Form in modal -->  
-                                <form method="post" action="${pageContext.request.contextPath}/user-profile">
+                                <form id="form-password" method="post" action="${pageContext.request.contextPath}/user-profile">
 
                                     <!-- Header -->  
                                     <div class="modal-header">
@@ -192,5 +192,59 @@
             </div>
         </div>
         <%@include file="../include/footer.jsp" %>
+        <script>
+            $("#form-image").validate({
+                rules: {
+                    coverImg: {
+                        accept: "image/*"
+                    }
+                }
+            });
+            $("#form-fullName").validate({
+                rules: {
+                    fullname: {
+                        required: true,
+                        rangelength: [2, 50]
+                    }
+                },
+                messages: {
+                    fullname: {
+                        required: "Please enter name"
+                    }
+                }
+            });
+            $("#form-email").validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    }
+                },
+                messages: {
+                    email: {
+                        required: "Please enter email"
+                    }
+                }
+            });
+            $("#form-password").validate({
+                rules: {
+                    oldPassword: {
+                        required: true
+                    },
+                    password: {
+                        required: true,
+                        minlength: 8
+                    }
+                },
+                messages: {
+                    oldPassword: {
+                        required: "Please enter old password"
+                    },
+                    password: {
+                        required: "Please enter new password"
+                    }
+                }
+            });
+        </script>
     </body>
 </html>

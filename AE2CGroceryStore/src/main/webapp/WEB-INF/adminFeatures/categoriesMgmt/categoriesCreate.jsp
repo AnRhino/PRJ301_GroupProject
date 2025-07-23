@@ -69,6 +69,9 @@
                 rules: {
                     categoryName: {
                         required: true
+                    },
+                    coverImg: {
+                        accept: "image/*"
                     }
                 },
                 messages: {

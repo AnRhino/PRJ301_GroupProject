@@ -92,6 +92,9 @@ List all sp - line 50
                     },
                     categoryName: {
                         required: true
+                    },
+                    coverImg: {
+                        accept: "image/*"
                     }
                 }, 
                 messages: {
